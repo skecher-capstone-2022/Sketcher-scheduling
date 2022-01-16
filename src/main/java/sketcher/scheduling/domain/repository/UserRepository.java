@@ -22,10 +22,17 @@ public class UserRepository {
     }
 
     /**
-     * 회원 조회
+     * 회원 아이디로 조회
      */
-    public User findOneUser(User user){
+    public User findById(User user){
 
+    }
+
+    /**
+     * 회원 이름으로 조회
+     */
+    public User findByName(User user){
+        
     }
 
     /**
@@ -52,6 +59,35 @@ public class UserRepository {
      * 전체 매니저 조회
      */
     public List<User> findManager() {
+
+    }
+
+
+    /**
+     * 회원 탈퇴 요청
+     */
+    public Integer deleteUserRequest(){
+
+    }
+
+    /**
+     * 회원 탈퇴 요청 조회
+     */
+    public List<User> findDeleteUserRequest(){
+
+    }
+
+    /**
+     * 회원 삭제
+     */
+    public Integer deleteUser(){
+        
+    }
+
+    /**
+     * 회원 정보 수정
+     */
+    public void updateUser(){
 
     }
 }

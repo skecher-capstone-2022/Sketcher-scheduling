@@ -61,7 +61,7 @@ public class ScheduleService {
 
     }
     /**
-     * 매니저 한명 배정 스케줄 조회
+     * 매니저 개인 배정 스케줄 조회
      */
     public ManagerAssignSchedule findManagerAssignSchedule(){
 
@@ -74,9 +74,41 @@ public class ScheduleService {
 
     }
     /**
-     * 매니저 한명 수행 스케줄 조회
+     * 매니저 개인 수행 스케줄 조회
      */
     public ManagerAssignSchedule findManagerWorkingSchedule(){
 
     }
+
+    /**
+     * 매니저 개인 스케줄 삭제 요청
+     */
+    @Transactional
+    public ManagerAssignSchedule deleteScheduleRequest(){
+
+    }
+
+    /**
+     * 매니저 개인 스케줄 삭제
+     */
+    @Transactional
+    public ManagerAssignSchedule deleteSchedule(){
+
+    }
+
+    /**
+     * 스케줄 수정
+     */
+    @Transactional
+    public Integer updateSchedule(Schedule schedule){
+
+    }
+
+    /**
+     * 매니저 수정 요청 스케줄 조회
+     */
+    public Integer findUpdateRequestSchedule(){
+
+    }
+}
 }

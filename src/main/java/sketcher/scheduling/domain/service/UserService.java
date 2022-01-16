@@ -24,12 +24,18 @@ public class UserService {
         }
 
         /**
-         * 회원 조회
+         * 회원 아이디로 조회
          */
-        public User findOneUser(User user){
+        public User findById(User user){
 
         }
 
+        /**
+         * 회원 이름으로 조회
+         */
+        public User findByName(User user){
+
+        }
         /**
          * 회원 전체 조회
          */
@@ -59,8 +65,40 @@ public class UserService {
         }
 
         /**
+         * 회원 탈퇴 요청
+         */
+        @Transactional
+        public Integer deleteUserRequest(){
+
+        }
+
+        /**
+         * 회원 탈퇴 요청 조회
+         */
+        public List<User> findDeleteUserRequest(){
+
+        }
+
+        /**
+         * 회원 삭제
+         */
+        @Transactional
+        public Integer deleteUser(){
+
+        }
+
+        /**
+         * 회원 정보 수정
+         */
+        @Transactional
+        public void updateUser(){
+
+        }
+
+        /**
          * 이미 존재하는 회원 아이디 검증
          */
         private void validateDuplicateUser(User user) {
         }
+
 }

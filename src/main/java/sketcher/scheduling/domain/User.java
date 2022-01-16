@@ -49,7 +49,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<ManagerHopeTime> managerHopeTimes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "schedule")
+    @OneToMany(mappedBy = "user")
     private List<ManagerWorkingSchedule> managerWorkingSchedules = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
