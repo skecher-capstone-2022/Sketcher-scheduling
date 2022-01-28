@@ -20,30 +20,30 @@ public class User {
 
     @Id
     @Column(name = "user_id")
-    @NotEmpty(message = "Null 일 수 없습니다.")
+    @NotEmpty
     @Pattern(regexp = "^[a-zA-Z0-9]{3,12}$", message = "아이디를 3~12자로 입력해주세요. [특수문자 X]")
     private String id;
 
-    @NotEmpty(message = "Null 일 수 없습니다.")
+    @NotEmpty
     private String auth_role;
 
-    @NotEmpty(message = "Null 일 수 없습니다.")
+    @NotEmpty
     @Pattern(regexp = "^[a-zA-Z0-9]{3,12}$", message = "비밀번호를 3~12자로 입력해주세요.")
     private String password;
 
-    @NotEmpty(message = "Null 일 수 없습니다.")
+    @NotEmpty
     @Pattern(regexp = "[a-zA-Z0-9]*")
     private String user_name;
 
-    @NotEmpty(message = "Null 일 수 없습니다.")
+    @NotEmpty
     private String user_tel;
 
-    @NotEmpty(message = "Null 일 수 없습니다.")
+    @NotEmpty
     private LocalDateTime user_joinDate;
 
     private Double manager_score;
 
-    @NotEmpty(message = "Null 일 수 없습니다.")
+    @NotEmpty
     private Character dropout_req_check;
 
     @OneToMany(mappedBy = "user")

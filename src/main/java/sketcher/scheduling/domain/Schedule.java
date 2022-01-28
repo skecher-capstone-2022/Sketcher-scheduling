@@ -17,17 +17,17 @@ public class Schedule {
     @Id @GeneratedValue
     @Column(name = "schedule_id")
     private Integer id;
-    @NotEmpty(message = "Null 일 수 없습니다.")
+    @NotEmpty
     private Integer schedule_date;
-    @NotEmpty(message = "Null 일 수 없습니다.")
+    @NotEmpty
     private Integer schedule_time;
-    @NotEmpty(message = "Null 일 수 없습니다.")
+    @NotEmpty
     private Integer workforce;
-    @NotEmpty(message = "Null 일 수 없습니다.")
+    @NotEmpty
     private Integer expected_card_cnt;
-    @NotEmpty(message = "Null 일 수 없습니다.")
+    @NotEmpty
     private LocalDateTime create_date;
-    @NotEmpty(message = "Null 일 수 없습니다.")
+
     private String creator_id;
 
     private String update_id;

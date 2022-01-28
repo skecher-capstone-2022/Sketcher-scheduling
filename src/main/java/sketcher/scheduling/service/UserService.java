@@ -1,10 +1,10 @@
-package sketcher.scheduling.domain.service;
+package sketcher.scheduling.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sketcher.scheduling.domain.User;
-import sketcher.scheduling.domain.repository.UserRepository;
+import sketcher.scheduling.repository.UserRepository;
 
 import java.util.List;
 

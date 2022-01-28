@@ -1,4 +1,4 @@
-package sketcher.scheduling.domain.service;
+package sketcher.scheduling.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -7,7 +7,7 @@ import sketcher.scheduling.domain.ManagerAssignSchedule;
 import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.domain.ManagerWorkingSchedule;
 import sketcher.scheduling.domain.Schedule;
-import sketcher.scheduling.domain.repository.ScheduleRepository;
+import sketcher.scheduling.repository.ScheduleRepository;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class ScheduleService {
      * 스케줄 저장
      */
     @Transactional
-    public Long saveSchedule(Schedule schedule){
+    public Integer saveSchedule(Schedule schedule){
 
     }
 
