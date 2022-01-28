@@ -10,13 +10,13 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 public class ManagerWorkingSchedule {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "working_id")
     private Integer id;
     private Integer completed_card_cnt;
     @NotEmpty(message = "Null 일 수 없습니다.")
-    private Integer schedule_id;
-    @NotEmpty(message = "Null 일 수 없습니다.")
+//    private Integer schedule_id;
+//    @NotEmpty(message = "Null 일 수 없습니다.")
     private String manager_id;
 
     @ManyToOne(fetch = FetchType.LAZY)

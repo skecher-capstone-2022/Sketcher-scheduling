@@ -12,7 +12,7 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 public class ManagerHopeTime {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "hope_time_id")
     private Integer id;
     @NotEmpty(message = "Null 일 수 없습니다.")
