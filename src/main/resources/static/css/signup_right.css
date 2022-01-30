@@ -2,11 +2,13 @@
 /* CSS Document */
 
 body {
+	background: #eceae9;
 	margin:0;
 }
 
 .step {
 	float:left;
+	margin-top: 50px;
 	width:70%;
 	padding:30px;
 	box-sizing: border-box;

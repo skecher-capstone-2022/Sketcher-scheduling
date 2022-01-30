@@ -3,7 +3,7 @@
 	z-index: 1;
 	display: inline-block;
 	margin: 1em;
-	max-width: 400px;
+
 	width: calc(100% - 2em);
 	vertical-align: top;
 }
@@ -285,13 +285,13 @@
 	position: absolute;
 	top: -200%;
 	left: 0;
-	color: #da6484;
+	color: #ff6d6d;
 	font-weight: 800;
 }
 
 .input__field--chisato:focus,
 .input--filled .input__field--chisato {
-	border-color: #da6484;
+	border-color: #ff6d6d;
 }
 
 .input__field--chisato:focus + .input__label--chisato,
