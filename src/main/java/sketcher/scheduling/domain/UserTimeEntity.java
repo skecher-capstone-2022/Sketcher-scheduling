@@ -12,11 +12,9 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @Getter
 @EntityListeners(AuditingEntityListener.class)
-public class BaseTimeEntity {
+public class UserTimeEntity {
 
     @CreatedDate
-    private LocalDateTime createdDate;
+    private LocalDateTime user_joindate;
 
-    @LastModifiedDate
-    private LocalDateTime modifiedDate;
 }

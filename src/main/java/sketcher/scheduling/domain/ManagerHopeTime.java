@@ -15,21 +15,33 @@ public class ManagerHopeTime {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "hope_time_id")
     private Integer id;
-    @NotEmpty(message = "Null 일 수 없습니다.")
+    @NotEmpty
     private Integer start_time;
-    @NotEmpty(message = "Null 일 수 없습니다.")
+    @NotEmpty
     private Integer finish_time;
 
+    /**
+     * 연관관계 매핑
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @NotEmpty(message = "Null 일 수 없습니다.")
+    @NotEmpty
     private User user;
 
+    /**
+     * 연관관계 편의 메소드
+     */
     @Builder
-    public ManagerHopeTime(Integer start_time, Integer finish_time) {
+    public ManagerHopeTime(Integer start_time, Integer finish_time, User user) {
         this.start_time = start_time;
         this.finish_time = finish_time;
+        if(this.user != null){
+            this.user.getManagerHopeTimes().remove(this);
+        }
+        this.user = user;
+        user.getManagerHopeTimes().add(this);
     }
+
     protected ManagerHopeTime(){
 
     }
