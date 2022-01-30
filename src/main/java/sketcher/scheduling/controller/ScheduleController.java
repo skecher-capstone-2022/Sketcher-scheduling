@@ -1,8 +1,6 @@
 package sketcher.scheduling.controller;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import io.swagger.annotations.*;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

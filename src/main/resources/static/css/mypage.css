@@ -1,0 +1,16 @@
+@charset "utf-8";
+/* CSS Document */
+
+.user_info_wrap {
+	padding:30px 50px;
+	width: 50%;
+}
+
+.user_info {
+	float:left;
+	margin-left:20px;
+}
+
+.hope_info {
+	float:left;
+}
