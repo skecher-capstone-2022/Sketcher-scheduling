@@ -1,0 +1,17 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+	margin:0;
+}
+
+.hope_time {
+	width:613px;
+	margin: 0 auto;
+	box-sizing: border-box;
+}
+
+.chk {
+	color:#A6A6A6;
+	margin-top:20px;
+}

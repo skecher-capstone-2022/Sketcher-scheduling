@@ -1,0 +1,15 @@
+@charset "utf-8";
+/* CSS Document */
+
+.list_control {
+}
+
+.search {
+	float:right;
+}
+
+.btn {
+	padding: 0;
+	border: none;
+	background: none;
+}
