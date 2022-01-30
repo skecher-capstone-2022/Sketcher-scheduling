@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>무제 문서</title>
+    <link type="text/css" rel="stylesheet" href="../../resources/static/css/step2.css"/>
+    <link type="text/css" rel="stylesheet" href="../../resources/static/css/signup_right.css"/>
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" type="text/css" href="../../resources/static/css/normalize2.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="../../resources/static/fonts/font-awesome-4.2.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../../resources/static/css/demo2.css"/>
+    <link rel="stylesheet" type="text/css" href="../../resources/static/css/set2.css"/>
+    <!--[if IE]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="step">
+    <div style="text-align : center;"><img src="../../resources/static/img/step2.png" width="613" height="110"><br/>
+    </div>
+    <div class="input_wrap">
+        <div class="container">
+
+            <h1>회원 정보 입력</h1>
+
+            <section class="content bgcolor-4">
+                <h2>Chisato</h2>
+                <span class="input input--chisato">
+					<input class="input__field input__field--chisato" type="text" id="input-13" />
+					<label class="input__label input__label--chisato" for="input-13">
+						<span class="input__label-content input__label-content--chisato" data-content="First Name">First Name</span>
+					</label>
+				</span>
+                <span class="input input--chisato">
+					<input class="input__field input__field--chisato" type="text" id="input-14" />
+					<label class="input__label input__label--chisato" for="input-14">
+						<span class="input__label-content input__label-content--chisato" data-content="Middle Name">Middle Name</span>
+					</label>
+				</span>
+                <span class="input input--chisato">
+					<input class="input__field input__field--chisato" type="text" id="input-15" />
+					<label class="input__label input__label--chisato" for="input-15">
+						<span class="input__label-content input__label-content--chisato" data-content="Last Name">Last Name</span>
+					</label>
+				</span>
+            </section>
+
+        </div><!-- /container -->
+        <div class="input">
+            <h1>회원 정보 입력</h1>
+            <div>
+                <label for="id">아이디 입력</label>
+                <br/>
+
+                <input name="id" id="id" type="text" placeholder="사용할 아이디를 입력해주세요" size="30"/>
+                <button type="button" class="btn"><img src="../../img/id_chk_btn.png" width="104" height="28"
+                                                       align="absmiddle"></button>
+                <br/>
+            </div>
+            <div>
+                <label for="password">비밀번호 입력</label>
+                <br/>
+                <input name="password" id="password" type="text" placeholder="사용할 비밀번호를 입력해주세요" size="45"/>
+                <br/>
+            </div>
+            <div>
+                <label for="password_check">비밀번호 재입력</label>
+                <br/>
+                <input name="password_check" id="password_check" type="text" placeholder="사용할 비밀번호를 재입력해주세요" size="45"/>
+                <br/>
+            </div>
+            <div>
+                <label for="password">전화번호 입력</label>
+                <br/>
+                <input name="password_input" type="text" id="password" placeholder="전화번호를 입력해주세요" size="45"/>
+            </div>
+        </div>
+    </div>
+    <div class="hope_time">
+        <h4>희망 근무시간 선택</h4>
+        <div> 희망하는 근무 타임을 선택해주세요 (여러개 선택 가능) <br/>
+            <br/>
+            선택한 시간대 내에서 작업시간이 결정되며, 시간대 내에서 최소 1시간~최대 3시간, 주 최소 10시간 근무를 만족하면 됩니다.(주말 2시간 이상 포함)<br/>
+            (ex. 오후 12시~18시 타임 근무시, 월요일 2시간, 화요일 2시간, 수요일 3시간, 목요일 3시간, 토요일 3시간 근무)<br/>
+        </div>
+        <div>
+            <label class="chk">
+                <input type="checkbox" name="dawn" value="0:6">
+                새벽 0시 ~ 6시</label>
+            <br/>
+            <label class="chk">
+                <input type="checkbox" name="dawn" value="0:6">
+                오전 6시 ~ 12시</label>
+            <br/>
+            <label class="chk">
+                <input type="checkbox" name="dawn" value="0:6">
+                오후 12시 ~ 18시</label>
+            <br/>
+            <label class="chk">
+                <input type="checkbox" name="dawn" value="0:6">
+                저녁 18시 ~ 24시</label>
+            <br/>
+        </div>
+    </div>
+</div>
+<div class="signup_right">
+    <div class="signup">
+        <div style="margin-bottom:50px;"><img src="../../img/logo.png" width="100" height="100"/></div>
+        <h1 style="color:white;">SIGN UP</h1>
+        <h4 style="color:white;">Sprint Manager<br/>
+            Scheduling Program</h4>
+        <div style="margin-top:100px;">
+            <button type="button" class="btn"><img src="../../img/signup.png" width="245" height="56"></button>
+        </div>
+    </div>
+</div>
+<script src="../../resources/static/js/classie2.js"></script>
+<script>
+    (function() {
+        // trim polyfill : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
+        if (!String.prototype.trim) {
+            (function() {
+                // Make sure we trim BOM and NBSP
+                var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+                String.prototype.trim = function() {
+                    return this.replace(rtrim, '');
+                };
+            })();
+        }
+
+        [].slice.call( document.querySelectorAll( 'input.input__field' ) ).forEach( function( inputEl ) {
+            // in case the input is already filled..
+            if( inputEl.value.trim() !== '' ) {
+                classie.add( inputEl.parentNode, 'input--filled' );
+            }
+
+            // events:
+            inputEl.addEventListener( 'focus', onInputFocus );
+            inputEl.addEventListener( 'blur', onInputBlur );
+        } );
+
+        function onInputFocus( ev ) {
+            classie.add( ev.target.parentNode, 'input--filled' );
+        }
+
+        function onInputBlur( ev ) {
+            if( ev.target.value.trim() === '' ) {
+                classie.remove( ev.target.parentNode, 'input--filled' );
+            }
+        }
+    })();
+</script>
+</body>
+</html>
