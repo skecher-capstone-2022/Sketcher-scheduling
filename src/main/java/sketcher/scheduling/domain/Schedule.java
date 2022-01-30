@@ -15,6 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "schedule")
 @Getter
+
 public class Schedule extends ScheduleTimeEntity{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,6 +51,7 @@ public class Schedule extends ScheduleTimeEntity{
     private List<ManagerWorkingSchedule> managerWorkingScheduleList = new ArrayList<>();
 
     @OneToMany(mappedBy = "schedule")
+
     private List<ManagerAssignSchedule> managerAssignScheduleList = new ArrayList<>();
 
     /**
@@ -62,7 +64,6 @@ public class Schedule extends ScheduleTimeEntity{
         this.workforce = workforce;
         this.expected_card_cnt = expected_card_cnt;
     }
-
 
 
     protected Schedule() {

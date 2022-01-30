@@ -1,6 +1,5 @@
 package sketcher.scheduling.controller;
 
-
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

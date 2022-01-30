@@ -1,5 +1,6 @@
 package sketcher.scheduling.domain;
 
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -29,6 +30,7 @@ public class ManagerAssignSchedule {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "schedule_id")
     private Schedule schedule;
+
 
     /**
      * 연관관계 편의 메소드
