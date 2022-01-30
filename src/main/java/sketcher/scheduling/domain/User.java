@@ -16,37 +16,6 @@ import java.util.List;
 @Entity
 @Table(name = "user")
 @Getter
-<<<<<<< HEAD
-public class User {
-
-    @Id
-    @Column(name = "user_id")
-    @NotEmpty(message = "Null 일 수 없습니다.")
-    @Pattern(regexp = "^[a-zA-Z0-9]{3,12}$", message = "아이디를 3~12자로 입력해주세요. [특수문자 X]")
-    private String id;
-
-    @NotEmpty(message = "Null 일 수 없습니다.")
-    private String auth_role;
-
-    @NotEmpty(message = "Null 일 수 없습니다.")
-    @Pattern(regexp = "^[a-zA-Z0-9]{3,12}$", message = "비밀번호를 3~12자로 입력해주세요.")
-    private String password;
-
-    @NotEmpty(message = "Null 일 수 없습니다.")
-    @Pattern(regexp = "[a-zA-Z0-9]*")
-    private String user_name;
-
-    @NotEmpty(message = "Null 일 수 없습니다.")
-    private String user_tel;
-
-    @NotEmpty(message = "Null 일 수 없습니다.")
-    private LocalDateTime user_joinDate;
-
-    private Double manager_score;
-
-    @NotEmpty(message = "Null 일 수 없습니다.")
-    private Character dropout_req_check;
-=======
 public class User extends UserTimeEntity{
 
 
@@ -90,7 +59,6 @@ public class User extends UserTimeEntity{
 
     @Column(name = "dropout_req_check")
     private Character dropoutReqCheck;
->>>>>>> a1b345011df227365952b78d5097406501159c5b
 
     @OneToMany(mappedBy = "user")
     private List<ManagerHopeTime> managerHopeTimes = new ArrayList<>();
@@ -104,15 +72,6 @@ public class User extends UserTimeEntity{
     protected User() {
     }
 
-<<<<<<< HEAD
-    @Builder
-    public User(String id, String auth_role, String password, String user_name, String user_tel) {
-        this.id = id;
-        this.auth_role = auth_role;
-        this.password = password;
-        this.user_name = user_name;
-        this.user_tel = user_tel;
-=======
     /**
      * domain 은 DB 에 저장된 데이터를 꺼내오기 위한 클래스로 설정
      * getter 만 열어두었습니다!
@@ -127,6 +86,5 @@ public class User extends UserTimeEntity{
         this.userTel = userTel;
         this.managerScore = managerScore;
         this.dropoutReqCheck = dropoutReqCheck;
->>>>>>> a1b345011df227365952b78d5097406501159c5b
     }
 }

@@ -1,9 +1,6 @@
 package sketcher.scheduling.domain;
 
-<<<<<<< HEAD
-=======
 import lombok.Builder;
->>>>>>> a1b345011df227365952b78d5097406501159c5b
 import lombok.Getter;
 
 import javax.persistence.*;

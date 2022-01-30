@@ -46,20 +46,12 @@ public class Schedule extends ScheduleTimeEntity{
     /**
      * 연관관계 매핑
      */
->>>>>>> a1b345011df227365952b78d5097406501159c5b
 
     @OneToMany(mappedBy = "schedule")
     private List<ManagerWorkingSchedule> managerWorkingScheduleList = new ArrayList<>();
 
     @OneToMany(mappedBy = "schedule")
-<<<<<<< HEAD
-    private List<ManagerAssignSchedule> managerAssignSchedules = new ArrayList<>();
 
-    @Builder
-    public Schedule(Integer schedule_date, Integer schedule_time, Integer workforce, Integer expected_card_cnt) {
-        this.schedule_date = schedule_date;
-        this.schedule_time = schedule_time;
-=======
     private List<ManagerAssignSchedule> managerAssignScheduleList = new ArrayList<>();
 
     /**
@@ -69,16 +61,11 @@ public class Schedule extends ScheduleTimeEntity{
     public Schedule(Date scheduleDate, Integer scheduleTime, Integer workforce, Integer expected_card_cnt) {
         this.scheduleDate = scheduleDate;
         this.scheduleTime = scheduleTime;
->>>>>>> a1b345011df227365952b78d5097406501159c5b
         this.workforce = workforce;
         this.expected_card_cnt = expected_card_cnt;
     }
 
-<<<<<<< HEAD
-=======
 
-
->>>>>>> a1b345011df227365952b78d5097406501159c5b
     protected Schedule() {
     }
 }
