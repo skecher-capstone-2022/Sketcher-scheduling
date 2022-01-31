@@ -61,13 +61,13 @@ public class User extends UserTimeEntity{
     private Character dropoutReqCheck;
 
     @OneToMany(mappedBy = "user")
-    private List<ManagerHopeTime> managerHopeTimes = new ArrayList<>();
+    private List<ManagerHopeTime> managerHopeTimeList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<ManagerWorkingSchedule> managerWorkingSchedules = new ArrayList<>();
+    private List<ManagerWorkingSchedule> managerWorkingScheduleList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<ManagerAssignSchedule> managerAssignSchedules = new ArrayList<>();
+    private List<ManagerAssignSchedule> managerAssignScheduleList = new ArrayList<>();
 
     protected User() {
     }

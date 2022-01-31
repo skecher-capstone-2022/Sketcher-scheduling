@@ -18,6 +18,7 @@ public class UserDto {
     private Double managerScore;
     private Character dropoutReqCheck;
 
+    @Builder
     public UserDto(String id, String authRole, String password, String username, String userTel, Double managerScore, Character dropoutReqCheck) {
         this.id = id;
         this.authRole = authRole;
@@ -28,7 +29,6 @@ public class UserDto {
         this.dropoutReqCheck = dropoutReqCheck;
     }
 
-    @Builder
     public User toEntity() {
         return User.builder()
                 .id(id)

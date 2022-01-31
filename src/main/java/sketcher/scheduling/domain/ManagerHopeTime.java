@@ -6,6 +6,7 @@ import org.apache.catalina.Manager;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "manager_hope_time")
@@ -15,9 +16,9 @@ public class ManagerHopeTime {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "hope_time_id")
     private Integer id;
-    @NotEmpty
+    @NotNull
     private Integer start_time;
-    @NotEmpty
+    @NotNull
     private Integer finish_time;
 
     /**
@@ -25,7 +26,6 @@ public class ManagerHopeTime {
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @NotEmpty
     private User user;
 
     /**
@@ -36,10 +36,10 @@ public class ManagerHopeTime {
         this.start_time = start_time;
         this.finish_time = finish_time;
         if(this.user != null){
-            this.user.getManagerHopeTimes().remove(this);
+            this.user.getManagerHopeTimeList().remove(this);
         }
         this.user = user;
-        user.getManagerHopeTimes().add(this);
+        user.getManagerHopeTimeList().add(this);
     }
 
     protected ManagerHopeTime(){
