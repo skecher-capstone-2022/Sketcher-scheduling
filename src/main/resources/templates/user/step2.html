@@ -16,6 +16,10 @@
     <link rel="stylesheet" type="text/css" href="../../resources/static/css/demo3.css"/>
     <link rel="stylesheet" type="text/css" href="../../resources/static/css/component3.css"/>
     <script src="../../resources/static/js/modernizr.custom3.js"></script>
+<!--    <link rel="stylesheet" type="text/css" href="../../resources/static/css/default.css"/>-->
+    <link rel="stylesheet" type="text/css" href="../../resources/static/css/button.css"/>
+    <script src="../../resources/static/js/modernizr.custom4.js"></script>
+    <!--bootstrap 들어가면 안됨!!!-->
 
     <script type="text/javascript">
         var _gaq = _gaq || [];
@@ -106,8 +110,12 @@
         <h4 style="color:white;">Sprint Manager<br/>
             Scheduling Program</h4>
         <div style="margin-top:100px;">
-            <button type="button" class="btn"><img src="../../resources/static/img/signup.png" width="245" height="56">
-            </button>
+            <section class="color-4">
+                <p>
+                    <button class="btn btn-4 btn-4a icon-arrow-right">Sign in</button>
+                </p>
+
+            </section>
         </div>
     </div>
 </div>
@@ -150,5 +158,44 @@
 <script src="../../resources/static/js/svgcheckbx.js"></script>
 <!-- For the demo ad only -->
 <script src="//tympanus.net/codrops/adpacks/demoad.js"></script>
+<script src="../../resources/static/js/classie4.js"></script>
+<script>
+    var buttons7Click = Array.prototype.slice.call(document.querySelectorAll('#btn-click button')),
+        buttons9Click = Array.prototype.slice.call(document.querySelectorAll('button.btn-8g')),
+        totalButtons7Click = buttons7Click.length,
+        totalButtons9Click = buttons9Click.length;
+
+    buttons7Click.forEach(function (el, i) {
+        el.addEventListener('click', activate, false);
+    });
+    buttons9Click.forEach(function (el, i) {
+        el.addEventListener('click', activate, false);
+    });
+
+    function activate() {
+        var self = this, activatedClass = 'btn-activated';
+
+        if (classie.has(this, 'btn-7h')) {
+            // if it is the first of the two btn-7h then activatedClass = 'btn-error';
+            // if it is the second then activatedClass = 'btn-success'
+            activatedClass = buttons7Click.indexOf(this) === totalButtons7Click - 2 ? 'btn-error' : 'btn-success';
+        } else if (classie.has(this, 'btn-8g')) {
+            // if it is the first of the two btn-8g then activatedClass = 'btn-success3d';
+            // if it is the second then activatedClass = 'btn-error3d'
+            activatedClass = buttons9Click.indexOf(this) === totalButtons9Click - 2 ? 'btn-success3d' : 'btn-error3d';
+        }
+
+        if (!classie.has(this, activatedClass)) {
+            classie.add(this, activatedClass);
+            setTimeout(function () {
+                classie.remove(self, activatedClass)
+            }, 1000);
+        }
+    }
+
+    document.querySelector('.btn-7i').addEventListener('click', function () {
+        classie.add(document.querySelector('#trash-effect'), 'trash-effect-active');
+    }, false);
+</script>
 </body>
 </html>

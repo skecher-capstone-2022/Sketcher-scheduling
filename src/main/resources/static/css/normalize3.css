@@ -42,6 +42,8 @@ hr#hr {
     background-color: #e1e1e1;
     height: 2px;
     border-style: none;
+    margin-top: 10%;
+    margin-bottom: 15%;
 }
 abbr[title] {
     border-bottom: 1px dotted;
