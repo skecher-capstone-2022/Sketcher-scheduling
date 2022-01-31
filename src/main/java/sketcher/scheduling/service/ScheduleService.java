@@ -8,6 +8,7 @@ import sketcher.scheduling.dto.ScheduleDto;
 import sketcher.scheduling.repository.ScheduleRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,13 +18,13 @@ public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
 
     @Transactional
-    public Integer saveSchedule(ScheduleDto scheduleDto){
-        scheduleRepository.save(scheduleDto.toEntity());
-        return scheduleDto.getId();
+    public Integer saveSchedule(ScheduleDto scheduleDto) {
+       return scheduleRepository.save(scheduleDto.toEntity()).getId();
     }
 
-    public List<Schedule> findAll(){
-       return scheduleRepository.findAll();
+    public List<Schedule> findAll() {
+        return scheduleRepository.findAll();
     }
+
 
 }

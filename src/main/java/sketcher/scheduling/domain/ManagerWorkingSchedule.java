@@ -36,13 +36,13 @@ public class ManagerWorkingSchedule {
         this.id = id;
         this.completed_card_cnt = completed_card_cnt;
 
-        if(user.getManagerWorkingSchedules() != null){
-            user.getManagerWorkingSchedules().remove(this);
+        if(this.user != null){
+            user.getManagerWorkingScheduleList().remove(this);
         }
         this.user = user;
-        user.getManagerWorkingSchedules().add(this);
+        user.getManagerWorkingScheduleList().add(this);
 
-        if(schedule.getManagerWorkingScheduleList() != null){
+        if(this.schedule != null){
             schedule.getManagerWorkingScheduleList().remove(this);
         }
         this.schedule = schedule;

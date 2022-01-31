@@ -16,7 +16,6 @@ public class ManagerAssignSchedule {
     @Column(name = "assign_schedule_id")
     private Integer id;
 
-    @NotEmpty
     private Character schedule_delete_req_check;
 
     /**
@@ -40,15 +39,17 @@ public class ManagerAssignSchedule {
         this.id = id;
         this.schedule_delete_req_check = schedule_delete_req_check;
 
-        if(this.user.getManagerAssignSchedules() != null){
-            user.getManagerAssignSchedules().remove(this);
+        if(this.user != null){
+            user.getManagerAssignScheduleList().remove(this);
         }
         this.user = user;
+        user.getManagerAssignScheduleList().add(this);
 
-        if(this.schedule.getManagerAssignScheduleList() != null){
+        if(this.schedule != null){
             schedule.getManagerAssignScheduleList().remove(this);
         }
         this.schedule = schedule;
+        schedule.getManagerAssignScheduleList().add(this);
     }
 
     protected ManagerAssignSchedule(){}
