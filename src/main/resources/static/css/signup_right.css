@@ -2,8 +2,26 @@
 /* CSS Document */
 
 body {
-	background: #eceae9;
+	background: #f9f7f6;
+
 	margin:0;
+}
+@font-face {
+	font-family: 'TmonMonsori';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/TmonMonsori.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+.signup > h1 {
+	font-size: 30pt;
+	font-family: 'TmonMonsori', serif;
+
+}
+
+.signup > h4 {
+	font-size: 15pt;
+	font-family: 'TmonMonsori', serif;
 }
 
 .step {
