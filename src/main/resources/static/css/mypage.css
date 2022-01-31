@@ -1,6 +1,6 @@
 @charset "utf-8";
 /* CSS Document */
-
+/*
 .my_page {
 	display: flex;
 }
@@ -33,4 +33,25 @@
 	float:left;
 	border-left: 1.5px solid #E6E6E6;
 	box-sizing: border-box;
+}
+*/
+
+.info {
+	float:left;
+	margin-left:50px;
+	margin-bottom:50px;
+	box-sizing: border-box;
+}
+
+.info_wrap {
+}
+
+.my_page_wrap {
+	display:flex;
+	justify-content:center;
+	align-items:center;
+}
+
+.btn_align {
+	margin:20px 0px 20px 20px;
 }
