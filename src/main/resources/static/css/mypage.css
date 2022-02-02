@@ -1,49 +1,10 @@
 @charset "utf-8";
 /* CSS Document */
-/*
-.my_page {
-	display: flex;
-}
-
-.user_info_wrap {
-	float:right;
-	width:50%;
-	padding:30px 0px 30px 50px;
-	box-sizing: border-box;
-}
 
 .info {
 	float:left;
 	margin-left:50px;
 	box-sizing: border-box;
-}
-
-.info_block {
-	float:left;
-}
-
-.work_record_wrap {
-	float:left;
-	width:50%;
-	padding:30px 50px;
-	box-sizing: border-box;
-}
-
-.info_line {
-	float:left;
-	border-left: 1.5px solid #E6E6E6;
-	box-sizing: border-box;
-}
-*/
-
-.info {
-	float:left;
-	margin-left:50px;
-	margin-bottom:50px;
-	box-sizing: border-box;
-}
-
-.info_wrap {
 }
 
 .my_page_wrap {
@@ -52,6 +13,39 @@
 	align-items:center;
 }
 
+.hope_time {
+	margin-left:75px;
+}
+
 .btn_align {
+	text-align:center;
 	margin:20px 0px 20px 20px;
+}
+
+.info_wrap {
+	float:left;
+	margin:50px;
+}
+
+.user_info_wrap {
+	float:left;
+	width:49%;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+}
+
+.work_record_wrap {
+	float:right;
+	width:49%;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+}
+
+.line {
+	width: 1px;
+	background-color: #E6E6E6;
+	height: 80%;
+	float: left;
 }
