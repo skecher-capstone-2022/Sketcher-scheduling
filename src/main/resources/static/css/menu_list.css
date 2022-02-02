@@ -3,7 +3,7 @@
 
 body {
 	margin:0;
-	height:100vh;
+	/*height:100vh;*/
 	background-image:url(../img/background.jpg);
 	background-repeat : no-repeat;
     background-size : cover;
@@ -36,7 +36,7 @@ body {
 	margin-top:70px;
 }
 
-ul {
+.list_text_center > ul {
 	list-style-type: none;
 	text-align:center;
 	padding: 0px;
@@ -45,7 +45,7 @@ ul {
 	position: fixed;
 }
 
-li a {
+.list_text_center > li a {
 	height:100%;
 	display:inline-block;
 	text-align: center;
@@ -62,16 +62,15 @@ li a.home {
 }
 
 .main {
-	float:right;
-	width: 85%;
-	height:100vh;
-    background-color:rgba( 255, 255, 255, 0.8 );
-	padding:15px 50px;
+	/* float: right; */
+	/* height: 100vh; */
+	/* padding: 15px; */
+	margin: 15px 100px;
 	box-sizing: border-box;
 }
 
 .btn {
-	padding: 0;
-	border: none;
-	background: none;
+	padding: 10px 20px;
+	width: max-content;
+	font-size: 0.8rem;
 }

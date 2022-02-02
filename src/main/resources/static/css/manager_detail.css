@@ -19,16 +19,19 @@
 	width: 15%;
 	padding : 10px 10px 10px 10px;
 	border:1px solid #BDBDBD;
-	background-color:#E1E1E1;
+	background-color:#e1e1e159;
 }
 
-.btn {
-	padding: 0;
-	border: none;
-	background: none;
-}
+/*.btn {*/
+/*	padding: 0;*/
+/*	border: none;*/
+/*	background: none;*/
+/*}*/
 
 .btn_align {
 	float:right;
 	margin:20px 0px 20px 20px;
+}
+.schedule {
+	margin-top: 70px;
 }

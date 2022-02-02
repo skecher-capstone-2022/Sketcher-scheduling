@@ -11,6 +11,7 @@
 
 .icon:before {
 	font-family: 'linecons';
+	float: left;
 	speak: none;
 	font-style: normal;
 	font-weight: normal;
