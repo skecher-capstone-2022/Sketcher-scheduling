@@ -10,6 +10,21 @@ html, body, .container, .scroller {
 	height: 100%;
 }
 
+.title1 {
+	margin: 50px 0px 50px 0px;
+}
+
+.ground {
+	width: 90%;
+	position: relative;
+	/*height: inherit;*/
+	margin: auto;
+	background-color: #ffffff;
+	top: 100px;
+	border-radius: 15px;
+	color: black;
+}
+
 .scroller {
 	overflow-y: scroll;
 }
@@ -204,7 +219,7 @@ html, body, .container, .scroller {
 	outline: none;
 	box-shadow: inset 0 -1px rgba(0,0,0,0.2);
 	text-shadow: 0 0 1px rgba(255,255,255,0.1);
-	font-size: 1.4em;
+	font-size: 1.3em;
 	-webkit-transition: background 0.3s, box-shadow 0.3s;
 	transition: background 0.3s, box-shadow 0.3s;
 }

@@ -47,13 +47,8 @@
         }
 
 
-        input {
-            height: 30px;
-        }
-
-        select {
-            height: 30px;
-        }
+       input{height: 30px;}
+       select{height: 30px;}
     </style>
 </head>
 <body>
@@ -125,26 +120,26 @@
                 <div class="main">
                     <div class="all_manaer_list">
                         <div class="title1">
-                            <h1>전체 매니저 목록</h1>
+                            <h1>현재 근무중인 매니저 목록</h1>
                         </div>
                         <div class="select-wrap1">
-                            <select name="list_align" class="list_align">
-                                <option value="manager_score" selected="selected">평점순</option>
-                                <option value="manager_name">매니저명</option>
-                                <option value="join_date">가입일자</option>
+                        <select name="list_align" class="list_align">
+                            <option value="manager_score" selected="selected">평점순</option>
+                            <option value="manager_name">매니저명</option>
+                            <option value="join_date">가입일자</option>
+                        </select>
+                        <div class="search">
+                            <select name="select_search" class="select_search">
+                                <option value="manager_name" selected="selected">매니저명</option>
+                                <option value="manager_id">매니저ID</option>
                             </select>
-                            <div class="search">
-                                <select name="select_search" class="select_search">
-                                    <option value="manager_name" selected="selected">매니저명</option>
-                                    <option value="manager_id">매니저ID</option>
-                                </select>
-                                <label>
-                                    <input name="search" type="text" placeholder="검색어 입력"/>
-                                </label>
+                            <label>
+                                <input name="search" type="text" placeholder="검색어 입력"/>
+                            </label>
 
-                                <button class="btn btn-6 btn-6b search-btn">검색</button>
-                                <br/>
-                            </div>
+                            <button class="btn btn-6 btn-6b search-btn">검색</button>
+                            <br/>
+                        </div>
                         </div>
                         <div>
                             <table width="700" border="0" cellspacing="0" cellpadding="0" class="list_text_center">
@@ -270,7 +265,6 @@
                                     </td>
                                 </tr>
                             </table>
-
                         </div>
                         <div class="page_wrap">
                             <div class="page_nation">
