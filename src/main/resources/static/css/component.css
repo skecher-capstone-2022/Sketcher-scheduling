@@ -23,7 +23,7 @@ html, body, .container, .scroller {
 	top: 100px;
 	border-radius: 15px;
 	color: black;
-	margin-bottom:10%;
+	//margin-bottom:10%;
 }
 
 .scroller {
