@@ -35,6 +35,10 @@ html, body, .container, .scroller {
 	position: relative;
 }
 
+.block.block-40.clearfix {
+	position: absolute;
+}
+
 .container {
 	position: relative;
 	overflow: hidden;
