@@ -48,20 +48,9 @@ input {
 select {
 	height: 30px;
 }
-.no-js body #mp-pusher .scroller .ground .main .my_page_wrap div .info_wrap .info span {
-	color: #E75757;
+span {
+	font-weight:bold;
 }
-.no-js body #mp-pusher .scroller .ground .main .my_page_wrap div .info_wrap .info span {
-	color: #E75757;
-}
-.no-js body #mp-pusher .scroller .ground .main .my_page_wrap div .info_wrap .info span {
-	color: #E75757;
-}
-.no-js body #mp-pusher .scroller .ground .main .my_page_wrap div .info_wrap .info span {
-	font-weight: bold;
-}
-.no-js body #mp-pusher .scroller .ground .main .my_page_wrap div .info_wrap .info span {
-	color: #E75757;
 }
 </style>
 </head>
@@ -126,58 +115,93 @@ select {
         <div class="title1">
           <h1>마이페이지</h1>
         </div>
-        <div class="user_info_wrap">
+        
+        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="49%" style="border-right:1px solid #E6E6E6;"><div class="user_info_wrap">
           <div>
             <h3 style="text-align:center">사용자 정보 조회</h3>
             <div class="info_wrap">
               <div style="float:left;"> <img src="../../static/img/manager.svg" width="85" height="85"> </div>
-              <div class="info"> <span style="color:#E75757; font-weight:bold;">Manager</span><br />
-                <span style="font-weight:bold;">박태영</span><br />
+              <div class="info"> <span style="color:#E75757;">Manager</span><br />
+                <span>박태영</span><br />
                 USER1<br />
                 2022월 1월 15일 가입<br />
                 010-1234-5678<br />
               </div>
             </div>
             <div class="hope_time"> 
-            <span style="font-weight:bold;">희망 근무시간  |</span> <br />
+            <span>희망 근무시간  |</span> <br />
               오후 12시 ~ 18시, 저녁 18시 ~ 24시 <br />
             </div>
             <div class="btn_align">
               <button class="btn btn-6 btn-6b update-user-btn">사용자 정보 수정</button>
             </div>
             <div class="btn_align">
-              <button class="btn btn-6 btn-6b dropout-user-btn">탈퇴 요청</button>
+              <button class="btn btn-6 btn-6b reqbtn2" onclick="">탈퇴 요청</button>
             </div>
           </div>
-        </div>
-        <div class="line"></div>
-        <div class="work_record_wrap">
+        </div></td>
+    <td width="85" height="85"><div class="work_record_wrap">
           <div>
             <h3 style="text-align:center">근무 기록</h3>
             <div class="info_wrap">
               <div style="float:left;"> <img src="../../static/img/record.svg" width="85" height="85"> </div>
-              <div class="info"> <span style="font-weight:bold;">총 근무 시간  |</span>  30 시간<br />
-                <span style="font-weight:bold;">처리한 카드 건수  |</span>  900 건<br />
-                <span style="font-weight:bold;">예상 수익  |</span>  27,000 원<br />
+              <div class="info"> <span>총 근무 시간  |</span>  30 시간<br />
+                <span>처리한 카드 건수  |</span>  900 건<br />
+                <span>예상 수익  |</span>  27,000 원<br />
               </div>
             </div>
             <div>
               <h3 style="text-align:center">이번주 근무 진행도</h3>
               <div class="info_wrap">
-              <div style="float:left;"> <img src="../../static/img/chart.png" width="85" height="87"> </div>
+              <div style="float:left;">
+              <canvas id="doughnut-chart" width="85" height="85"></canvas></div>
+                
               <div class="info"> <span style="font-weight:bold;">배정 근무 시간 |</span>  15 시간<br />
-                <span style="font-weight:bold;">목표 카드 건수  |</span>  450 건<br />
-                <span style="font-weight:bold;">예상 수익  |</span>  13,500 원<br />
+                <span>목표 카드 건수  |</span>  450 건<br />
+                <span>예상 수익  |</span>  13,500 원<br />
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </div></td>
+  </tr>
+</table>
+
+        
+        
+        
+        
       </div>
     </div>
   </div>
   <!-- /pusher --> 
 </div>
+<!-- /chart -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script>
+new Chart(document.getElementById("doughnut-chart"), {
+    type: 'doughnut',
+    data: {
+      //labels: ["진행 완료", "진행 예정"],
+      datasets: [
+        {
+          backgroundColor: ['#9DCEFF','#F2F3F6'],
+          data: [65, 35],
+		  borderWidth: 0,
+        scaleBeginAtZero: true,
+        }
+      ]
+    },
+    options: {
+		cutoutPercentage: 65
+    }
+});
+
+
+</script>
+
 <!-- /container --> 
 <script src="../../static/js/classie.js"></script> 
 <script src="../../static/js/mlpushmenu.js"></script> 
@@ -222,6 +246,10 @@ select {
     document.querySelector('.btn-7i').addEventListener('click', function () {
         classie.add(document.querySelector('#trash-effect'), 'trash-effect-active');
     }, false);
+	
+	
+
+	
 </script>
 </body>
 </html>
