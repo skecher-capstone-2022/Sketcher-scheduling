@@ -25,6 +25,10 @@
     <link type="text/css" rel="stylesheet" href="../../static/css/menu_list.css"/>
     <link type="text/css" rel="stylesheet" href="../../static/css/table.css"/>
     <link type="text/css" rel="stylesheet" href="../../static/css/paging.css"/>
+
+    <!--modal-->
+    <link rel="stylesheet" type="text/css" href="../../static/css/modal-component.css" />
+
     <style media="screen">
         .logo {
             display: block;
@@ -57,6 +61,21 @@
     </style>
 </head>
 <body>
+<!--회원 탈퇴 modal-->
+<div class="md-modal md-effect-1" id="modal-1">
+    <div class="md-content">
+        <h3>회원탈퇴 처리</h3>
+        <div>
+            <p>선택한 매니저의 탈퇴 요청을 승인하거나 거절할 수 있습니다.</p>
+            <p>탈퇴 요청을 승인할 경우, 해당 매니저는 즉시 탈퇴 처리되며 해당 계정으로 서비스를 접속할 수 없습니다.</p>
+
+            <div class="md-close-wrap">
+                <button class="btn btn-1 btn-1a md-close">탈퇴 요청 승인</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="container">
     <!-- Push Wrapper -->
     <div class="mp-pusher" id="mp-pusher">
@@ -167,7 +186,7 @@
                                     <td class="line">2022-01-14</td>
                                     <td class="line">5.0</td>
                                     <td class="line">
-                                        <button class="btn btn-6 btn-6b" onclick="">탈퇴</button>
+                                        <button class="btn btn-6 btn-6b md-trigger" data-modal="modal-1">탈퇴</button>
                                     </td>
                                 </tr>
                                 <tr>
@@ -178,7 +197,7 @@
                                     <td class="line">2022-01-14</td>
                                     <td class="line">5.0</td>
                                     <td class="line">
-                                        <button class="btn btn-6 btn-6b" onclick="">탈퇴</button>
+                                        <button class="btn btn-6 btn-6b md-trigger" data-modal="modal-1">탈퇴</button>
                                     </td>
                                 </tr>
                                 <tr>
@@ -323,5 +342,21 @@
         classie.add(document.querySelector('#trash-effect'), 'trash-effect-active');
     }, false);
 </script>
+
+<!--modal-->
+<div class="md-overlay"></div><!-- the overlay element -->
+
+<!-- classie.js by @desandro: https://github.com/desandro/classie -->
+<script src="../../static/js/classie5.js"></script>
+<script src="../../static/js/modalEffects.js"></script>
+
+<!-- for the blur effect -->
+<!-- by @derSchepp https://github.com/Schepp/CSS-Filters-Polyfill -->
+<script>
+    // this is important for IEs
+    var polyfilter_scriptpath = '/js/';
+</script>
+<script src="../../static/js/cssParser.js"></script>
+<script src="../../static/js/css-filters-polyfill.js"></script>
 </body>
 </html>
