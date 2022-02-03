@@ -61,23 +61,6 @@
 	content: "\e00d";
 }
 
-
-/* Button 1 */
-.btn-1 {
-	border: 3px solid #a1a1a1;
-	color: #fff;
-	background-color: #a1a1a1;
-}
-
-/* Button 1a */
-.btn-1a:hover,
-.btn-1a:active {
-	color: #fff;
-	border: 3px solid #ff5e5e;
-	background: #ff5e5e;
-}
-
-
 /* Button 4 */
 .btn-4 {
 	border-radius: 50px;

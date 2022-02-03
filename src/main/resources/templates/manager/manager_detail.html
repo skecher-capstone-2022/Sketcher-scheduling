@@ -26,9 +26,6 @@
     <link type="text/css" rel="stylesheet" href="../../static/css/table.css"/>
     <link type="text/css" rel="stylesheet" href="../../static/css/paging.css"/>
 
-    <!--modal-->
-    <link rel="stylesheet" type="text/css" href="../../static/css/modal-component.css" />
-
 
     <style media="screen">
         .logo {
@@ -47,7 +44,7 @@
         .btn {
             padding: 10px 20px;
             width: max-content;
-            font-size: 1rem;
+            font-size: 0.8rem;
             margin-top: 0;
         }
         .detail-page-btn-box {
@@ -81,39 +78,9 @@
         td{
             padding: 10px 10px 10px 10px;
         }
-
-        span{color:red}
-
     </style>
 </head>
 <body>
-<!--권한 수정 modal-->
-<div class="md-modal md-effect-1" id="modal-1">
-    <div class="md-content">
-        <h3>사용자 권한 수정</h3>
-        <div>
-            <p>해당 매니저의 권한을 수정합니다.</p><br>
-            <p style="font-weight: 600">기존 권한 | <span>매니저</span> → 변경 후 권한 | <span>관리자</span></p>
-
-            <div class="md-close-wrap">
-                <button class="btn btn-1 btn-1a md-close">권한 수정</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!--탈퇴 modal-->
-<div class="md-modal md-effect-1" id="modal-2">
-    <div class="md-content">
-        <h3>회원탈퇴 처리</h3>
-        <div>
-            <p>선택한 매니저를 탈퇴시킵니다.</p>
-            <p>선택한 매니저는 즉시 탈퇴 처리되며 해당 계정으로 서비스를 접속할 수 없습니다.</p>
-            <div class="md-close-wrap">
-                <button class="btn btn-1 btn-1a md-close">탈퇴 처리</button>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="container">
     <!-- Push Wrapper -->
     <div class="mp-pusher" id="mp-pusher">
@@ -267,11 +234,10 @@
                             <div class="detail-page-btn-box">
                                 <div class="btn_align">
                                     <div style="display: inline-block">
-
-                                        <button class="btn btn-6 btn-6b update-user-btn md-trigger" data-modal="modal-1">사용자 권한 수정</button>
+                                        <button class="btn btn-6 btn-6b update-user-btn">사용자 권한 수정</button>
                                     </div>
                                     <div style="display: inline-block">
-                                        <button class="btn btn-6 btn-6b dropout-user-btn md-trigger"  data-modal="modal-2">탈퇴 처리</button>
+                                        <button class="btn btn-6 btn-6b dropout-user-btn">탈퇴 처리</button>
                                     </div>
                                 </div>
                             </div>
@@ -282,8 +248,6 @@
         </div>
     </div><!-- /pusher -->
 </div><!-- /container -->
-<div class="md-overlay"></div><!-- the overlay element -->
-
 <script src="../../static/js/classie.js"></script>
 <script src="../../static/js/mlpushmenu.js"></script>
 <script>
@@ -328,17 +292,5 @@
         classie.add(document.querySelector('#trash-effect'), 'trash-effect-active');
     }, false);
 </script>
-<!-- classie.js by @desandro: https://github.com/desandro/classie -->
-<script src="../../static/js/classie5.js"></script>
-<script src="../../static/js/modalEffects.js"></script>
-
-<!-- for the blur effect -->
-<!-- by @derSchepp https://github.com/Schepp/CSS-Filters-Polyfill -->
-<script>
-    // this is important for IEs
-    var polyfilter_scriptpath = '../../static/js/';
-</script>
-<script src="../../static/js/cssParser.js"></script>
-<script src="../../static/js/css-filters-polyfill.js"></script>
 </body>
 </html>
