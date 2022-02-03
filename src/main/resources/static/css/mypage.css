@@ -28,24 +28,17 @@
 }
 
 .user_info_wrap {
-	float:left;
-	width:49%;
+	//float:left;
+	//width:49%;
 	display:flex;
 	justify-content:center;
 	align-items:center;
 }
 
 .work_record_wrap {
-	float:right;
-	width:49%;
+	//float:right;
+	//width:49%;
 	display:flex;
 	justify-content:center;
 	align-items:center;
-}
-
-.line {
-	width: 1px;
-	background-color: #E6E6E6;
-	height: 80%;
-	float: left;
 }
