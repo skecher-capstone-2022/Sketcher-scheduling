@@ -5,10 +5,16 @@
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
+body{
+	background-image: url(../img/background.jpg);
 
-html, body, .container, .scroller {
-	height: 100%;
+	/* background-repeat: no-repeat; */
+	background-size: cover;
 }
+
+/*html, body, .container, .scroller {*/
+/*	height: 100%;*/
+/*}*/
 
 .title1 {
 	margin: 50px 0px 50px 0px;
@@ -23,11 +29,11 @@ html, body, .container, .scroller {
 	top: 100px;
 	border-radius: 15px;
 	color: black;
-	//margin-bottom:10%;
+	/*//margin-bottom:10%;*/
 }
 
 .scroller {
-	overflow-y: scroll;
+	/*overflow-y: scroll;*/
 }
 
 .scroller,
@@ -41,10 +47,10 @@ html, body, .container, .scroller {
 
 .container {
 	position: relative;
-	overflow: hidden;
-	background-image: url(../img/background.jpg);
-	background-repeat : no-repeat;
-	background-size : cover;
+	/*overflow: auto;*/
+	/*background-image: url(../img/background.jpg);*/
+	/*background-repeat : no-repeat;*/
+	/*background-size : cover;*/
 }
 
 .menu-trigger {

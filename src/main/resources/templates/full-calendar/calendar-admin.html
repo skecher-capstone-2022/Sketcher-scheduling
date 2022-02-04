@@ -30,111 +30,158 @@
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
     <script>
 
-        document.addEventListener('DOMContentLoaded', function() {
-            var initialLocaleCode = 'ko';
-            var localeSelectorEl = document.getElementById('locale-selector');
+        document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('calendar');
 
-            let today = new Date();
-
-            let year = today.getFullYear(); // 년도
-            let month = (today.getMonth() + 1).toString().padStart(2,'0');  // 월
-            let date = (today.getDate()).toString().padStart(2,'0');  // 날짜
-            // let day = today.getDay();  // 요일
-
             var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialDate: '2022-02-07',
+                initialView: 'timeGridWeek',
+                nowIndicator: true,
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
                 },
-                initialDate: year+"-"+month+"-"+date,
-                locale: initialLocaleCode,
-                buttonIcons: false, // show the prev/next text
-                weekNumbers: false,
-                navLinks: true, // can click day/week names to navigate views
-                editable: false,
+                navLinks: false, // can click day/week names to navigate views
+                editable: false,  // 수정 기능만 true로 해놓기 (조회 기능은 false)
+                selectable: false,  // 수정 기능만 true로 해놓기 (조회 기능은 false)
+                selectMirror: true,
                 dayMaxEvents: true, // allow "more" link when too many events
                 events: [
                     {
-                        title: '근무',
-                        color:'darksalmon',
-                        start: '2022-02-01T20:00:00'
-                    },
-                    // {
-                    //     title: 'Long Event',
-                    //     start: '2022-02-07',
-                    //     end: '2022-02-10'
-                    // },
-                    {
-                        groupId: 999,
-                        color:'darksalmon',
-                        title: '근무',
-                        start: '2022-02-09T16:00:00'
-                    },
-                    {
-                        groupId: 999,
-                        color:'darksalmon',
-                        title: '근무',
-                        start: '2022-02-16T16:00:00'
-                    },
-                    {
                         title: '스케줄 수정 요청 기간',
-                        color:'darksalmon',
+                        color: 'darksalmon',
                         start: '2022-02-07',
                         end: '2022-02-13'
                     },
                     {
-                        title: '근무',
-                        color:'darksalmon',
-                        start: '2022-02-12T12:00:00'
+                        groupId: 999,
+                        title: '김희수',
+                        color: 'yellowgreen',
+                        start: '2022-02-10T11:00:00',
+                        end: '2022-02-10T13:00:00'
                     },
                     {
-                        title: '근무',
-                        color:'darksalmon',
-                        start: '2022-02-12T14:30:00'
+                        groupId: 999,
+                        title: '김희수',
+                        color: 'yellowgreen',
+                        start: '2022-02-08T11:00:00',
+                        end: '2022-02-08T13:00:00'
                     },
                     {
-                        title: '근무',
-                        color:'darksalmon',
-                        start: '2022-02-12T17:30:00'
+                        groupId: 999,
+                        title: '김희수',
+                        color: 'yellowgreen',
+                        start: '2022-02-07T11:00:00',
+                        end: '2022-02-07T13:00:00'
                     },
                     {
-                        title: '근무',
-                        color:'darksalmon',
-                        start: '2022-02-12T20:00:00'
+                        groupId: 999,
+                        title: '정민환',
+                        color: '#3788d8',
+                        start: '2022-02-07T08:00:00',
+                        end: '2022-02-07T10:00:00'
                     },
                     {
-                        title: '근무',
-                        color:'darksalmon',
-                        start: '2022-02-13T07:00:00'
+                        groupId: 999,
+                        title: '정민환',
+                        color: '#3788d8',
+                        start: '2022-02-09T08:00:00',
+                        end: '2022-02-09T10:00:00'
+                    },
+                    {
+                        groupId: 999,
+                        title: '정민환',
+                        color: '#3788d8',
+                        start: '2022-02-12T08:00:00',
+                        end: '2022-02-12T10:00:00'
+                    },
+                    {
+                        groupId: 999,
+                        title: '박태영',
+                        color: 'coral',
+                        start: '2022-02-07T16:00:00',
+                        end: '2022-02-07T18:00:00'
+                    },
+                    {
+                        groupId: 999,
+                        title: '박태영',
+                        color: 'coral',
+                        start: '2022-02-11T16:00:00',
+                        end: '2022-02-11T18:00:00'
+                    },
+                    {
+                        groupId: 999,
+                        title: '이혜원',
+                        color: 'darkorchid',
+                        start: '2022-02-12T15:00:00',
+                        end: '2022-02-12T17:30:00'
+                    },
+                    {
+                        groupId: 999,
+                        title: '이혜원',
+                        color: 'darkorchid',
+                        start: '2022-02-07T15:00:00',
+                        end: '2022-02-07T17:30:00'
+                    },
+                    {
+                        groupId: 999,
+                        title: '박태영',
+                        color: 'coral',
+                        start: '2022-02-09T16:00:00',
+                        end: '2022-02-09T18:30:00'
+                    },
+                    {
+                        groupId: 999,
+                        title: '이혜원',
+                        color: 'darkorchid',
+                        start: '2022-02-09T17:00:00',
+                        end: '2022-02-09T19:30:00'
+                    },
+                    {
+                        groupId: 999,
+                        title: '이혜원',
+                        start: '2020-09-16T16:00:00'
+                    },
+                    {
+                        title: 'Conference',
+                        start: '2020-09-11',
+                        end: '2020-09-13'
+                    },
+                    {
+                        title: 'Meeting',
+                        start: '2020-09-12T10:30:00',
+                        end: '2020-09-12T12:30:00'
+                    },
+                    {
+                        title: 'Lunch',
+                        start: '2020-09-12T12:00:00'
+                    },
+                    {
+                        title: 'Meeting',
+                        start: '2020-09-12T14:30:00'
+                    },
+                    {
+                        title: 'Happy Hour',
+                        start: '2020-09-12T17:30:00'
+                    },
+                    {
+                        title: 'Dinner',
+                        start: '2020-09-12T20:00:00'
+                    },
+                    {
+                        title: 'Birthday Party',
+                        start: '2020-09-13T07:00:00'
+                    },
+                    {
+                        title: 'Click for Google',
+                        url: 'http://google.com/',
+                        start: '2020-09-28'
                     }
-                    // {
-                    //     title: 'Click for Google',
-                    //     url: 'http://google.com/',
-                    //     start: '2022-02-28'
-                    // }
                 ]
             });
 
             calendar.render();
-
-            // build the locale selector's options
-            calendar.getAvailableLocaleCodes().forEach(function(localeCode) {
-                var optionEl = document.createElement('option');
-                optionEl.value = localeCode;
-                optionEl.selected = localeCode == initialLocaleCode;
-                optionEl.innerText = localeCode;
-                localeSelectorEl.appendChild(optionEl);
-            });
-
-            // when the selected option changes, dynamically change the calendar option
-            localeSelectorEl.addEventListener('change', function() {
-                if (this.value) {
-                    calendar.setOption('locale', this.value);
-                }
-            });
-
         });
 
     </script>
@@ -144,14 +191,24 @@
             margin: 0;
             padding: 0;
             font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+            font-size: 14px;
+            background-image: url(../../static/img/background.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
         }
 
+        #top {
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+            padding: 0 10px;
+            line-height: 40px;
+            font-size: 12px;
+        }
 
         #calendar {
             max-width: 1100px;
             margin: 40px auto;
             padding: 0 10px;
-            font-size: 1.0rem;
         }
 
 
@@ -244,13 +301,6 @@
                 </div>
             </div>
             <div class="ground">
-<!--                <div id='top'>-->
-
-<!--                    Locales:-->
-<!--                    <select id='locale-selector'></select>-->
-
-<!--                </div>-->
-
                 <div id='calendar'></div>
             </div>
         </div>
@@ -334,8 +384,10 @@ locale: "ko",
 <script>
     var calendarEl = document.getElementById('calendar');
 
-    var calendar = new FullCalendar.Calendar(calendarEl, {plugins : [ "dayGrid" ]
-        , locale : "ko"});
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        plugins: ["dayGrid"]
+        , locale: "ko"
+    });
 
 </script>
 </html>
