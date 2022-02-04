@@ -46,7 +46,7 @@ body{
 
 .container {
 	position: relative;
-	/*overflow: auto;*/
+	overflow: hidden;
 	/*background-image: url(../img/background.jpg);*/
 	/*background-repeat : no-repeat;*/
 	/*background-size : cover;*/
