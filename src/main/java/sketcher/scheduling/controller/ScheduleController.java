@@ -2,15 +2,16 @@ package sketcher.scheduling.controller;
 
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import sketcher.scheduling.domain.Schedule;
 import sketcher.scheduling.dto.ScheduleDto;
 import sketcher.scheduling.service.ScheduleService;
+import io.swagger.annotations.*;
+import org.springframework.web.bind.annotation.*;
+import springfox.documentation.service.Response;
 
 import java.util.List;
 
@@ -34,11 +35,10 @@ public class ScheduleController {
         return "/schedule/scheduleForm";
     }
 
-    @ApiOperation(value = "스케줄 입력")
+    @ApiOperation(value = "스케줄 입력", response = ScheduleDto.class)
     @PostMapping("/scheduleForm")
-    public String createForm(@ModelAttribute ScheduleDto schedule , Model model){
+    public String createForm(@ModelAttribute ScheduleDto schedule){
         scheduleService.saveSchedule(schedule);
-
         return "redirect:/";
     }
     

@@ -22,7 +22,6 @@ public class ManagerHopeTimeDto {
         this.user = user;
     }
 
-
     public ManagerHopeTime toEntity() {
         return ManagerHopeTime.builder()
                 .start_time(start_time)
