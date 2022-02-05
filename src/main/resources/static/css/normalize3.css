@@ -37,6 +37,7 @@ h1 {
     font-size: 1.5em;
     margin: 0.67em 0;
 }
+
 hr#hr {
     width: inherit;
     background-color: #e1e1e1;
@@ -45,6 +46,7 @@ hr#hr {
     margin-top: 10%;
     margin-bottom: 15%;
 }
+
 abbr[title] {
     border-bottom: 1px dotted;
 }

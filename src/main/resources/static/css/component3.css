@@ -6,10 +6,10 @@
     box-sizing: border-box;
 }
 
-span{
-	color: #E75757;
-	;
+span {
+    color: #E75757;
 }
+
 .ac-custom {
     padding: 0 3em;
     max-width: 900px;

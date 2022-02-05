@@ -2,24 +2,24 @@
 /* CSS Document */
 
 .detail_tb {
-	width: 100%;
-	margin-top:40px;
-	text-align: center;
-	border-collapse : collapse;
-	table-layout: fixed;
-	word-break:break-all;
+    width: 100%;
+    margin-top: 40px;
+    text-align: center;
+    border-collapse: collapse;
+    table-layout: fixed;
+    word-break: break-all;
 }
 
 .detail_tb td {
-	border:1px solid #BDBDBD;
-	background-color:#FFFFFF;
+    border: 1px solid #BDBDBD;
+    background-color: #FFFFFF;
 }
 
 .detail_tb th {
-	width: 15%;
-	padding : 10px 10px 10px 10px;
-	border:1px solid #BDBDBD;
-	background-color:#e1e1e159;
+    width: 15%;
+    padding: 10px 10px 10px 10px;
+    border: 1px solid #BDBDBD;
+    background-color: #e1e1e159;
 }
 
 /*.btn {*/
@@ -29,42 +29,44 @@
 /*}*/
 
 .btn_align {
-	float:right;
-	margin:20px 0px 20px 20px;
+    float: right;
+    margin: 20px 0px 20px 20px;
 }
+
 .schedule {
-	margin-top: 70px;
+    margin-top: 70px;
 }
 
 /*-------------------*/
 .detail-page-btn-box {
-	width: 100%;
-	margin-top: 30px;
-	display: inline-block;
+    width: 100%;
+    margin-top: 30px;
+    display: inline-block;
 }
+
 button.btn.btn-6.btn-6b.update-user-btn {
-	background-color: dimgray;
-	border-radius: 8px;
+    background-color: dimgray;
+    border-radius: 8px;
 }
 
 button.btn.btn-6.btn-6b.update-user-btn:hover {
-	background-color: #4f4f4f;
+    background-color: #4f4f4f;
 }
 
 button.btn.btn-6.btn-6b.dropout-user-btn {
-	background-color: tomato;
-	border-radius: 8px;
+    background-color: tomato;
+    border-radius: 8px;
 }
 
 button.btn.btn-6.btn-6b.dropout-user-btn:hover {
-	background-color: #ff3f1d;
-	border-radius: 8px;
+    background-color: #ff3f1d;
+    border-radius: 8px;
 }
 
 .manager_detail {
-	margin-bottom: 50px;
+    margin-bottom: 50px;
 }
 
-td{
-	padding: 10px 10px 10px 10px;
+td {
+    padding: 10px 10px 10px 10px;
 }

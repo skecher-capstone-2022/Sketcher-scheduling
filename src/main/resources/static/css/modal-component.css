@@ -112,11 +112,12 @@ perspective effects (not including the modals and the overlay).
 .md-content button {
     /*position: relative;*/
     /*left: 70%;*/
-    float:right;
+    float: right;
     font-size: 1.0rem;
     border-radius: 8px;
 }
-.md-close-wrap{
+
+.md-close-wrap {
     margin: 20px 0 20px 0;
 }
 
