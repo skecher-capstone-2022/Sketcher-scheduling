@@ -71,3 +71,6 @@ button.btn.btn-6.btn-6b.reqbtn2:hover {
 	background-color: #ff3f1d;
 	border-radius: 8px;
 }
+span {
+	font-weight: bold;
+}

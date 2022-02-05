@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <!--Ajax-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--include-->
+    <script>
+        $(function () {
+            $("#includedHead").load("menu-head.html");
+            $("#includedMenu").load("menu.html");
+            $("#includedFooter").load("menu-footer.html");
+        });
+    </script>
+    <!--include header-->
+    <div id="includedHead"></div>
+</head>
+<body>
+
+<!-- 페이지 소스 -->
+<div class="container">
+    <!-- Push Wrapper -->
+    <div class="mp-pusher" id="mp-pusher">
+        <!--include menu-->
+        <div id="includedMenu"></div>
+
+        <div class="scroller"><!-- this is for emulating position fixed of the nav -->
+            <div class="block block-40 clearfix">
+                <p><a href="#" id="trigger" class="menu-trigger">Open/Close Menu</a></p>
+            </div>
+            <div class="access_user">
+                <div class="access_user_hello" style="font-size: 1.4rem; font-weight: 600;color: #b0b0b0f2">
+                    안녕하세요 <span style="color: #ff6d6d">홍길동</span>님!
+                </div>
+                <div class="logout">
+                </div>
+
+            </div>
+            <div class="ground">
+                hello~~~
+            </div>
+        </div>
+    </div><!-- /pusher -->
+</div><!-- /container -->
+<!--include footer-->
+<div id="includedFooter"></div>
+</body>
+</html>

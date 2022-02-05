@@ -1,0 +1,35 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+button.btn.btn-6.btn-6b.reqbtn1 {
+	background-color: #939393;
+	border-radius: 8px;
+}
+
+button.btn.btn-6.btn-6b.reqbtn1:hover {
+	background-color: #606060;
+	border-radius: 8px;
+}
+
+button.btn.btn-6.btn-6b.reqbtn2 {
+	background-color: tomato;
+	border-radius: 8px;
+}
+
+button.btn.btn-6.btn-6b.reqbtn2:hover {
+	background-color: #ff3f1d;
+	border-radius: 8px;
+}
+
+.btn_align {
+	display: inline;
+	float: right;
+}
+.btn{
+	margin:0;
+}
+
+table{
+	margin-bottom: 50px;
+}

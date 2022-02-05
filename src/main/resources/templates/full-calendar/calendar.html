@@ -1,20 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" class="no-js">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-Level Push Menu - Demo 1</title>
-    <meta name="description" content="Multi-Level Push Menu: Off-screen navigation with multiple levels"/>
-    <meta name="keywords"
-          content="multi-level, menu, navigation, off-canvas, off-screen, mobile, levels, nested, transform"/>
-    <meta name="author" content="Codrops"/>
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" type="text/css" href="../../static/css/normalize.css"/>
-    <link rel="stylesheet" type="text/css" href="../../static/css/demo.css"/>
-    <link rel="stylesheet" type="text/css" href="../../static/css/icons.css"/>
-    <link rel="stylesheet" type="text/css" href="../../static/css/component.css"/>
-    <script src="../../static/js/modernizr.custom.js"></script>
+    <!--Ajax-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--include-->
+    <script>
+        $(function () {
+            $("#includedHead").load("../common/menu-head.html");
+            $("#includedMenu").load("../common/menu.html");
+            $("#includedFooter").load("../common/menu-footer.html");
+        });
+    </script>
+    <!--include menu header-->
+    <div id="includedHead"></div>
 
     <!--full-calendar-->
     <meta charset='utf-8'/>
@@ -139,99 +138,26 @@
 
     </script>
     <style>
-
         body {
             margin: 0;
             padding: 0;
             font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
         }
-
-
         #calendar {
             max-width: 1100px;
             margin: 40px auto;
             padding: 0 10px;
             font-size: 1.0rem;
         }
-
-
-        .logo {
-            display: block;
-            margin: 45px auto 5px auto;
-        }
-
-        .ground {
-            padding-top: 70px;
-            padding-bottom: 70px;
-        }
-
-        .access_user {
-            width: 300px;
-            height: 100px;
-            float: right;
-            margin-right: 100px;
-            padding-top: 50px;
-        }
-
-
     </style>
 </head>
 <body>
 <div class="container">
     <!-- Push Wrapper -->
     <div class="mp-pusher" id="mp-pusher">
+        <!--include menu-->
+        <div id="includedMenu"></div>
 
-        <!-- mp-menu -->
-        <nav id="mp-menu" class="mp-menu">
-            <div class="mp-level">
-                <img class="logo" src="../../static/img/logo.png" width="50" height="50"/>
-                <h2 class="icon icon-world">Spring Manager Scheduling System</h2>
-                <ul>
-                    <li><a class="icon icon-shop" href="../home.html">메인화면</a></li>
-
-                    <li class="icon icon-arrow-left">
-                        <a class="icon icon-calendar" href="#">스케줄</a>
-                        <div class="mp-level">
-                            <h2 class="icon icon-calendar">스케줄</h2>
-                            <ul>
-                                <li><a href="#">전체 스케줄 조회</a></li>
-                                <li><a href="#">개인 스케줄 조회</a></li>
-                                <li><a href="#">스케줄 모델 생성</a></li>
-                                <li><a href="#">근무 스케줄 배정</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="icon icon-arrow-left">
-                        <a class="icon icon-user" href="#">매니저관리</a>
-                        <div class="mp-level">
-                            <h2 class="icon icon-user">매니저관리</h2>
-                            <ul>
-                                <li><a href="../manager/all_manager_list.html">전체 매니저 조회</a></li>
-                                <li><a href="../manager/work_manager_list.html">근무중인 매니저</a></li>
-                                <li><a href="#">신입 매니저 조회</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="icon icon-arrow-left">
-                        <a class="icon icon-mail" href="#">요청알림관리</a>
-                        <div class="mp-level">
-                            <h2 class="icon icon-mail">요청알림관리</h2>
-                            <ul>
-                                <li><a href="../request/schedule_upd_list.html">스케줄 수정 요청</a></li>
-                                <li><a href="../request/withdrawal_req_list.html">매니저 탈퇴 요청</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li><a class="icon icon-key" href="#">마이페이지</a></li>
-                    <li><a class="icon icon-cup" href="../user/login.html">로그아웃</a></li>
-                </ul>
-            </div>
-        </nav>
-        <!-- /mp-menu -->
-
-        <!--        <div id='container'>-->
-        <!--            <div id='calendar'></div>-->
-        <!--        </div>-->
         <div class="scroller"><!-- this is for emulating position fixed of the nav -->
             <div class="block block-40 clearfix">
                 <p><a href="#" id="trigger" class="menu-trigger">Open/Close Menu</a></p>
@@ -244,13 +170,6 @@
                 </div>
             </div>
             <div class="ground">
-<!--                <div id='top'>-->
-
-<!--                    Locales:-->
-<!--                    <select id='locale-selector'></select>-->
-
-<!--                </div>-->
-
                 <div id='calendar'></div>
             </div>
         </div>
@@ -258,79 +177,9 @@
 </div><!-- /container -->
 
 </body>
-<script src="../../static/js/classie.js"></script>
-<script src="../../static/js/mlpushmenu.js"></script>
-<script>
-    new mlPushMenu(document.getElementById('mp-menu'), document.getElementById('trigger'));
-</script>
-<!--calendar-->
-<!--<script type="text/javascript">-->
-<!--    document.addEventListener('DOMContentLoaded', function () {-->
-<!--        var calendarEl = document.getElementById('calendar');-->
-
-<!--        var calendar = new FullCalendar.Calendar(calendarEl, {-->
-<!--            initialView: 'dayGridMonth',-->
-<!--            initialDate: '2022-01-07',-->
-<!--            headerToolbar: {-->
-<!--                left: 'prev,next today',-->
-<!--                center: 'title',-->
-<!--                right: 'dayGridMonth,timeGridWeek,timeGridDay'-->
-<!--            },-->
-<!--            events: [-->
-<!--                {-->
-<!--                    title: 'All Day Event',-->
-<!--                    start: '2022-01-01'-->
-<!--                },-->
-<!--                {-->
-<!--                    title: 'Long Event',-->
-<!--                    start: '2022-01-07',-->
-<!--                    end: '2022-01-10'-->
-<!--                },-->
-<!--                {-->
-<!--                    groupId: '999',-->
-<!--                    title: 'Repeating Event',-->
-<!--                    start: '2022-01-09T16:00:00'-->
-<!--                },-->
-<!--                {-->
-<!--                    groupId: '999',-->
-<!--                    title: 'Repeating Event',-->
-<!--                    start: '2022-01-16T16:00:00'-->
-<!--                },-->
-<!--                {-->
-<!--                    title: 'Conference',-->
-<!--                    start: '2022-01-11',-->
-<!--                    end: '2022-01-13'-->
-<!--                },-->
-<!--                {-->
-<!--                    title: 'Meeting',-->
-<!--                    start: '2022-01-12T10:30:00',-->
-<!--                    end: '2022-01-12T12:30:00'-->
-<!--                },-->
-<!--                {-->
-<!--                    title: 'Lunch',-->
-<!--                    start: '2022-01-12T12:00:00'-->
-<!--                },-->
-<!--                {-->
-<!--                    title: 'Meeting',-->
-<!--                    start: '2022-01-12T14:30:00'-->
-<!--                },-->
-<!--                {-->
-<!--                    title: 'Birthday Party',-->
-<!--                    start: '2022-01-13T07:00:00'-->
-<!--                },-->
-<!--                {-->
-<!--                    title: 'Click for Google',-->
-<!--                    url: 'http://google.com/',-->
-<!--                    start: '2022-01-28'-->
-<!--                }-->
-<!--            ]-->
-<!--        });-->
-
-<!--        calendar.render();-->
-<!--    });-->
-<!--</script>-->
+<!--include footer-->
+<div id="includedFooter"></div>
 <script src="fullcalendar/lib/locales-all.js"></script>
-locale: "ko",
 <script>
     var calendarEl = document.getElementById('calendar');
 

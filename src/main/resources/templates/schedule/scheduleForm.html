@@ -2,7 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <meta charset="utf-8">
 <head>
-
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready( function() {
+            $("#menu-frame").load("../menu.html");  // 원하는 파일 경로를 삽입하면 된다
+        });
+    </script>
     <title>Bootstrap datepicket demo</title>
 
     <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
@@ -39,7 +44,7 @@
 <body>
 
 <div class="container">
-
+<!--    <div id="menu-frame"></div>-->
     <h1>Sketcher Scheduling</h1>
     <form action="scheduleForm.html" th:action method="post">
         <h2>

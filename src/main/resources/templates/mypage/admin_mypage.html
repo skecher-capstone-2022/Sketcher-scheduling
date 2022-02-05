@@ -1,188 +1,77 @@
 <!DOCTYPE html>
-<html lang="en" class="no-js">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Multi-Level Push Menu - Demo 1</title>
-<meta name="description" content="Multi-Level Push Menu: Off-screen navigation with multiple levels"/>
-<meta name="keywords"
-          content="multi-level, menu, navigation, off-canvas, off-screen, mobile, levels, nested, transform"/>
-<meta name="author" content="Codrops"/>
-<link rel="shortcut icon" href="../favicon.ico">
-<link rel="stylesheet" type="text/css" href="../../static/css/normalize.css"/>
-<link rel="stylesheet" type="text/css" href="../../static/css/demo.css"/>
-<link rel="stylesheet" type="text/css" href="../../static/css/icons.css"/>
-<link rel="stylesheet" type="text/css" href="../../static/css/component.css"/>
-<script src="../../static/js/modernizr.custom.js"></script>
-<!--button-->
-<link rel="stylesheet" type="text/css" href="../../static/css/default.css"/>
-<link rel="stylesheet" type="text/css" href="../../static/css/button.css"/>
-<!--    <script src="../../static/js/modernizr.custom4.js"></script>-->
-
-<!--my page-->
-<link type="text/css" rel="stylesheet" href="../../static/css/mypage.css"/>
-<link type="text/css" rel="stylesheet" href="../../static/css/menu_list.css"/>
-<link type="text/css" rel="stylesheet" href="../../static/css/paging.css"/>
-<style media="screen">
-.logo {
-	display: block;
-	margin: 45px auto 5px auto;
-}
-.access_user {
-	width: 300px;
-	height: 100px;
-	float: right;
-	margin-right: 100px;
-	padding-top: 50px;
-}
-.btn {
-	padding: 10px 20px;
-	width: max-content;
-	font-size: 0.8rem;
-	margin-top: 0;
-}
-input {
-	height: 30px;
-}
-select {
-	height: 30px;
-}
-span {
-	font-weight: bold;
-}
-</style>
+    <meta charset="UTF-8"/>
+    <!--Ajax-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--include-->
+    <script>
+        $(function () {
+            $("#includedHead").load("../common/menu-head.html");
+            $("#includedMenu").load("../common/menu.html");
+            $("#includedFooter").load("../common/menu-footer.html");
+            $("#includedList").load("../common/list-head.html");
+            $("#includedButton").load("../common/buttonJs.html");
+        });
+    </script>
+    <!--include menu header-->
+    <div id="includedHead"></div>
+    <!--include list header-->
+    <div id="includedList"></div>
+    <!--my page-->
+    <link type="text/css" rel="stylesheet" href="../../static/css/mypage.css"/>
 </head>
 <body>
 <div class="container">
-<!-- Push Wrapper -->
-<div class="mp-pusher" id="mp-pusher"> 
-  
-  <!-- mp-menu -->
-  <nav id="mp-menu" class="mp-menu">
-    <div class="mp-level"> <img class="logo" src="../../static/img/logo.png" width="50" height="50"/>
-      <h2 class="icon icon-world">Spring Manager Scheduling System</h2>
-      <ul>
-        <li><a class="icon icon-shop" href="home.html">메인화면</a></li>
-        <li class="icon icon-arrow-left"> <a class="icon icon-calendar" href="#">스케줄</a>
-          <div class="mp-level">
-            <h2 class="icon icon-calendar">스케줄</h2>
-            <ul>
-              <li><a href="#">전체 스케줄 조회</a></li>
-              <li><a href="#">개인 스케줄 조회</a></li>
-              <li><a href="#">스케줄 모델 생성</a></li>
-              <li><a href="#">근무 스케줄 배정</a></li>
-            </ul>
-          </div>
-        </li>
-        <li class="icon icon-arrow-left"> <a class="icon icon-user" href="#">매니저관리</a>
-          <div class="mp-level">
-            <h2 class="icon icon-user">매니저관리</h2>
-            <ul>
-              <li><a href="#">전체 매니저 조회</a></li>
-              <li><a href="#">근무중인 매니저</a></li>
-              <li><a href="#">신입 매니저 조회</a></li>
-            </ul>
-          </div>
-        </li>
-        <li class="icon icon-arrow-left"> <a class="icon icon-mail" href="#">요청알림관리</a>
-          <div class="mp-level">
-            <h2 class="icon icon-mail">요청알림관리</h2>
-            <ul>
-              <li><a href="#">스케줄 수정 요청</a></li>
-              <li><a href="#">매니저 탈퇴 요청</a></li>
-            </ul>
-          </div>
-        </li>
-        <li><a class="icon icon-key" href="#">마이페이지</a></li>
-        <li><a class="icon icon-cup" href="../user/login.html">로그아웃</a></li>
-      </ul>
-    </div>
-  </nav>
-  <!-- /mp-menu -->
-  
-  <div class="scroller"><!-- this is for emulating position fixed of the nav -->
-    <div class="block block-40 clearfix">
-      <p><a href="#" id="trigger" class="menu-trigger">Open/Close Menu</a></p>
-    </div>
-    <div class="access_user">
-      <div class="access_user_hello" style="font-size: 1.4rem; font-weight: 600;color: #b0b0b0f2"> 안녕하세요 <span style="color: #ff6d6d">홍길동</span>님! </div>
-      <div class="logout"> </div>
-    </div>
-    <div class="ground">
-      <div class="main">
-        <div class="title1">
-          <h1>마이페이지</h1>
+    <!-- Push Wrapper -->
+    <div class="mp-pusher" id="mp-pusher">
+        <!--include menu-->
+        <div id="includedMenu"></div>
+
+        <div class="scroller"><!-- this is for emulating position fixed of the nav -->
+            <div class="block block-40 clearfix">
+                <p><a href="#" id="trigger" class="menu-trigger">Open/Close Menu</a></p>
+            </div>
+            <div class="access_user">
+                <div class="access_user_hello" style="font-size: 1.4rem; font-weight: 600;color: #b0b0b0f2"> 안녕하세요 <span
+                        style="color: #ff6d6d">홍길동</span>님!
+                </div>
+                <div class="logout"></div>
+            </div>
+            <div class="ground">
+                <div class="main">
+                    <div class="title1">
+                        <h1>마이페이지</h1>
+                    </div>
+                    <div class="my_page_wrap">
+                        <div>
+                            <h2 style="text-align:center">사용자 정보 조회</h2>
+                            <div class="info_wrap">
+                                <div style="float:left;"><img src="../../static/img/admin.svg" width="100" height="100">
+                                </div>
+                                <div class="info"><span style="color:#E75757;">Admin</span><br/>
+                                    <span>박태영</span><br/>
+                                    USER1<br/>
+                                    2022월 1월 15일 가입<br/>
+                                    010-1234-5678<br/>
+                                </div>
+                            </div>
+                            <div class="btn_align">
+                                <button class="btn btn-6 btn-6b reqbtn1" onclick="">사용자 정보 수정</button>
+                            </div>
+                            <div class="btn_align">
+                                <button class="btn btn-6 btn-6b reqbtn2" onclick="">탈퇴하기</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="my_page_wrap">
-          <div>
-            <h2 style="text-align:center">사용자 정보 조회</h2>
-            <div class="info_wrap">
-              <div style="float:left;"> <img src="../../static/img/admin.svg" width="100" height="100"> </div>
-              <div class="info"> <span style="color:#E75757;">Admin</span><br />
-                <span>박태영</span><br />
-                USER1<br />
-                2022월 1월 15일 가입<br />
-                010-1234-5678<br />
-              </div>
-            </div>
-            <div class="btn_align">
-              <button class="btn btn-6 btn-6b reqbtn1" onclick="">사용자 정보 수정</button>
-            </div>
-            <div class="btn_align">
-              <button class="btn btn-6 btn-6b reqbtn2" onclick="">탈퇴하기</button>
-            </div>
-          </div>
-        </div>
-      </div>
+        <!-- /pusher -->
     </div>
-  </div>
-  <!-- /pusher --> 
+    <!-- /container -->
 </div>
-<!-- /container --> 
-<script src="../../static/js/classie.js"></script> 
-<script src="../../static/js/mlpushmenu.js"></script> 
-<script>
-    new mlPushMenu(document.getElementById('mp-menu'), document.getElementById('trigger'));
-</script> 
-<script src="../../static/js/classie4.js"></script> 
-<script>
-    var buttons7Click = Array.prototype.slice.call(document.querySelectorAll('#btn-click button')),
-        buttons9Click = Array.prototype.slice.call(document.querySelectorAll('button.btn-8g')),
-        totalButtons7Click = buttons7Click.length,
-        totalButtons9Click = buttons9Click.length;
-
-    buttons7Click.forEach(function (el, i) {
-        el.addEventListener('click', activate, false);
-    });
-    buttons9Click.forEach(function (el, i) {
-        el.addEventListener('click', activate, false);
-    });
-
-    function activate() {
-        var self = this, activatedClass = 'btn-activated';
-
-        if (classie.has(this, 'btn-7h')) {
-            // if it is the first of the two btn-7h then activatedClass = 'btn-error';
-            // if it is the second then activatedClass = 'btn-success'
-            activatedClass = buttons7Click.indexOf(this) === totalButtons7Click - 2 ? 'btn-error' : 'btn-success';
-        } else if (classie.has(this, 'btn-8g')) {
-            // if it is the first of the two btn-8g then activatedClass = 'btn-success3d';
-            // if it is the second then activatedClass = 'btn-error3d'
-            activatedClass = buttons9Click.indexOf(this) === totalButtons9Click - 2 ? 'btn-success3d' : 'btn-error3d';
-        }
-
-        if (!classie.has(this, activatedClass)) {
-            classie.add(this, activatedClass);
-            setTimeout(function () {
-                classie.remove(self, activatedClass)
-            }, 1000);
-        }
-    }
-
-    document.querySelector('.btn-7i').addEventListener('click', function () {
-        classie.add(document.querySelector('#trash-effect'), 'trash-effect-active');
-    }, false);
-</script>
+<div id="includedFooter"></div>
+<div id="includedButton"></div>
 </body>
 </html>

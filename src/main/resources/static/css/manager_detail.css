@@ -35,3 +35,36 @@
 .schedule {
 	margin-top: 70px;
 }
+
+/*-------------------*/
+.detail-page-btn-box {
+	width: 100%;
+	margin-top: 30px;
+	display: inline-block;
+}
+button.btn.btn-6.btn-6b.update-user-btn {
+	background-color: dimgray;
+	border-radius: 8px;
+}
+
+button.btn.btn-6.btn-6b.update-user-btn:hover {
+	background-color: #4f4f4f;
+}
+
+button.btn.btn-6.btn-6b.dropout-user-btn {
+	background-color: tomato;
+	border-radius: 8px;
+}
+
+button.btn.btn-6.btn-6b.dropout-user-btn:hover {
+	background-color: #ff3f1d;
+	border-radius: 8px;
+}
+
+.manager_detail {
+	margin-bottom: 50px;
+}
+
+td{
+	padding: 10px 10px 10px 10px;
+}
