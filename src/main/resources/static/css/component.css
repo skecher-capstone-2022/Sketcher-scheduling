@@ -21,14 +21,25 @@ body{
 }
 
 .ground {
-	width: 90%;
-	position: relative;
-	/*height: inherit;*/
-	margin: auto;
-	background-color: #ffffff;
-	top: 100px;
-	border-radius: 15px;
-	color: black;
+    width: 90%;
+    /*position: relative;*/
+    min-height: 1000px;
+    margin: auto;
+    background-color: #ffffff;
+    /*top: 100px;*/
+    border-radius: 15px;
+}
+
+.logo{
+    display: block; margin: 45px auto 5px auto;
+}
+
+.access_user {
+    width: 300px;
+    height: 100px;
+    float: right;
+    margin-right: 100px;
+    padding-top: 50px;
 }
 
 .scroller {
@@ -44,13 +55,13 @@ body{
 	position: absolute;
 }
 
-.container {
-	position: relative;
-	overflow: hidden;
-	/*background-image: url(../img/background.jpg);*/
-	/*background-repeat : no-repeat;*/
-	/*background-size : cover;*/
-}
+/*.container {*/
+/*	position: relative;*/
+/*	!*overflow: hidden;*!*/
+/*	!*background-image: url(../img/background.jpg);*!*/
+/*	!*background-repeat : no-repeat;*!*/
+/*	!*background-size : cover;*!*/
+/*}*/
 
 .menu-trigger {
 	position: relative;
@@ -70,10 +81,10 @@ body{
 }
 
 .mp-pusher {
-	position: relative;
-	left: 0;
-	height: 100%;
-	perspective: 1000px;
+    position: relative;
+    left: 0;
+    /*height: 100%;*/
+    perspective: 1000px;
 }
 
 .mp-menu {
