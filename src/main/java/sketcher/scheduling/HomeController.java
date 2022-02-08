@@ -13,9 +13,38 @@ public class HomeController {
         return "content/home";
     }
 
-    @RequestMapping(value = "/2", method = RequestMethod.GET)
+    @RequestMapping(value = "/all_manager_list", method = RequestMethod.GET)
     public String goHome2(HttpServletRequest request) {
-        return "content/home2";
+        return "manager/all_manager_list";
+    }
+
+    @RequestMapping(value = "/manager_detail", method = RequestMethod.GET)
+    public String goHome3(HttpServletRequest request) {
+        return "manager/manager_detail";
+    }
+
+    @RequestMapping(value = "/work_manager_list", method = RequestMethod.GET)
+    public String goHome4(HttpServletRequest request) {
+        return "manager/work_manager_list";
+    }
+
+    @RequestMapping(value = "/admin_mypage", method = RequestMethod.GET)
+    public String goHome5(HttpServletRequest request) {
+        return "mypage/admin_mypage";
+    }
+
+    @RequestMapping(value = "/manager_mypage", method = RequestMethod.GET)
+    public String goHome6(HttpServletRequest request) {
+        return "mypage/manager_mypage";
+    }
+
+    @RequestMapping(value = "/schedule_upd_list", method = RequestMethod.GET)
+    public String goHome7(HttpServletRequest request) {
+        return "request/schedule_upd_list";
+    }
+
+    @RequestMapping(value = "/withdrawal_req_list", method = RequestMethod.GET)
+    public String goHome8(HttpServletRequest request) {
+        return "request/withdrawal_req_list";
     }
 }
-

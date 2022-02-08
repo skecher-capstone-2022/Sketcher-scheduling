@@ -1,19 +1,23 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <!--/* 이곳에 각 view가 위치합니다. */-->
-<th:block layout:fragment="head"></th:block>
-<div>
-    <div class="container">
-        <!-- Push Wrapper -->
-        <div class="mp-pusher" id="mp-pusher">
-            <!-- mp-menu -->
-            <div layout:fragment="menu-wrap"></div>
-            <div class="scroller"><!-- this is for emulating position fixed of the nav -->
-                <div layout:fragment="top-wrap"></div>
-                <div layout:fragment="ground-wrap"></div>
-            </div>
-        </div><!-- /pusher -->
-    </div><!-- /container -->
-</div>
-<div layout:fragment="footer"></div>
+<th:block layout:fragment="head" th:include="@{/fragments/header}"></th:block>
+<body>
+<!--<th:block layout:fragment="header" th:include="@{/fragments/header}"></th:block>-->
+<!--<div layout:fragment="content" class="content">-->
+<!--    <h2>This is Content</h2>-->
+<!--</div>-->
+<div class="container">
+    <!-- Push Wrapper -->
+    <div class="mp-pusher" id="mp-pusher">
+        <!-- mp-menu -->
+        <th:block layout:fragment="menu-wrap" th:include="@{/fragments/menu}"></th:block>
+        <div class="scroller"><!-- this is for emulating position fixed of the nav -->
+            <th:block layout:fragment="top-wrap" th:include="@{/fragments/top}"></th:block>
+            <div layout:fragment="ground-wrap" ></div>
+        </div>
+    </div><!-- /pusher -->
+</div><!-- /container -->
+</body>
+<th:block layout:fragment="footer" th:include="@{/fragments/footer}"></th:block>
 </html>
 

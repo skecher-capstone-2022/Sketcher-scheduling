@@ -1,30 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" class="no-js">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/menu_layout}">
 <head>
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-Level Push Menu - Demo 1</title>
-    <meta name="description" content="Multi-Level Push Menu: Off-screen navigation with multiple levels"/>
-    <meta name="keywords"
-          content="multi-level, menu, navigation, off-canvas, off-screen, mobile, levels, nested, transform"/>
-    <meta name="author" content="Codrops"/>
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" type="text/css" href="../../static/css/normalize.css"/>
-    <link rel="stylesheet" type="text/css" href="../../static/css/demo.css"/>
-    <link rel="stylesheet" type="text/css" href="../../static/css/icons.css"/>
-    <link rel="stylesheet" type="text/css" href="../../static/css/component.css"/>
-    <script src="../../static/js/modernizr.custom.js"></script>
-    <!--button-->
-    <link rel="stylesheet" type="text/css" href="../../static/css/default.css"/>
-    <link rel="stylesheet" type="text/css" href="../../static/css/button.css"/>
-    <!--    <script src="../../static/js/modernizr.custom4.js"></script>-->
+    <title>전체 매니저 목록</title>
+    <link th:href="@{/css/manager_list.css}" rel="stylesheet"/>
 
-    <!--all manager list-->
-    <link type="text/css" rel="stylesheet" href="../../static/css/manager_list.css"/>
-    <link type="text/css" rel="stylesheet" href="../../static/css/menu_list.css"/>
-    <link type="text/css" rel="stylesheet" href="../../static/css/table.css"/>
-    <link type="text/css" rel="stylesheet" href="../../static/css/paging.css"/>
     <style media="screen">
         .logo {
             display: block;
@@ -56,289 +36,189 @@
         }
     </style>
 </head>
-<body>
-<div class="container">
-    <!-- Push Wrapper -->
-    <div class="mp-pusher" id="mp-pusher">
 
-        <!-- mp-menu -->
-        <nav id="mp-menu" class="mp-menu">
-            <div class="mp-level">
-                <img class="logo" src="../../static/img/logo.png" width="50" height="50"/>
-                <h2 class="icon icon-world">Spring Manager Scheduling System</h2>
-                <ul>
-                    <li><a class="icon icon-shop" href="home.html">메인화면</a></li>
-
-                    <li class="icon icon-arrow-left">
-                        <a class="icon icon-calendar" href="#">스케줄</a>
-                        <div class="mp-level">
-                            <h2 class="icon icon-calendar">스케줄</h2>
-                            <ul>
-                                <li><a href="#">전체 스케줄 조회</a></li>
-                                <li><a href="#">개인 스케줄 조회</a></li>
-                                <li><a href="#">스케줄 모델 생성</a></li>
-                                <li><a href="#">근무 스케줄 배정</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="icon icon-arrow-left">
-                        <a class="icon icon-user" href="#">매니저관리</a>
-                        <div class="mp-level">
-                            <h2 class="icon icon-user">매니저관리</h2>
-                            <ul>
-                                <li><a href="#">전체 매니저 조회</a></li>
-                                <li><a href="#">근무중인 매니저</a></li>
-                                <li><a href="#">신입 매니저 조회</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="icon icon-arrow-left">
-                        <a class="icon icon-mail" href="#">요청알림관리</a>
-                        <div class="mp-level">
-                            <h2 class="icon icon-mail">요청알림관리</h2>
-                            <ul>
-                                <li><a href="#">스케줄 수정 요청</a></li>
-                                <li><a href="#">매니저 탈퇴 요청</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li><a class="icon icon-key" href="#">마이페이지</a></li>
-                    <li><a class="icon icon-cup" href="../user/login.html">로그아웃</a></li>
-                </ul>
-            </div>
-        </nav>
-        <!-- /mp-menu -->
-
-
-        <div class="scroller"><!-- this is for emulating position fixed of the nav -->
-            <div class="block block-40 clearfix">
-                <p><a href="#" id="trigger" class="menu-trigger">Open/Close Menu</a></p>
-            </div>
-            <div class="access_user">
-                <div class="access_user_hello" style="font-size: 1.4rem; font-weight: 600;color: #b0b0b0f2">
-                    안녕하세요 <span style="color: #ff6d6d">홍길동</span>님!
+<th:block layout:fragment="ground-wrap">
+    <div class="ground">
+        <div class="main">
+            <div class="all_manaer_list">
+                <div class="title1">
+                    <h1>전체 매니저 목록</h1>
                 </div>
-                <div class="logout">
+                <div class="select-wrap1">
+                    <select name="list_align" class="list_align">
+                        <option value="manager_score" selected="selected">평점순</option>
+                        <option value="manager_name">매니저명</option>
+                        <option value="join_date">가입일자</option>
+                    </select>
+                    <div class="search">
+                        <select name="select_search" class="select_search">
+                            <option value="manager_name" selected="selected">매니저명</option>
+                            <option value="manager_id">매니저ID</option>
+                        </select>
+                        <label>
+                            <input name="search" type="text" placeholder="검색어 입력"/>
+                        </label>
+
+                        <button class="btn btn-6 btn-6b search-btn">검색</button>
+                        <br/>
+                    </div>
                 </div>
-            </div>
-            <div class="ground">
-                <div class="main">
-                    <div class="all_manaer_list">
-                        <div class="title1">
-                            <h1>전체 매니저 목록</h1>
-                        </div>
-                        <div class="select-wrap1">
-                            <select name="list_align" class="list_align">
-                                <option value="manager_score" selected="selected">평점순</option>
-                                <option value="manager_name">매니저명</option>
-                                <option value="join_date">가입일자</option>
-                            </select>
-                            <div class="search">
-                                <select name="select_search" class="select_search">
-                                    <option value="manager_name" selected="selected">매니저명</option>
-                                    <option value="manager_id">매니저ID</option>
-                                </select>
-                                <label>
-                                    <input name="search" type="text" placeholder="검색어 입력"/>
-                                </label>
+                <div>
+                    <table width="700" border="0" cellspacing="0" cellpadding="0" class="list_text_center">
 
-                                <button class="btn btn-6 btn-6b search-btn">검색</button>
-                                <br/>
-                            </div>
-                        </div>
-                        <div>
-                            <table width="700" border="0" cellspacing="0" cellpadding="0" class="list_text_center">
+                        <tr>
+                            <th scope="col">INDEX</th>
+                            <th scope="col">매니저ID</th>
+                            <th scope="col">매니저명</th>
+                            <th scope="col">전화번호</th>
+                            <th scope="col">가입일자</th>
+                            <th scope="col">평점</th>
+                            <th scope="col">사용자관리</th>
+                        </tr>
 
-                                <tr>
-                                    <th scope="col">INDEX</th>
-                                    <th scope="col">매니저ID</th>
-                                    <th scope="col">매니저명</th>
-                                    <th scope="col">전화번호</th>
-                                    <th scope="col">가입일자</th>
-                                    <th scope="col">평점</th>
-                                    <th scope="col">사용자관리</th>
-                                </tr>
+                        <tr>
+                            <td class="line">1</td>
+                            <td class="line">USER1</td>
+                            <td class="line">박태영</td>
+                            <td class="line">010-1234-5678</td>
+                            <td class="line">2022-01-14</td>
+                            <td class="line">5.0</td>
+                            <td class="line">
+                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail.html'">관리
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="line">2</td>
+                            <td class="line">USER1</td>
+                            <td class="line">박태영</td>
+                            <td class="line">010-1234-5678</td>
+                            <td class="line">2022-01-14</td>
+                            <td class="line">5.0</td>
+                            <td class="line">
+                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail.html'">관리
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="line">3</td>
+                            <td class="line">USER1</td>
+                            <td class="line">박태영</td>
+                            <td class="line">010-1234-5678</td>
+                            <td class="line">2022-01-14</td>
+                            <td class="line">5.0</td>
+                            <td class="line">
+                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail.html'">관리
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="line">4</td>
+                            <td class="line">USER1</td>
+                            <td class="line">박태영</td>
+                            <td class="line">010-1234-5678</td>
+                            <td class="line">2022-01-14</td>
+                            <td class="line">5.0</td>
+                            <td class="line">
+                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail.html'">관리
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="line">5</td>
+                            <td class="line">USER1</td>
+                            <td class="line">박태영</td>
+                            <td class="line">010-1234-5678</td>
+                            <td class="line">2022-01-14</td>
+                            <td class="line">5.0</td>
+                            <td class="line">
+                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail.html'">관리
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="line">6</td>
+                            <td class="line">USER1</td>
+                            <td class="line">박태영</td>
+                            <td class="line">010-1234-5678</td>
+                            <td class="line">2022-01-14</td>
+                            <td class="line">5.0</td>
+                            <td class="line">
+                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail.html'">관리
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="line">7</td>
+                            <td class="line">USER1</td>
+                            <td class="line">박태영</td>
+                            <td class="line">010-1234-5678</td>
+                            <td class="line">2022-01-14</td>
+                            <td class="line">5.0</td>
+                            <td class="line">
+                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail.html'">관리
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="line">8</td>
+                            <td class="line">USER1</td>
+                            <td class="line">박태영</td>
+                            <td class="line">010-1234-5678</td>
+                            <td class="line">2022-01-14</td>
+                            <td class="line">5.0</td>
+                            <td class="line">
+                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail.html'">관리
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="line">9</td>
+                            <td class="line">USER1</td>
+                            <td class="line">박태영</td>
+                            <td class="line">010-1234-5678</td>
+                            <td class="line">2022-01-14</td>
+                            <td class="line">5.0</td>
+                            <td class="line">
+                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail.html'">관리
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="line">10</td>
+                            <td class="line">USER1</td>
+                            <td class="line">박태영</td>
+                            <td class="line">010-1234-5678</td>
+                            <td class="line">2022-01-14</td>
+                            <td class="line">5.0</td>
+                            <td class="line">
+                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail.html'">관리
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
 
-                                <tr>
-                                    <td class="line">1</td>
-                                    <td class="line">USER1</td>
-                                    <td class="line">박태영</td>
-                                    <td class="line">010-1234-5678</td>
-                                    <td class="line">2022-01-14</td>
-                                    <td class="line">5.0</td>
-                                    <td class="line">
-                                        <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail.html'">관리</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="line">2</td>
-                                    <td class="line">USER1</td>
-                                    <td class="line">박태영</td>
-                                    <td class="line">010-1234-5678</td>
-                                    <td class="line">2022-01-14</td>
-                                    <td class="line">5.0</td>
-                                    <td class="line">
-                                        <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail.html'">관리</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="line">3</td>
-                                    <td class="line">USER1</td>
-                                    <td class="line">박태영</td>
-                                    <td class="line">010-1234-5678</td>
-                                    <td class="line">2022-01-14</td>
-                                    <td class="line">5.0</td>
-                                    <td class="line">
-                                        <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail.html'">관리</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="line">4</td>
-                                    <td class="line">USER1</td>
-                                    <td class="line">박태영</td>
-                                    <td class="line">010-1234-5678</td>
-                                    <td class="line">2022-01-14</td>
-                                    <td class="line">5.0</td>
-                                    <td class="line">
-                                        <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail.html'">관리</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="line">5</td>
-                                    <td class="line">USER1</td>
-                                    <td class="line">박태영</td>
-                                    <td class="line">010-1234-5678</td>
-                                    <td class="line">2022-01-14</td>
-                                    <td class="line">5.0</td>
-                                    <td class="line">
-                                        <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail.html'">관리</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="line">6</td>
-                                    <td class="line">USER1</td>
-                                    <td class="line">박태영</td>
-                                    <td class="line">010-1234-5678</td>
-                                    <td class="line">2022-01-14</td>
-                                    <td class="line">5.0</td>
-                                    <td class="line">
-                                        <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail.html'">관리</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="line">7</td>
-                                    <td class="line">USER1</td>
-                                    <td class="line">박태영</td>
-                                    <td class="line">010-1234-5678</td>
-                                    <td class="line">2022-01-14</td>
-                                    <td class="line">5.0</td>
-                                    <td class="line">
-                                        <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail.html'">관리</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="line">8</td>
-                                    <td class="line">USER1</td>
-                                    <td class="line">박태영</td>
-                                    <td class="line">010-1234-5678</td>
-                                    <td class="line">2022-01-14</td>
-                                    <td class="line">5.0</td>
-                                    <td class="line">
-                                        <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail.html'">관리</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="line">9</td>
-                                    <td class="line">USER1</td>
-                                    <td class="line">박태영</td>
-                                    <td class="line">010-1234-5678</td>
-                                    <td class="line">2022-01-14</td>
-                                    <td class="line">5.0</td>
-                                    <td class="line">
-                                        <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail.html'">관리</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="line">10</td>
-                                    <td class="line">USER1</td>
-                                    <td class="line">박태영</td>
-                                    <td class="line">010-1234-5678</td>
-                                    <td class="line">2022-01-14</td>
-                                    <td class="line">5.0</td>
-                                    <td class="line">
-                                        <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail.html'">관리</button>
-                                    </td>
-                                </tr>
-                            </table>
-
-                        </div>
-                        <div class="page_wrap">
-                            <div class="page_nation">
-                                <a class="arrow pprev" href="#"></a>
-                                <a class="arrow prev" href="#"></a>
-                                <a href="#" class="active">1</a>
-                                <a href="#">2</a>
-                                <a href="#">3</a>
-                                <a href="#">4</a>
-                                <a href="#">5</a>
-                                <a href="#">6</a>
-                                <a href="#">7</a>
-                                <a href="#">8</a>
-                                <a href="#">9</a>
-                                <a href="#">10</a>
-                                <a class="arrow next" href="#"></a>
-                                <a class="arrow nnext" href="#"></a>
-                            </div>
-                        </div>
+                </div>
+                <div class="page_wrap">
+                    <div class="page_nation">
+                        <a class="arrow pprev" href="#"></a>
+                        <a class="arrow prev" href="#"></a>
+                        <a href="#" class="active">1</a>
+                        <a href="#">2</a>
+                        <a href="#">3</a>
+                        <a href="#">4</a>
+                        <a href="#">5</a>
+                        <a href="#">6</a>
+                        <a href="#">7</a>
+                        <a href="#">8</a>
+                        <a href="#">9</a>
+                        <a href="#">10</a>
+                        <a class="arrow next" href="#"></a>
+                        <a class="arrow nnext" href="#"></a>
                     </div>
                 </div>
             </div>
         </div>
-    </div><!-- /pusher -->
-</div><!-- /container -->
-<script src="../../static/js/classie.js"></script>
-<script src="../../static/js/mlpushmenu.js"></script>
-<script>
-    new mlPushMenu(document.getElementById('mp-menu'), document.getElementById('trigger'));
-</script>
-<script src="../../static/js/classie4.js"></script>
-<script>
-    var buttons7Click = Array.prototype.slice.call(document.querySelectorAll('#btn-click button')),
-        buttons9Click = Array.prototype.slice.call(document.querySelectorAll('button.btn-8g')),
-        totalButtons7Click = buttons7Click.length,
-        totalButtons9Click = buttons9Click.length;
-
-    buttons7Click.forEach(function (el, i) {
-        el.addEventListener('click', activate, false);
-    });
-    buttons9Click.forEach(function (el, i) {
-        el.addEventListener('click', activate, false);
-    });
-
-    function activate() {
-        var self = this, activatedClass = 'btn-activated';
-
-        if (classie.has(this, 'btn-7h')) {
-            // if it is the first of the two btn-7h then activatedClass = 'btn-error';
-            // if it is the second then activatedClass = 'btn-success'
-            activatedClass = buttons7Click.indexOf(this) === totalButtons7Click - 2 ? 'btn-error' : 'btn-success';
-        } else if (classie.has(this, 'btn-8g')) {
-            // if it is the first of the two btn-8g then activatedClass = 'btn-success3d';
-            // if it is the second then activatedClass = 'btn-error3d'
-            activatedClass = buttons9Click.indexOf(this) === totalButtons9Click - 2 ? 'btn-success3d' : 'btn-error3d';
-        }
-
-        if (!classie.has(this, activatedClass)) {
-            classie.add(this, activatedClass);
-            setTimeout(function () {
-                classie.remove(self, activatedClass)
-            }, 1000);
-        }
-    }
-
-    document.querySelector('.btn-7i').addEventListener('click', function () {
-        classie.add(document.querySelector('#trash-effect'), 'trash-effect-active');
-    }, false);
-</script>
-</body>
+    </div>
+</th:block>
 </html>
