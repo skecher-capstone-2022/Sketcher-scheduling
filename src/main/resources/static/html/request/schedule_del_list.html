@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>무제 문서</title>
+<link type="text/css" rel="stylesheet" href="../../css/schedule_upd_req_list.css"/>
+<link type="text/css" rel="stylesheet" href="../../css/menu_list.css"/>
+<link type="text/css" rel="stylesheet" href="../../css/table.css"/>
+</head>
+
+<body>
+<div class="menu">
+  <div class="menu_logo"> <img src="../../img/logo.png" width="50" height="50"/> </div>
+  <div class="menu_list">
+    <ul>
+      <li><a href="#"><img src="../../img/home.svg" /></a></li>
+      <li><a href="#"><img src="../../img/schedule.svg" /></a></li>
+      <li><a href="#"><img src="../../img/managers.svg" /></a></li>
+      <li><a href="#"><img src="../../img/alarm.svg" /></a></li>
+      <li><a href="#"><img src="../../img/mypage.svg" /></a></li>
+    </ul>
+  </div>
+</div>
+<div class="main">
+  <div class="all_manaer_list">
+    <h2>스케줄 삭제 요청 목록</h2>
+    <div class="align">
+      <select name="list_align" class="list_align">
+        <option value="manager_score" selected="selected">평점순</option>
+        <option value="manager_name">매니저명</option>
+        <option value="req_date">날짜</option>
+      </select>
+    </div>
+    <table width="700" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <th scope="col">INDEX</th>
+        <th scope="col">날짜</th>
+        <th scope="col">시간</th>
+        <th scope="col">매니저ID</th>
+        <th scope="col">매니저명</th>
+        <th scope="col">배정인원</th>
+        <th scope="col">평점</th>
+        <th scope="col">승인</th>
+      </tr>
+      <tr>
+        <td class="line">1</td>
+        <td class="line">2022-01-14</td>
+        <td class="line">14시</td>
+        <td class="line">USER1</td>
+        <td class="line">박태영</td>
+        <td class="line">10/15</td>
+        <td class="line">4.5</td>
+        <td class="line"><input name="approval" type="checkbox" value="approval" /></td>
+      </tr>
+      <tr>
+        <td class="line">1</td>
+        <td class="line">2022-01-14</td>
+        <td class="line">14시</td>
+        <td class="line">USER1</td>
+        <td class="line">박태영</td>
+        <td class="line">10/15</td>
+        <td class="line">4.5</td>
+        <td class="line"><input name="approval" type="checkbox" value="approval" /></td>
+      </tr>
+    </table>
+  </div>
+  <div class="btn">
+    <div class="btn_align">
+      <div style="display: inline-block">
+        <button type="button" class="btn"><img src="../../img/all_select_btn.png" width="133" height="45"></button>
+      </div>
+      <div style="display: inline-block">
+        <button type="button" class="btn"><img src="../../img/all_unselect_btn.png" width="133" height="45"></button>
+      </div>
+      <div style="display: inline-block">
+        <button type="button" class="btn"><img src="../../img/del_req_accept_btn.png" width="133" height="45"></button>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
