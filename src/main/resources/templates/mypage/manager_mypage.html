@@ -2,192 +2,202 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/menu_layout}">
 <head>
-  <title>마이페이지</title>
-  <link th:href="@{/css/mypage.css}" rel="stylesheet"/>
-  <style media="screen">
-    .logo {
-      display: block;
-      margin: 45px auto 5px auto;
-    }
-    .access_user {
-      width: 300px;
-      height: 100px;
-      float: right;
-      margin-right: 100px;
-      padding-top: 50px;
-    }
-    .btn {
-      padding: 10px 20px;
-      width: max-content;
-      font-size: 0.8rem;
-      margin-top: 0;
-    }
-    input {
-      height: 30px;
-    }
-    select {
-      height: 30px;
-    }
-    span {
-      font-weight: bold;
-      font-size: 1.2em;
-    }
-  </style>
+    <title>마이페이지</title>
+    <link th:href="@{/css/mypage.css}" rel="stylesheet"/>
+    <style media="screen">
+        .logo {
+            display: block;
+            margin: 45px auto 5px auto;
+        }
+
+        .access_user {
+            width: 300px;
+            height: 100px;
+            float: right;
+            margin-right: 100px;
+            padding-top: 50px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            width: max-content;
+            font-size: 0.8rem;
+            margin-top: 0;
+        }
+
+        input {
+            height: 30px;
+        }
+
+        select {
+            height: 30px;
+        }
+
+        span {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+    </style>
 </head>
 
 <th:block layout:fragment="ground-wrap">
-  <div class="ground">
-    <div class="main">
-      <div class="title1">
-        <h1>마이페이지</h1>
-      </div>
-      <table width="100%" border="0" cellpadding="0" cellspacing="0">
-        <tr>
-          <td width="49%" style="border-right:1px solid #E6E6E6;"><div class="user_info_wrap">
-            <div>
-              <h2 style="text-align:center">사용자 정보 조회</h2>
-              <div class="info_wrap">
-                <div style="float:left;">
-                  <img th:src="@{/img/manager.svg}" width="100" height="100">
-<!--                  <img src="../../static/img/manager.svg" width="100" height="100">-->
-                </div>
-                <div class="info"> <span style="color:#E75757;">Manager</span><br />
-                  <span>박태영</span><br />
-                  USER1<br />
-                  2022월 1월 15일 가입<br />
-                  010-1234-5678<br />
-                </div>
-              </div>
-              <div class="hope_time"> <span>희망 근무시간  |</span> <br />
-                오후 12시 ~ 18시, 저녁 18시 ~ 24시 <br />
-              </div>
-              <div class="btn_align">
-                <button class="btn btn-6 btn-6b reqbtn1" onclick="">사용자 정보 수정</button>
-              </div>
-              <div class="btn_align">
-                <button class="btn btn-6 btn-6b reqbtn2" onclick="">탈퇴 요청</button>
-              </div>
+    <div class="ground">
+        <div class="main">
+            <div class="title1">
+                <h1>마이페이지</h1>
             </div>
-          </div></td>
-          <td width="85" height="85"><div class="work_record_wrap">
-            <div>
-              <h2 style="text-align:center">근무 기록</h2>
-              <div class="info_wrap">
-                <div style="float:left;">
-                  <img th:src="@{/img/record.svg}" width="100" height="100">
-<!--                  <img src="../../static/img/record.svg" width="100" height="100">-->
-                </div>
-                <div class="info_work"> <span>총 근무 시간  |</span> 30 시간<br />
-                  <span>처리한 카드 건수  |</span> 900 건<br />
-                  <span>예상 수익  |</span> 27,000 원<br />
-                </div>
-              </div>
-              <div>
-                <h2 style="text-align:center">이번주 근무 진행도</h2>
-                <div class="info_wrap">
-                  <div style="float:left;">
-                    <canvas id="myChart" width="100" height="100"></canvas>
-                  </div>
-                  <div class="info"> <span style="font-weight:bold;">배정 근무 시간 |</span> 15 시간<br />
-                    <span>목표 카드 건수  |</span> 450 건<br />
-                    <span>예상 수익  |</span> 13,500 원<br />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div></td>
-        </tr>
-      </table>
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td width="49%" style="border-right:1px solid #E6E6E6;">
+                        <div class="user_info_wrap">
+                            <div>
+                                <h2 style="text-align:center">사용자 정보 조회</h2>
+                                <div class="info_wrap">
+                                    <div style="float:left;">
+                                        <img th:src="@{/img/manager.svg}" width="100" height="100">
+                                        <!--                  <img src="../../static/img/manager.svg" width="100" height="100">-->
+                                    </div>
+                                    <div class="info"><span style="color:#E75757;">Manager</span><br/>
+                                        <span>박태영</span><br/>
+                                        USER1<br/>
+                                        2022월 1월 15일 가입<br/>
+                                        010-1234-5678<br/>
+                                    </div>
+                                </div>
+                                <div class="hope_time"><span>희망 근무시간  |</span> <br/>
+                                    오후 12시 ~ 18시, 저녁 18시 ~ 24시 <br/>
+                                </div>
+                                <div class="btn_align">
+                                    <button class="btn btn-6 btn-6b reqbtn1" onclick="">사용자 정보 수정</button>
+                                </div>
+                                <div class="btn_align">
+                                    <button class="btn btn-6 btn-6b reqbtn2" onclick="">탈퇴 요청</button>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td width="85" height="85">
+                        <div class="work_record_wrap">
+                            <div>
+                                <h2 style="text-align:center">근무 기록</h2>
+                                <div class="info_wrap">
+                                    <div style="float:left;">
+                                        <img th:src="@{/img/record.svg}" width="100" height="100">
+                                        <!--                  <img src="../../static/img/record.svg" width="100" height="100">-->
+                                    </div>
+                                    <div class="info_work"><span>총 근무 시간  |</span> 30 시간<br/>
+                                        <span>처리한 카드 건수  |</span> 900 건<br/>
+                                        <span>예상 수익  |</span> 27,000 원<br/>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h2 style="text-align:center">이번주 근무 진행도</h2>
+                                    <div class="info_wrap">
+                                        <div style="float:left;">
+                                            <canvas id="myChart" width="100" height="100"></canvas>
+                                        </div>
+                                        <div class="info"><span style="font-weight:bold;">배정 근무 시간 |</span> 15 시간<br/>
+                                            <span>목표 카드 건수  |</span> 450 건<br/>
+                                            <span>예상 수익  |</span> 13,500 원<br/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
-  </div>
-  <!-- /chart -->
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.0/Chart.bundle.min.js"></script>
-  <script type="text/javascript">
-    var num = 0.65;
-    window.onload=function(){
-      Chart.pluginService.register({
-        beforeDraw: function (chart) {
-          if (chart.config.options.elements.center) {
-            //Get ctx from string
-            var ctx = chart.chart.ctx;
-            //Get options from the center object in options
-            var centerConfig = chart.config.options.elements.center;
-            var fontSize = centerConfig.fontSize || '20';
-            var fontStyle = centerConfig.fontStyle || 'Arial';
-            var txt = centerConfig.text;
-            var color = centerConfig.color || '#000';
-            var sidePadding = centerConfig.sidePadding || 20;
-            var sidePaddingCalculated = (sidePadding/100) * (chart.innerRadius * 2)
-            //Start with a base font of 30px
-            ctx.font = fontSize + "px " + fontStyle;
-            //Get the width of the string and also the width of the element minus 10 to give it 5px side padding
-            var stringWidth = ctx.measureText(txt).width;
-            var elementWidth = (chart.innerRadius * 2) - sidePaddingCalculated;
-            // Find out how much the font can grow in width.
-            var widthRatio = elementWidth / stringWidth;
-            var newFontSize = Math.floor(30 * widthRatio);
-            var elementHeight = (chart.innerRadius * 0.7);
-            // Pick a new font size so it will not be larger than the height of label.
-            var fontSizeToUse = Math.min(newFontSize, elementHeight);
-            //Set font settings to draw it correctly.
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            var centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
-            var centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
-            ctx.font = fontSizeToUse+"px " + fontStyle;
-            ctx.fillStyle = color;
-            //Draw text in center
-            ctx.fillText(txt, centerX, centerY);
-          }
+    <!-- /chart -->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.0/Chart.bundle.min.js"></script>
+    <script type="text/javascript">
+        var num = 0.65;
+        window.onload = function () {
+            Chart.pluginService.register({
+                beforeDraw: function (chart) {
+                    if (chart.config.options.elements.center) {
+                        //Get ctx from string
+                        var ctx = chart.chart.ctx;
+                        //Get options from the center object in options
+                        var centerConfig = chart.config.options.elements.center;
+                        var fontSize = centerConfig.fontSize || '20';
+                        var fontStyle = centerConfig.fontStyle || 'Arial';
+                        var txt = centerConfig.text;
+                        var color = centerConfig.color || '#000';
+                        var sidePadding = centerConfig.sidePadding || 20;
+                        var sidePaddingCalculated = (sidePadding / 100) * (chart.innerRadius * 2)
+                        //Start with a base font of 30px
+                        ctx.font = fontSize + "px " + fontStyle;
+                        //Get the width of the string and also the width of the element minus 10 to give it 5px side padding
+                        var stringWidth = ctx.measureText(txt).width;
+                        var elementWidth = (chart.innerRadius * 2) - sidePaddingCalculated;
+                        // Find out how much the font can grow in width.
+                        var widthRatio = elementWidth / stringWidth;
+                        var newFontSize = Math.floor(30 * widthRatio);
+                        var elementHeight = (chart.innerRadius * 0.7);
+                        // Pick a new font size so it will not be larger than the height of label.
+                        var fontSizeToUse = Math.min(newFontSize, elementHeight);
+                        //Set font settings to draw it correctly.
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        var centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+                        var centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+                        ctx.font = fontSizeToUse + "px " + fontStyle;
+                        ctx.fillStyle = color;
+                        //Draw text in center
+                        ctx.fillText(txt, centerX, centerY);
+                    }
+                }
+            });
+            var config = {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        "진행중",
+                        "진행완료"
+                    ],
+                    datasets: [{
+                        data: [num, 1 - num],
+                        backgroundColor: [
+                            "#336699",
+                            "#DDEEFF"
+                        ],
+                        hoverBackgroundColor: [
+                            "#336699",
+                            "#DDEEFF"
+                        ],
+                        borderWidth: 0,
+                        scaleBeginAtZero: true
+                    }]
+                },
+                options: {
+                    tooltips: {enabled: false},
+                    hover: {
+                        //animationDuration: 0
+                        mode: null
+                    },
+                    responsive: true,
+                    legend: {
+                        display: false
+                    },
+                    elements: {
+                        center: {
+                            text: Math.round(num * 100) + "%",
+                            color: '#336699', // Default is #000000
+                            fontStyle: 'Arial', // Default is Arial
+                            sidePadding: 15 // Defualt is 20 (as a percentage)
+                        }
+                    },
+                    maintainAspectRatio: false,
+                    cutoutPercentage: 70
+                    //animation:false
+                }
+            };
+            var ctx = document.getElementById("myChart").getContext("2d");
+            var myChart = new Chart(ctx, config);
         }
-      });
-      var config = {
-        type: 'doughnut',
-        data: {
-          labels: [
-            "진행중",
-            "진행완료"
-          ],
-          datasets: [{
-            data: [num, 1-num],
-            backgroundColor: [
-              "#336699",
-              "#DDEEFF"
-            ],
-            hoverBackgroundColor: [
-              "#336699",
-              "#DDEEFF"
-            ],
-            borderWidth: 0,
-            scaleBeginAtZero: true
-          }]
-        },
-        options: {
-          tooltips: {enabled: false},
-          hover: {
-            //animationDuration: 0
-            mode: null
-          },
-          responsive: true,
-          legend: {
-            display: false
-          },
-          elements: {
-            center: {
-              text: Math.round(num*100)+"%",
-              color: '#336699', // Default is #000000
-              fontStyle: 'Arial', // Default is Arial
-              sidePadding: 15 // Defualt is 20 (as a percentage)
-            }
-          },
-          maintainAspectRatio : false,
-          cutoutPercentage:70
-          //animation:false
-        }
-      };
-      var ctx = document.getElementById("myChart").getContext("2d");
-      var myChart = new Chart(ctx, config);
-    }
-  </script>
+    </script>
 </th:block>
 </html>

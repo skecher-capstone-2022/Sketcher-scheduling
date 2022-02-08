@@ -1,29 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" class="no-js">
-    <head>
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-Level Push Menu - Demo 1</title>
-    <meta name="description" content="Multi-Level Push Menu: Off-screen navigation with multiple levels"/>
-    <meta name="keywords"
-          content="multi-level, menu, navigation, off-canvas, off-screen, mobile, levels, nested, transform"/>
-    <meta name="author" content="Codrops"/>
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" type="text/css" href="../../static/css/normalize.css"/>
-    <link rel="stylesheet" type="text/css" href="../../static/css/demo.css"/>
-    <link rel="stylesheet" type="text/css" href="../../static/css/icons.css"/>
-    <link rel="stylesheet" type="text/css" href="../../static/css/component.css"/>
-    <script src="../../static/js/modernizr.custom.js"></script>
-
-    <!--schedule-->
-    <link type="text/css" rel="stylesheet" href="../../static/css/menu_list.css"/>
-
-    <!--full-calendar-->
-    <meta charset='utf-8'/>
-    <!-- 화면 해상도에 따라 글자 크기 대응(모바일 대응) -->
-    <meta name="viewport"
-          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/menu_layout}">
+<head>
+    <title>전체 매니저 목록</title>
+    <link th:href="@{/css/manager_list.css}" rel="stylesheet"/>
     <!-- jquery CDN -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- fullcalendar CDN -->
@@ -33,7 +13,7 @@
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
     <script>
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             var initialLocaleCode = 'ko';
             var localeSelectorEl = document.getElementById('locale-selector');
             /* initialize the external events
@@ -42,7 +22,7 @@
             var containerEl = document.getElementById('external-events-list');
             new FullCalendar.Draggable(containerEl, {
                 itemSelector: '.fc-event',
-                eventData: function(eventEl) {
+                eventData: function (eventEl) {
                     return {
                         title: eventEl.innerText.trim()
                     }
@@ -76,7 +56,7 @@
                 },
                 editable: true,
                 droppable: true, // this allows things to be dropped onto the calendar
-                drop: function(arg) {
+                drop: function (arg) {
                     // is the "remove after drop" checkbox checked?
                     if (document.getElementById('drop-remove').checked) {
                         // if so, remove the element from the "Draggable Events" list
@@ -86,79 +66,79 @@
                 events: [
                     {
                         title: '스케줄 수정 요청 기간',
-                        color:'darksalmon',
+                        color: 'darksalmon',
                         start: '2022-02-07',
                         end: '2022-02-13'
                     },
                     {
                         title: '김희수',
-                        color:'yellowgreen',
+                        color: 'yellowgreen',
                         start: '2022-02-10T11:00:00',
                         end: '2022-02-10T13:00:00'
                     },
                     {
                         title: '김희수',
-                        color:'yellowgreen',
+                        color: 'yellowgreen',
                         start: '2022-02-08T11:00:00',
                         end: '2022-02-08T13:00:00'
                     },
                     {
                         title: '김희수',
-                        color:'yellowgreen',
+                        color: 'yellowgreen',
                         start: '2022-02-07T11:00:00',
                         end: '2022-02-07T13:00:00'
                     },
                     {
                         title: '정민환',
-                        color:'#3788d8',
+                        color: '#3788d8',
                         start: '2022-02-07T08:00:00',
                         end: '2022-02-07T10:00:00'
                     },
                     {
                         title: '정민환',
-                        color:'#3788d8',
+                        color: '#3788d8',
                         start: '2022-02-09T08:00:00',
                         end: '2022-02-09T10:00:00'
                     },
                     {
                         title: '정민환',
-                        color:'#3788d8',
+                        color: '#3788d8',
                         start: '2022-02-12T08:00:00',
                         end: '2022-02-12T10:00:00'
                     },
                     {
                         title: '박태영',
-                        color:'coral',
+                        color: 'coral',
                         start: '2022-02-07T16:00:00',
                         end: '2022-02-07T18:00:00'
                     },
                     {
                         title: '박태영',
-                        color:'coral',
+                        color: 'coral',
                         start: '2022-02-11T16:00:00',
                         end: '2022-02-11T18:00:00'
                     },
                     {
                         title: '이혜원',
-                        color:'darkorchid',
+                        color: 'darkorchid',
                         start: '2022-02-12T15:00:00',
                         end: '2022-02-12T17:30:00'
                     },
                     {
                         title: '이혜원',
-                        color:'darkorchid',
+                        color: 'darkorchid',
                         start: '2022-02-07T15:00:00',
                         end: '2022-02-07T17:30:00'
                     },
                     {
                         title: '박태영',
-                        color:'coral',
+                        color: 'coral',
                         start: '2022-02-09T16:00:00',
                         end: '2022-02-09T18:30:00'
                     },
                     {
                         title: '이혜원',
-                        color:'darkorchid',
+                        color: 'darkorchid',
                         start: '2022-02-09T17:00:00',
                         end: '2022-02-09T19:30:00'
                     },
@@ -179,364 +159,144 @@
 
     </script>
     <style>
-body {
-	font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
-	font-size: 14px;
-}
+        body {
+            font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+            font-size: 14px;
+        }
 
-.logo {
-	display: block;
-	margin: 45px auto 5px auto;
-}
-.ground {
-	padding-top: 70px;
-	padding-bottom: 70px;
-}
-.access_user {
-	width: 300px;
-	height: 100px;
-	float: right;
-	margin-right: 100px;
-	padding-top: 50px;
-}
-/*body {*/
+        .logo {
+            display: block;
+            margin: 45px auto 5px auto;
+        }
+
+        .ground {
+            padding-top: 70px;
+            padding-bottom: 70px;
+        }
+
+        .access_user {
+            width: 300px;
+            height: 100px;
+            float: right;
+            margin-right: 100px;
+            padding-top: 50px;
+        }
+
+        /*body {*/
         /*    margin-top: 40px;*/
         /*    font-size: 14px;*/
         /*    font-family: Arial, Helvetica Neue, Helvetica, sans-serif;*/
         /*}*/
 
-#external-events {
-	position:absolute;
-	//left: 100px;
-    top: 100px;
-	width: 150px;
-	overflow:hidden;
-	padding: 0 10px;
-	margin: 0px 60px;
-	border: 1px solid #ccc;
-	background: #eee;
-	text-align: left;
-}
-#external-events h4 {
-	font-size: 16px;
-	margin-top: 0;
-	padding-top: 1em;
-}
-#external-events .fc-event {
-	margin: 3px 0;
-	cursor: move;
-}
-#external-events p {
-	margin: 1.5em 0;
-	font-size: 11px;
-	color: #666;
-}
-#external-events p input {
-	margin: 0;
-	vertical-align: middle;
-}
-#calendar-wrap {
-	margin-left: 200px;
-}
-#calendar {
-	max-width: 1100px;
-	margin: 40px auto;
-	padding: 0 10px;
-}
-</style>
+        #external-events {
+            position: absolute;
+            /*left: 100 px;*/
+            top: 100px;
+            width: 150px;
+            overflow: hidden;
+            padding: 0 10px;
+            margin: 0px 60px;
+            border: 1px solid #ccc;
+            background: #eee;
+            text-align: left;
+        }
 
-    <!--    <style>-->
+        #external-events h4 {
+            font-size: 16px;
+            margin-top: 0;
+            padding-top: 1em;
+        }
 
-    <!--        body {-->
-    <!--            margin-top: 40px;-->
-    <!--            font-size: 14px;-->
-    <!--            font-family: Arial, Helvetica Neue, Helvetica, sans-serif;-->
-    <!--        }-->
+        #external-events .fc-event {
+            margin: 3px 0;
+            cursor: move;
+        }
 
-    <!--        #external-events {-->
-    <!--            position: fixed;-->
-    <!--            left: 20px;-->
-    <!--            top: 20px;-->
-    <!--            width: 150px;-->
-    <!--            padding: 0 10px;-->
-    <!--            border: 1px solid #ccc;-->
-    <!--            background: #eee;-->
-    <!--            text-align: left;-->
-    <!--        }-->
+        #external-events p {
+            margin: 1.5em 0;
+            font-size: 11px;
+            color: #666;
+        }
 
-    <!--        #external-events h4 {-->
-    <!--            font-size: 16px;-->
-    <!--            margin-top: 0;-->
-    <!--            padding-top: 1em;-->
-    <!--        }-->
+        #external-events p input {
+            margin: 0;
+            vertical-align: middle;
+        }
 
-    <!--        #external-events .fc-event {-->
-    <!--            margin: 3px 0;-->
-    <!--            cursor: move;-->
-    <!--        }-->
+        #calendar-wrap {
+            margin-left: 200px;
+        }
 
-    <!--        #external-events p {-->
-    <!--            margin: 1.5em 0;-->
-    <!--            font-size: 11px;-->
-    <!--            color: #666;-->
-    <!--        }-->
+        #calendar {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 10px;
+        }
+    </style>
 
-    <!--        #external-events p input {-->
-    <!--            margin: 0;-->
-    <!--            vertical-align: middle;-->
-    <!--        }-->
+</head>
 
-    <!--        #calendar-wrap {-->
-    <!--            margin-left: 200px;-->
-    <!--        }-->
+<th:block layout:fragment="ground-wrap">
+    <div class="ground">
+        <div id='wrap'>
+            <div id='external-events'>
+                <h4>Draggable Events</h4>
+                <div id='external-events-list'>
+                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+                        <div class='fc-event-main'>My Event 1</div>
+                    </div>
+                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+                        <div class='fc-event-main'>My Event 2</div>
+                    </div>
+                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+                        <div class='fc-event-main'>My Event 3</div>
+                    </div>
+                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+                        <div class='fc-event-main'>My Event 4</div>
+                    </div>
+                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+                        <div class='fc-event-main'>My Event 5</div>
+                    </div>
 
-    <!--        #calendar {-->
-    <!--            max-width: 1100px;-->
-    <!--            margin: 0 auto;-->
-    <!--        }-->
-    <!--        .logo {-->
-    <!--            display: block;-->
-    <!--            margin: 45px auto 5px auto;-->
-    <!--        }-->
-
-    <!--        .ground {-->
-    <!--            padding-top: 70px;-->
-    <!--            padding-bottom: 70px;-->
-    <!--        }-->
-
-    <!--        .access_user {-->
-    <!--            width: 300px;-->
-    <!--            height: 100px;-->
-    <!--            float: right;-->
-    <!--            margin-right: 100px;-->
-    <!--            padding-top: 50px;-->
-    <!--        }-->
-    <!--    </style>    -->
-
-    <!--        body {-->
-    <!--            margin: 0;-->
-    <!--            padding: 0;-->
-    <!--            font-family: Arial, Helvetica Neue, Helvetica, sans-serif;-->
-    <!--            font-size: 14px;-->
-    <!--            background-image: url(../../static/img/background.jpg);-->
-    <!--            background-repeat: no-repeat;-->
-    <!--            background-size: cover;-->
-    <!--        }-->
-
-    <!--        #top {-->
-    <!--            background: #eee;-->
-    <!--            border-bottom: 1px solid #ddd;-->
-    <!--            padding: 0 10px;-->
-    <!--            line-height: 40px;-->
-    <!--            font-size: 12px;-->
-    <!--        }-->
-
-    <!--        #calendar {-->
-    <!--            max-width: 1100px;-->
-    <!--            margin: 40px auto;-->
-    <!--            padding: 0 10px;-->
-    <!--        }-->
-
-    </head>
-    <body>
-    <div class="container"> 
-      <!-- Push Wrapper -->
-      <div class="mp-pusher" id="mp-pusher"> 
-        
-        <!-- mp-menu -->
-        <nav id="mp-menu" class="mp-menu">
-          <div class="mp-level"> <img class="logo" src="../../static/img/logo.png" width="50" height="50"/>
-            <h2 class="icon icon-world">Spring Manager Scheduling System</h2>
-            <ul>
-              <li><a class="icon icon-shop" href="../home.html">메인화면</a></li>
-              <li class="icon icon-arrow-left"> <a class="icon icon-calendar" href="#">스케줄</a>
-                <div class="mp-level">
-                  <h2 class="icon icon-calendar">스케줄</h2>
-                  <ul>
-                    <li><a href="#">전체 스케줄 조회</a></li>
-                    <li><a href="#">개인 스케줄 조회</a></li>
-                    <li><a href="#">스케줄 모델 생성</a></li>
-                    <li><a href="#">근무 스케줄 배정</a></li>
-                  </ul>
                 </div>
-              </li>
-              <li class="icon icon-arrow-left"> <a class="icon icon-user" href="#">매니저관리</a>
-                <div class="mp-level">
-                  <h2 class="icon icon-user">매니저관리</h2>
-                  <ul>
-                    <li><a href="../manager/all_manager_list.html">전체 매니저 조회</a></li>
-                    <li><a href="../manager/work_manager_list.html">근무중인 매니저</a></li>
-                    <li><a href="#">신입 매니저 조회</a></li>
-                  </ul>
-                </div>
-              </li>
-              <li class="icon icon-arrow-left"> <a class="icon icon-mail" href="#">요청알림관리</a>
-                <div class="mp-level">
-                  <h2 class="icon icon-mail">요청알림관리</h2>
-                  <ul>
-                    <li><a href="../request/schedule_upd_list.html">스케줄 수정 요청</a></li>
-                    <li><a href="../request/withdrawal_req_list.html">매니저 탈퇴 요청</a></li>
-                  </ul>
-                </div>
-              </li>
-              <li><a class="icon icon-key" href="#">마이페이지</a></li>
-              <li><a class="icon icon-cup" href="../user/login.html">로그아웃</a></li>
-            </ul>
-          </div>
-        </nav>
-        <!-- /mp-menu --> 
-        
-        <!--        <div id='container'>--> 
-        <!--            <div id='calendar'></div>--> 
-        <!--        </div>-->
-        <div class="scroller"><!-- this is for emulating position fixed of the nav -->
-          <div class="block block-40 clearfix">
-            <p><a href="#" id="trigger" class="menu-trigger">Open/Close Menu</a></p>
-          </div>
-          <div class="access_user">
-            <div class="access_user_hello" style="font-size: 1.4rem; font-weight: 600;color: #b0b0b0f2"> 안녕하세요 <span style="color: #ff6d6d">홍길동</span>님! </div>
-            <div class="logout"> </div>
-          </div>
-          
-          <div class="ground">
-              <div id='wrap'>
-                <div id='external-events'>
-                  <h4>Draggable Events</h4>
-                  <div id='external-events-list'>
-                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-                      <div class='fc-event-main'>My Event 1</div>
-                    </div>
-                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-                      <div class='fc-event-main'>My Event 2</div>
-                    </div>
-                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-                      <div class='fc-event-main'>My Event 3</div>
-                    </div>
-                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-                      <div class='fc-event-main'>My Event 4</div>
-                    </div>
-                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-                      <div class='fc-event-main'>My Event 5</div>
-                    </div>
-                    
-                  </div>
-                  <p>
-                    <input type='checkbox' id='drop-remove' />
+                <p>
+                    <input type='checkbox' id='drop-remove'/>
                     <label for='drop-remove'>remove after drop</label>
-                  </p>
-                </div>
-                <div id='calendar-wrap'>
-                  <div id='calendar'></div>
-                </div>
-              </div>
-          </div>
+                </p>
+            </div>
+            <div id='calendar-wrap'>
+                <div id='calendar'></div>
+            </div>
         </div>
-      </div>
-      <!-- /pusher --> 
     </div>
-    <!-- /container -->
 
-    </body>
-    <script src="../../static/js/classie.js"></script>
-    <script src="../../static/js/mlpushmenu.js"></script>
-    <script>
-    new mlPushMenu(document.getElementById('mp-menu'), document.getElementById('trigger'));
-</script>
-    <!--calendar-->
-    <!--<script type="text/javascript">-->
-    <!--    document.addEventListener('DOMContentLoaded', function () {-->
-    <!--        var calendarEl = document.getElementById('calendar');-->
-
-    <!--        var calendar = new FullCalendar.Calendar(calendarEl, {-->
-    <!--            initialView: 'dayGridMonth',-->
-    <!--            initialDate: '2022-01-07',-->
-    <!--            headerToolbar: {-->
-    <!--                left: 'prev,next today',-->
-    <!--                center: 'title',-->
-    <!--                right: 'dayGridMonth,timeGridWeek,timeGridDay'-->
-    <!--            },-->
-    <!--            events: [-->
-    <!--                {-->
-    <!--                    title: 'All Day Event',-->
-    <!--                    start: '2022-01-01'-->
-    <!--                },-->
-    <!--                {-->
-    <!--                    title: 'Long Event',-->
-    <!--                    start: '2022-01-07',-->
-    <!--                    end: '2022-01-10'-->
-    <!--                },-->
-    <!--                {-->
-    <!--                    groupId: '999',-->
-    <!--                    title: 'Repeating Event',-->
-    <!--                    start: '2022-01-09T16:00:00'-->
-    <!--                },-->
-    <!--                {-->
-    <!--                    groupId: '999',-->
-    <!--                    title: 'Repeating Event',-->
-    <!--                    start: '2022-01-16T16:00:00'-->
-    <!--                },-->
-    <!--                {-->
-    <!--                    title: 'Conference',-->
-    <!--                    start: '2022-01-11',-->
-    <!--                    end: '2022-01-13'-->
-    <!--                },-->
-    <!--                {-->
-    <!--                    title: 'Meeting',-->
-    <!--                    start: '2022-01-12T10:30:00',-->
-    <!--                    end: '2022-01-12T12:30:00'-->
-    <!--                },-->
-    <!--                {-->
-    <!--                    title: 'Lunch',-->
-    <!--                    start: '2022-01-12T12:00:00'-->
-    <!--                },-->
-    <!--                {-->
-    <!--                    title: 'Meeting',-->
-    <!--                    start: '2022-01-12T14:30:00'-->
-    <!--                },-->
-    <!--                {-->
-    <!--                    title: 'Birthday Party',-->
-    <!--                    start: '2022-01-13T07:00:00'-->
-    <!--                },-->
-    <!--                {-->
-    <!--                    title: 'Click for Google',-->
-    <!--                    url: 'http://google.com/',-->
-    <!--                    start: '2022-01-28'-->
-    <!--                }-->
-    <!--            ]-->
-    <!--        });-->
-
-    <!--        calendar.render();-->
-    <!--    });-->
-    <!--</script>-->
     <script src="fullcalendar/lib/locales-all.js"></script>
+
     <script>
-    var calendarEl = document.getElementById('calendar');
+        var calendarEl = document.getElementById('calendar');
 
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-        plugins: ["dayGrid"]
-        , locale: "ko"
-    });
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            plugins: ["dayGrid"]
+            , locale: "ko"
+        });
 
-</script>
+    </script>
 
-<script language="JavaScript">
+    <script>
+        // 기본 위치(top)값
+        var floatPosition = parseInt($("#external-events").css('top'))
 
-// 기본 위치(top)값
-var floatPosition = parseInt($("#external-events").css('top'))
+        // scroll 인식
+        $(window).scroll(function () {
+            // 현재 스크롤 위치
+            var currentTop = $(window).scrollTop();
+            var bannerTop = currentTop + floatPosition + "px";
 
-// scroll 인식
-$(window).scroll(function() {
-  
-    // 현재 스크롤 위치
-    var currentTop = $(window).scrollTop();
-    var bannerTop = currentTop + floatPosition + "px";
-
-    //이동 애니메이션
-    $("#external-events").stop().animate({
-      "top" : bannerTop
-    }, 500);
-
-}).scroll();  
-</script>
-
+            //이동 애니메이션
+            $("#external-events").stop().animate({
+                "top": bannerTop
+            }, 500);
+        }).scroll();
+    </script>
+</th:block>
 </html>

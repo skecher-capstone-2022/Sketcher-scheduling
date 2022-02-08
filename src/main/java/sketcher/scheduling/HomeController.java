@@ -47,4 +47,19 @@ public class HomeController {
     public String goHome8(HttpServletRequest request) {
         return "request/withdrawal_req_list";
     }
+
+    @RequestMapping(value = "/calendar_admin", method = RequestMethod.GET)
+    public String goHome9(HttpServletRequest request) {
+        return "full-calendar/calendar-admin";
+    }
+
+    @RequestMapping(value = "/calendar_admin_update", method = RequestMethod.GET)
+    public String goHome10(HttpServletRequest request) {
+        return "full-calendar/calendar-admin-update";
+    }
+
+    @RequestMapping(value = "/calendar", method = RequestMethod.GET)
+    public String goHome11(HttpServletRequest request) {
+        return "full-calendar/calendar";
+    }
 }
