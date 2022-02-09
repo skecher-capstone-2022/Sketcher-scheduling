@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/menu_layout}">
 <head>
-    <title>전체 매니저 목록</title>
+    <title>개인 스케줄 조회</title>
     <link th:href="@{/css/manager_list.css}" rel="stylesheet"/>
     <!-- jquery CDN -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -143,10 +143,10 @@
             margin: 45px auto 5px auto;
         }
 
-        .ground {
-            padding-top: 70px;
-            padding-bottom: 70px;
-        }
+        /*.ground {*/
+        /*    padding-top: 70px;*/
+        /*    padding-bottom: 70px;*/
+        /*}*/
 
         .access_user {
             width: 300px;
@@ -163,18 +163,22 @@
 
 <th:block layout:fragment="ground-wrap">
     <div class="ground">
-        <!--                <div id='top'>-->
+        <div class="main">
+            <div class="title1">
+                <h1>개인 스케줄 조회</h1>
+            </div>
+            <!--                <div id='top'>-->
 
-        <!--                    Locales:-->
-        <!--                    <select id='locale-selector'></select>-->
+            <!--                    Locales:-->
+            <!--                    <select id='locale-selector'></select>-->
 
-        <!--                </div>-->
+            <!--                </div>-->
 
-        <div id='calendar'></div>
+            <div id='calendar'></div>
+        </div>
     </div>
 
     <script src="fullcalendar/lib/locales-all.js"></script>
-    locale: "ko",
     <script>
         var calendarEl = document.getElementById('calendar');
 

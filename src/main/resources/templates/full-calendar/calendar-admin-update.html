@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/menu_layout}">
 <head>
-    <title>전체 매니저 목록</title>
+    <title>스케줄 수정</title>
     <link th:href="@{/css/manager_list.css}" rel="stylesheet"/>
     <!-- jquery CDN -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -169,10 +169,10 @@
             margin: 45px auto 5px auto;
         }
 
-        .ground {
-            padding-top: 70px;
-            padding-bottom: 70px;
-        }
+        /*.ground {*/
+        /*    padding-top: 70px;*/
+        /*    padding-bottom: 70px;*/
+        /*}*/
 
         .access_user {
             width: 300px;
@@ -191,11 +191,11 @@
         #external-events {
             position: absolute;
             /*left: 100 px;*/
-            top: 100px;
+            /*top: 100px;*/
             width: 150px;
             overflow: hidden;
             padding: 0 10px;
-            margin: 0px 60px;
+            margin-top: 80px;
             border: 1px solid #ccc;
             background: #eee;
             text-align: left;
@@ -238,34 +238,39 @@
 
 <th:block layout:fragment="ground-wrap">
     <div class="ground">
-        <div id='wrap'>
-            <div id='external-events'>
-                <h4>Draggable Events</h4>
-                <div id='external-events-list'>
-                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-                        <div class='fc-event-main'>My Event 1</div>
-                    </div>
-                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-                        <div class='fc-event-main'>My Event 2</div>
-                    </div>
-                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-                        <div class='fc-event-main'>My Event 3</div>
-                    </div>
-                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-                        <div class='fc-event-main'>My Event 4</div>
-                    </div>
-                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-                        <div class='fc-event-main'>My Event 5</div>
-                    </div>
-
-                </div>
-                <p>
-                    <input type='checkbox' id='drop-remove'/>
-                    <label for='drop-remove'>remove after drop</label>
-                </p>
+        <div class="main">
+            <div class="title1">
+                <h1>스케줄 수정</h1>
             </div>
-            <div id='calendar-wrap'>
-                <div id='calendar'></div>
+            <div id='wrap'>
+                <div id='external-events'>
+                    <h4>Draggable Events</h4>
+                    <div id='external-events-list'>
+                        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+                            <div class='fc-event-main'>My Event 1</div>
+                        </div>
+                        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+                            <div class='fc-event-main'>My Event 2</div>
+                        </div>
+                        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+                            <div class='fc-event-main'>My Event 3</div>
+                        </div>
+                        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+                            <div class='fc-event-main'>My Event 4</div>
+                        </div>
+                        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+                            <div class='fc-event-main'>My Event 5</div>
+                        </div>
+
+                    </div>
+                    <p>
+                        <input type='checkbox' id='drop-remove'/>
+                        <label for='drop-remove'>remove after drop</label>
+                    </p>
+                </div>
+                <div id='calendar-wrap'>
+                    <div id='calendar'></div>
+                </div>
             </div>
         </div>
     </div>
