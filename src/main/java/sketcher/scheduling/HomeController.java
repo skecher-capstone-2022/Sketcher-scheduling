@@ -62,4 +62,23 @@ public class HomeController {
     public String goHome11(HttpServletRequest request) {
         return "full-calendar/calendar";
     }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login(HttpServletRequest request) {
+        return "user/login";
+    }
+
+//    step3
+    @RequestMapping(value = "/step1", method = RequestMethod.GET)
+    public String step1(HttpServletRequest request) {
+        return "user/step1";
+    }
+    @RequestMapping(value = "/step2", method = RequestMethod.GET)
+    public String step2(HttpServletRequest request) {
+        return "user/step2";
+    }
+    @RequestMapping(value = "/step3", method = RequestMethod.GET)
+    public String step3(HttpServletRequest request) {
+        return "user/step3";
+    }
 }
