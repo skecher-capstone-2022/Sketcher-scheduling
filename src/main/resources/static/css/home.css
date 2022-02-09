@@ -2,7 +2,6 @@
 /* CSS Document */
 
 body {
-
 	margin:0;
 }
 
@@ -22,20 +21,14 @@ body {
 	margin-top:80px;
 }
 
-.input {
-	padding:3px;
-}
+/*.input {*/
+/*	padding:3px;*/
+/*}*/
 
-.btn {
-	padding: 0;
-	border: none;
-	background: none;
-}
-
-.input {
-	border-left-width:0;
-	border-right-width:0;
-	border-top-width:0;
-	border-bottom-width:1;
-	margin:2%;
-}
+/*.input {*/
+/*	border-left-width:0;*/
+/*	border-right-width:0;*/
+/*	border-top-width:0;*/
+/*	border-bottom-width:1;*/
+/*	margin:2%;*/
+/*}*/
