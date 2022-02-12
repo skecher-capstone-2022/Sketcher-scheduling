@@ -115,6 +115,8 @@ perspective effects (not including the modals and the overlay).
     float:right;
     font-size: 1.0rem;
     border-radius: 8px;
+    color:white;
+    background:#939393;
 }
 .md-close-wrap{
     margin: 20px 0 20px 0;

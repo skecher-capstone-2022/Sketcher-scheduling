@@ -4,20 +4,8 @@
 <head>
     <title>마이페이지</title>
     <link th:href="@{/css/mypage.css}" rel="stylesheet"/>
+    <link th:href="@{/css/modal-component.css}" rel="stylesheet"/>
     <style media="screen">
-        .logo {
-            display: block;
-            margin: 45px auto 5px auto;
-        }
-
-        .access_user {
-            width: 300px;
-            height: 100px;
-            float: right;
-            margin-right: 100px;
-            padding-top: 50px;
-        }
-
         .btn {
             padding: 10px 20px;
             width: max-content;
@@ -35,6 +23,24 @@
 
         span {
             font-weight: bold;
+        }
+
+        .md-modal {
+            max-width: 1500px;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+        }
+
+        .modal_span {
+            color: red;
+        }
+
+        input[type="text"] {
+            height: 25px;
+            margin-left: 10px;
         }
     </style>
 </head>
@@ -59,11 +65,13 @@
                             010-1234-5678<br/>
                         </div>
                     </div>
+                    <div>
                     <div class="btn_align">
-                        <button class="btn btn-6 btn-6b reqbtn1" onclick="">사용자 정보 수정</button>
+                        <button class="btn btn-6 btn-6b reqbtn1 md-trigger" data-modal="modal-2">사용자 정보 수정</button>
                     </div>
                     <div class="btn_align">
-                        <button class="btn btn-6 btn-6b reqbtn2" onclick="">탈퇴하기</button>
+                        <button class="btn btn-6 btn-6b reqbtn2 md-trigger" data-modal="modal-1">탈퇴하기</button>
+                    </div>
                     </div>
                 </div>
             </div>

@@ -1,38 +1,27 @@
-<!DOCTYPE html>
-<html lang="en" class="no-js">
-<head>
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--		<link rel="stylesheet" type="text/css" href="../../static/css/modal-default.css" />-->
-    <link rel="stylesheet" type="text/css" href="../../static/css/modal-component.css"/>
-    <script src="../../static/js/modernizr.custom5.js"></script>
+<div class="md-overlay"></div>
+<!--<style>-->
+<!--    .md-modal {-->
+<!--        max-width: 1500px;-->
+<!--    }-->
 
-</head>
-<style>
-    .md-modal {
-        max-width: 1500px;
-    }
+<!--    input[type="checkbox"] {-->
+<!--        width: 20px;-->
+<!--        height: 20px;-->
+<!--    }-->
 
-    input[type="checkbox"] {
-        width: 20px;
-        height: 20px;
-    }
+<!--    .modal_span {-->
+<!--        color: red;-->
+<!--    }-->
 
-    span {
-        color: red;
-    }
+<!--    input[type="text"] {-->
+<!--        height: 25px;-->
+<!--        margin-left: 10px;-->
+<!--    }-->
 
-    input[type="text"] {
-        height: 25px;
-        margin-left: 10px;
-    }
-
-    td {
-        padding-bottom: 15px;
-    }
-</style>
-<body>
+<!--    td {-->
+<!--        padding-bottom: 15px;-->
+<!--    }-->
+<!--</style>-->
 
 <!--회원탈퇴 요청 modal-->
 <div class="md-modal md-effect-1" id="modal-1">
@@ -42,7 +31,7 @@
             <p>회원탈퇴를 신청하기 전에 안내 사항을 꼭 확인해주세요.</p>
 
             <p>
-                <span>사용하고 계신 아이디( admin )</span>는 탈퇴할 경우 재사용 및 복구가 불가능합니다.
+                <span class="modal_span">사용하고 계신 아이디( admin )</span>는 탈퇴할 경우 재사용 및 복구가 불가능합니다.
                 탈퇴한 아이디는 본인과 타인 모두 재사용 및 복구가 불가하오니 신중하게 선택하시기 바랍니다.
             </p><br>
 
@@ -71,7 +60,7 @@
             </table>
             <br><br>
             <h4>변경할 정보를 입력해주세요.</h4>
-            <p>희망하는 근무 타임을 선택해주세요.<span>(여러 개 선택 가능)</span></p>
+            <p>희망하는 근무 타임을 선택해주세요.<span class="modal_span">(여러 개 선택 가능)</span></p>
             <p><label><input type="checkbox"> 새벽 0시 ~ 6시</label></p>
             <p><label><input type="checkbox"> 오전 6시 ~ 12시</label></p>
             <p><label><input type="checkbox"> 오후 12시 ~ 18시</label></p>
@@ -149,26 +138,25 @@
         </div>
     </div>
 </div>
-
-<div class="container">
-    <!-- Top Navigation -->
-
-
-    <div class="column">
-        <button class="md-trigger" data-modal="modal-1">Fade in &amp; Scale</button>
+<!--사용자 권한 수정 modal-->
+<div class="md-modal md-effect-1" id="modal-4">
+    <div class="md-content">
+        <h3>사용자 권한 수정</h3>
+        <div>
+            <p>해당 매니저의 권한을 수정합니다.</p>
+            <p>기존 권한 | <span class="modal_span">매니저</span> → 변경 후 권한 | <span class="modal_span">관리자</span></p>
+            <div class="md-close-wrap">
+                <button class="md-close">Close me!</button>
+            </div>
+        </div>
     </div>
-    <div class="column">
-        <button class="md-trigger" data-modal="modal-2">Fade in &amp; Scale</button>
-    </div>
-    <div class="column">
-        <button class="md-trigger" data-modal="modal-3">Fade in &amp; Scale</button>
-    </div>
-</div><!-- /container -->
-<div class="md-overlay"></div><!-- the overlay element -->
+</div>
+
 
 <!-- classie.js by @desandro: https://github.com/desandro/classie -->
-<script src="../../static/js/classie5.js"></script>
-<script src="../../static/js/modalEffects.js"></script>
+
+<script th:src="@{/js/classie5.js}" type="text/javascript"></script>
+<script th:src="@{/js/modalEffects.js}" type="text/javascript"></script>
 
 <!-- for the blur effect -->
 <!-- by @derSchepp https://github.com/Schepp/CSS-Filters-Polyfill -->
@@ -176,7 +164,9 @@
     // this is important for IEs
     var polyfilter_scriptpath = '/js/';
 </script>
-<script src="../../static/js/cssParser.js"></script>
-<script src="../../static/js/css-filters-polyfill.js"></script>
-</body>
-</html>
+<script th:src="@{/js/cssParser.js}" type="text/javascript"></script>
+<script th:src="@{/js/css-filters-polyfill.js}" type="text/javascript"></script>
+<!--    <script>-->
+<!--        var polyfilter_scriptpath = '/css-filters-polyfill/lib/';-->
+<!--    </script>-->
+</div>

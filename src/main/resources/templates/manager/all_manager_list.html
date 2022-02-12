@@ -1,31 +1,18 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/menu_layout}">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/menu_layout}">
 <head>
     <title>전체 매니저 목록</title>
     <link th:href="@{/css/manager_list.css}" rel="stylesheet"/>
 
     <style media="screen">
-        .logo {
-            display: block;
-            margin: 45px auto 5px auto;
-        }
-
-        .access_user {
-            width: 300px;
-            height: 100px;
-            float: right;
-            margin-right: 100px;
-            padding-top: 50px;
-        }
-
         .btn {
             padding: 10px 20px;
             width: max-content;
             font-size: 0.8rem;
             margin-top: 0;
         }
-
 
         input {
             height: 30px;
