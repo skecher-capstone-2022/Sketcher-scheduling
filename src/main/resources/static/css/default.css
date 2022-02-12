@@ -166,43 +166,6 @@ a:active {
     display: none;
 }
 
-/*.color-1 {*/
-/*    background: #0e83cd;*/
-/*}*/
-
-/*.color-2 {*/
-/*    background: #f06060;*/
-/*}*/
-
-/*.color-3 {*/
-/*    background: #fcd04b;*/
-/*}*/
-
-/*.color-4 {*/
-/*    background: #2ecc71;*/
-/*}*/
-
-/*.color-5 {*/
-/*    background: #9e54bd;*/
-/*}*/
-
-/*.color-6 {*/
-/*    background: #4593e3;*/
-/*}*/
-
-/*.color-7 {*/
-/*    background: #2ac56c;*/
-/*}*/
-
-/*.color-8 {*/
-/*    background: #ecf0f1;*/
-/*}*/
-
-/*.color-8 p.text {*/
-/*    color: #aaa;*/
-/*    font-weight: bold;*/
-/*}*/
-
 @media screen and (max-width: 25em) {
 
     .codrops-icon span {
