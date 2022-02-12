@@ -4,6 +4,7 @@
 <head>
     <title>마이페이지</title>
     <link th:href="@{/css/mypage.css}" rel="stylesheet"/>
+    <link th:href="@{/css/modal-component.css}" rel="stylesheet"/>
     <style media="screen">
         .btn {
             padding: 10px 20px;
@@ -23,6 +24,23 @@
         span {
             font-weight: bold;
             font-size: 1.2em;
+        }
+        .md-modal {
+            max-width: 1500px;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+        }
+
+        .modal_span {
+            color: red;
+        }
+
+        input[type="text"] {
+            height: 25px;
+            margin-left: 10px;
         }
     </style>
 </head>
