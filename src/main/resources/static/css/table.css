@@ -1,0 +1,21 @@
+@charset "utf-8";
+/* CSS Document */
+
+table{
+	width: 100%;
+	margin-top:20px;
+	text-align: center;
+	table-layout: fixed;
+	word-break:break-all;
+}
+
+td {
+	padding : 10px 10px 10px 10px;
+	border-bottom:1.5px solid #E6E6E6;
+}
+
+th {
+	padding : 10px 10px 10px 10px;
+	border-top:2.25px solid #D9D9D9;
+	border-bottom:2.25px solid #D9D9D9;
+}

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/menu_layout}">
+<head>
+    <title>매니저 상세 정보 조회</title>
+    <link th:href="@{/css/manager_detail.css}" rel="stylesheet"/>
+    <style media="screen">
+        .btn {
+            padding: 10px 20px;
+            width: max-content;
+            font-size: 0.8rem;
+            margin-top: 0;
+        }
+
+        .detail-page-btn-box {
+            width: 100%;
+            margin-top: 30px;
+            display: inline-block;
+        }
+
+        button.btn.btn-6.btn-6b.update-user-btn {
+            background-color: dimgray;
+            border-radius: 8px;
+        }
+
+        button.btn.btn-6.btn-6b.update-user-btn:hover {
+            background-color: #4f4f4f;
+        }
+
+        button.btn.btn-6.btn-6b.dropout-user-btn {
+            background-color: tomato;
+            border-radius: 8px;
+        }
+
+        button.btn.btn-6.btn-6b.dropout-user-btn:hover {
+            background-color: #ff3f1d;
+            border-radius: 8px;
+        }
+
+        .manager_detail {
+            margin-bottom: 50px;
+        }
+
+        td {
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<th:block layout:fragment="ground-wrap">
+
+
+    <div class="ground">
+        <div class="main">
+            <div class="all_manaer_list">
+                <div class="title1">
+                    <h1>매니저 상세 정보 조회</h1>
+                </div>
+                <div class="manager_detail">
+                    <table class="detail_tb">
+                        <tr>
+                            <th scope="row">매니저ID</th>
+                            <td>USER1</td>
+                            <th scope="row">매니저명</th>
+                            <td>박태영</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">전화번호</th>
+                            <td>010-1234-5678</td>
+                            <th scope="row">가입일자</th>
+                            <td>2022-01-14</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">평점</th>
+                            <td>5.0</td>
+                            <th scope="row">희망 근무 시간</th>
+                            <td>오후 12시 ~ 18시, 저녁 18시 ~ 24시</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="schedule">
+                    <h2>배정 근무 스케줄</h2>
+                    <table width="700" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <th scope="col">INDEX</th>
+                            <th scope="col">날짜</th>
+                            <th scope="col">요일</th>
+                            <th scope="col">시간</th>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>2022.01.09</td>
+                            <td>일</td>
+                            <td>1시</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>2022.01.09</td>
+                            <td>일</td>
+                            <td>1시</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>2022.01.09</td>
+                            <td>일</td>
+                            <td>1시</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>2022.01.09</td>
+                            <td>일</td>
+                            <td>1시</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>2022.01.09</td>
+                            <td>일</td>
+                            <td>1시</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>2022.01.09</td>
+                            <td>일</td>
+                            <td>1시</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>2022.01.09</td>
+                            <td>일</td>
+                            <td>1시</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>2022.01.09</td>
+                            <td>일</td>
+                            <td>1시</td>
+                        </tr>
+                    </table>
+                    <div class="detail-page-btn-box">
+                        <div class="btn_align">
+                            <div style="display: inline-block">
+                                <button class="btn btn-6 btn-6b update-user-btn md-trigger" data-modal="modal-5">사용자 권한 수정</button>
+                            </div>
+                            <div style="display: inline-block">
+                                <button class="btn btn-6 btn-6b dropout-user-btn md-trigger" data-modal="modal-6">탈퇴 처리</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+</html>
