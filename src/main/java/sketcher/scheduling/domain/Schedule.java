@@ -15,7 +15,6 @@ import java.util.List;
 @Entity
 @Table(name = "schedule")
 @Getter
-
 public class Schedule extends ScheduleTimeEntity{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -26,5 +26,9 @@ public class ScheduleService {
         return scheduleRepository.findAll();
     }
 
+//    public List<Schedule> sortShcedule(){
+//        List<Schedule> allSchedule = scheduleRepository.findAll();
+//
+//    }
 
 }
