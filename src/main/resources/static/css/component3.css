@@ -1,13 +1,8 @@
-*,
-*:after,
-*::before {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
+
 
 span{
-    color: #ff0000;;
+	color: #E75757;
+	;
 }
 .ac-custom {
     padding: 0 3em;

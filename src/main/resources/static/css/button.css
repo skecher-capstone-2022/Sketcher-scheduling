@@ -61,6 +61,21 @@
 	content: "\e00d";
 }
 
+/* Button 1 */
+.btn-1 {
+	border: 3px solid #a1a1a1;
+	color: #fff;
+	background-color: #a1a1a1;
+}
+
+/* Button 1a */
+.btn-1a:hover,
+.btn-1a:active {
+	color: #fff;
+	border: 3px solid #ff5e5e;
+	background: #ff5e5e;
+}
+
 /* Button 4 */
 .btn-4 {
 	border-radius: 50px;
@@ -136,4 +151,40 @@
 
 .btn-4a:hover:before {
 	left: 80%;
+}
+
+/* Button 6 */
+.btn-6 {
+	color: #fff;
+	background: #ff7676c7;
+	-webkit-transition: none;
+	-moz-transition: none;
+	transition: none;
+}
+
+.btn-6:active {
+	top: 2px;
+}
+
+/* Button 6b */
+.btn-6b {
+	border: 4px solid #fff;
+	border-radius: 15px;
+}
+
+.btn-6b:hover {
+	background: #ff7676;
+	color: #fff;
+}
+
+/*search-btn*/
+button.btn.btn-6.btn-6b.search-btn {
+	border: 4px solid #fff;
+	background-color: #c0c0c0;
+	border-radius: 10px;
+}
+
+button.btn.btn-6.btn-6b.search-btn:hover {
+	background: #7c7c7c;
+	color: #fff;
 }

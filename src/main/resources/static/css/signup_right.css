@@ -33,11 +33,11 @@ body {
 	box-sizing: border-box;
 }
 
-.input_wrap {
+.user_input_wrap {
 	width:100%;
 }
 
-.input {
+.user_input {
 	width: 70%;
 	margin: 0 auto;
 }
@@ -55,7 +55,7 @@ body {
     background-size : cover;
 	box-sizing: border-box;
 	text-align:center;
-	
+
 	position:fixed;
 	right:0;
 }
