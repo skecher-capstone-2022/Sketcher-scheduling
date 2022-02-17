@@ -2,7 +2,6 @@ package sketcher.scheduling.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -15,9 +14,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 
 @Configuration
-@EnableWebMvc
+@EnableSwagger2
 public class SwaggerConfig {
-
     @Bean
     public Docket api(){
 
@@ -25,8 +23,8 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
-                .build().apiInfo(apiInfo());
-
+                .build();
+//                .apiInfo(apiInfo())
     }
 
     private ApiInfo apiInfo() {

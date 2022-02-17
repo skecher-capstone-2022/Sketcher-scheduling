@@ -16,9 +16,9 @@ public class ManagerHopeTime {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "hope_time_id")
     private Integer id;
-
+    @NotNull
     private Integer start_time;
-
+    @NotNull
     private Integer finish_time;
 
     /**
