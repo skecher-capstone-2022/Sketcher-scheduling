@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import sketcher.scheduling.domain.User;
@@ -24,6 +25,34 @@ public class UserServiceTest {
 
     @Autowired
     UserRepository userRepository;
+
+
+    @Test
+    @Rollback(value = false)
+    public void 회원_가입2() {
+        //given
+        UserDto user = UserDto.builder()
+                .id("taeong")
+                .authRole("ROLE_MANAGER")
+                .password("1234")
+                .username("박태영")
+                .userTel("1234-5678")
+                .build();
+
+        //when
+        String savedUser = userService.saveUser(user);
+        System.out.println(savedUser);
+
+//        String user3 = "min2";
+        //then
+//        User user2 = userRepository.findById(user.getId()).get();
+//        String userby = user2.getId();
+//
+//        Assertions.assertEquals(user1, userby);
+
+
+    }
+
 
     @Test
     public void 회원_가입() {
