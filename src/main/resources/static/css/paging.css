@@ -1,11 +1,14 @@
-.page_wrap {
-    text-align:center;
-    font-size:0;
+/*.page_wrap {*/
+/*    text-align:center;*/
+/*    font-size:0;*/
+/*    margin-top: 50px;*/
+/*    margin-bottom: 70px;*/
+/*}*/
+.page_nation {
+    text-align: center;
+    font-size: 0;
     margin-top: 50px;
     margin-bottom: 70px;
-}
-.page_nation {
-    display:inline-block;
 }
 .page_nation .none {
     display:none;

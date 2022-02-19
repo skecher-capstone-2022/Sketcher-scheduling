@@ -1,14 +1,48 @@
 package sketcher.scheduling;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import sketcher.scheduling.domain.User;
+import sketcher.scheduling.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
+import java.util.List;
 
 @Controller
-public class HomeController { @RequestMapping(value = "/all_manager_list", method = RequestMethod.GET)
-    public String all_manager_list(HttpServletRequest request) {
+@RequiredArgsConstructor
+public class HomeController {
+    private final UserService userService;
+
+//    @RequestMapping(value = "/all_manager_list", method = RequestMethod.GET)
+//    public String all_manager_list(HttpServletRequest request) {
+//        return "manager/all_manager_list";
+//    }
+
+    @RequestMapping(value = "/all_manager_list", method = RequestMethod.GET)
+    public String all_manager_list(Model model, @PageableDefault Pageable pageable) {
+
+//        SearchParam searchParam = setSearchParameter(searchType, searchValue);
+
+        Page<User> users = userService.findAllManager(pageable);
+        model.addAttribute("users", users);
+
+
+
+//        log.debug("총 element 수 : {}, 전체 page 수 : {}, 페이지에 표시할 element 수 : {}, 현재 페이지 index : {}, 현재 페이지의 element 수 : {}",
+//                users.getTotalElements(), users.getTotalPages(), users.getSize(),
+//                users.getNumber(), users.getNumberOfElements());
+
         return "manager/all_manager_list";
     }
 

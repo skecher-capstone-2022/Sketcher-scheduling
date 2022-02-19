@@ -38,14 +38,13 @@
                         <option value="join_date">가입일자</option>
                     </select>
                     <div class="search">
-                        <select name="select_search" class="select_search">
+                        <select name="searchType" id="searchType" class="select_search">
                             <option value="manager_name" selected="selected">매니저명</option>
                             <option value="manager_id">매니저ID</option>
                         </select>
                         <label>
-                            <input name="search" type="text" placeholder="검색어 입력"/>
+                            <input name="search" type="text" placeholder="검색어 입력" th:value="${param.searchValue}"/>
                         </label>
-
                         <button class="btn btn-6 btn-6b search-btn">검색</button>
                         <br/>
                     </div>
@@ -62,146 +61,47 @@
                             <th scope="col">평점</th>
                             <th scope="col">사용자관리</th>
                         </tr>
-
-                        <tr>
-                            <td class="line">1</td>
-                            <td class="line">USER1</td>
-                            <td class="line">박태영</td>
-                            <td class="line">010-1234-5678</td>
-                            <td class="line">2022-01-14</td>
-                            <td class="line">5.0</td>
+                        <tr th:if="${not #lists.isEmpty( users )}" th:each="user : ${users}" \>
+<!--                            인덱스 수정 필요-->
+                            <td class="line" th:text="${userStat.count}"></td>
+                            <td class="line" th:text="${user.id}"></td>
+                            <td class="line" th:text="${user.username}"></td>
+                            <td class="line" th:text="${user.userTel}"></td>
+                            <td class="line" th:text="${#temporals.format(user.user_joindate, 'yyyy-MM-dd')}"></td>
+                            <td class="line" th:text="${user.managerScore}"></td>
                             <td class="line">
                                 <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail'">관리
                                 </button>
                             </td>
                         </tr>
-                        <tr>
-                            <td class="line">2</td>
-                            <td class="line">USER1</td>
-                            <td class="line">박태영</td>
-                            <td class="line">010-1234-5678</td>
-                            <td class="line">2022-01-14</td>
-                            <td class="line">5.0</td>
-                            <td class="line">
-                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail'">관리
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="line">3</td>
-                            <td class="line">USER1</td>
-                            <td class="line">박태영</td>
-                            <td class="line">010-1234-5678</td>
-                            <td class="line">2022-01-14</td>
-                            <td class="line">5.0</td>
-                            <td class="line">
-                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail'">관리
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="line">4</td>
-                            <td class="line">USER1</td>
-                            <td class="line">박태영</td>
-                            <td class="line">010-1234-5678</td>
-                            <td class="line">2022-01-14</td>
-                            <td class="line">5.0</td>
-                            <td class="line">
-                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail'">관리
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="line">5</td>
-                            <td class="line">USER1</td>
-                            <td class="line">박태영</td>
-                            <td class="line">010-1234-5678</td>
-                            <td class="line">2022-01-14</td>
-                            <td class="line">5.0</td>
-                            <td class="line">
-                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail'">관리
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="line">6</td>
-                            <td class="line">USER1</td>
-                            <td class="line">박태영</td>
-                            <td class="line">010-1234-5678</td>
-                            <td class="line">2022-01-14</td>
-                            <td class="line">5.0</td>
-                            <td class="line">
-                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail'">관리
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="line">7</td>
-                            <td class="line">USER1</td>
-                            <td class="line">박태영</td>
-                            <td class="line">010-1234-5678</td>
-                            <td class="line">2022-01-14</td>
-                            <td class="line">5.0</td>
-                            <td class="line">
-                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail'">관리
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="line">8</td>
-                            <td class="line">USER1</td>
-                            <td class="line">박태영</td>
-                            <td class="line">010-1234-5678</td>
-                            <td class="line">2022-01-14</td>
-                            <td class="line">5.0</td>
-                            <td class="line">
-                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail'">관리
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="line">9</td>
-                            <td class="line">USER1</td>
-                            <td class="line">박태영</td>
-                            <td class="line">010-1234-5678</td>
-                            <td class="line">2022-01-14</td>
-                            <td class="line">5.0</td>
-                            <td class="line">
-                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail'">관리
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="line">10</td>
-                            <td class="line">USER1</td>
-                            <td class="line">박태영</td>
-                            <td class="line">010-1234-5678</td>
-                            <td class="line">2022-01-14</td>
-                            <td class="line">5.0</td>
-                            <td class="line">
-                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail'">관리
-                                </button>
-                            </td>
+<!--                        적용 안 되는 상태-->
+                        <tr th:unless="${not #lists.isEmpty( users )}">
+                            <td class="line">조회된 결과가 없습니다.</td>
                         </tr>
                     </table>
 
                 </div>
                 <div class="page_wrap">
                     <div class="page_nation">
-                        <a class="arrow pprev" href="#"></a>
-                        <a class="arrow prev" href="#"></a>
-                        <a href="#" class="active">1</a>
-                        <a href="#">2</a>
-                        <a href="#">3</a>
-                        <a href="#">4</a>
-                        <a href="#">5</a>
-                        <a href="#">6</a>
-                        <a href="#">7</a>
-                        <a href="#">8</a>
-                        <a href="#">9</a>
-                        <a href="#">10</a>
-                        <a class="arrow next" href="#"></a>
-                        <a class="arrow nnext" href="#"></a>
+                        <ul class="page_ul"
+                             th:with="start=${T(Math).floor(users.number/10)*10 + 1},
+                                  last=(${start + 9 < users.totalPages ? start + 9 : users.totalPages})">
+                            <li class="page_li">
+                                <a class="arrow pprev" th:href="@{/all_manager_list(page=1)}"></a>
+                            </li>
+                            <li class="page_li">
+                                <a class="arrow prev" th:href="${users.first} ? '#' : @{/all_manager_list(page=${users.number})}"></a>
+                            </li>
+                            <li  class="page_li" th:each="page: ${#numbers.sequence(start, last)}">
+                                <a th:text="${page}" th:class="${page == users.number + 1} ? 'active'" th:href="@{/all_manager_list(page=${page})}"></a>
+                            </li>
+                            <li class="page_li">
+                                <a class="arrow next" th:href="${users.last} ? '#' : @{/all_manager_list(page=${users.number + 2})}"></a>
+                            </li>
+                            <li class="page_li">
+                                <a class="arrow nnext" th:href="@{/all_manager_list(page=${users.totalPages})}"></a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>

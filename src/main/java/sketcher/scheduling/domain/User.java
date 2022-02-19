@@ -32,6 +32,7 @@ public class User extends UserTimeEntity{
 
     @NotEmpty
     @Column(name = "auth_role")
+//    @Enumerated(EnumType.STRING)
     private String authRole;
 
     @NotEmpty

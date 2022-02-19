@@ -43,11 +43,11 @@ public class ManagerHopeTimeServiceTest {
          * userA 가져옴
          */
         UserDto user = UserDto.builder()
-                .id("min")
-                .authRole("user")
+                .id("user1")
+                .authRole("MANAGER")
                 .password("1234")
-                .username("정민환")
-                .userTel("1234-5678")
+                .username("이혜원")
+                .userTel("010-1234-5678")
                 .build();
 
         String user1 = userService.saveUser(user);
@@ -58,14 +58,14 @@ public class ManagerHopeTimeServiceTest {
          *  / 연관관계 편의 메소드로 인해 User 클래스의 HopeTime 에 입력
          */
         ManagerHopeTimeDto managerHopeTime1 = ManagerHopeTimeDto.builder()
-                .start_time(3)
-                .finish_time(5)
+                .start_time(6)
+                .finish_time(12)
                 .user(userA)
                 .build();
 
         ManagerHopeTimeDto managerHopeTime2 = ManagerHopeTimeDto.builder()
-                .start_time(1)
-                .finish_time(10)
+                .start_time(12)
+                .finish_time(18)
                 .user(userA)
                 .build();
 
