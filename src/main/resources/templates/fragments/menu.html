@@ -41,7 +41,12 @@
             </li>
             <li><a class="icon icon-key" href="/manager_mypage">마이페이지(manager)</a></li>
             <li><a class="icon icon-key" href="/admin_mypage">마이페이지(admin)</a></li>
-            <li><a class="icon icon-cup" href="/login">로그아웃</a></li>
+            <li>
+                <form id="logout" action="/logout" method="POST">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <a class="icon icon-cup"><input type="submit" value="로그아웃"/></a>
+                </form>
+            </li>
         </ul>
     </div>
 </nav>

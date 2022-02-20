@@ -3,6 +3,9 @@ package sketcher.scheduling.domain;
 import lombok.Builder;
 import lombok.Getter;
 import org.apache.catalina.Manager;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -10,13 +13,12 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "user")
 @Getter
-public class User extends UserTimeEntity{
+public class User extends UserTimeEntity implements UserDetails {
 
 
     /**
@@ -86,5 +88,44 @@ public class User extends UserTimeEntity{
         this.userTel = userTel;
         this.managerScore = managerScore;
         this.dropoutReqCheck = dropoutReqCheck;
+    }
+
+    // 사용자의 권한을 콜렉션 형태로 반환
+    // 단, 클래스 자료형은 GrantedAuthority를 구현해야함
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<GrantedAuthority> roles = new HashSet<>();
+        for (String role : authRole.split(",")) {
+            roles.add(new SimpleGrantedAuthority(role));
+        }
+        return roles;
+    }
+
+    // 계정 만료 여부 반환
+    @Override
+    public boolean isAccountNonExpired() {
+        // 만료되었는지 확인하는 로직
+        return true; // true -> 만료되지 않았음
+    }
+
+    // 계정 잠금 여부 반환
+    @Override
+    public boolean isAccountNonLocked() {
+        // 계정 잠금되었는지 확인하는 로직
+        return true; // true -> 잠금되지 않았음
+    }
+
+    // 패스워드의 만료 여부 반환
+    @Override
+    public boolean isCredentialsNonExpired() {
+        // 패스워드가 만료되었는지 확인하는 로직
+        return true; // true -> 만료되지 않았음
+    }
+
+    // 계정 사용 가능 여부 반환
+    @Override
+    public boolean isEnabled() {
+        // 계정이 사용 가능한지 확인하는 로직
+        return true; // true -> 사용 가능
     }
 }

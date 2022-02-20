@@ -25,61 +25,75 @@
 </head>
 
 <th:block layout:fragment="step-wrap">
-    <div class="step">
-        <div style="text-align : center;"><img th:src="@{/img/step2.png}"></div>
-        <div class="user_input_wrap">
-            <div class="user_input">
-                <div class="container">
-                    <section class="content bgcolor-4">
-                        <h1 style="color: black;">회원 정보 입력</h1>
-                        <span class="input input--chisato">
+    <form id="frm" th:action="@{/signup}" method="POST">
+        <div class="step">
+            <div style="text-align : center;"><img th:src="@{/img/step2.png}"></div>
+            <div class="user_input_wrap">
+                <div class="user_input">
+                    <div class="container">
+                        <section class="content bgcolor-4">
+                            <h1 style="color: black;">회원 정보 입력</h1>
+                            <span class="input input--chisato">
+                            <input type="hidden" name="authRole" value="MANAGER"/>
 					<input class="input__field input__field--chisato" type="text" id="input-13" name="id"/>
 					<label class="input__label input__label--chisato" for="input-13">
 						<span class="input__label-content input__label-content--chisato"
                               data-content="USER ID">아이디 입력</span>
 					</label>
 				</span>
-                        <span class="input input--chisato">
+                            <span class="input input--chisato">
+					<input class="input__field input__field--chisato" type="text" id="input-15" name="username"/>
+					<label class="input__label input__label--chisato" for="input-15">
+						<span class="input__label-content input__label-content--chisato"
+                              data-content="Name">이름 입력</span>
+					</label>
+				</span>
+                            <span class="input input--chisato">
 					<input class="input__field input__field--chisato" type="password" id="input-14" name="password"/>
 					<label class="input__label input__label--chisato" for="input-14">
 						<span class="input__label-content input__label-content--chisato"
                               data-content="Password">비밀번호 입력</span>
 					</label>
 				</span>
-                        <span class="input input--chisato">
+                            <span class="input input--chisato">
 					<input class="input__field input__field--chisato" type="password" id="input-15"
-                           name="password_check"/>
+                    />
 					<label class="input__label input__label--chisato" for="input-15">
 						<span class="input__label-content input__label-content--chisato"
                               data-content="Confirm Password">비밀번호 재입력</span>
 					</label>
 				</span>
-                        <span class="input input--chisato">
-					<input class="input__field input__field--chisato" type="text" id="input-15" name="password_input"/>
+                            <span class="input input--chisato">
+					<input class="input__field input__field--chisato" type="text" id="input-15" name="userTel"/>
 					<label class="input__label input__label--chisato" for="input-15">
 						<span class="input__label-content input__label-content--chisato"
                               data-content="Phone">전화번호 입력</span>
 					</label>
 				</span>
-                    </section>
-                </div><!-- /container -->
+                        </section>
+                    </div><!-- /container -->
+                </div>
             </div>
+            <hr id="hr">
+            <section>
+                <form class="ac-custom ac-checkbox ac-checkmark" autocomplete="off" style="margin-bottom: 15%;">
+                    <h2>희망하는 근무 타임을 선택해주세요 (여러개 선택 가능)</h2>
+                    <h3>선택한 시간대 내에서 작업시간이 결정되며, 시간대 내에서 <span>최소 1시간~최대 3시간, 주 최소 10시간</span> 근무를 만족하면 됩니다.<span>(주말 2시간 이상 포함)</span><br/>
+                        (ex. 오후 12시~18시 타임 근무시, 월요일 2시간, 화요일 2시간, 수요일 3시간, 목요일 3시간, 토요일 3시간 근무)</h3>
+                    <ul>
+                        <li><input id="cb6" name="cb6" type="checkbox" value="0:6"><label for="cb6">새벽 0시 ~ 6시</label>
+                        </li>
+                        <li><input id="cb7" name="cb7" type="checkbox" value="6:12"><label for="cb7">오전 6시 ~ 12시</label>
+                        </li>
+                        <li><input id="cb8" name="cb8" type="checkbox" value="12:18"><label for="cb8">오후 12시 ~
+                            18시</label></li>
+                        <li><input id="cb9" name="cb9" type="checkbox" value="18:24"><label for="cb9">저녁 18시 ~
+                            24시</label></li>
+                    </ul>
+                </form>
+            </section>
         </div>
-        <hr id="hr">
-        <section>
-            <form class="ac-custom ac-checkbox ac-checkmark" autocomplete="off" style="margin-bottom: 15%;">
-                <h2>희망하는 근무 타임을 선택해주세요 (여러개 선택 가능)</h2>
-                <h3>선택한 시간대 내에서 작업시간이 결정되며, 시간대 내에서 <span>최소 1시간~최대 3시간, 주 최소 10시간</span> 근무를 만족하면 됩니다.<span>(주말 2시간 이상 포함)</span><br/>
-                    (ex. 오후 12시~18시 타임 근무시, 월요일 2시간, 화요일 2시간, 수요일 3시간, 목요일 3시간, 토요일 3시간 근무)</h3>
-                <ul>
-                    <li><input id="cb6" name="cb6" type="checkbox" value="0:6"><label for="cb6">새벽 0시 ~ 6시</label></li>
-                    <li><input id="cb7" name="cb7" type="checkbox" value="6:12"><label for="cb7">오전 6시 ~ 12시</label></li>
-                    <li><input id="cb8" name="cb8" type="checkbox" value="12:18"><label for="cb8">오후 12시 ~ 18시</label></li>
-                    <li><input id="cb9" name="cb9" type="checkbox" value="18:24"><label for="cb9">저녁 18시 ~ 24시</label></li>
-                </ul>
-            </form>
-        </section>
-    </div>
+    </form>
 </th:block>
 <th:block layout:fragment="signup-wrap">
     <h1 style="color:white;">SIGN UP</h1>
@@ -88,11 +102,14 @@
     <div style="margin-top:100px;">
         <section class="color-4">
             <p>
-                <button class="btn btn-4 btn-4a icon-arrow-right" onclick="location.href='/step3'">submit</button>
+                <button class="btn btn-4 btn-4a icon-arrow-right" onclick="document.getElementById('frm').submit();">
+                    submit
+                </button>
             </p>
         </section>
     </div>
 </th:block>
+
 </html>
 <footer>
     <script src="/js/svgcheckbx.js"></script>

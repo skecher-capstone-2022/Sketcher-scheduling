@@ -12,44 +12,47 @@
 
 <th:block layout:fragment="step-wrap">
     <div class="signin_wrap">
-        <div class="signin">
-            <div style="font-size: 1.5rem;font-family: 'TmonMonsori', serif;">
-                <h1>Welcome!</h1>
-                <h3 style="color:gray">This is Sprint Manager Scheduling Program</h3>
-            </div>
-            <div class="input_wrap">
-                <div class="container">
-                    <section class="content bgcolor-4">
+        <form action="/login" method="POST">
+            <div class="signin">
+                <div style="font-size: 1.5rem;font-family: 'TmonMonsori', serif;">
+                    <h1>Welcome!</h1>
+                    <h3 style="color:gray">This is Sprint Manager Scheduling Program</h3>
+                </div>
+                <div class="input_wrap">
+                    <div class="container">
+                        <section class="content bgcolor-4">
           <span class="input input--chisato">
-					<input class="input__field input__field--chisato" type="text" id="input-13"/>
+              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+					<input class="input__field input__field--chisato" type="text" id="input-13" name="username"/>
 					<label class="input__label input__label--chisato" for="input-13">
 						<span class="input__label-content input__label-content--chisato" data-content="User Id">아이디를 입력하세요</span>
 					</label>
 				</span>
-                        <span class="input input--chisato">
-					<input class="input__field input__field--chisato" type="password" id="input-14"/>
+                            <span class="input input--chisato">
+					<input class="input__field input__field--chisato" type="password" id="input-14" name="password"/>
 					<label class="input__label input__label--chisato" for="input-14">
 						<span class="input__label-content input__label-content--chisato" data-content="Password">비밀번호를 입력하세요</span>
 					</label>
 				</span>
 
+                        </section>
+
+                    </div><!-- /container -->
+
+
+                </div>
+                <div style="margin:80px">
+                    <section class="color-4">
+                        <p>
+                            <button class="btn btn-4-pink btn-4a icon-arrow-right-pink"
+                                    type="submit">Sign In
+                            </button>
+                        </p>
+
                     </section>
-
-                </div><!-- /container -->
-
-
+                </div>
             </div>
-            <div style="margin:80px">
-                <section class="color-4">
-                    <p>
-                        <button class="btn btn-4-pink btn-4a icon-arrow-right-pink"
-                                onclick="location.href='calendar'">Sign In
-                        </button>
-                    </p>
-
-                </section>
-            </div>
-        </div>
+        </form>
     </div>
 </th:block>
 <th:block layout:fragment="signup-wrap">

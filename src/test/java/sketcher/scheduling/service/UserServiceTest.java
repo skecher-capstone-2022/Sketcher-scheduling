@@ -18,6 +18,7 @@ import static org.junit.Assert.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
+@Rollback(false)
 public class UserServiceTest {
 
     @Autowired
@@ -25,34 +26,6 @@ public class UserServiceTest {
 
     @Autowired
     UserRepository userRepository;
-
-
-    @Test
-    @Rollback(value = false)
-    public void 회원_가입2() {
-        //given
-        UserDto user = UserDto.builder()
-                .id("taeong")
-                .authRole("ROLE_MANAGER")
-                .password("1234")
-                .username("박태영")
-                .userTel("1234-5678")
-                .build();
-
-        //when
-        String savedUser = userService.saveUser(user);
-        System.out.println(savedUser);
-
-//        String user3 = "min2";
-        //then
-//        User user2 = userRepository.findById(user.getId()).get();
-//        String userby = user2.getId();
-//
-//        Assertions.assertEquals(user1, userby);
-
-
-    }
-
 
     @Test
     public void 회원_가입() {
@@ -73,6 +46,27 @@ public class UserServiceTest {
         String userby = user2.getId();
 
         Assertions.assertEquals(user1, userby);
+
+
+    }
+
+    @Test
+    public void 로그인() {
+        //given
+        UserDto user = UserDto.builder()
+                .id("taeong")
+                .authRole("MANAGER")
+                .password("12345")
+                .username("박태영")
+                .userTel("1234-5678")
+                .build();
+
+        //when
+        String saveduser = userService.saveUser(user);
+
+        //then
+        User loadUser = userService.loadUserByUsername(user.getId());
+        Assertions.assertEquals(saveduser, loadUser.getId());
 
 
     }
