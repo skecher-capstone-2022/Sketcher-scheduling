@@ -70,31 +70,43 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
         UserDto userA = UserDto.builder()
                 .username("정민환")
                 .build();
-        String user = userService.saveUser(userA);
-        User user1 = userRepository.findById(user).get();
+        String user1 = userService.saveUser(userA);
+        User userJ = userRepository.findById(user1).get();
+
+        UserDto userB = UserDto.builder()
+                .username("박태영")
+                .build();
+        String user2 = userService.saveUser(userB);
+        User userT = userRepository.findById(user2).get();
+
+        UserDto userC = UserDto.builder()
+                .username("이혜원")
+                .build();
+        String user3 = userService.saveUser(userC);
+        User userL = userRepository.findById(user3).get();
 
         ManagerHopeTimeDto managerHopeTime1 = ManagerHopeTimeDto.builder()
                 .managerHopeDateStart(date1)
                 .managerHopeDateEnd(date2)
-                .user(user1)
+                .user(userJ)
                 .build();
 
         ManagerHopeTimeDto managerHopeTime2 = ManagerHopeTimeDto.builder()
                 .managerHopeDateStart(date3)
                 .managerHopeDateEnd(date4)
-                .user(user1)
+                .user(userJ)
                 .build();
 
         ManagerHopeTimeDto managerHopeTime3 = ManagerHopeTimeDto.builder()
                 .managerHopeDateStart(date5)
                 .managerHopeDateEnd(date6)
-                .user(user1)
+                .user(userT)
                 .build();
 
         ManagerHopeTimeDto managerHopeTime4 = ManagerHopeTimeDto.builder()
                 .managerHopeDateStart(date7)
                 .managerHopeDateEnd(date8)
-                .user(user1)
+                .user(userL)
                 .build();
 
         managerHopeTimeService.saveManagerHopeTime(managerHopeTime1);
