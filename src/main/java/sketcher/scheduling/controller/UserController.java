@@ -1,14 +1,15 @@
 package sketcher.scheduling.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.UserDto;
+import sketcher.scheduling.form.LoginForm;
 import sketcher.scheduling.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,9 +29,22 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(HttpServletRequest request) {
+    public String login_page(HttpServletRequest request) {
         return "user/login";
     }
+
+    @RequestMapping(value = "/login_check", method = RequestMethod.POST)
+    public String login(LoginForm form) throws Exception {
+        System.out.println(form.getUserid());
+        System.out.println(form.getPassword());
+        User user = userService.loadUserByUsername(form.getUserid());
+        user.getPassword()
+
+        return "yes!!";
+    }
+//매니저 -> calendar, 관리자 -> calender_admin
+//        if()
+//        return "user/calendar";
 
     @RequestMapping(value = "/step1", method = RequestMethod.GET)
     public String step1(HttpServletRequest request) {
@@ -48,10 +62,19 @@ public class UserController {
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String signup(UserDto joinUser){
+    public String signup(UserDto joinUser, RedirectAttributes redirectAttributes){
         //희망시간도 추가해야함
         userService.saveUser(joinUser);
+        redirectAttributes.addAttribute("userid",joinUser.getId());
 
-        return "redirect:/step3";
+        return "redirect:/check_hopetime";
+    }
+
+    @RequestMapping(value = "/user/idCheck", method = RequestMethod.GET)
+    @ResponseBody
+    public boolean idCheck(@RequestParam("userid") String user_id) {
+        return userService.userIdCheck(user_id);
+        //true : 아이디가 존재하지 않을 때
+        //false : 아이디가 이미 존재할 때
     }
 }

@@ -40,10 +40,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/manager/**").hasRole("MANAGER")  //인증 사용자만 허용
-                .antMatchers("/admin/**").hasRole("ADMIN")   //인증 사용자만 허용
+                .antMatchers("/admin/**").hasRole("ADMIN");   //인증 사용자만 허용
 //                .antMatchers("/schedule/**").authenticated()   //인증 사용자만 허용
 //                .antMatchers("/auth/**").anonymous()    //인증되지 않은 사용자만 허용
-                .antMatchers("/**").permitAll();    //모든 사용자 허용
+//                .antMatchers("/**").permitAll();    //모든 사용자 허용
 
         http.formLogin()
 //                .loginPage("/auth/login")
@@ -56,8 +56,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/login")
                 .invalidateHttpSession(true);   // 세션 날리기
 
-        http.exceptionHandling()
-                .accessDeniedPage("/auth/login");
+//        http.exceptionHandling()
+//                .accessDeniedPage("/login");
     }
 
     @Override   //BCrypt타입의 password를 다시 인코딩해주는 역할

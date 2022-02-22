@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/user_layout}">
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>회원가입 STEP2</title>
     <link th:href="@{/css/step2.css}" rel="stylesheet"/>
     <link th:href="@{/css/normalize3.css}" rel="stylesheet"/>
@@ -35,36 +36,38 @@
                             <h1 style="color: black;">회원 정보 입력</h1>
                             <span class="input input--chisato">
                             <input type="hidden" name="authRole" value="MANAGER"/>
-					<input class="input__field input__field--chisato" type="text" id="input-13" name="id"/>
+					<input class="input__field input__field--chisato" type="text" id="user_id" name="id"/>
 					<label class="input__label input__label--chisato" for="input-13">
 						<span class="input__label-content input__label-content--chisato"
                               data-content="USER ID">아이디 입력</span>
 					</label>
+                                <div class="check_font" id="id_check" style="font-size: 13pt;"></div>
 				</span>
                             <span class="input input--chisato">
-					<input class="input__field input__field--chisato" type="text" id="input-15" name="username"/>
+					<input class="input__field input__field--chisato" type="text" id="username" name="username"/>
 					<label class="input__label input__label--chisato" for="input-15">
 						<span class="input__label-content input__label-content--chisato"
                               data-content="Name">이름 입력</span>
 					</label>
 				</span>
                             <span class="input input--chisato">
-					<input class="input__field input__field--chisato" type="password" id="input-14" name="password"/>
+					<input class="input__field input__field--chisato" type="password" id="user_pw" name="password"/>
 					<label class="input__label input__label--chisato" for="input-14">
 						<span class="input__label-content input__label-content--chisato"
                               data-content="Password">비밀번호 입력</span>
 					</label>
 				</span>
                             <span class="input input--chisato">
-					<input class="input__field input__field--chisato" type="password" id="input-15"
+					<input class="input__field input__field--chisato" type="password" id="user_pw_check"
                     />
 					<label class="input__label input__label--chisato" for="input-15">
 						<span class="input__label-content input__label-content--chisato"
                               data-content="Confirm Password">비밀번호 재입력</span>
 					</label>
+                                <div class="check_font" id="pw_check" style="font-size: 13pt;"></div>
 				</span>
                             <span class="input input--chisato">
-					<input class="input__field input__field--chisato" type="text" id="input-15" name="userTel"/>
+					<input class="input__field input__field--chisato" type="text" id="userTel" name="userTel"/>
 					<label class="input__label input__label--chisato" for="input-15">
 						<span class="input__label-content input__label-content--chisato"
                               data-content="Phone">전화번호 입력</span>
@@ -74,24 +77,6 @@
                     </div><!-- /container -->
                 </div>
             </div>
-            <hr id="hr">
-            <section>
-                <form class="ac-custom ac-checkbox ac-checkmark" autocomplete="off" style="margin-bottom: 15%;">
-                    <h2>희망하는 근무 타임을 선택해주세요 (여러개 선택 가능)</h2>
-                    <h3>선택한 시간대 내에서 작업시간이 결정되며, 시간대 내에서 <span>최소 1시간~최대 3시간, 주 최소 10시간</span> 근무를 만족하면 됩니다.<span>(주말 2시간 이상 포함)</span><br/>
-                        (ex. 오후 12시~18시 타임 근무시, 월요일 2시간, 화요일 2시간, 수요일 3시간, 목요일 3시간, 토요일 3시간 근무)</h3>
-                    <ul>
-                        <li><input id="cb6" name="cb6" type="checkbox" value="0:6"><label for="cb6">새벽 0시 ~ 6시</label>
-                        </li>
-                        <li><input id="cb7" name="cb7" type="checkbox" value="6:12"><label for="cb7">오전 6시 ~ 12시</label>
-                        </li>
-                        <li><input id="cb8" name="cb8" type="checkbox" value="12:18"><label for="cb8">오후 12시 ~
-                            18시</label></li>
-                        <li><input id="cb9" name="cb9" type="checkbox" value="18:24"><label for="cb9">저녁 18시 ~
-                            24시</label></li>
-                    </ul>
-                </form>
-            </section>
         </div>
     </form>
 </th:block>
@@ -102,7 +87,7 @@
     <div style="margin-top:100px;">
         <section class="color-4">
             <p>
-                <button class="btn btn-4 btn-4a icon-arrow-right" onclick="document.getElementById('frm').submit();">
+                <button id="reg_submit" class="btn btn-4 btn-4a icon-arrow-right" onclick="userinfo_submit();">
                     submit
                 </button>
             </p>
@@ -115,4 +100,85 @@
     <script src="/js/svgcheckbx.js"></script>
     <!-- For the demo ad only -->
     <script src="http://tympanus.net/codrops/adpacks/demoad.js"></script>
+    <script>
+        $(document).ready(function(){
+            // $("#reg_submit").attr("disabled", true);
+            $("#reg_submit").attr("pointer-events", "none");
+        });
+
+        //flag=1이어야 next버튼 활성화
+        var id_valid_flag = 0;
+        var pw_valid_flag = 0;
+
+        // 아이디 유효성 검사(1 = 중복 / 0 != 중복)
+        $("#user_id").blur(function () {
+            var user_id = $('#user_id').val();
+            $.ajax({
+                contentType: "application/json; charset=utf-8;",
+                type: "GET",
+                url: "/user/idCheck",
+                data: {
+                    "userid": user_id
+                },
+                success: function (data) {
+                    console.log("1 = 중복o / 0 = 중복x : " + data);
+                    if(user_id==""){
+                        $("#id_check").text("아이디를 입력해주세요.");
+                        $("#id_check").css("color", "red");
+                        id_valid_flag = 0;
+                    }else{
+                        if (data == false) {
+                            // 1 : 아이디가 중복되는 문구
+                            $("#id_check").text("사용중인 아이디입니다.");
+                            $("#id_check").css("color", "red");
+                            id_valid_flag = 0;
+                        } else {
+                            if (user_id.length > 20) {
+                                $("#id_check").text("아이디는 20자 이내로 작성해주세요.");
+                                $("#id_check").css("color", "red");
+                                id_valid_flag = 0;
+                            } else {
+                                $("#id_check").text("사용가능한 아이디입니다.");
+                                $("#id_check").css("color", "green");
+                                id_valid_flag = 1;
+                            }
+                        }
+                    }
+
+                }, error: function () {
+                    console.log("실패");
+                }
+            });
+        });
+        $("#user_pw_check").blur(function () {
+            var user_pw = $('#user_pw').val();
+            var user_pw_check = $('#user_pw_check').val();
+
+            if(user_pw_check==""){
+                $("#pw_check").text("비밀번호를 입력해주세요.");
+                $("#pw_check").css("color", "red");
+                pw_valid_flag = 0;
+            }else{
+                if (user_pw == user_pw_check) {
+                    $("#pw_check").text("비밀번호가 일치합니다.");
+                    $("#pw_check").css("color", "green");
+                    pw_valid_flag = 1;
+                } else {
+                    $("#pw_check").text("비밀번호가 일치하지 않습니다.");
+                    $("#pw_check").css("color", "red");
+                    pw_valid_flag = 0;
+                }
+            }
+        });
+
+        function userinfo_submit() {
+
+            if (id_valid_flag == 1 && pw_valid_flag == 1
+                && $('#username').val()!="" && $('#userTel').val()!=""){
+                document.getElementById('frm').submit();
+            }else{
+                alert("모든 정보를 입력해주세요.");
+            }
+        }
+    </script>
 </footer>

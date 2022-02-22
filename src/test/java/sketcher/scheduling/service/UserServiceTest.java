@@ -70,4 +70,32 @@ public class UserServiceTest {
 
 
     }
+
+    @Test
+    public void 아이디중복검사() {
+        //given
+        UserDto user1 = UserDto.builder()
+                .id("taeong")
+                .authRole("MANAGER")
+                .password("12345")
+                .username("박태영")
+                .userTel("1234-5678")
+                .build();
+
+        UserDto user2 = UserDto.builder()
+                .id("taeong")
+                .authRole("MANAGER")
+                .password("12345")
+                .username("박태영")
+                .userTel("1234-5678")
+                .build();
+
+        //when
+        String saveduser = userService.saveUser(user1);
+        boolean result = userService.userIdCheck(user2.getId());
+//        이미 있는 아이디이기 때문에 flase가 나와야 함
+
+        //then
+        Assertions.assertEquals(result, false);
+    }
 }
