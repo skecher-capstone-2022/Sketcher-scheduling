@@ -41,9 +41,9 @@
                         //     allEvent = calendar.getEvents();
                         //     console.log(allEvent);
                         // },
-                        // eventRemove: function (obj) { // 이벤트가 삭제되면 발생하는 이벤트
-                        //     console.log(obj);
-                        // },
+                        eventRemove: function (obj) { // 이벤트가 삭제되면 발생하는 이벤트
+
+                        },
                         /**
                          * 드래그로 이벤트 추가하기
                          */
@@ -92,6 +92,33 @@
                                 calendar.unselect()
                             });
                         },
+
+
+                        eventClick: function (info){
+                            if(confirm("일정'"+ info.event.title +"'을 삭제하시겠습니까 ?")){
+                                // 확인 클릭 시
+                                info.event.remove();
+                                console.log(info);
+                            }
+
+                            var deleteEvents = calendar.getEvents();
+                            var events = new Array(); // Json 데이터를 받기 위한 배열 선언
+                            for (var i = 0; i < deleteEvents.length; i++) {
+                                var obj = new Object();
+                                obj.title = deleteEvents[i]._def.title;
+                                events.push(obj);
+                            }
+                            console.log(obj);
+                            $(function deleteData(){
+                                $.ajax({
+                                    url: "/full-calendar/calendar-admin-update",
+                                    method: "DELETE",
+                                    dataType: "json",
+                                    data: JSON.stringify(events),
+                                    contentType: 'application/json',
+                                })
+                            })
+                        }
 
                         // drop: function (arg) {
                         //     // is the "remove after drop" checkbox checked?

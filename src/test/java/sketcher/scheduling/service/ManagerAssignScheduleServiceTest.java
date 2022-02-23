@@ -11,18 +11,15 @@ import org.springframework.transaction.annotation.Transactional;
 import sketcher.scheduling.domain.ManagerAssignSchedule;
 import sketcher.scheduling.domain.Schedule;
 import sketcher.scheduling.domain.User;
-import sketcher.scheduling.dto.ManagerAssignScheduelDto;
+import sketcher.scheduling.dto.ManagerAssignScheduleDto;
 import sketcher.scheduling.dto.ScheduleDto;
 import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.repository.ManagerAssignScheduleRepository;
-import sketcher.scheduling.repository.ManagerHopeTimeRepository;
 import sketcher.scheduling.repository.ScheduleRepository;
 import sketcher.scheduling.repository.UserRepository;
 
 import java.util.Date;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -70,7 +67,7 @@ public class ManagerAssignScheduleServiceTest {
         Integer id = scheduleService.saveSchedule(schedule);
         Schedule scheduleA = scheduleRepository.findById(id).get();
 
-        ManagerAssignScheduelDto managerAssignSchedule = ManagerAssignScheduelDto.builder()
+        ManagerAssignScheduleDto managerAssignSchedule = ManagerAssignScheduleDto.builder()
                 .schedule_delete_req_check('N')
                 .user(userA)
                 .schedule(scheduleA)

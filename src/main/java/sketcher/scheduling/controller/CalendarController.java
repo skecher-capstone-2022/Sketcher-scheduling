@@ -1,28 +1,24 @@
 package sketcher.scheduling.controller;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import sketcher.scheduling.domain.ManagerHopeTime;
+import sketcher.scheduling.domain.ManagerAssignSchedule;
 import sketcher.scheduling.domain.Schedule;
 import sketcher.scheduling.domain.User;
-import sketcher.scheduling.dto.ManagerHopeTimeDto;
+import sketcher.scheduling.dto.ManagerAssignScheduleDto;
+import sketcher.scheduling.dto.ScheduleDto;
 import sketcher.scheduling.dto.UserDto;
+import sketcher.scheduling.repository.ScheduleRepository;
 import sketcher.scheduling.repository.UserRepository;
-import sketcher.scheduling.service.ManagerHopeTimeService;
+import sketcher.scheduling.service.ManagerAssignScheduleService;
 import sketcher.scheduling.service.ScheduleService;
 import sketcher.scheduling.service.UserService;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -34,14 +30,16 @@ public class CalendarController {
 
     private static final Logger log = LoggerFactory.getLogger(CalendarController.class);
 
-    private final ManagerHopeTimeService managerHopeTimeService;
+    private final ScheduleService scheduleService;
+    private final ScheduleRepository scheduleRepository;
+    private final ManagerAssignScheduleService managerAssignScheduleService;
     private final UserService userService;
     private final UserRepository userRepository;
 
     @GetMapping("/calendar-admin")
     @ResponseBody
     public List<Map<String, Object>> monthPlan() {
-        List<ManagerHopeTime> list = managerHopeTimeService.findAll();
+        List<Schedule> list = scheduleService.findAll();
         List<String> backList = new ArrayList<>();
 
         JSONObject jsonObj = new JSONObject();
@@ -55,9 +53,9 @@ public class CalendarController {
         backList.add("#00FF7F");
 
         for (int i = 0; i < list.size(); i++) {
-            hash.put("title", list.get(i).getUser().getUsername());
-            hash.put("start", list.get(i).getManagerHopeDateStart());
-            hash.put("end", list.get(i).getManagerHopeDateEnd());
+            hash.put("title", list.get(i).getId());
+            hash.put("start", list.get(i).getScheduleDateTimeStart());
+            hash.put("end", list.get(i).getScheduleDateTimeEnd());
             hash.put("color", backList.get(i).toString());
 //            hash.put("color", "#00FF00");
 //            hash.put("color", "#FF69B4");
@@ -78,7 +76,7 @@ public class CalendarController {
     @ResponseBody
     public String addEvent(@RequestBody List<Map<String, Object>> param) throws Exception {
 
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",Locale.KOREA);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
 
         for (int i = 0; i < param.size(); i++) {
 
@@ -94,19 +92,42 @@ public class CalendarController {
                     .build();
 
             String user = userService.saveUser(userDto);
-            User userEntity = userRepository.findById(user).get();
+            User userEntity = userRepository.findByUsername(user).get();
 
-            ManagerHopeTimeDto managerHopeTimeDto = ManagerHopeTimeDto.builder()
-                    .user(userEntity)
-                    .managerHopeDateStart(startDate)
-                    .managerHopeDateEnd(endDate)
+            ScheduleDto scheduleDto = ScheduleDto.builder()
+                    .scheduleDateTimeStart(startDate)
+                    .scheduleDateTimeEnd(endDate)
                     .build();
 
-            managerHopeTimeService.saveManagerHopeTime(managerHopeTimeDto);
+            Integer scheduleId = scheduleService.saveSchedule(scheduleDto);
+            Schedule scheduleEntity = scheduleRepository.findById(scheduleId).get();
+
+            ManagerAssignScheduleDto assignScheduleDto = ManagerAssignScheduleDto.builder()
+                    .user(userEntity)
+                    .schedule(scheduleEntity)
+                    .build();
+
+            managerAssignScheduleService.saveManagerAssignSchedule(assignScheduleDto);
+
         }
         return "/full-calendar/calendar-admin-update";
     }
 
+    @DeleteMapping("/calendar-admin-update")
+    @ResponseBody
+    public String deleteEvent(@RequestBody List<Map<String, Object>> param){
+
+
+
+        for (int i = 0; i < param.size(); i++) {
+            String username = (String) param.get(i).get("title");
+
+            managerAssignScheduleService.deleteById(username);
+        }
+
+
+        return "/full-calendar/calendar-admin-update";
+    }
 
 
 //        JSONObject jsonObj = new JSONObject();

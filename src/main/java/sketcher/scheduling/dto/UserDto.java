@@ -4,38 +4,43 @@ import io.swagger.annotations.ApiModel;
 import lombok.*;
 import sketcher.scheduling.domain.User;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @ApiModel(value = "사용자")
 public class UserDto {
 
-    private String id;
+    private Integer code;
     private String authRole;
     private String password;
     private String username;
     private String userTel;
+    private LocalDateTime user_joinDate;
     private Double managerScore;
     private Character dropoutReqCheck;
 
     @Builder
-    public UserDto(String id, String authRole, String password, String username, String userTel, Double managerScore, Character dropoutReqCheck) {
-        this.id = id;
+    public UserDto(Integer code, String authRole, String password, String username, String userTel, LocalDateTime user_joinDate, Double managerScore, Character dropoutReqCheck) {
+        this.code = code;
         this.authRole = authRole;
         this.password = password;
         this.username = username;
         this.userTel = userTel;
+        this.user_joinDate = user_joinDate;
         this.managerScore = managerScore;
         this.dropoutReqCheck = dropoutReqCheck;
     }
 
     public User toEntity() {
         return User.builder()
-                .id(id)
+                .code(code)
                 .authRole(authRole)
                 .password(password)
                 .username(username)
                 .userTel(userTel)
+                .user_joinDate(user_joinDate)
                 .managerScore(managerScore)
                 .dropoutReqCheck(dropoutReqCheck)
                 .build();

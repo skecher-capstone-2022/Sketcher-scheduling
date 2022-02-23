@@ -11,6 +11,7 @@ import sketcher.scheduling.dto.ScheduleDto;
 import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.repository.ScheduleRepository;
 import sketcher.scheduling.repository.UserRepository;
+import sketcher.scheduling.service.ManagerAssignScheduleService;
 import sketcher.scheduling.service.ManagerHopeTimeService;
 import sketcher.scheduling.service.ScheduleService;
 import sketcher.scheduling.service.UserService;
@@ -34,29 +35,11 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
     UserService userService;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    ManagerAssignScheduleService managerAssignScheduleService;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        //given
-//        SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
-//        Date date1 = date.parse("2022-02-19");
-//        Date date2 = date.parse("2022-02-19");
-//        Date date3 = date.parse("2022-02-20");
-//        Date date4 = date.parse("2022-02-21");
-
-//        LocalDate date1 = LocalDate.of(2022,2,19);
-//        LocalDate date2 = LocalDate.of(2022,2,19);
-//        LocalDate date3 = LocalDate.of(2022,2,20);
-//        LocalDate date4 = LocalDate.of(2022,2,21);
-
-//        LocalTime time1 = LocalTime.of(1, 00);
-//        LocalTime time2 = LocalTime.of(4, 00);
-//        LocalTime time3 = LocalTime.of(20, 00);
-//        LocalTime time4 = LocalTime.of(23, 00);
-//        LocalTime time5 = LocalTime.of(17, 00);
-//        LocalTime time6 = LocalTime.of(22, 00);
-//        LocalTime time7 = LocalTime.of(10, 00);
-//        LocalTime time8 = LocalTime.of(14, 00);
 
         LocalDateTime date1 = LocalDateTime.of(2022,2,19,1,00);
         LocalDateTime date2 = LocalDateTime.of(2022,2,19,4,00);
@@ -71,48 +54,45 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
                 .username("정민환")
                 .build();
         String user1 = userService.saveUser(userA);
-        User userJ = userRepository.findById(user1).get();
+        User userJ = userRepository.findByUsername(user1).get();
 
         UserDto userB = UserDto.builder()
                 .username("박태영")
                 .build();
         String user2 = userService.saveUser(userB);
-        User userT = userRepository.findById(user2).get();
+        User userT = userRepository.findByUsername(user2).get();
 
         UserDto userC = UserDto.builder()
                 .username("이혜원")
                 .build();
         String user3 = userService.saveUser(userC);
-        User userL = userRepository.findById(user3).get();
+        User userL = userRepository.findByUsername(user3).get();
 
-        ManagerHopeTimeDto managerHopeTime1 = ManagerHopeTimeDto.builder()
-                .managerHopeDateStart(date1)
-                .managerHopeDateEnd(date2)
-                .user(userJ)
+        ScheduleDto scheduleDto1 = ScheduleDto.builder()
+                .scheduleDateTimeStart(date1)
+                .scheduleDateTimeEnd(date2)
                 .build();
 
-        ManagerHopeTimeDto managerHopeTime2 = ManagerHopeTimeDto.builder()
-                .managerHopeDateStart(date3)
-                .managerHopeDateEnd(date4)
-                .user(userJ)
+        ScheduleDto scheduleDto2 = ScheduleDto.builder()
+                .scheduleDateTimeStart(date3)
+                .scheduleDateTimeEnd(date4)
                 .build();
 
-        ManagerHopeTimeDto managerHopeTime3 = ManagerHopeTimeDto.builder()
-                .managerHopeDateStart(date5)
-                .managerHopeDateEnd(date6)
-                .user(userT)
+        ScheduleDto scheduleDto3 = ScheduleDto.builder()
+                .scheduleDateTimeStart(date5)
+                .scheduleDateTimeEnd(date6)
                 .build();
 
-        ManagerHopeTimeDto managerHopeTime4 = ManagerHopeTimeDto.builder()
-                .managerHopeDateStart(date7)
-                .managerHopeDateEnd(date8)
-                .user(userL)
+        ScheduleDto scheduleDto4 = ScheduleDto.builder()
+                .scheduleDateTimeStart(date7)
+                .scheduleDateTimeEnd(date8)
                 .build();
 
-        managerHopeTimeService.saveManagerHopeTime(managerHopeTime1);
-        managerHopeTimeService.saveManagerHopeTime(managerHopeTime2);
-        managerHopeTimeService.saveManagerHopeTime(managerHopeTime3);
-        managerHopeTimeService.saveManagerHopeTime(managerHopeTime4);
+        scheduleService.saveSchedule(scheduleDto1);
+        scheduleService.saveSchedule(scheduleDto2);
+        scheduleService.saveSchedule(scheduleDto3);
+        scheduleService.saveSchedule(scheduleDto4);
+
 
 //        ScheduleDto schedule1 = setScheduleDto(date1);
 //        ScheduleDto schedule2 = setScheduleDto(date2);
@@ -124,12 +104,4 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
 
     }
 
-    private ScheduleDto setScheduleDto(Date date1) {
-        return ScheduleDto.builder()
-                .scheduleDate(date1)
-                .scheduleTime(2)
-                .workforce(2)
-                .expected_card_cnt(100)
-                .build();
-    }
 }
