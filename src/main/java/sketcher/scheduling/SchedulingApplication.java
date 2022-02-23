@@ -6,7 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import sketcher.scheduling.dto.ManagerHopeTimeDto;
 import sketcher.scheduling.dto.UserDto;
+import sketcher.scheduling.service.ManagerHopeTimeService;
 import sketcher.scheduling.service.UserService;
 
 import java.util.stream.IntStream;
@@ -20,19 +22,65 @@ public class SchedulingApplication {
 	}
 
 	@Bean
-	public CommandLineRunner initData(UserService userService) {
+	public CommandLineRunner initData(UserService userService, ManagerHopeTimeService hopeService) {
 		return args ->
-				IntStream.rangeClosed(1, 24).forEach(i -> {
-					UserDto user =  UserDto.builder()
+				IntStream.rangeClosed(1, 12).forEach(i -> {
+					UserDto user1 =  UserDto.builder()
 							.id("user"+i)
 							.authRole("MANAGER")
 							.password("1234")
 							.username("이혜원"+i)
 							.userTel("010-1234-5678")
+							.managerScore(i*2/5.0)
 							.build();
 
-					userService.saveUser(user);
+					userService.saveUser(user1);
+
+					ManagerHopeTimeDto hope1 = ManagerHopeTimeDto.builder()
+							.user(user1.toEntity())
+							.start_time(12)
+							.finish_time(18)
+							.build();
+
+					hopeService.saveManagerHopeTime(hope1);
+
+					ManagerHopeTimeDto hope2 = ManagerHopeTimeDto.builder()
+							.user(user1.toEntity())
+							.start_time(18)
+							.finish_time(24)
+							.build();
+
+					hopeService.saveManagerHopeTime(hope2);
+
+
+					ManagerHopeTimeDto hope3 = ManagerHopeTimeDto.builder()
+							.user(user1.toEntity())
+							.start_time(6)
+							.finish_time(12)
+							.build();
+
+					hopeService.saveManagerHopeTime(hope3);
+
+//					ManagerHopeTimeDto hope4 = ManagerHopeTimeDto.builder()
+//							.user(user1.toEntity())
+//							.start_time(0)
+//							.finish_time(6)
+//							.build();
+//
+//					hopeService.saveManagerHopeTime(hope4);
+
+
+					UserDto user3 =  UserDto.builder()
+							.id("admin"+i)
+							.authRole("ADMIN")
+							.password("1234")
+							.username("박태영"+i)
+							.userTel("010-1234-5678")
+							.build();
+					userService.saveUser(user3);
 				});
+
+
 	}
 
 }

@@ -32,22 +32,27 @@
                     <h1>전체 매니저 목록</h1>
                 </div>
                 <div class="select-wrap1">
-                    <select name="list_align" class="list_align">
-                        <option value="manager_score" selected="selected">평점순</option>
-                        <option value="manager_name">매니저명</option>
-                        <option value="join_date">가입일자</option>
-                    </select>
-                    <div class="search">
-                        <select name="searchType" id="searchType" class="select_search">
-                            <option value="manager_name" selected="selected">매니저명</option>
-                            <option value="manager_id">매니저ID</option>
+                    <form id="manager_list_form" method="post">
+                        <select th:name="list_align" class="list_align" onchange="this.form.submit()">
+                            <!--                            document.getElementById('align_value').value = this.options[this.selectedIndex].value;-->
+                            <option th:value="managerScore" th:selected="${condition.list_align == 'managerScore'}">평점순</option>
+                            <option th:value="username" th:selected="${condition.list_align == 'username'}">매니저명</option>
+                            <option th:value="user_joindate_asc" th:selected="${condition.list_align == 'user_joindate_asc'}">가입일자(최신순)</option>
+                            <option th:value="user_joindate_desc" th:selected="${condition.list_align == 'user_joindate_desc'}">가입일자(오래된순)</option>
                         </select>
-                        <label>
-                            <input name="search" type="text" placeholder="검색어 입력" th:value="${param.searchValue}"/>
-                        </label>
-                        <button class="btn btn-6 btn-6b search-btn">검색</button>
-                        <br/>
-                    </div>
+                        <div class="search">
+                            <select th:name="type" id="type" class="select_search">
+                                <option th:value="username" th:selected="${condition.type == 'username'}">매니저명</option>
+                                <!--                                    th:selected="${#strings.equals( params.searchType, 'username' )}"-->
+                                <option th:value="id" th:selected="${condition.type == 'id'}">매니저ID</option>
+                            </select>
+                            <label>
+                                <input th:name="keyword" type="text" placeholder="검색어 입력" th:value="${condition.keyword}"/>
+                            </label>
+                            <button type="submit" class="btn btn-6 btn-6b search-btn">검색</button>
+                            <br/>
+                        </div>
+                    </form>
                 </div>
                 <div>
                     <table width="700" border="0" cellspacing="0" cellpadding="0" class="list_text_center">
@@ -61,22 +66,21 @@
                             <th scope="col">평점</th>
                             <th scope="col">사용자관리</th>
                         </tr>
-                        <tr th:if="${not #lists.isEmpty( users )}" th:each="user : ${users}" \>
-<!--                            인덱스 수정 필요-->
-                            <td class="line" th:text="${userStat.count}"></td>
+                        <tr th:if="${users.getTotalPages() != 0}" th:each="user : ${users}">
+                            <td class="line" th:text="${userStat.count} + ${users.number} * 10"></td>
                             <td class="line" th:text="${user.id}"></td>
                             <td class="line" th:text="${user.username}"></td>
                             <td class="line" th:text="${user.userTel}"></td>
                             <td class="line" th:text="${#temporals.format(user.user_joindate, 'yyyy-MM-dd')}"></td>
                             <td class="line" th:text="${user.managerScore}"></td>
                             <td class="line">
-                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail'">관리
+                                <button type="submit" class="btn btn-6 btn-6b"
+                                        th:onclick="|location.href='@{/manager_detail/{userId}(userId=${user.id})}'|">관리
                                 </button>
                             </td>
                         </tr>
-<!--                        적용 안 되는 상태-->
-                        <tr th:unless="${not #lists.isEmpty( users )}">
-                            <td class="line">조회된 결과가 없습니다.</td>
+                        <tr th:if="${users.getTotalPages() == 0}">
+                            <td class="line" colspan="7">조회된 결과가 없습니다.</td>
                         </tr>
                     </table>
 
@@ -84,19 +88,23 @@
                 <div class="page_wrap">
                     <div class="page_nation">
                         <ul class="page_ul"
-                             th:with="start=${T(Math).floor(users.number/10)*10 + 1},
+                            th:if="${users.getTotalPages() != 0}"
+                            th:with="start=${T(Math).floor(users.number/10)*10 + 1},
                                   last=(${start + 9 < users.totalPages ? start + 9 : users.totalPages})">
                             <li class="page_li">
                                 <a class="arrow pprev" th:href="@{/all_manager_list(page=1)}"></a>
                             </li>
                             <li class="page_li">
-                                <a class="arrow prev" th:href="${users.first} ? '#' : @{/all_manager_list(page=${users.number})}"></a>
+                                <a class="arrow prev"
+                                   th:href="${users.first} ? '#' : @{/all_manager_list(page=${users.number})}"></a>
                             </li>
-                            <li  class="page_li" th:each="page: ${#numbers.sequence(start, last)}">
-                                <a th:text="${page}" th:class="${page == users.number + 1} ? 'active'" th:href="@{/all_manager_list(page=${page})}"></a>
+                            <li class="page_li" th:each="page: ${#numbers.sequence(start, last)}">
+                                <a th:text="${page}" th:class="${page == users.number + 1} ? 'active'"
+                                   th:href="@{/all_manager_list(page=${page})}"></a>
                             </li>
                             <li class="page_li">
-                                <a class="arrow next" th:href="${users.last} ? '#' : @{/all_manager_list(page=${users.number + 2})}"></a>
+                                <a class="arrow next"
+                                   th:href="${users.last} ? '#' : @{/all_manager_list(page=${users.number + 2})}"></a>
                             </li>
                             <li class="page_li">
                                 <a class="arrow nnext" th:href="@{/all_manager_list(page=${users.totalPages})}"></a>
@@ -107,5 +115,55 @@
             </div>
         </div>
     </div>
+
+    <script>
+        const $form = $('#manager_list_form');
+        const $select = $('#list_align');
+
+        $select.change(e => {
+            if ($select.val() === '') return;
+
+            $.ajax({
+                // url: $form.attr('action'),
+                method: $form.attr('method'),
+                data: {
+                    [$select.attr('list_align')]: $select.val()
+                }
+            });
+        });
+    </script>
 </th:block>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    // function movePage(uri, queryString) {
+    //     location.href = uri + queryString;
+    // }
+
+    function searchBoard(form) {
+        /*[- 드롭다운이 아닌 메인 검색 키워드로 검색했을 때 -]*/
+        if (isEmpty(form) == true) {
+            var searchKeyword = document.getElementById("searchKeyword");
+            if (isEmpty(searchKeyword.value) == true) {
+                alert("키워드를 입력해 주세요.");
+                searchKeyword.focus();
+                return false;
+            }
+
+            form = document.getElementById("searchForm");
+            form.searchKeyword.value = searchKeyword.value;
+            form.submit();
+        }
+
+        if (isEmpty(form.searchKeyword.value) == true) {
+            alert("키워드를 입력해 주세요.");
+            form.searchKeyword.focus();
+            return false;
+        }
+    }
+
+    /*[- end of function -]*/
+
+    /*]]>*/
+</script>
 </html>

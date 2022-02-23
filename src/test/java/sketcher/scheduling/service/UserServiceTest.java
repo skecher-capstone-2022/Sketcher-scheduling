@@ -1,8 +1,10 @@
 package sketcher.scheduling.service;
 
-import org.assertj.core.api.AbstractBigDecimalAssert;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,17 +18,19 @@ import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.repository.UserRepository;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static sketcher.scheduling.domain.QUser.user;
 
 //import static org.junit.Assert.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @Transactional
-@Rollback(false)
+@Rollback(true)
 public class UserServiceTest {
 
     @Autowired
@@ -120,4 +124,60 @@ public class UserServiceTest {
 //        assertThat(page.isFirst()).isTrue(); //첫번째 항목인가?
 //        assertThat(page.hasNext()).isTrue(); //다음 페이지가 있는가?
     }
+
+    @Test
+    public void 아이디_검색() {
+        //given
+        UserDto user1 = UserDto.builder()
+                .id("user1")
+                .authRole("MANAGER")
+                .password("1234")
+                .username("이혜원")
+                .userTel("010-1234-5678")
+                .build();
+
+        userService.saveUser(user1);
+
+        //when
+        Optional<User> find_user1 = userService.findById("user1");
+
+        //then
+        assertThat(find_user1.get().getId()).isEqualTo("user1");
+        assertThat(find_user1.get().getAuthRole()).isEqualTo("MANAGER");
+        assertThat(find_user1.get().getPassword()).isEqualTo("1234");
+        assertThat(find_user1.get().getUsername()).isEqualTo("이혜원");
+        assertThat(find_user1.get().getUserTel()).isEqualTo("010-1234-5678");
+    }
+
+//    @Test
+//    public void 검색() {
+//        //given
+//        UserDto user1 = UserDto.builder()
+//                .id("user1")
+//                .authRole("MANAGER")
+//                .password("1234")
+//                .username("이혜원")
+//                .userTel("010-1234-5678")
+//                .build();
+//
+//        UserDto user2 = UserDto.builder()
+//                .id("user2")
+//                .authRole("MANAGER")
+//                .password("1234")
+//                .username("박태영")
+//                .userTel("010-1234-5678")
+//                .build();
+//
+//        userService.saveUser(user1);
+//        userService.saveUser(user2);
+//
+//        //when
+//        User findMember = queryFactory
+//                .selectFrom(user)
+//                .where(user.id.eq("user1"))
+//                .fetchOne();
+//
+//        //then
+//        assertThat(findMember.getId()).isEqualTo("user1");
+//    }
 }
