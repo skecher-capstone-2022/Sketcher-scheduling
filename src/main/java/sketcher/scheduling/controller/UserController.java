@@ -37,7 +37,7 @@ public class UserController {
             @PageableDefault Pageable pageable) {
 
         UserSearchCondition condition = new UserSearchCondition(list_align, type, keyword);
-        Page<User> users = userService.findAllManager(list_align, type, keyword, pageable);
+        Page<User> users = userService.findAllManager(condition, pageable);
         model.addAttribute("users", users);
         model.addAttribute("condition", condition);
         return "manager/all_manager_list";

@@ -4,7 +4,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.domain.User;
@@ -22,6 +21,6 @@ public interface UserRepository extends JpaRepository<User , String> { //, UserR
     List<ManagerHopeTime> findDetailById(@Param("id") String id);
 //    Optional<User> findDetailById(String id);
 
-    @Query("select u from User u where u.authRole = 'MANAGER' and :type like %:keyword%")
-    Page<User> findAllManager(String type, String keyword, Pageable pageable); //String searchType,
+//    @Query("select u from User u where u.authRole = 'MANAGER' and :type like %:keyword%")
+//    Page<User> findAllManager(String type, String keyword, Pageable pageable); //String searchType,
 }

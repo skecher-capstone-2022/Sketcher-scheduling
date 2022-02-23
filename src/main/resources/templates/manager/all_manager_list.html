@@ -72,7 +72,7 @@
                             <td class="line" th:text="${user.username}"></td>
                             <td class="line" th:text="${user.userTel}"></td>
                             <td class="line" th:text="${#temporals.format(user.user_joindate, 'yyyy-MM-dd')}"></td>
-                            <td class="line" th:text="${user.managerScore}"></td>
+                            <td class="line" th:text="${#numbers.formatDecimal(user.managerScore, 1, 1)}"></td>
                             <td class="line">
                                 <button type="submit" class="btn btn-6 btn-6b"
                                         th:onclick="|location.href='@{/manager_detail/{userId}(userId=${user.id})}'|">관리

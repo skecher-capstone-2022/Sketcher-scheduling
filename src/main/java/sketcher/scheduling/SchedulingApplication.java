@@ -36,6 +36,17 @@ public class SchedulingApplication {
 
 					userService.saveUser(user1);
 
+					UserDto user2 =  UserDto.builder()
+							.id(i+"user")
+							.authRole("MANAGER")
+							.password("1234")
+							.username("이혜원"+i)
+							.userTel("010-1234-5678")
+							.managerScore(i*2/5.0+0.2)
+							.build();
+
+					userService.saveUser(user2);
+
 					ManagerHopeTimeDto hope1 = ManagerHopeTimeDto.builder()
 							.user(user1.toEntity())
 							.start_time(12)
@@ -70,14 +81,14 @@ public class SchedulingApplication {
 //					hopeService.saveManagerHopeTime(hope4);
 
 
-					UserDto user3 =  UserDto.builder()
-							.id("admin"+i)
-							.authRole("ADMIN")
-							.password("1234")
-							.username("박태영"+i)
-							.userTel("010-1234-5678")
-							.build();
-					userService.saveUser(user3);
+//					UserDto user3 =  UserDto.builder()
+//							.id("admin"+i)
+//							.authRole("ADMIN")
+//							.password("1234")
+//							.username("박태영"+i)
+//							.userTel("010-1234-5678")
+//							.build();
+//					userService.saveUser(user3);
 				});
 
 
