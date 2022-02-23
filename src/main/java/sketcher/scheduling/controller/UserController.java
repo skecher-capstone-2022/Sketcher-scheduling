@@ -7,6 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import sketcher.scheduling.domain.User;
@@ -22,28 +23,20 @@ import javax.servlet.http.HttpServletResponse;
 public class UserController {
 
     private final UserService userService;
+//
+//    @NonNull
+//    private final BCryptPasswordEncoder passwordEncoder;
 
-    @NonNull
-    private final BCryptPasswordEncoder passwordEncoder;
 
-
-    @GetMapping(value = "/loginView")
-    public String loginView(){
+    @GetMapping(value = "/login")
+    public String loginView(Model model,
+                            @RequestParam(value = "error",required = false)String error,
+                            @RequestParam(value = "exception",required = false)String exception){
+        model.addAttribute("error",error);
+        model.addAttribute("exception",exception);
         return "user/login";
     }
 
-    @PostMapping(value = "/login")
-    public String login(HttpServletRequest request, RedirectAttributes redirectAttributes, @ModelAttribute LoginForm form){
-        String password = form.getPassword();
-        User user = userService.loadUserByUsername(form.getUserid());
-        if(user == null || !passwordEncoder.matches(password, user.getPassword())){
-            redirectAttributes.addFlashAttribute("rsMsg", "아이디 또는 비밀번호가 잘못되었습니다.");
-            return "redirect:/loginView";
-        }
-        request.getSession().setAttribute("user", user);
-        return "redirect:/calendar";
-    }
-    
     
     @GetMapping("/logout")
     public String logoutPage(HttpServletRequest request, HttpServletResponse response) {

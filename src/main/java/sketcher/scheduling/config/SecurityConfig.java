@@ -25,8 +25,6 @@ import sketcher.scheduling.service.UserService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserService userService;
-    //로그인 요청 시, 입력된 유저 정보와 DB의 회원정보를 비교해 인증된 사용자인지 체크하는 로직이 정의되어 있어야 함
-
 
     //WebSecurity는 FilterChainProxy를 생성하는 필터입니다. 다양한 Filter 설정을 적용할 수 있습니다.
     @Override
@@ -40,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
+//        모든 작업 끝나면 경로마다 권한 부여해야 함
         http.csrf().disable().authorizeRequests()
 //                .antMatchers("/manager/**").hasRole("MANAGER")  //인증 사용자만 허용
 //                .antMatchers("/admin/**").hasRole("ADMIN")   //인증 사용자만 허용
@@ -48,10 +47,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**").permitAll()    //모든 사용자 허용
                 .and()
 
-                .formLogin()
-                .loginPage("/loginView")
-                .successForwardUrl("/calendar")
-                .failureForwardUrl("/loginView")
+             .formLogin()
+                .usernameParameter("userid")
+                .passwordParameter("password")
+                .loginPage("/login")
                 .permitAll()
                 .and()
                 .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -59,20 +58,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.logout()
 //                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) //로그아웃 경로를 지정
-                .logoutSuccessUrl("/loginView")
+                .logoutSuccessUrl("/login")
                 .invalidateHttpSession(true);   // 세션 날리기
 
 //        http.exceptionHandling()
-//                .accessDeniedPage("/login");
+//                .accessDeniedPage("/login");  // 에러 페이지 만들게되면 설정해도 좋을 듯
     }
-
-//    @Override   //BCrypt타입의 password를 다시 인코딩해주는 역할
-//    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userService)
-//                // 해당 서비스(userService)에서는 UserDetailsService를 implements해서
-//                // loadUserByUsername() 구현해야함 (서비스 참고)
-//                .passwordEncoder(new BCryptPasswordEncoder());
-//    }
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -84,8 +75,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManager());
-        customAuthenticationFilter.setFilterProcessesUrl("/login");
+        customAuthenticationFilter.setFilterProcessesUrl("/loginProcess");
         customAuthenticationFilter.setAuthenticationSuccessHandler(customLoginSuccessHandler());
+        customAuthenticationFilter.setAuthenticationFailureHandler(customLoginFailureHandler());
         customAuthenticationFilter.afterPropertiesSet();
         return customAuthenticationFilter;
     }
@@ -93,6 +85,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CustomLoginSuccessHandler customLoginSuccessHandler() {
         return new CustomLoginSuccessHandler();
+    }
+
+    @Bean
+    public CustomLoginFailureHandler customLoginFailureHandler() {
+        return new CustomLoginFailureHandler();
     }
 
     @Bean//CustomAuthenticationProvider : 인증 처리 핵심 로직

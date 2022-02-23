@@ -12,13 +12,17 @@
 
 <th:block layout:fragment="step-wrap">
     <div class="signin_wrap">
-        <form action="/login" method="POST">
+        <form action="/loginProcess" method="POST">
             <div class="signin">
                 <div style="font-size: 1.5rem;font-family: 'TmonMonsori', serif;">
+
                     <h1>Welcome!</h1>
                     <h3 style="color:gray">This is Sprint Manager Scheduling Program</h3>
                 </div>
                 <div class="input_wrap">
+                    <div th:if="${param.error}">
+                        <p th:text="${exception}" style="color: red;"></p>
+                    </div>
                     <div class="container">
                         <section class="content bgcolor-4">
           <span class="input input--chisato">
@@ -66,25 +70,26 @@
 </th:block>
 </html>
 <footer>
-    <script>
-        function valid_check(){
-            var userid = $('#userid').val();
-            var password = $('#password').val();
-            var param = {"userid":userid, "password":password}
+<!--    <script>-->
+<!--        function valid_check(){-->
+<!--            var userid = $('#userid').val();-->
+<!--            var password = $('#password').val();-->
+<!--            var param = {"userid":userid, "password":password}-->
 
-            $.ajax({
-                contentType: "application/json; charset=utf-8;",
-                type: "POST",
-                url: "/login_check",
-                dataType: "text",
-                data: JSON.stringify(param),
-                success: function (data) {
-                    alert(data);
-                }, error: function () {
-                    console.log("실패");
-                }
-            });
-        }
+<!--            $.ajax({-->
+<!--                contentType: "application/json; charset=utf-8;",-->
+<!--                type: "POST",-->
+<!--                url: "/login_check",-->
+<!--                dataType: "text",-->
+<!--                data: JSON.stringify(param),-->
+<!--                success: function (data) {-->
+<!--                    alert(data);-->
+<!--                }, error: function () {-->
+<!--                    console.log("실패");-->
+<!--                }-->
+<!--            });-->
+<!--        }-->
 
-    </script>
+<!--    </script>-->
+
 </footer>
