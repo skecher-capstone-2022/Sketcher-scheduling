@@ -28,7 +28,7 @@ public class UserService {
      */
     @Transactional
     public String saveUser(UserDto user){
-        return userRepository.save(user.toEntity()).getId();
+        return userRepository.save(user.toEntity()).getUsername();
     }
 
 }

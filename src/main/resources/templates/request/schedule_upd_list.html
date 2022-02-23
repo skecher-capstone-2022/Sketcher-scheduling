@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/menu_layout}">
+<head>
+    <title>스케줄 수정 요청 목록</title>
+    <link th:href="@{/css/manager_list.css}" rel="stylesheet"/>
+    <style media="screen">
+        button.btn.btn-6.btn-6b.reqbtn1 {
+            background-color: #939393;
+            border-radius: 8px;
+        }
+
+        button.btn.btn-6.btn-6b.reqbtn1:hover {
+            background-color: #606060;
+            border-radius: 8px;
+        }
+
+        button.btn.btn-6.btn-6b.reqbtn2 {
+            background-color: tomato;
+            border-radius: 8px;
+        }
+
+        button.btn.btn-6.btn-6b.reqbtn2:hover {
+            background-color: #ff3f1d;
+            border-radius: 8px;
+        }
+
+        .btn_align {
+            display: inline;
+            float: right;
+        }
+
+        select {
+            height: 30px;
+        }
+
+        .btn {
+            margin: 0;
+            padding: 10px 20px;
+        }
+
+        table {
+            margin-bottom: 50px;
+        }
+    </style>
+</head>
+
+<th:block layout:fragment="ground-wrap">
+    <div class="ground">
+        <div class="main">
+            <div class="all_manaer_list">
+                <div class="title1">
+                    <h1>스케줄 수정 요청 목록</h1>
+                </div>
+
+                <div class="align">
+                    <select name="list_align" class="list_align">
+                        <option value="manager_score" selected="selected">평점순</option>
+                        <option value="manager_name">매니저명</option>
+                        <option value="req_date">날짜</option>
+                    </select>
+
+                    <!--                        <div class="btn-wrapper">-->
+                    <div class="btn_align">
+                        <button class="btn btn-6 btn-6b reqbtn1" onclick="">전체 선택</button>
+                        <button class="btn btn-6 btn-6b reqbtn1" onclick="">전체 선택 해제</button>
+                        <button class="btn btn-6 btn-6b reqbtn2" onclick="">수정 요청 수락</button>
+                    </div>
+                    <!--                        </div>-->
+                </div>
+                <table width="700" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <th scope="col">INDEX</th>
+                        <th scope="col">매니저ID</th>
+                        <th scope="col">매니저명</th>
+                        <th scope="col">변경 전 날짜</th>
+                        <th scope="col">변경 전 시간</th>
+                        <th scope="col">변경 후 날짜</th>
+                        <th scope="col">변경 후 시간</th>
+                        <th scope="col">승인</th>
+                    </tr>
+                    <tr>
+                        <td class="line">1</td>
+                        <td class="line">USER1</td>
+                        <td class="line">박태영</td>
+                        <td class="line">2022-01-14</td>
+                        <td class="line">2시</td>
+                        <td class="line">2022-01-15</td>
+                        <td class="line">2시</td>
+                        <td class="line"><input name="approval" type="checkbox" value="approval"/></td>
+                    </tr>
+                    <tr>
+                        <td class="line">1</td>
+                        <td class="line">USER1</td>
+                        <td class="line">박태영</td>
+                        <td class="line">2022-01-14</td>
+                        <td class="line">2시</td>
+                        <td class="line">2022-01-15</td>
+                        <td class="line">2시</td>
+                        <td class="line"><input name="approval" type="checkbox" value="approval"/></td>
+                    </tr>
+                    <tr>
+                        <td class="line">1</td>
+                        <td class="line">USER1</td>
+                        <td class="line">박태영</td>
+                        <td class="line">2022-01-14</td>
+                        <td class="line">2시</td>
+                        <td class="line">2022-01-15</td>
+                        <td class="line">2시</td>
+                        <td class="line"><input name="approval" type="checkbox" value="approval"/></td>
+                    </tr>
+                    <tr>
+                        <td class="line">1</td>
+                        <td class="line">USER1</td>
+                        <td class="line">박태영</td>
+                        <td class="line">2022-01-14</td>
+                        <td class="line">2시</td>
+                        <td class="line">2022-01-15</td>
+                        <td class="line">2시</td>
+                        <td class="line"><input name="approval" type="checkbox" value="approval"/></td>
+                    </tr>
+                    <tr>
+                        <td class="line">1</td>
+                        <td class="line">USER1</td>
+                        <td class="line">박태영</td>
+                        <td class="line">2022-01-14</td>
+                        <td class="line">2시</td>
+                        <td class="line">2022-01-15</td>
+                        <td class="line">2시</td>
+                        <td class="line"><input name="approval" type="checkbox" value="approval"/></td>
+                    </tr>
+                    <tr>
+                        <td class="line">1</td>
+                        <td class="line">USER1</td>
+                        <td class="line">박태영</td>
+                        <td class="line">2022-01-14</td>
+                        <td class="line">2시</td>
+                        <td class="line">2022-01-15</td>
+                        <td class="line">2시</td>
+                        <td class="line"><input name="approval" type="checkbox" value="approval"/></td>
+                    </tr>
+                    <tr>
+                        <td class="line">1</td>
+                        <td class="line">USER1</td>
+                        <td class="line">박태영</td>
+                        <td class="line">2022-01-14</td>
+                        <td class="line">2시</td>
+                        <td class="line">2022-01-15</td>
+                        <td class="line">2시</td>
+                        <td class="line"><input name="approval" type="checkbox" value="approval"/></td>
+                    </tr>
+                    <tr>
+                        <td class="line">1</td>
+                        <td class="line">USER1</td>
+                        <td class="line">박태영</td>
+                        <td class="line">2022-01-14</td>
+                        <td class="line">2시</td>
+                        <td class="line">2022-01-15</td>
+                        <td class="line">2시</td>
+                        <td class="line"><input name="approval" type="checkbox" value="approval"/></td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</th:block>
+</html>

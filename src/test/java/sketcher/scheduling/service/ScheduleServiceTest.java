@@ -13,6 +13,8 @@ import sketcher.scheduling.dto.ScheduleDto;
 import sketcher.scheduling.repository.ScheduleRepository;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
@@ -30,13 +32,15 @@ public class ScheduleServiceTest {
     @Test
     @Transactional
     @Commit
-    public void 스케줄_생성_테스트() {
+    public void 스케줄_생성_테스트() throws Exception {
         //given
 
         Date date = new Date();
+        SimpleDateFormat date1 = new SimpleDateFormat("yyyy-MM-dd");
+        Date date2 = date1.parse("2022-02-19");
 
         ScheduleDto schedule = ScheduleDto.builder()
-                .scheduleDate(date)
+                .scheduleDate(date2)
                 .scheduleTime(2)
                 .workforce(2)
                 .expected_card_cnt(100)

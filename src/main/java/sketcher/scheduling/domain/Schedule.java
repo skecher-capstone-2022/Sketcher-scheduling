@@ -1,5 +1,6 @@
 package sketcher.scheduling.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,32 +17,40 @@ import java.util.List;
 @Table(name = "schedule")
 @Getter
 
-public class Schedule extends ScheduleTimeEntity{
+public class Schedule{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "schedule_id")
     private Integer id;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "schedule_date")
-    private Date scheduleDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+9")
+    @Column(name = "schedule_date_time_start")
+    private LocalDateTime scheduleDateTimeStart;
 
-    @Column(name = "schedule_time")
-    private Integer scheduleTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+9")
+    @Column(name = "schedule_date_time_end")
+    private LocalDateTime scheduleDateTimeEnd;
+
+//    @DateTimeFormat(pattern = "yyyy-MM-dd")
+//    @Column(name = "schedule_date")
+//    private Date scheduleDate;
+//
+//    @Column(name = "schedule_time")
+//    private Integer scheduleTime;
 
     private Integer workforce;
 
     private Integer expected_card_cnt;
 
-    /**
-     * 현재 스케줄 DB 테스트중.. 나중에 유저정보 받고 넣어보기
-     */
-//    @NotEmpty
-//    private String creator_id;
-//
-//    @NotEmpty
-//    private String update_id;
+    private String creator_id;
 
+    private String update_id;
+
+    private LocalDateTime create_date;
+
+    private LocalDateTime update_date;
 
     /**
      * 연관관계 매핑
@@ -58,11 +67,15 @@ public class Schedule extends ScheduleTimeEntity{
      * Builder 에 관한 설명은 /domain/User에!
      */
     @Builder
-    public Schedule(Date scheduleDate, Integer scheduleTime, Integer workforce, Integer expected_card_cnt) {
-        this.scheduleDate = scheduleDate;
-        this.scheduleTime = scheduleTime;
+    public Schedule(LocalDateTime scheduleDateTimeStart, LocalDateTime scheduleDateTimeEnd, Integer workforce, Integer expected_card_cnt, String creator_id, String update_id, LocalDateTime create_date, LocalDateTime update_date) {
+        this.scheduleDateTimeStart = scheduleDateTimeStart;
+        this.scheduleDateTimeEnd = scheduleDateTimeEnd;
         this.workforce = workforce;
         this.expected_card_cnt = expected_card_cnt;
+        this.creator_id = creator_id;
+        this.update_id = update_id;
+        this.create_date = create_date;
+        this.update_date = update_date;
     }
 
 

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/user_layout}">
+<head>
+    <title>로그인</title>
+    <link th:href="@{/css/normalize3.css}" rel="stylesheet"/><!--input style-->
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+
+<th:block layout:fragment="step-wrap">
+    <div class="signin_wrap">
+        <div class="signin">
+            <div style="font-size: 1.5rem;font-family: 'TmonMonsori', serif;">
+                <h1>Welcome!</h1>
+                <h3 style="color:gray">This is Sprint Manager Scheduling Program</h3>
+            </div>
+            <div class="input_wrap">
+                <div class="container">
+                    <section class="content bgcolor-4">
+          <span class="input input--chisato">
+					<input class="input__field input__field--chisato" type="text" id="input-13"/>
+					<label class="input__label input__label--chisato" for="input-13">
+						<span class="input__label-content input__label-content--chisato" data-content="User Id">아이디를 입력하세요</span>
+					</label>
+				</span>
+                        <span class="input input--chisato">
+					<input class="input__field input__field--chisato" type="password" id="input-14"/>
+					<label class="input__label input__label--chisato" for="input-14">
+						<span class="input__label-content input__label-content--chisato" data-content="Password">비밀번호를 입력하세요</span>
+					</label>
+				</span>
+
+                    </section>
+
+                </div><!-- /container -->
+
+
+            </div>
+            <div style="margin:80px">
+                <section class="color-4">
+                    <p>
+                        <button class="btn btn-4-pink btn-4a icon-arrow-right-pink"
+                                onclick="location.href='calendar'">Sign In
+                        </button>
+                    </p>
+
+                </section>
+            </div>
+        </div>
+    </div>
+</th:block>
+<th:block layout:fragment="signup-wrap">
+    <h1 style="color:white;">New here?</h1>
+    <h4 style="color:white;">Don't have an account?</h4>
+    <div style="margin-top:100px;">
+        <section class="color-4">
+            <p>
+                <button class="btn btn-4 btn-4a icon-arrow-right" onclick="location.href='/step1'">Sign up</button>
+            </p>
+        </section>
+    </div>
+</th:block>
+</html>

@@ -1,0 +1,85 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+	margin:0;
+	/*height:100vh;*/
+	background-image:url(../img/background.jpg);
+	background-repeat : no-repeat;
+    background-size : cover;
+	background-attachment: fixed;
+	
+}
+.menu {
+	clear:both;
+	float:left;
+	width: 155px;
+	height:100%;
+    background-color:rgba( 255, 255, 255, 0.7 );
+	border-top-right-radius: 30px;
+	border-bottom-right-radius: 30px;
+	
+	text-align:center;
+	padding:1%;
+	box-sizing: border-box;
+	position: fixed;
+}
+
+.menu_logo {
+	margin-top:35px;
+}
+
+.menu_list {
+	height:100vh;
+	display:flex;
+	justify-content:center;
+	text-align:center;
+	margin-top:70px;
+}
+
+.list_text_center > ul {
+	list-style-type: none;
+	text-align:center;
+	padding: 0px;
+	margin: 0px;
+	overflow: auto;
+	position: fixed;
+}
+
+.list_text_center > li a {
+	height:100%;
+	display:inline-block;
+	text-align: center;
+	text-decoration: none;
+	margin: 10px;
+}
+
+li a:hover {
+
+}
+
+li a.home {
+  
+}
+
+.main {
+	/* float: right; */
+	/* height: 100vh; */
+	/* padding: 15px; */
+	margin: 0px 100px;
+	box-sizing: border-box;
+}
+
+.btn {
+	padding: 10px 20px;
+	width: max-content;
+	font-size: 0.8rem;
+}
+
+.access_user {
+	width: 300px;
+	height: 100px;
+	float: right;
+	margin-right: 100px;
+	padding-top: 50px;
+}

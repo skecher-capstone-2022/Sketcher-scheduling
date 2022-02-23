@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/user_layout}">
+<head>
+    <title>회원가입 STEP3</title>
+    <style>
+        .btn-4 {
+            border-radius: 50px;
+            border: 3px solid #ff8686;
+            color: #ff8686;
+            overflow: hidden;
+        }
+        .btn-4:hover {
+            color: #fff;
+        }
+    </style>
+</head>
+
+<th:block layout:fragment="step-wrap">
+    <div class="step">
+        <div style="text-align:center; margin-bottom:70px;">
+            <img th:src="@{/img/step3.png}">
+        </div>
+        <div class="user_input">
+            <h1 style="color: #3d3d3d;">회원 가입 완료</h1>
+            <div style="color:#A6A6A6;"> 회원가입이 완료되었습니다.<br/>
+                아래의 SIGN IN 버튼을 눌러 로그인 후 서비스를 이용해주세요 :)
+            </div>
+
+            <section class="color-4">
+                <p>
+                    <button class="btn btn-4 btn-4a icon-arrow-right" onclick="location.href='/login'">Sign in</button>
+                </p>
+
+            </section>
+        </div>
+    </div>
+</th:block>
+<th:block layout:fragment="signup-wrap">
+    <h1 style="color:white;">SIGN UP</h1>
+    <h4 style="color:white;">Sprint Manager<br/>
+        Scheduling Program</h4>
+    <div style="margin-top:156px; height:1;"/>
+</th:block>
+</html>

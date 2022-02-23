@@ -7,7 +7,7 @@ import sketcher.scheduling.domain.User;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter @Setter
-public class ManagerAssignScheduelDto {
+public class ManagerAssignScheduleDto {
 
     private Integer id;
     private Character schedule_delete_req_check;
@@ -15,7 +15,7 @@ public class ManagerAssignScheduelDto {
     private Schedule schedule;
 
     @Builder
-    public ManagerAssignScheduelDto(Character schedule_delete_req_check, User user, Schedule schedule) {
+    public ManagerAssignScheduleDto(Character schedule_delete_req_check, User user, Schedule schedule) {
         this.schedule_delete_req_check = schedule_delete_req_check;
         this.user = user;
         this.schedule = schedule;

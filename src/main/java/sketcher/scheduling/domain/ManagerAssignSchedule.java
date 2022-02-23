@@ -23,7 +23,7 @@ public class ManagerAssignSchedule {
      */
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_name")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)

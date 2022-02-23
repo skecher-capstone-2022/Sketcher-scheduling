@@ -1,0 +1,67 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+	background: #f9f7f6;
+
+	margin:0;
+}
+@font-face {
+	font-family: 'TmonMonsori';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/TmonMonsori.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+.signup > h1 {
+	font-size: 30pt;
+	font-family: 'TmonMonsori', serif;
+
+}
+
+.signup > h4 {
+	font-size: 15pt;
+	font-family: 'TmonMonsori', serif;
+}
+
+.step {
+	float:left;
+	font-size: 1.2rem;
+	margin-top: 50px;
+	width:70%;
+	padding:30px;
+	box-sizing: border-box;
+}
+
+.user_input_wrap {
+	width:100%;
+}
+
+.user_input {
+	width: 70%;
+	margin: 0 auto;
+}
+
+.signup_right{
+	float:right;
+	width:30%;
+	height:100vh;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+
+	background-image:url(../img/background.jpg);
+	background-repeat : no-repeat;
+    background-size : cover;
+	box-sizing: border-box;
+	text-align:center;
+
+	position:fixed;
+	right:0;
+}
+
+/*.btn_img {*/
+/*	padding: 0;*/
+/*	border: none;*/
+/*	background: none;*/
+/*}*/

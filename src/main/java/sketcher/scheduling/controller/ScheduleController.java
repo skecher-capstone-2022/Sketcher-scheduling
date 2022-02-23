@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import sketcher.scheduling.domain.Schedule;
 import sketcher.scheduling.dto.ScheduleDto;
 import sketcher.scheduling.service.ScheduleService;
+import sketcher.scheduling.service.UserService;
 
 import java.util.List;
 
