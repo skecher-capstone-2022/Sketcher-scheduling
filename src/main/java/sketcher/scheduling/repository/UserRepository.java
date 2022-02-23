@@ -11,11 +11,8 @@ import sketcher.scheduling.domain.User;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User , String> { //, UserRepositoryCustom
-
-
-    Optional<User> findById(String id);
-    List<User> findAll();
+public interface UserRepository extends JpaRepository<User , String> {
+    Optional<User> findById(String id);    List<User> findAll();
 
     @Query("select h from ManagerHopeTime h join h.user u where h.user.id = u.id and u.id = :id order by h.start_time")
     List<ManagerHopeTime> findDetailById(@Param("id") String id);

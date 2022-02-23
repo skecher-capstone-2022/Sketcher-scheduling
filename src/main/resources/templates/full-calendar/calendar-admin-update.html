@@ -13,149 +13,126 @@
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
     <script>
 
-        document.addEventListener('DOMContentLoaded', function () {
-            var initialLocaleCode = 'ko';
-            var localeSelectorEl = document.getElementById('locale-selector');
-            /* initialize the external events
-            -----------------------------------------------------------------*/
+        var calendar = null;
+        var initialLocaleCode = 'ko';
+        var localeSelectorEl = document.getElementById('locale-selector');
 
-            var containerEl = document.getElementById('external-events-list');
-            new FullCalendar.Draggable(containerEl, {
-                itemSelector: '.fc-event',
-                eventData: function (eventEl) {
-                    return {
-                        title: eventEl.innerText.trim()
-                    }
-                }
-            });
+            $(document).ready(function (){
 
-            //// the individual way to do it
-            // var containerEl = document.getElementById('external-events-list');
-            // var eventEls = Array.prototype.slice.call(
-            //   containerEl.querySelectorAll('.fc-event')
-            // );
-            // eventEls.forEach(function(eventEl) {
-            //   new FullCalendar.Draggable(eventEl, {
-            //     eventData: {
-            //       title: eventEl.innerText.trim(),
-            //     }
-            //   });
-            // });
+                    var calendarEl = document.getElementById('calendar');
+                    calendar = new FullCalendar.Calendar(calendarEl, {
+                        initialDate: '2022-02-07',
+                        initialView: 'timeGridWeek',
+                        headerToolbar: {
+                            left: 'prev,next today',
+                            center: 'title',
+                            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                        },
+                        navLinks: true,
+                        editable: true,
+                        selectable: true,
+                        droppable: true, // this allows things to be dropped onto the calendar
 
-            /* initialize the calendar
-            -----------------------------------------------------------------*/
+                        eventAdd: function () { // 이벤트가 추가되면 발생하는 이벤트
+                            console.log()
+                        },
 
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialDate: '2022-02-07',
-                initialView: 'timeGridWeek',
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-                },
-                editable: true,
-                droppable: true, // this allows things to be dropped onto the calendar
-                drop: function (arg) {
-                    // is the "remove after drop" checkbox checked?
-                    if (document.getElementById('drop-remove').checked) {
-                        // if so, remove the element from the "Draggable Events" list
-                        arg.draggedEl.parentNode.removeChild(arg.draggedEl);
-                    }
-                },
-                events: [
-                    {
-                        title: '스케줄 수정 요청 기간',
-                        color: 'darksalmon',
-                        start: '2022-02-07',
-                        end: '2022-02-13'
-                    },
-                    {
-                        title: '김희수',
-                        color: 'yellowgreen',
-                        start: '2022-02-10T11:00:00',
-                        end: '2022-02-10T13:00:00'
-                    },
-                    {
-                        title: '김희수',
-                        color: 'yellowgreen',
-                        start: '2022-02-08T11:00:00',
-                        end: '2022-02-08T13:00:00'
-                    },
-                    {
-                        title: '김희수',
-                        color: 'yellowgreen',
-                        start: '2022-02-07T11:00:00',
-                        end: '2022-02-07T13:00:00'
-                    },
-                    {
-                        title: '정민환',
-                        color: '#3788d8',
-                        start: '2022-02-07T08:00:00',
-                        end: '2022-02-07T10:00:00'
-                    },
-                    {
-                        title: '정민환',
-                        color: '#3788d8',
-                        start: '2022-02-09T08:00:00',
-                        end: '2022-02-09T10:00:00'
-                    },
-                    {
-                        title: '정민환',
-                        color: '#3788d8',
-                        start: '2022-02-12T08:00:00',
-                        end: '2022-02-12T10:00:00'
-                    },
-                    {
-                        title: '박태영',
-                        color: 'coral',
-                        start: '2022-02-07T16:00:00',
-                        end: '2022-02-07T18:00:00'
-                    },
-                    {
-                        title: '박태영',
-                        color: 'coral',
-                        start: '2022-02-11T16:00:00',
-                        end: '2022-02-11T18:00:00'
-                    },
-                    {
-                        title: '이혜원',
-                        color: 'darkorchid',
-                        start: '2022-02-12T15:00:00',
-                        end: '2022-02-12T17:30:00'
-                    },
-                    {
-                        title: '이혜원',
-                        color: 'darkorchid',
-                        start: '2022-02-07T15:00:00',
-                        end: '2022-02-07T17:30:00'
-                    },
-                    {
-                        title: '박태영',
-                        color: 'coral',
-                        start: '2022-02-09T16:00:00',
-                        end: '2022-02-09T18:30:00'
-                    },
-                    {
-                        title: '이혜원',
-                        color: 'darkorchid',
-                        start: '2022-02-09T17:00:00',
-                        end: '2022-02-09T19:30:00'
-                    },
-                    {
-                        title: '이혜원',
-                        start: '2020-09-16T16:00:00'
-                    },
-                    {
-                        title: 'Click for Google',
-                        url: 'http://google.com/',
-                        start: '2020-09-28'
-                    }
-                ]
-            });
-            calendar.render();
+                        // eventChange: function (obj) { // 이벤트가 수정되면 발생하는 이벤트
+                        //     allEvent = calendar.getEvents();
+                        //     console.log(allEvent);
+                        // },
+                        eventRemove: function (obj) { // 이벤트가 삭제되면 발생하는 이벤트
 
+                        },
+                        /**
+                         * 드래그로 이벤트 추가하기
+                         */
+                        select: function (arg) { // 캘린더에서 이벤트를 생성할 수 있다.
+
+                            var title = prompt('일정을 입력해주세요.');
+                            if (title) {
+                                calendar.addEvent({
+                                    title: title,
+                                    start: arg.start,
+                                    end: arg.end,
+                                    allDay: arg.allDay,
+                                })
+                            }
+
+                            var allEvent = calendar.getEvents(); // .getEvents() 함수로 모든 이벤트를 Array 형식으로 가져온다. (FullCalendar 기능 참조)
+
+                            var events = new Array(); // Json 데이터를 받기 위한 배열 선언
+                            for (var i = 0; i < allEvent.length; i++) {
+                                var obj = new Object();     // Json 을 담기 위해 Object 선언
+                                // alert(allEvent[i]._def.title); // 이벤트 명칭 알람
+                                obj.title = allEvent[i]._def.title; // 이벤트 명칭  ConsoleLog 로 확인 가능.
+                                obj.start = allEvent[i]._instance.range.start; // 시작
+                                obj.end = allEvent[i]._instance.range.end; // 끝
+
+                                events.push(obj);
+                            }
+                            var jsondata = JSON.stringify(events);
+                            console.log(jsondata);
+                            // saveData(jsondata);
+
+                            $(function saveData(jsondata) {
+                                $.ajax({
+                                    url: "/full-calendar/calendar-admin-update",
+                                    method: "POST",
+                                    dataType: "json",
+                                    data: JSON.stringify(events),
+                                    contentType: 'application/json',
+                                })
+                                    .done(function (result) {
+                                        // alert(result);
+                                    })
+                                    .fail(function (request, status, error) {
+                                         // alert("에러 발생" + error);
+                                    });
+                                calendar.unselect()
+                            });
+                        },
+
+
+                        eventClick: function (info){
+                            if(confirm("일정'"+ info.event.title +"'을 삭제하시겠습니까 ?")){
+                                // 확인 클릭 시
+                                info.event.remove();
+                                console.log(info);
+                            }
+
+                            var deleteEvents = calendar.getEvents();
+                            var events = new Array(); // Json 데이터를 받기 위한 배열 선언
+                            for (var i = 0; i < deleteEvents.length; i++) {
+                                var obj = new Object();
+                                obj.title = deleteEvents[i]._def.title;
+                                events.push(obj);
+                            }
+                            console.log(obj);
+                            $(function deleteData(){
+                                $.ajax({
+                                    url: "/full-calendar/calendar-admin-update",
+                                    method: "DELETE",
+                                    dataType: "json",
+                                    data: JSON.stringify(events),
+                                    contentType: 'application/json',
+                                })
+                            })
+                        }
+
+                        // drop: function (arg) {
+                        //     // is the "remove after drop" checkbox checked?
+                        //     if (document.getElementById('drop-remove').checked) {
+                        //         // if so, remove the element from the "Draggable Events" list
+                        //         arg.draggedEl.parentNode.removeChild(arg.draggedEl);
+                        //     }
+                        // }
+                    });
+                    calendar.render();
         });
+
+
+
 
     </script>
     <style>
@@ -164,7 +141,9 @@
             font-size: 14px;
         }
 
-        table{text-align: left;}
+        table {
+            text-align: left;
+        }
 
         .access_user {
             width: 300px;
@@ -228,32 +207,6 @@
             <div class="title1">
                 <h1>스케줄 수정</h1>
             </div>
-            <div id='wrap'>
-                <div id='external-events'>
-                    <h4>Draggable Events</h4>
-                    <div id='external-events-list'>
-                        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-                            <div class='fc-event-main'>My Event 1</div>
-                        </div>
-                        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-                            <div class='fc-event-main'>My Event 2</div>
-                        </div>
-                        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-                            <div class='fc-event-main'>My Event 3</div>
-                        </div>
-                        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-                            <div class='fc-event-main'>My Event 4</div>
-                        </div>
-                        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
-                            <div class='fc-event-main'>My Event 5</div>
-                        </div>
-
-                    </div>
-                    <p>
-                        <input type='checkbox' id='drop-remove'/>
-                        <label for='drop-remove'>remove after drop</label>
-                    </p>
-                </div>
                 <div id='calendar-wrap'>
                     <div id='calendar'></div>
                 </div>
