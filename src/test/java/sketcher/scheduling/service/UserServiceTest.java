@@ -12,6 +12,7 @@ import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.repository.UserRepository;
 
+import javax.persistence.EntityManager;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
@@ -20,6 +21,9 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @Rollback(false)
 public class UserServiceTest {
+
+    @Autowired
+    EntityManager em;
 
     @Autowired
     UserService userService;
@@ -54,7 +58,7 @@ public class UserServiceTest {
     public void 로그인() {
         //given
         UserDto user = UserDto.builder()
-                .id("taeong")
+                .id("taeong111")
                 .authRole("MANAGER")
                 .password("12345")
                 .username("박태영")
@@ -62,11 +66,17 @@ public class UserServiceTest {
                 .build();
 
         //when
-        String saveduser = userService.saveUser(user);
+        userService.saveUser(user);
+        String userid = "taeong111";
+        String password = "12345";
+
+//        em.flush();
+//        em.clear();
 
         //then
-        User loadUser = userService.loadUserByUsername(user.getId());
-        Assertions.assertEquals(saveduser, loadUser.getId());
+        User loadUser = userService.loadUserByUsername(userid);
+
+        Assertions.assertEquals(password, loadUser.getPassword());
 
 
     }

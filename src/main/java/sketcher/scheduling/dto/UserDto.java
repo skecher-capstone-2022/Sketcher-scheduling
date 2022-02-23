@@ -10,6 +10,7 @@ import sketcher.scheduling.domain.User;
 @ApiModel(value = "사용자")
 public class UserDto {
 
+    private Integer code;
     private String id;
     private String authRole;
     private String password;

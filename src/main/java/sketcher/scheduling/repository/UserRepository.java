@@ -9,10 +9,12 @@ import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User , String> {
+public interface UserRepository extends JpaRepository<User , Integer> {
     Optional<User> findById(String id);
     List<User> findAll();
 
     @Query("select u from User u where u.id = :userid")
     List<User> idCheck(@Param("userid") String userid);
+
+    Optional<User> findByCode(int code);
 }

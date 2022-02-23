@@ -1,7 +1,6 @@
 package sketcher.scheduling.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,6 +18,10 @@ import java.util.Optional;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+
+    private Optional<User> findByCode(int code){
+        return userRepository.findByCode(code);
+    }
 
     public List<User> findAll() {
         return userRepository.findAll();
@@ -43,6 +46,14 @@ public class UserService implements UserDetailsService {
     public User loadUserByUsername(String userid) throws UsernameNotFoundException {
         return userRepository.findById(userid).orElseThrow(() -> new UsernameNotFoundException(userid));
     }
+
+//    spring security 인증 과정
+//    1. 유저 세션 생성
+//    2. 반환된 User객체를 시큐리티 컨텍스트 폴더에 저장
+//       (시큐리티 컨텍스트 폴더 : 스프링시큐리티의 인메모리 저장소)
+//    3. 유저 세션ID와 함께 응답을 보냄
+//    4. 이후 요청 쿠키에서 JSESSION ID를 검증
+//    5. JSESSION ID가 유효하다면 인증
 
 
     //아이디 중복 검사

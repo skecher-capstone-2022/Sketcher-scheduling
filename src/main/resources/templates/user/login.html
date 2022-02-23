@@ -12,7 +12,7 @@
 
 <th:block layout:fragment="step-wrap">
     <div class="signin_wrap">
-        <form action="/login_check" method="POST">
+        <form action="/login" method="POST">
             <div class="signin">
                 <div style="font-size: 1.5rem;font-family: 'TmonMonsori', serif;">
                     <h1>Welcome!</h1>
@@ -22,7 +22,6 @@
                     <div class="container">
                         <section class="content bgcolor-4">
           <span class="input input--chisato">
-              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 					<input class="input__field input__field--chisato" type="text" id="userid" name="userid"/>
 					<label class="input__label input__label--chisato" for="input-13">
 						<span class="input__label-content input__label-content--chisato" data-content="User Id">아이디를 입력하세요</span>
@@ -44,7 +43,7 @@
                 <div style="margin:80px">
                     <section class="color-4">
                         <p>
-                            <button class="btn btn-4-pink btn-4a icon-arrow-right-pink" onclick="login();">Sign In
+                            <button class="btn btn-4-pink btn-4a icon-arrow-right-pink" onclick="valid_check();">Sign In
                             </button>
                         </p>
 
@@ -86,36 +85,6 @@
                 }
             });
         }
-        function login(){
-            $.ajax({
-                url:"/login",
-                type :  "POST",
-                dataType : "json",
-                data : {
-                    memberId : $("#member-id").val(),
-                    memberPassword : $("#member-password").val()
-                },
-                beforeSend : function(xhr)
-                {
-                    //이거 안하면 403 error
-                    //데이터를 전송하기 전에 헤더에 csrf값을 설정한다
-                    var $token = $("#token");
-                    xhr.setRequestHeader($token.data("token-name"), $token.val());
-                },
-                success : function(response){
-                    if(response.code == "200"){
-                        // 정상 처리 된 경우
-                        window.location = response.item.url;	//이전페이지로 돌아가기
-                    } else {
-                        alert(response.message);
-                    }
-                },
-                error : function(a,b,c){
-                    console.log(a,b,c);
-                }
 
-            })
-
-        }
     </script>
 </footer>

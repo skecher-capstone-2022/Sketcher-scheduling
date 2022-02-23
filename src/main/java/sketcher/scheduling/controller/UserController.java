@@ -1,8 +1,10 @@
 package sketcher.scheduling.controller;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -21,30 +23,34 @@ public class UserController {
 
     private final UserService userService;
 
+    @NonNull
+    private final BCryptPasswordEncoder passwordEncoder;
+
+
+    @GetMapping(value = "/loginView")
+    public String loginView(){
+        return "user/login";
+    }
+
+    @PostMapping(value = "/login")
+    public String login(HttpServletRequest request, RedirectAttributes redirectAttributes, @ModelAttribute LoginForm form){
+        String password = form.getPassword();
+        User user = userService.loadUserByUsername(form.getUserid());
+        if(user == null || !passwordEncoder.matches(password, user.getPassword())){
+            redirectAttributes.addFlashAttribute("rsMsg", "아이디 또는 비밀번호가 잘못되었습니다.");
+            return "redirect:/loginView";
+        }
+        request.getSession().setAttribute("user", user);
+        return "redirect:/calendar";
+    }
+    
+    
     @GetMapping("/logout")
     public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
         new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder
                 .getContext().getAuthentication());
         return "redirect:/login";
     }
-
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login_page(HttpServletRequest request) {
-        return "user/login";
-    }
-
-    @RequestMapping(value = "/login_check", method = RequestMethod.POST)
-    public String login(LoginForm form) throws Exception {
-        System.out.println(form.getUserid());
-        System.out.println(form.getPassword());
-        User user = userService.loadUserByUsername(form.getUserid());
-        user.getPassword()
-
-        return "yes!!";
-    }
-//매니저 -> calendar, 관리자 -> calender_admin
-//        if()
-//        return "user/calendar";
 
     @RequestMapping(value = "/step1", method = RequestMethod.GET)
     public String step1(HttpServletRequest request) {
