@@ -12,5 +12,5 @@ public interface ManagerAssignScheduleRepository extends JpaRepository<ManagerAs
 
     List<ManagerAssignSchedule> findAll();
     List<ManagerAssignSchedule> findByUser(User user);
-    String deleteByUser(String username);
+    Integer deleteByUser(User user);
 }

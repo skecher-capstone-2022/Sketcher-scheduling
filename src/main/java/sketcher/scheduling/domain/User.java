@@ -28,6 +28,9 @@ public class User{
     @Column(name = "user_code")
     private Integer code;
 
+    @Column(name = "user_id")
+    private String id;
+
     @Column(name = "auth_role")
     private String authRole;
 
@@ -42,9 +45,6 @@ public class User{
     @Column(name = "user_tel")
     private String userTel;
 
-    /**
-     * UserTimeEntity 로 수정  / 생성 시간 자동 생성 . 쿼리문 없어도 자동으로 DB 에 입력되는 순간을 기점으로 생성.
-     */
     @Column(name = "user_joindate")
     private LocalDateTime user_joinDate;
 
@@ -66,14 +66,10 @@ public class User{
     protected User() {
     }
 
-    /**
-     * domain 은 DB 에 저장된 데이터를 꺼내오기 위한 클래스로 설정
-     * getter 만 열어두었습니다!
-     * Setter 는 dto 에 오픈해두었는데 DB 에 값 입력은 Builder 를 이용해봄이?..(생성자랑 비슷한 개념이에요!)
-     */
     @Builder
-    public User(Integer code, String authRole, String password, String username, String userTel, LocalDateTime user_joinDate, Double managerScore, Character dropoutReqCheck) {
+    public User(Integer code, String id, String authRole, String password, String username, String userTel, LocalDateTime user_joinDate, Double managerScore, Character dropoutReqCheck) {
         this.code = code;
+        this.id = id;
         this.authRole = authRole;
         this.password = password;
         this.username = username;

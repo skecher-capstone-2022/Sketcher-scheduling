@@ -20,7 +20,7 @@ public class ManagerWorkingSchedule {
      * 연관관계 매핑
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_code")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
