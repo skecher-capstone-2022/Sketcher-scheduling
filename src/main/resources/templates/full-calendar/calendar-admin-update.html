@@ -33,17 +33,37 @@
                         selectable: true,
                         droppable: true, // this allows things to be dropped onto the calendar
 
-                        eventAdd: function () { // 이벤트가 추가되면 발생하는 이벤트
-                            console.log()
-                        },
-
-                        // eventChange: function (obj) { // 이벤트가 수정되면 발생하는 이벤트
-                        //     allEvent = calendar.getEvents();
-                        //     console.log(allEvent);
+                        // eventAdd: function () { // 이벤트가 추가되면 발생하는 이벤트
+                        //     // console.log()
                         // },
-                        eventRemove: function (obj) { // 이벤트가 삭제되면 발생하는 이벤트
 
+                        /**
+                         * 드래그로 이벤트 수정하기
+                         */
+                        eventDrop: function (info){
+                            console.log(info);
+                            if(confirm("'"+ info.event.title +"' 매니저의 일정을 수정하시겠습니까 ?")){
+                            }
+                            var events = new Array(); // Json 데이터를 받기 위한 배열 선언
+                            var obj = new Object();
+
+                            obj.title = info.event._def.title;
+                            obj.start = info.event._instance.range.start;
+                            obj.end = info.event._instance.range.end;
+                            events.push(obj);
+
+                            console.log(events);
+                            $(function modifyData() {
+                                $.ajax({
+                                    url: "/full-calendar/calendar-admin-update",
+                                    method: "PATCH",
+                                    dataType: "json",
+                                    data: JSON.stringify(events),
+                                    contentType: 'application/json',
+                                })
+                            })
                         },
+
                         /**
                          * 드래그로 이벤트 추가하기
                          */
@@ -93,22 +113,23 @@
                             });
                         },
 
-
+                        /**
+                         * 이벤트 선택해서 삭제하기
+                         */
                         eventClick: function (info){
-                            if(confirm("일정'"+ info.event.title +"'을 삭제하시겠습니까 ?")){
+                            if(confirm("'"+ info.event.title +"' 매니저의 일정을 삭제하시겠습니까 ?")){
                                 // 확인 클릭 시
                                 info.event.remove();
-                                console.log(info);
                             }
 
-                            var deleteEvents = calendar.getEvents();
+                            console.log(info.event);
                             var events = new Array(); // Json 데이터를 받기 위한 배열 선언
-                            for (var i = 0; i < deleteEvents.length; i++) {
-                                var obj = new Object();
-                                obj.title = deleteEvents[i]._def.title;
+                            var obj = new Object();
+                                obj.title = info.event._def.title;
+                                obj.start = info.event._instance.range.start;
                                 events.push(obj);
-                            }
-                            console.log(obj);
+
+                            console.log(events);
                             $(function deleteData(){
                                 $.ajax({
                                     url: "/full-calendar/calendar-admin-update",
@@ -118,15 +139,11 @@
                                     contentType: 'application/json',
                                 })
                             })
-                        }
+                        },
+                        // eventRemove: function (obj) { // 이벤트가 삭제되면 발생하는 이벤트
+                        //
+                        // },
 
-                        // drop: function (arg) {
-                        //     // is the "remove after drop" checkbox checked?
-                        //     if (document.getElementById('drop-remove').checked) {
-                        //         // if so, remove the element from the "Draggable Events" list
-                        //         arg.draggedEl.parentNode.removeChild(arg.draggedEl);
-                        //     }
-                        // }
                     });
                     calendar.render();
         });
