@@ -11,7 +11,6 @@ import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.dto.UserSearchCondition;
 import sketcher.scheduling.repository.UserRepository;
 import sketcher.scheduling.repository.UserRepositoryCustom;
-import sketcher.scheduling.repository.UserRepositoryCustomImpl;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +29,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public List<ManagerHopeTime> findDetailById(String id) {
-        return userRepository.findDetailById(id);
+        return userRepositoryCustom.findDetailById(id);
     }
 
 

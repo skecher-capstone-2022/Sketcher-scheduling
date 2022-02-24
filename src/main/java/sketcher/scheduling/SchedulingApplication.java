@@ -11,6 +11,7 @@ import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.service.ManagerHopeTimeService;
 import sketcher.scheduling.service.UserService;
 
+import java.time.LocalDateTime;
 import java.util.stream.IntStream;
 
 @SpringBootApplication
@@ -24,28 +25,30 @@ public class SchedulingApplication {
 	@Bean
 	public CommandLineRunner initData(UserService userService, ManagerHopeTimeService hopeService) {
 		return args ->
-				IntStream.rangeClosed(1, 12).forEach(i -> {
+				IntStream.rangeClosed(4, 102).forEach(i -> {
 					UserDto user1 =  UserDto.builder()
 							.id("user"+i)
 							.authRole("MANAGER")
 							.password("1234")
 							.username("이혜원"+i)
 							.userTel("010-1234-5678")
+							.user_joinDate(LocalDateTime.now())
 							.managerScore(i*2/5.0)
 							.build();
 
 					userService.saveUser(user1);
 
-					UserDto user2 =  UserDto.builder()
-							.id(i+"user")
-							.authRole("MANAGER")
-							.password("1234")
-							.username("이혜원"+i)
-							.userTel("010-1234-5678")
-							.managerScore(i*2/5.0+0.2)
-							.build();
-
-					userService.saveUser(user2);
+//					UserDto user2 =  UserDto.builder()
+//							.id(i+"user")
+//							.authRole("MANAGER")
+//							.password("1234")
+//							.username("이혜원"+i)
+//							.userTel("010-1234-5678")
+//							.user_joinDate(LocalDateTime.now())
+//							.managerScore(i*2/5.0+0.2)
+//							.build();
+//
+//					userService.saveUser(user2);
 
 					ManagerHopeTimeDto hope1 = ManagerHopeTimeDto.builder()
 							.user(user1.toEntity())

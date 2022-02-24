@@ -32,8 +32,8 @@
                     <h1>전체 매니저 목록</h1>
                 </div>
                 <div class="select-wrap1">
-                    <form id="manager_list_form" method="post">
-                        <select th:name="list_align" class="list_align" onchange="this.form.submit()">
+                    <form name="manager_list_form" class="manager_list_form" method="get">
+                        <select th:name="list_align" class="list_align" onchange="listSubmit()">
                             <!--                            document.getElementById('align_value').value = this.options[this.selectedIndex].value;-->
                             <option th:value="managerScore" th:selected="${condition.list_align == 'managerScore'}">평점순</option>
                             <option th:value="username" th:selected="${condition.list_align == 'username'}">매니저명</option>
@@ -71,7 +71,7 @@
                             <td class="line" th:text="${user.id}"></td>
                             <td class="line" th:text="${user.username}"></td>
                             <td class="line" th:text="${user.userTel}"></td>
-                            <td class="line" th:text="${#temporals.format(user.user_joindate, 'yyyy-MM-dd')}"></td>
+                            <td class="line" th:text="${#temporals.format(user.user_joinDate, 'yyyy-MM-dd')}"></td>
                             <td class="line" th:text="${#numbers.formatDecimal(user.managerScore, 1, 1)}"></td>
                             <td class="line">
                                 <button type="submit" class="btn btn-6 btn-6b"
@@ -87,7 +87,7 @@
                 </div>
                 <div class="page_wrap">
                     <div class="page_nation">
-                        <ul class="page_ul"
+                        <ul class="page_ul" onclick="listSubmit()"
                             th:if="${users.getTotalPages() != 0}"
                             th:with="start=${T(Math).floor(users.number/10)*10 + 1},
                                   last=(${start + 9 < users.totalPages ? start + 9 : users.totalPages})">
@@ -100,7 +100,7 @@
                             </li>
                             <li class="page_li" th:each="page: ${#numbers.sequence(start, last)}">
                                 <a th:text="${page}" th:class="${page == users.number + 1} ? 'active'"
-                                   th:href="@{/all_manager_list(page=${page})}"></a>
+                                   th:href="@{/all_manager_list/{page}(page=${page})}"></a>
                             </li>
                             <li class="page_li">
                                 <a class="arrow next"
@@ -115,23 +115,28 @@
             </div>
         </div>
     </div>
-
     <script>
-        const $form = $('#manager_list_form');
-        const $select = $('#list_align');
-
-        $select.change(e => {
-            if ($select.val() === '') return;
-
-            $.ajax({
-                // url: $form.attr('action'),
-                method: $form.attr('method'),
-                data: {
-                    [$select.attr('list_align')]: $select.val()
-                }
-            });
-        });
+        function listSubmit() {
+            document.manager_list_form.submit();
+        }
     </script>
+
+<!--    <script>-->
+<!--        const $form = $('#manager_list_form');-->
+<!--        const $select = $('#list_align');-->
+
+<!--        $select.change(e => {-->
+<!--            if ($select.val() === '') return;-->
+
+<!--            $.ajax({-->
+<!--                // url: $form.attr('action'),-->
+<!--                method: $form.attr('method'),-->
+<!--                data: {-->
+<!--                    [$select.attr('list_align')]: $select.val()-->
+<!--                }-->
+<!--            });-->
+<!--        });-->
+<!--    </script>-->
 </th:block>
 <script th:inline="javascript">
     /*<![CDATA[*/

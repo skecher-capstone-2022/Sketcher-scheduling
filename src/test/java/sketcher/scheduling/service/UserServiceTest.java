@@ -30,7 +30,7 @@ import static sketcher.scheduling.domain.QUser.user;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @Transactional
-@Rollback(true)
+@Rollback
 public class UserServiceTest {
 
     @Autowired
