@@ -18,7 +18,7 @@ import java.util.*;
 @Entity
 @Table(name = "user")
 @Getter
-public class User extends UserTimeEntity implements UserDetails {
+public class User implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_code")
@@ -35,29 +35,25 @@ public class User extends UserTimeEntity implements UserDetails {
 //    @Pattern(regexp = "^[a-zA-Z0-9]{3,12}$", message = "아이디를 3~12자로 입력해주세요. [특수문자 X]")
     private String id;
 
-    @NotEmpty
     @Column(name = "auth_role")
     private String authRole;
 
-    @NotEmpty
     @Column(name = "user_pw")
 //    @Pattern(regexp = "^[a-zA-Z0-9]{3,12}$", message = "비밀번호를 3~12자로 입력해주세요.")
     private String password;
 
-    @NotEmpty
     @Column(name = "user_name")
 //    @Pattern(regexp = "[a-zA-Z0-9]*")
     private String username;
 
-    @NotEmpty
     @Column(name = "user_tel")
     private String userTel;
 
     /**
      * UserTimeEntity 로 수정  / 생성 시간 자동 생성 . 쿼리문 없어도 자동으로 DB 에 입력되는 순간을 기점으로 생성.
      */
-//    @NotEmpty
-//    private LocalDateTime user_joinDate;
+    @Column(name = "user_joindate")
+    private LocalDateTime user_joinDate;
 
     @Column(name = "manager_score")
     private Double managerScore;
@@ -83,12 +79,13 @@ public class User extends UserTimeEntity implements UserDetails {
      * Setter 는 dto 에 오픈해두었는데 DB 에 값 입력은 Builder 를 이용해봄이?..(생성자랑 비슷한 개념이에요!)
      */
     @Builder
-    public User(String id, String authRole, String password, String username, String userTel, Double managerScore, Character dropoutReqCheck) {
-        this.id = id;
+    public User(Integer code, String authRole, String password, String username, String userTel, LocalDateTime user_joinDate, Double managerScore, Character dropoutReqCheck) {
+        this.code = code;
         this.authRole = authRole;
         this.password = password;
         this.username = username;
         this.userTel = userTel;
+        this.user_joinDate = user_joinDate;
         this.managerScore = managerScore;
         this.dropoutReqCheck = dropoutReqCheck;
     }

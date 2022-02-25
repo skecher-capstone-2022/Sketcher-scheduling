@@ -40,7 +40,7 @@ public class ManagerHopeTimeController {
                 int endTime = Integer.parseInt(time[1]);
 
                 User user = userService.loadUserByUsername(userid);
-                hopeTimeService.saveManagerHopeTime(new ManagerHopeTimeDto(startTime, endTime, user));
+//                hopeTimeService.saveManagerHopeTime(new ManagerHopeTimeDto(startTime, endTime, user));
             }
         }
         return "redirect:/step3";

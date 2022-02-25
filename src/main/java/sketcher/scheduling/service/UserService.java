@@ -39,6 +39,7 @@ public class UserService implements UserDetailsService {
         user.setPassword(encoder.encode(user.getPassword()));
 
         return userRepository.save(user.toEntity()).getId();
+
     }
 
     //아이디로 유저 검색
