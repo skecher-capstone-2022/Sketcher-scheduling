@@ -16,7 +16,7 @@ public class ManagerAssignSchedule {
     @Column(name = "assign_schedule_id")
     private Integer id;
 
-    private Character schedule_delete_req_check;
+    private Character schedule_update_req_check;
 
     /**
      * 연관관계 매핑
@@ -35,9 +35,9 @@ public class ManagerAssignSchedule {
      * 연관관계 편의 메소드
      */
     @Builder
-    public ManagerAssignSchedule(Integer id, Character schedule_delete_req_check, User user, Schedule schedule) {
+    public ManagerAssignSchedule(Integer id, Character schedule_update_req_check, User user, Schedule schedule) {
         this.id = id;
-        this.schedule_delete_req_check = schedule_delete_req_check;
+        this.schedule_update_req_check = schedule_update_req_check;
 
         if(this.user != null){
             user.getManagerAssignScheduleList().remove(this);

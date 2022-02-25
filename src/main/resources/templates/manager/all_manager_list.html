@@ -25,6 +25,7 @@
 </head>
 
 <th:block layout:fragment="ground-wrap">
+    <!--body start-->
     <div class="ground">
         <div class="main">
             <div class="all_manaer_list">
@@ -32,22 +33,26 @@
                     <h1>전체 매니저 목록</h1>
                 </div>
                 <div class="select-wrap1">
-                    <form name="manager_list_form" class="manager_list_form" method="post">
-                        <select th:name="align" class="list_align" onchange="listSubmit()">
-                            <!--                            document.getElementById('align_value').value = this.options[this.selectedIndex].value;-->
-                            <option th:value="managerScore" th:selected="${condition.align == 'managerScore'}">평점순</option>
+                    <form name="manager_list_form" class="manager_list_form" method="get">
+                        <select th:name="align" id="align" class="list_align" onchange="listSubmit()">
+                            <option th:value="managerScore" th:selected="${condition.align == 'managerScore'}">평점순
+                            </option>
                             <option th:value="username" th:selected="${condition.align == 'username'}">매니저명</option>
-                            <option th:value="user_joindate_asc" th:selected="${condition.align == 'user_joindate_asc'}">가입일자(최신순)</option>
-                            <option th:value="user_joindate_desc" th:selected="${condition.align == 'user_joindate_desc'}">가입일자(오래된순)</option>
+                            <option th:value="joindate_asc" th:selected="${condition.align == 'joindate_asc'}">
+                                가입일자(최신순)
+                            </option>
+                            <option th:value="joindate_desc" th:selected="${condition.align == 'joindate_desc'}">
+                                가입일자(오래된순)
+                            </option>
                         </select>
                         <div class="search">
                             <select th:name="type" id="type" class="select_search">
                                 <option th:value="username" th:selected="${condition.type == 'username'}">매니저명</option>
-                                <!--                                    th:selected="${#strings.equals( params.searchType, 'username' )}"-->
                                 <option th:value="id" th:selected="${condition.type == 'id'}">매니저ID</option>
                             </select>
                             <label>
-                                <input th:name="keyword" type="text" placeholder="검색어 입력" th:value="${condition.keyword}"/>
+                                <input th:name="keyword" id="keyword" type="text" placeholder="검색어 입력"
+                                       th:value="${condition.keyword}"/>
                             </label>
                             <button type="submit" class="btn btn-6 btn-6b search-btn">검색</button>
                             <br/>
@@ -92,22 +97,24 @@
                             th:with="start=${T(Math).floor(users.number/10)*10 + 1},
                                   last=(${start + 9 < users.totalPages ? start + 9 : users.totalPages})">
                             <li class="page_li">
-                                <a class="arrow pprev" th:href="@{/all_manager_list(page=1)}"></a>
+                                <a class="arrow pprev"
+                                   th:href="@{/all_manager_list(page=1,align=${condition.align},type=${condition.type},keyword=${condition.keyword})}"></a>
                             </li>
                             <li class="page_li">
                                 <a class="arrow prev"
-                                   th:href="${users.first} ? '#' : @{/all_manager_list(page=${users.number})}"></a>
+                                   th:href="${users.first} ? '#' : @{/all_manager_list(page=${users.number},align=${condition.align},type=${condition.type},keyword=${condition.keyword})}"></a>
                             </li>
                             <li class="page_li" th:each="page: ${#numbers.sequence(start, last)}">
                                 <a th:text="${page}" th:class="${page == users.number + 1} ? 'active'"
-                                   th:href="@{/all_manager_list(page=${page})}"></a>
+                                   th:href="@{/all_manager_list(page=${page},align=${condition.align},type=${condition.type},keyword=${condition.keyword})}"></a>
                             </li>
                             <li class="page_li">
                                 <a class="arrow next"
-                                   th:href="${users.last} ? '#' : @{/all_manager_list(page=${users.number + 2})}"></a>
+                                   th:href="${users.last} ? '#' : @{/all_manager_list(page=${users.number + 2},align=${condition.align},type=${condition.type},keyword=${condition.keyword})}"></a>
                             </li>
                             <li class="page_li">
-                                <a class="arrow nnext" th:href="@{/all_manager_list(page=${users.totalPages})}"></a>
+                                <a class="arrow nnext"
+                                   th:href="@{/all_manager_list(page=${users.totalPages},align=${condition.align},type=${condition.type},keyword=${condition.keyword})}"></a>
                             </li>
                         </ul>
                     </div>
@@ -115,60 +122,14 @@
             </div>
         </div>
     </div>
+    <!--body end-->
+
+    <!--script start-->
     <script>
         function listSubmit() {
             document.manager_list_form.submit();
         }
     </script>
-
-<!--    <script>-->
-<!--        const $form = $('#manager_list_form');-->
-<!--        const $select = $('#list_align');-->
-
-<!--        $select.change(e => {-->
-<!--            if ($select.val() === '') return;-->
-
-<!--            $.ajax({-->
-<!--                // url: $form.attr('action'),-->
-<!--                method: $form.attr('method'),-->
-<!--                data: {-->
-<!--                    [$select.attr('list_align')]: $select.val()-->
-<!--                }-->
-<!--            });-->
-<!--        });-->
-<!--    </script>-->
+    <!--script end-->
 </th:block>
-<script th:inline="javascript">
-    /*<![CDATA[*/
-
-    // function movePage(uri, queryString) {
-    //     location.href = uri + queryString;
-    // }
-
-    function searchBoard(form) {
-        /*[- 드롭다운이 아닌 메인 검색 키워드로 검색했을 때 -]*/
-        if (isEmpty(form) == true) {
-            var searchKeyword = document.getElementById("searchKeyword");
-            if (isEmpty(searchKeyword.value) == true) {
-                alert("키워드를 입력해 주세요.");
-                searchKeyword.focus();
-                return false;
-            }
-
-            form = document.getElementById("searchForm");
-            form.searchKeyword.value = searchKeyword.value;
-            form.submit();
-        }
-
-        if (isEmpty(form.searchKeyword.value) == true) {
-            alert("키워드를 입력해 주세요.");
-            form.searchKeyword.focus();
-            return false;
-        }
-    }
-
-    /*[- end of function -]*/
-
-    /*]]>*/
-</script>
 </html>

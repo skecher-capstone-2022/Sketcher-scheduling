@@ -38,11 +38,11 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                 sort = Sort.by(align).ascending();
                 break;
 
-            case "user_joindate_asc":
+            case "joindate_asc":
                 sort = Sort.by("user_joindate").ascending();
                 break;
 
-            case "user_joindate_desc":
+            case "joindate_desc":
                 sort = Sort.by("user_joindate").descending();
                 break;
         }
@@ -118,10 +118,10 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                 case "username":
                     return new OrderSpecifier(Order.ASC, user.username);
 
-                case "user_joindate_asc":
+                case "joindate_asc":
                     return new OrderSpecifier(Order.ASC, user.user_joinDate);
 
-                case "user_joindate_desc":
+                case "joindate_desc":
                     return new OrderSpecifier(Order.DESC, user.user_joinDate);
             }
         }
