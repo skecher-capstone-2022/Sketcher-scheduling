@@ -32,13 +32,13 @@
                     <h1>전체 매니저 목록</h1>
                 </div>
                 <div class="select-wrap1">
-                    <form name="manager_list_form" class="manager_list_form" method="get">
-                        <select th:name="list_align" class="list_align" onchange="listSubmit()">
+                    <form name="manager_list_form" class="manager_list_form" method="post">
+                        <select th:name="align" class="list_align" onchange="listSubmit()">
                             <!--                            document.getElementById('align_value').value = this.options[this.selectedIndex].value;-->
-                            <option th:value="managerScore" th:selected="${condition.list_align == 'managerScore'}">평점순</option>
-                            <option th:value="username" th:selected="${condition.list_align == 'username'}">매니저명</option>
-                            <option th:value="user_joindate_asc" th:selected="${condition.list_align == 'user_joindate_asc'}">가입일자(최신순)</option>
-                            <option th:value="user_joindate_desc" th:selected="${condition.list_align == 'user_joindate_desc'}">가입일자(오래된순)</option>
+                            <option th:value="managerScore" th:selected="${condition.align == 'managerScore'}">평점순</option>
+                            <option th:value="username" th:selected="${condition.align == 'username'}">매니저명</option>
+                            <option th:value="user_joindate_asc" th:selected="${condition.align == 'user_joindate_asc'}">가입일자(최신순)</option>
+                            <option th:value="user_joindate_desc" th:selected="${condition.align == 'user_joindate_desc'}">가입일자(오래된순)</option>
                         </select>
                         <div class="search">
                             <select th:name="type" id="type" class="select_search">
@@ -100,7 +100,7 @@
                             </li>
                             <li class="page_li" th:each="page: ${#numbers.sequence(start, last)}">
                                 <a th:text="${page}" th:class="${page == users.number + 1} ? 'active'"
-                                   th:href="@{/all_manager_list/{page}(page=${page})}"></a>
+                                   th:href="@{/all_manager_list(page=${page})}"></a>
                             </li>
                             <li class="page_li">
                                 <a class="arrow next"

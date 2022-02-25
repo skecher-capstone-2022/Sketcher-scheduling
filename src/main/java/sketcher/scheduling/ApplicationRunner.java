@@ -61,7 +61,7 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
                 .user_joinDate(date1)
                 .build();
         String user1 = userService.saveUser(userA);
-        User userJ = userRepository.findByUsername(user1).get();
+//        User userJ = userRepository.findByUsername(user1).get();
 
         UserDto userB = UserDto.builder()
                 .id("user2")
@@ -73,7 +73,7 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
                 .managerScore(5.0)
                 .build();
         String user2 = userService.saveUser(userB);
-        User userT = userRepository.findByUsername(user2).get();
+//        User userT = userRepository.findByUsername(user2).get();
 
         UserDto userC = UserDto.builder()
                 .id("user3")
@@ -85,7 +85,7 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
                 .managerScore(5.0)
                 .build();
         String user3 = userService.saveUser(userC);
-        User userL = userRepository.findByUsername(user3).get();
+//        User userL = userRepository.findByUsername(user3).get();
 
         ManagerHopeTimeDto hope1 = ManagerHopeTimeDto.builder()
                 .user(userA.toEntity())
@@ -151,9 +151,15 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
 //                .schedule(scheduleDto3.toEntity())
 //                .build();
 //
+//        ManagerWorkingScheduleDto managerWorkingScheduleDto4 = ManagerWorkingScheduleDto.builder()
+//                .user(userC.toEntity())
+//                .schedule(scheduleDto4.toEntity())
+//                .build();
+//
 //        managerWorkingScheduleService.saveManagerWorkingSchedule(managerWorkingScheduleDto1);
 //        managerWorkingScheduleService.saveManagerWorkingSchedule(managerWorkingScheduleDto2);
 //        managerWorkingScheduleService.saveManagerWorkingSchedule(managerWorkingScheduleDto3);
+//        managerWorkingScheduleService.saveManagerWorkingSchedule(managerWorkingScheduleDto4);
 
 //        ScheduleDto schedule1 = setScheduleDto(date1);
 //        ScheduleDto schedule2 = setScheduleDto(date2);

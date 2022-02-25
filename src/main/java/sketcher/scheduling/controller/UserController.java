@@ -31,12 +31,12 @@ public class UserController {
     public String all_manager_list(
             Model model,
 //            @RequestParam(required = false, defaultValue = "") UserSearchCondition condition,
-            @RequestParam(required = false, defaultValue = "managerScore") String list_align,
+            @RequestParam(required = false, defaultValue = "managerScore") String align,
             @RequestParam(required = false, defaultValue = "") String type,
             @RequestParam(required = false, defaultValue = "") String keyword,
             @PageableDefault Pageable pageable) {
 
-        UserSearchCondition condition = new UserSearchCondition(list_align, type, keyword);
+        UserSearchCondition condition = new UserSearchCondition(align, type, keyword);
         Page<User> users = userService.findAllManager(condition, pageable);
         model.addAttribute("users", users);
         model.addAttribute("condition", condition);

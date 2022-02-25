@@ -10,6 +10,7 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import sketcher.scheduling.domain.ManagerHopeTime;
+import sketcher.scheduling.domain.QManagerHopeTime;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.UserSearchCondition;
 
@@ -28,7 +29,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
 
     @Override
     public Page<User> findAllManager(UserSearchCondition condition, Pageable pageable) {
-        String align = condition.getList_align();
+        String align = condition.getAlign();
 
         Sort sort = Sort.by(align).descending();
 
@@ -54,7 +55,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                 .where(
                         managerList(condition.getType(), condition.getKeyword())
                 )
-                .orderBy(userSort(condition.getList_align(), pageable))
+                .orderBy(userSort(condition.getAlign(), pageable))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch(); // count쿼리는 제외하고 content 쿼리만 날린다.

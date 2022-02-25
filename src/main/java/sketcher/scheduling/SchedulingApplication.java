@@ -25,7 +25,7 @@ public class SchedulingApplication {
 	@Bean
 	public CommandLineRunner initData(UserService userService, ManagerHopeTimeService hopeService) {
 		return args ->
-				IntStream.rangeClosed(4, 102).forEach(i -> {
+				IntStream.rangeClosed(4, 22).forEach(i -> {
 					UserDto user1 =  UserDto.builder()
 							.id("user"+i)
 							.authRole("MANAGER")
