@@ -4,12 +4,19 @@
         <p><a href="#" id="trigger" class="menu-trigger">Open/Close Menu</a></p>
     </div>
     <div class="access_user">
-        <div class="access_user_hello" style="font-size: 1.4rem; font-weight: 600;color: #b0b0b0f2">
-            안녕하세요 <span style="color: #ff6d6d">홍길동</span>님!
-        </div>
-        <div class="logout">
+        <div class="access_user_hello">
+            <span style="margin: 0;padding: 15px;">
+                <span sec:authentication="authorities" style="color: #ff6d6d"></span>
+                <span sec:authentication="name"></span>
+            </span>
+            <form id="logout" action="/logout" method="POST">
+
+                <button class="btn btn-4 btn-4a" style="margin: 0; padding: 15px;"
+                        onclick="document.getElementById('logout').submit();">
+                    <a class="icon icon-cup">로그아웃</a>
+                </button>
+            </form>
         </div>
     </div>
 </div>
 </html>
-

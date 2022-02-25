@@ -31,6 +31,6 @@ function activate() {
     }
 }
 
-document.querySelector('.btn-7i').addEventListener('click', function () {
-    classie.add(document.querySelector('#trash-effect'), 'trash-effect-active');
-}, false);
+// document.querySelector('.btn-7i').addEventListener('click', function () {
+//     classie.add(document.querySelector('#trash-effect'), 'trash-effect-active');
+// }, false);
