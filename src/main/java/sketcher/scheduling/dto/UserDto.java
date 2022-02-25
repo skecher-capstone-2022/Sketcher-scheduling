@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @ApiModel(value = "사용자")
 public class UserDto {
 
-//    private Integer code;
+    private Integer code;
     private String id;
     private String authRole;
     private String password;
@@ -23,8 +23,8 @@ public class UserDto {
     private Character dropoutReqCheck;
 
     @Builder
-    public UserDto(String id, String authRole, String password, String username, String userTel, LocalDateTime user_joinDate, Double managerScore, Character dropoutReqCheck) {
-//        this.code = code; Integer code,
+	public UserDto(Integer code, String id, String authRole, String password, String username, String userTel, LocalDateTime user_joinDate, Double managerScore, Character dropoutReqCheck) {
+        this.code = code;
         this.id = id;
         this.authRole = authRole;
         this.password = password;
@@ -37,7 +37,7 @@ public class UserDto {
 
     public User toEntity() {
         return User.builder()
-//                .code(code)
+                .code(code)
                 .id(id)
                 .authRole(authRole)
                 .password(password)

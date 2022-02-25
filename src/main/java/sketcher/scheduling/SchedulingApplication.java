@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import sketcher.scheduling.dto.ManagerHopeTimeDto;
 import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.service.ManagerHopeTimeService;
@@ -29,7 +30,7 @@ public class SchedulingApplication {
 					UserDto user1 =  UserDto.builder()
 							.id("user"+i)
 							.authRole("MANAGER")
-							.password("1234")
+							.password(new BCryptPasswordEncoder().encode("1234"))
 							.username("이혜원"+i)
 							.userTel("010-1234-5678")
 							.user_joinDate(LocalDateTime.now())

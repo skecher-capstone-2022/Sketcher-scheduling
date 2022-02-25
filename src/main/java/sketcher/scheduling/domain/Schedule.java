@@ -33,12 +33,6 @@ public class Schedule{
     @Column(name = "schedule_date_time_end")
     private LocalDateTime scheduleDateTimeEnd;
 
-//    @DateTimeFormat(pattern = "yyyy-MM-dd")
-//    @Column(name = "schedule_date")
-//    private Date scheduleDate;
-//
-//    @Column(name = "schedule_time")
-//    private Integer scheduleTime;
 
     private Integer workforce;
 
@@ -60,7 +54,6 @@ public class Schedule{
     private List<ManagerWorkingSchedule> managerWorkingScheduleList = new ArrayList<>();
 
     @OneToMany(mappedBy = "schedule")
-
     private List<ManagerAssignSchedule> managerAssignScheduleList = new ArrayList<>();
 
     /**

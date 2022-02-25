@@ -9,8 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ManagerAssignScheduleRepository extends JpaRepository<ManagerAssignSchedule, Integer> {
-
     List<ManagerAssignSchedule> findAll();
     List<ManagerAssignSchedule> findByUser(User user);
-    String deleteByUser(String username);
+    Integer deleteByUser(User user);
 }

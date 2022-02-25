@@ -20,12 +20,11 @@ public class ManagerHopeTime {
     private Integer start_time;
     @NotNull
     private Integer finish_time;
-
     /**
      * 연관관계 매핑
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_code")
     private User user;
 
     /**
@@ -34,8 +33,7 @@ public class ManagerHopeTime {
     @Builder
     public ManagerHopeTime(Integer start_time, Integer finish_time, User user) {
         this.start_time = start_time;
-        this.finish_time = finish_time;
-        if(this.user != null){
+        this.finish_time = finish_time;        if(this.user != null){
             this.user.getManagerHopeTimeList().remove(this);
         }
         this.user = user;

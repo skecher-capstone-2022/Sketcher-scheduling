@@ -7,8 +7,10 @@ import sketcher.scheduling.domain.ManagerAssignSchedule;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.ManagerAssignScheduleDto;
 import sketcher.scheduling.repository.ManagerAssignScheduleRepository;
+import sketcher.scheduling.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +18,9 @@ import java.util.List;
 public class ManagerAssignScheduleService {
 
     private final ManagerAssignScheduleRepository managerAssignScheduleRepository;
+    private final UserRepository userRepository;
 
+    @Transactional
     public Integer saveManagerAssignSchedule(ManagerAssignScheduleDto managerAssignScheduleDto){
         managerAssignScheduleRepository.save(managerAssignScheduleDto.toEntity());
         return managerAssignScheduleDto.getId();
@@ -26,7 +30,11 @@ public class ManagerAssignScheduleService {
         return user.getManagerAssignScheduleList();
     }
 
-    public String deleteById(String username){
-        return username;
+    @Transactional
+    public Integer deleteByUser(User user){
+        User user1 = userRepository.findByUsername(user.getUsername()).get();
+        managerAssignScheduleRepository.deleteByUser(user1);
+        return user1.getCode();
     }
+
 }

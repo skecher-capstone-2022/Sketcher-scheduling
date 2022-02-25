@@ -12,44 +12,49 @@
 
 <th:block layout:fragment="step-wrap">
     <div class="signin_wrap">
-        <div class="signin">
-            <div style="font-size: 1.5rem;font-family: 'TmonMonsori', serif;">
-                <h1>Welcome!</h1>
-                <h3 style="color:gray">This is Sprint Manager Scheduling Program</h3>
-            </div>
-            <div class="input_wrap">
-                <div class="container">
-                    <section class="content bgcolor-4">
+        <form action="/loginProcess" method="POST">
+            <div class="signin">
+                <div style="font-size: 1.5rem;font-family: 'TmonMonsori', serif;">
+
+                    <h1>Welcome!</h1>
+                    <h3 style="color:gray">This is Sprint Manager Scheduling Program</h3>
+                </div>
+                <div class="input_wrap">
+                    <div th:if="${param.error}">
+                        <p th:text="${exception}" style="color: red;"></p>
+                    </div>
+                    <div class="container">
+                        <section class="content bgcolor-4">
           <span class="input input--chisato">
-					<input class="input__field input__field--chisato" type="text" id="input-13"/>
+					<input class="input__field input__field--chisato" type="text" id="userid" name="userid"/>
 					<label class="input__label input__label--chisato" for="input-13">
 						<span class="input__label-content input__label-content--chisato" data-content="User Id">아이디를 입력하세요</span>
 					</label>
 				</span>
-                        <span class="input input--chisato">
-					<input class="input__field input__field--chisato" type="password" id="input-14"/>
+                            <span class="input input--chisato">
+					<input class="input__field input__field--chisato" type="password" id="password" name="password"/>
 					<label class="input__label input__label--chisato" for="input-14">
 						<span class="input__label-content input__label-content--chisato" data-content="Password">비밀번호를 입력하세요</span>
 					</label>
 				</span>
 
+                        </section>
+
+                    </div><!-- /container -->
+
+
+                </div>
+                <div style="margin:80px">
+                    <section class="color-4">
+                        <p>
+                            <button class="btn btn-4-pink btn-4a icon-arrow-right-pink" onclick="valid_check();">Sign In
+                            </button>
+                        </p>
+
                     </section>
-
-                </div><!-- /container -->
-
-
+                </div>
             </div>
-            <div style="margin:80px">
-                <section class="color-4">
-                    <p>
-                        <button class="btn btn-4-pink btn-4a icon-arrow-right-pink"
-                                onclick="location.href='calendar'">Sign In
-                        </button>
-                    </p>
-
-                </section>
-            </div>
-        </div>
+        </form>
     </div>
 </th:block>
 <th:block layout:fragment="signup-wrap">
@@ -64,3 +69,27 @@
     </div>
 </th:block>
 </html>
+<footer>
+<!--    <script>-->
+<!--        function valid_check(){-->
+<!--            var userid = $('#userid').val();-->
+<!--            var password = $('#password').val();-->
+<!--            var param = {"userid":userid, "password":password}-->
+
+<!--            $.ajax({-->
+<!--                contentType: "application/json; charset=utf-8;",-->
+<!--                type: "POST",-->
+<!--                url: "/login_check",-->
+<!--                dataType: "text",-->
+<!--                data: JSON.stringify(param),-->
+<!--                success: function (data) {-->
+<!--                    alert(data);-->
+<!--                }, error: function () {-->
+<!--                    console.log("실패");-->
+<!--                }-->
+<!--            });-->
+<!--        }-->
+
+<!--    </script>-->
+
+</footer>

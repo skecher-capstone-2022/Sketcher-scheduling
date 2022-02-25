@@ -1,33 +1,90 @@
 package sketcher.scheduling.controller;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.stereotype.Controller;
+import org.springframework.data.web.PageableDefault;import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import sketcher.scheduling.domain.ManagerHopeTime;
-import sketcher.scheduling.domain.User;
+import sketcher.scheduling.domain.User;import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.dto.UserSearchCondition;
 import sketcher.scheduling.service.UserService;
-
+import sketcher.scheduling.form.LoginForm;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 public class UserController {
-    private final UserService userService;
-//    private final UserRepositoryCustom userRepositoryCustom;
 
-//    @RequestMapping(value = "/all_manager_list", method = RequestMethod.GET)
-//    public String all_manager_list(HttpServletRequest request) {
-//        return "manager/all_manager_list";
-//    }
+private final UserService userService;
+//
+//    @NonNull
+//    private final BCryptPasswordEncoder passwordEncoder;
 
-    @RequestMapping(value = "/all_manager_list", method= {RequestMethod.GET, RequestMethod.POST})
+
+    @GetMapping(value = "/login")
+    public String loginView(Model model,
+                            @RequestParam(value = "error",required = false)String error,
+                            @RequestParam(value = "exception",required = false)String exception){
+        model.addAttribute("error",error);
+        model.addAttribute("exception",exception);
+        return "user/login";
+    }
+
+    
+    @GetMapping("/logout")
+    public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
+        new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder
+                .getContext().getAuthentication());
+        return "redirect:/login";
+    }
+
+    @RequestMapping(value = "/step1", method = RequestMethod.GET)
+    public String step1(HttpServletRequest request) {
+        return "user/step1";
+    }
+
+    @RequestMapping(value = "/step2", method = RequestMethod.GET)
+    public String step2(HttpServletRequest request) {
+        return "user/step2";
+    }
+
+    @RequestMapping(value = "/step3", method = RequestMethod.GET)
+    public String step3(HttpServletRequest request) {
+        return "user/step3";
+    }
+
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+    public String signup(UserDto joinUser, RedirectAttributes redirectAttributes){
+        joinUser.setUser_joinDate(LocalDateTime.now());
+        joinUser.setManagerScore(0.0);
+        joinUser.setDropoutReqCheck('N');
+        userService.saveUser(joinUser);
+        redirectAttributes.addAttribute("userid",joinUser.getId());
+
+        return "redirect:/check_hopetime";
+    }
+
+    @RequestMapping(value = "/user/idCheck", method = RequestMethod.GET)
+    @ResponseBody
+    public boolean idCheck(@RequestParam("userid") String user_id) {
+        return userService.userIdCheck(user_id);
+        //true : 아이디가 존재하지 않을 때
+        //false : 아이디가 이미 존재할 때
+    }
+
+@RequestMapping(value = "/all_manager_list", method= {RequestMethod.GET, RequestMethod.POST})
     public String all_manager_list(
             Model model,
 //            @RequestParam(required = false, defaultValue = "") UserSearchCondition condition,
@@ -85,5 +142,4 @@ public class UserController {
     public String manager_mypage(HttpServletRequest request) {
         return "mypage/manager_mypage";
     }
-
 }

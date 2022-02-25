@@ -117,28 +117,46 @@ public class CalendarController {
     @ResponseBody
     public String deleteEvent(@RequestBody List<Map<String, Object>> param){
 
-
-
         for (int i = 0; i < param.size(); i++) {
             String username = (String) param.get(i).get("title");
 
-            managerAssignScheduleService.deleteById(username);
+            User user = userService.findByUsername(username).get();
+            managerAssignScheduleService.deleteByUser(user);
         }
 
 
         return "/full-calendar/calendar-admin-update";
     }
 
+    @PatchMapping("/calendar-admin-update")
+    @ResponseBody
+    public String modifyEvent(@RequestBody List<Map<String, Object>> param){
 
-//        JSONObject jsonObj = new JSONObject();
-//        JSONArray jsonArr = new JSONArray();
-//
-//        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
 
-//    @PostMapping("/calendar-admin-update")
-//    @ResponseBody
-//    public List<Map<String, Object>> addEvent(Map<String, Object> param){
-//        List<Map<String,Object>> paramList = new ArrayList<Map<String,Object>>();
-//        Map<String, Object> params = new HashMap<String, Object>();
-//
+        for (int i = 0; i < param.size(); i++) {
+
+            String username = (String) param.get(i).get("title");
+            String startDateString = (String) param.get(i).get("start");
+            String endDateString = (String) param.get(i).get("end");
+
+            LocalDateTime modifiedstartDate = LocalDateTime.parse(startDateString, dateTimeFormatter);
+            LocalDateTime modifiedendDate = LocalDateTime.parse(endDateString, dateTimeFormatter);
+
+            ScheduleDto scheduleDto = ScheduleDto.builder()
+                    .scheduleDateTimeStart(modifiedstartDate)
+                    .scheduleDateTimeEnd(modifiedendDate)
+                    .build();
+
+            Integer scheduleId = scheduleService.saveSchedule(scheduleDto);
+            Schedule scheduleEntity = scheduleRepository.findById(scheduleId).get();
+
+            ManagerAssignScheduleDto assignScheduleDto = ManagerAssignScheduleDto.builder()
+                    .schedule(scheduleEntity)
+                    .build();
+
+            managerAssignScheduleService.saveManagerAssignSchedule(assignScheduleDto);
+        }
+        return "/full-calendar/calendar-admin-update";
+        }
 }
