@@ -19,7 +19,7 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    private Optional<User> findByCode(int code){
+    private Optional<User> findByCode(int code) {
         return userRepository.findByCode(code);
     }
 
@@ -47,7 +47,6 @@ public class UserService implements UserDetailsService {
     public User loadUserByUsername(String userid) throws UsernameNotFoundException {
         return userRepository.findById(userid).orElseThrow(() -> new UsernameNotFoundException(userid));
     }
-
 //    spring security 인증 과정
 //    1. 유저 세션 생성
 //    2. 반환된 User객체를 시큐리티 컨텍스트 폴더에 저장
@@ -62,5 +61,9 @@ public class UserService implements UserDetailsService {
         return userRepository.idCheck(user_id).isEmpty();
         //true : 아이디가 존재하지 않을 때
         //false : 아이디가 이미 존재할 때
+    }
+
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }
