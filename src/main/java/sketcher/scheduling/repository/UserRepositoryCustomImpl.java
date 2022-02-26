@@ -25,6 +25,7 @@ import static sketcher.scheduling.domain.QUser.user;
 @RequiredArgsConstructor
 public class UserRepositoryCustomImpl implements UserRepositoryCustom {
 
+    private final UserRepository userRepository;
     private final JPAQueryFactory queryFactory;
 
     @Override
@@ -38,12 +39,12 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                 sort = Sort.by(align).ascending();
                 break;
 
-            case "joindate_asc":
-                sort = Sort.by("user_joindate").ascending();
-                break;
-
             case "joindate_desc":
                 sort = Sort.by("user_joindate").descending();
+                break;
+
+            case "joindate_asc":
+                sort = Sort.by("user_joindate").ascending();
                 break;
         }
 
@@ -71,12 +72,13 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
     }
 
     public List<ManagerHopeTime> findDetailById(String id) {
+        Integer code = userRepository.findById(id).get().getCode();
         List<ManagerHopeTime> content = queryFactory
                 .selectFrom(managerHopeTime)
                 .join(managerHopeTime.user, user)
                 .where(
-                        managerHopeTime.user.id.eq(user.id),
-                        userIdEq(id)
+                        managerHopeTime.user.code.eq(user.code),
+                        userIdEq(code)
                 )
                 .orderBy(managerHopeTime.start_time.asc())
                 .fetch();
@@ -128,7 +130,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         return null;
     }
 
-    private BooleanExpression userIdEq(String userId) {
-        return hasText(userId) ? user.id.eq(userId) : null;
+    private BooleanExpression userIdEq(Integer userCode) {
+        return hasText(String.valueOf(userCode)) ? user.code.eq(userCode) : null;
     }
 }

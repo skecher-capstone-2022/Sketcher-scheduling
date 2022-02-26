@@ -33,7 +33,8 @@ public class ManagerHopeTime {
     @Builder
     public ManagerHopeTime(Integer start_time, Integer finish_time, User user) {
         this.start_time = start_time;
-        this.finish_time = finish_time;        if(this.user != null){
+        this.finish_time = finish_time;
+        if(this.user != null){
             this.user.getManagerHopeTimeList().remove(this);
         }
         this.user = user;

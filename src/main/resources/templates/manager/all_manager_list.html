@@ -25,7 +25,6 @@
 </head>
 
 <th:block layout:fragment="ground-wrap">
-    <!--body start-->
     <div class="ground">
         <div class="main">
             <div class="all_manaer_list">
@@ -38,10 +37,10 @@
                             <option th:value="managerScore" th:selected="${condition.align == 'managerScore'}">평점순
                             </option>
                             <option th:value="username" th:selected="${condition.align == 'username'}">매니저명</option>
-                            <option th:value="joindate_asc" th:selected="${condition.align == 'joindate_asc'}">
+                            <option th:value="joindate_desc" th:selected="${condition.align == 'joindate_asc'}">
                                 가입일자(최신순)
                             </option>
-                            <option th:value="joindate_desc" th:selected="${condition.align == 'joindate_desc'}">
+                            <option th:value="joindate_asc" th:selected="${condition.align == 'joindate_desc'}">
                                 가입일자(오래된순)
                             </option>
                         </select>
@@ -122,14 +121,11 @@
             </div>
         </div>
     </div>
-    <!--body end-->
 
-    <!--script start-->
     <script>
         function listSubmit() {
             document.manager_list_form.submit();
         }
     </script>
-    <!--script end-->
 </th:block>
 </html>

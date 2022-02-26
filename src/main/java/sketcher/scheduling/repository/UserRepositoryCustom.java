@@ -12,5 +12,5 @@ import java.util.List;
 public interface UserRepositoryCustom {
     Page<User> findAllManager(UserSearchCondition condition, Pageable pageable);
 
-    public List<ManagerHopeTime> findDetailById(String id);
+    List<ManagerHopeTime> findDetailById(String id);
 }

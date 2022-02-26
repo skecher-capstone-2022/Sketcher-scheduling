@@ -51,30 +51,30 @@ public class SchedulingApplication {
 //
 //					userService.saveUser(user2);
 
-					ManagerHopeTimeDto hope1 = ManagerHopeTimeDto.builder()
-							.user(user1.toEntity())
-							.start_time(12)
-							.finish_time(18)
-							.build();
-
-					hopeService.saveManagerHopeTime(hope1);
-
-					ManagerHopeTimeDto hope2 = ManagerHopeTimeDto.builder()
-							.user(user1.toEntity())
-							.start_time(18)
-							.finish_time(24)
-							.build();
-
-					hopeService.saveManagerHopeTime(hope2);
-
-
-					ManagerHopeTimeDto hope3 = ManagerHopeTimeDto.builder()
-							.user(user1.toEntity())
-							.start_time(6)
-							.finish_time(12)
-							.build();
-
-					hopeService.saveManagerHopeTime(hope3);
+//					ManagerHopeTimeDto hope1 = ManagerHopeTimeDto.builder()
+//							.user(user1.toEntity())
+//							.start_time(12)
+//							.finish_time(18)
+//							.build();
+//
+//					hopeService.saveManagerHopeTime(hope1);
+//
+//					ManagerHopeTimeDto hope2 = ManagerHopeTimeDto.builder()
+//							.user(user1.toEntity())
+//							.start_time(18)
+//							.finish_time(24)
+//							.build();
+//
+//					hopeService.saveManagerHopeTime(hope2);
+//
+//
+//					ManagerHopeTimeDto hope3 = ManagerHopeTimeDto.builder()
+//							.user(user1.toEntity())
+//							.start_time(6)
+//							.finish_time(12)
+//							.build();
+//
+//					hopeService.saveManagerHopeTime(hope3);
 
 //					ManagerHopeTimeDto hope4 = ManagerHopeTimeDto.builder()
 //							.user(user1.toEntity())
