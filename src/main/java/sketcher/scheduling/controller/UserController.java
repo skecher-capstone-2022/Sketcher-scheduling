@@ -1,5 +1,6 @@
 package sketcher.scheduling.controller;
 
+import com.querydsl.core.Tuple;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.domain.User;import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.dto.UserSearchCondition;
+import sketcher.scheduling.repository.UserRepository;
 import sketcher.scheduling.service.UserService;
 import sketcher.scheduling.form.LoginForm;
 import javax.servlet.http.HttpServletRequest;
@@ -22,12 +24,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
 public class UserController {
 
 private final UserService userService;
+private final UserRepository userRepository;
 //
 //    @NonNull
 //    private final BCryptPasswordEncoder passwordEncoder;
@@ -102,29 +106,12 @@ private final UserService userService;
 
     @RequestMapping(value = "/manager_detail/{userId}", method = RequestMethod.GET)
     public String manager_detail(Model model, @PathVariable(value="userId") String id) {
-        List<ManagerHopeTime> details = userService.findDetailById(id);
-        ArrayList<String> hope = new ArrayList<>();
-        for (ManagerHopeTime detail : details) {
-            switch (detail.getStart_time()) {
-                case 0:
-                    hope.add("새벽 0시 ~ 6시");
-                    break;
+        Optional<User> users = userRepository.findById(id);
+        ArrayList<String> hope = userService.findDetailById(id);
 
-                case 6:
-                    hope.add("오전 6시 ~ 12시");
-                    break;
-
-                case 12:
-                    hope.add("오후 12시 ~ 18시");
-                    break;
-
-                case 18:
-                    hope.add("저녁 18시 ~ 24시");
-                    break;
-            }
-        }
-        model.addAttribute("details", details);
+        model.addAttribute("users", users);
         model.addAttribute("hope", hope);
+
         return "manager/manager_detail";
     }
 

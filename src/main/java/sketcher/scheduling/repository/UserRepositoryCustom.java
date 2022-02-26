@@ -7,10 +7,11 @@ import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.UserSearchCondition;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface UserRepositoryCustom {
     Page<User> findAllManager(UserSearchCondition condition, Pageable pageable);
 
-    List<ManagerHopeTime> findDetailById(String id);
+    ArrayList<String> findDetailById(String id);
 }

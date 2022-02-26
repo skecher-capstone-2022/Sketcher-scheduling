@@ -3,6 +3,7 @@ package sketcher.scheduling.repository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import sketcher.scheduling.domain.QManagerHopeTime;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.UserSearchCondition;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.util.StringUtils.hasText;
@@ -71,19 +73,41 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         return new PageImpl<>(content, pageable, total);
     }
 
-    public List<ManagerHopeTime> findDetailById(String id) {
+    public ArrayList<String> findDetailById(String id) {
         Integer code = userRepository.findById(id).get().getCode();
-        List<ManagerHopeTime> content = queryFactory
-                .selectFrom(managerHopeTime)
+        List<Integer> content = queryFactory
+                .select(managerHopeTime.start_time)
+                .from(managerHopeTime)
                 .join(managerHopeTime.user, user)
                 .where(
-                        managerHopeTime.user.code.eq(user.code),
-                        userIdEq(code)
+                        hopeJoinUser(),
+                        userCodeEq(code)
                 )
-                .orderBy(managerHopeTime.start_time.asc())
+                .orderBy(detailSort())
                 .fetch();
 
-        return content;
+        ArrayList<String> hope = new ArrayList<>();
+        for (Integer start_time : content) {
+            switch (start_time) {
+                case 0:
+                    hope.add("새벽 0시 ~ 6시");
+                    break;
+
+                case 6:
+                    hope.add("오전 6시 ~ 12시");
+                    break;
+
+                case 12:
+                    hope.add("오후 12시 ~ 18시");
+                    break;
+
+                case 18:
+                    hope.add("저녁 18시 ~ 24시");
+                    break;
+            }
+        }
+
+        return hope;
     }
 
     private BooleanExpression authRoleEq(String authRole) {
@@ -130,7 +154,19 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         return null;
     }
 
-    private BooleanExpression userIdEq(Integer userCode) {
+    private BooleanExpression hopeJoinUser() {
+        return managerHopeTime.user.code.eq(user.code);
+    }
+
+    private BooleanExpression userCodeEq(Integer userCode) {
         return hasText(String.valueOf(userCode)) ? user.code.eq(userCode) : null;
     }
+
+    private OrderSpecifier<?> detailSort() {
+        if (user.managerHopeTimeList != null) {
+            return new OrderSpecifier(Order.ASC, managerHopeTime.start_time);
+        }
+        return null;
+    }
+
 }

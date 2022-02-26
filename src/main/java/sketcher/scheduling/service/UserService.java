@@ -1,6 +1,7 @@
 package sketcher.scheduling.service;
 
 
+import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.*;
@@ -15,6 +16,7 @@ import sketcher.scheduling.dto.UserSearchCondition;
 import sketcher.scheduling.repository.UserRepository;
 import sketcher.scheduling.repository.UserRepositoryCustom;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +36,7 @@ public class UserService implements UserDetailsService {
     }
 
 	@Transactional(readOnly = true)
-    public List<ManagerHopeTime> findDetailById(String id) {
+    public ArrayList<String> findDetailById(String id) {
         return userRepositoryCustom.findDetailById(id);
     }
 

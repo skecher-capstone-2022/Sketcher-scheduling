@@ -55,27 +55,29 @@
                     <h1>매니저 상세 정보 조회</h1>
                 </div>
                 <div class="manager_detail">
-                    <table class="detail_tb" th:with="detail=${details[0]}">
+                    <table class="detail_tb" th:with="user=${users.get()}">
                         <tr>
                             <th scope="row">매니저ID</th>
-                            <td th:text="${detail.user.id}"></td>
+                            <td th:text="${user.id}"></td>
                             <th scope="row">매니저명</th>
-                            <td th:text="${detail.user.username}"></td>
+                            <td th:text="${user.username}"></td>
                         </tr>
                         <tr>
                             <th scope="row">전화번호</th>
-                            <td th:text="${detail.user.userTel}"></td>
+                            <td th:text="${user.userTel}"></td>
                             <th scope="row">가입일자</th>
-                            <td th:text="${#temporals.format(detail.user.user_joinDate, 'yyyy-MM-dd')}"></td>
+                            <td th:text="${#temporals.format(user.user_joinDate, 'yyyy-MM-dd')}"></td>
                         </tr>
                         <tr>
                             <th scope="row">평점</th>
-                            <td th:text="${detail.user.managerScore}"></td>
+                            <td th:text="${user.managerScore}"></td>
                             <th scope="row">희망 근무 시간</th>
                             <td>
+                                <span th:if="${hope.size()==0}">정보가 없습니다.</span>
                                 <span th:if="${hope.size()>0}" th:text="${hope.get(0)}"></span>
                                 <span th:if="${hope.size()>1}" th:text="', ' + ${hope.get(1)}"></span><br/>
                                 <span th:if="${hope.size()>2}" th:text="${hope.get(2)}"></span>
+                                <span th:if="${hope.size()>3}" th:text="', ' + ${hope.get(3)}"></span>
                                 <span th:if="${hope.size()>3}" th:text="', ' + ${hope.get(3)}"></span>
                             </td>
                         </tr>
