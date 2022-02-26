@@ -27,12 +27,16 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final UserRepositoryCustom userRepositoryCustom;
 
-	private Optional<User> findByCode(int code) {
+    public List<User> findAll(){
+        return userRepository.findAll();
+    }
+
+    public Optional<User> findByCode(int code) {
         return userRepository.findByCode(code);
     }
 
-    public List<User> findAll(){
-        return userRepository.findAll();
+    public Optional<User> findById(String id) {
+        return userRepository.findById(id);
     }
 
 	@Transactional(readOnly = true)
@@ -41,7 +45,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional(readOnly = true)
-    public Page<User> findAllManager(UserSearchCondition condition, Pageable pageable) {
+    public Page<UserDto> findAllManager(UserSearchCondition condition, Pageable pageable) {
         return userRepositoryCustom.findAllManager(condition, pageable);
     }
 

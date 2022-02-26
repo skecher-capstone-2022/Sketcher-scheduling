@@ -1,5 +1,6 @@
 package sketcher.scheduling.domain;
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.Getter;
 import org.apache.catalina.Manager;

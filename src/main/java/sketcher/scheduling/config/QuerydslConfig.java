@@ -14,7 +14,7 @@ public class QuerydslConfig {
     private EntityManager entityManager;
 
     @Bean
-    public JPAQueryFactory jpaQueryFactory() {
+    public JPAQueryFactory jpaQueryFactory() { // 어느 곳에서나 JPAQueryFactory 주입 받아 Querydsl 사용 가능
         return new JPAQueryFactory(entityManager);
     }
 }
