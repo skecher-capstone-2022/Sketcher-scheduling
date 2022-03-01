@@ -10,20 +10,20 @@ import sketcher.scheduling.domain.User;
 public class ManagerAssignScheduleDto {
 
     private Integer id;
-    private Character schedule_delete_req_check;
+    private Character scheduleUpdateReqCheck;
     private User user;
     private Schedule schedule;
 
     @Builder
-    public ManagerAssignScheduleDto(Character schedule_delete_req_check, User user, Schedule schedule) {
-        this.schedule_delete_req_check = schedule_delete_req_check;
+    public ManagerAssignScheduleDto(Character scheduleUpdateReqCheck, User user, Schedule schedule) {
+        this.scheduleUpdateReqCheck = scheduleUpdateReqCheck;
         this.user = user;
         this.schedule = schedule;
     }
 
     public ManagerAssignSchedule toEntity(){
        return ManagerAssignSchedule.builder()
-                .schedule_delete_req_check(schedule_delete_req_check)
+                .scheduleUpdateReqCheck(scheduleUpdateReqCheck)
                 .user(user)
                 .schedule(schedule)
                 .build();

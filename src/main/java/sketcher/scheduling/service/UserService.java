@@ -10,6 +10,7 @@ import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.repository.UserRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +38,9 @@ public class UserService implements UserDetailsService {
         //패스워드 인코딩
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
-
+        user.setUser_joinDate(LocalDateTime.now());
+        user.setManagerScore(0.0);
+        user.setDropoutReqCheck('N');
         return userRepository.save(user.toEntity()).getId();
 
     }

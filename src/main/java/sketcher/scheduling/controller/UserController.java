@@ -17,6 +17,8 @@ import sketcher.scheduling.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Controller
 @RequiredArgsConstructor
@@ -62,7 +64,6 @@ public class UserController {
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public String signup(UserDto joinUser, RedirectAttributes redirectAttributes){
-        //희망시간도 추가해야함
         userService.saveUser(joinUser);
         redirectAttributes.addAttribute("userid",joinUser.getId());
 
