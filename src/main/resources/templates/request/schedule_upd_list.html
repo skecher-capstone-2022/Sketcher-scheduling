@@ -3,6 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/menu_layout}">
 <head>
     <title>스케줄 수정 요청 목록</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link th:href="@{/css/manager_list.css}" rel="stylesheet"/>
     <style media="screen">
         button.btn.btn-6.btn-6b.reqbtn1 {
@@ -40,7 +41,7 @@
         }
 
         table {
-            margin-bottom: 50px;
+            margin-top: 50px;
         }
     </style>
 </head>
@@ -54,17 +55,19 @@
                 </div>
 
                 <div class="align">
-                    <select name="list_align" class="list_align">
-                        <option value="manager_score" selected="selected">평점순</option>
-                        <option value="manager_name">매니저명</option>
-                        <option value="req_date">날짜</option>
+                    <form action="/schedule_upd_list" method="get">
+                    <select name="list_align" class="list_align" onchange="this.form.submit()">
+                        <option th:value="req_date_desc" th:selected="${list_align == 'req_date_desc'}">최신순</option>
+                        <option th:value="req_date_asc" th:selected="${list_align == 'req_date_asc'}">오래된순</option>
                     </select>
+                    </form>
 
                     <!--                        <div class="btn-wrapper">-->
                     <div class="btn_align">
-                        <button class="btn btn-6 btn-6b reqbtn1" onclick="">전체 선택</button>
-                        <button class="btn btn-6 btn-6b reqbtn1" onclick="">전체 선택 해제</button>
-                        <button class="btn btn-6 btn-6b reqbtn2" onclick="">수정 요청 수락</button>
+                        <button class="btn btn-6 btn-6b reqbtn1" value='selectall' onclick="checkAll()">전체 선택
+                        </button>
+                        <button class="btn btn-6 btn-6b reqbtn1" onclick="nonecheckAll()">전체 선택 해제</button>
+                        <button class="btn btn-6 btn-6b reqbtn2" onclick="accept()">수정 요청 수락</button>
                     </div>
                     <!--                        </div>-->
                 </div>
@@ -73,96 +76,54 @@
                         <th scope="col">INDEX</th>
                         <th scope="col">매니저ID</th>
                         <th scope="col">매니저명</th>
-                        <th scope="col">변경 전 날짜</th>
-                        <th scope="col">변경 전 시간</th>
-                        <th scope="col">변경 후 날짜</th>
-                        <th scope="col">변경 후 시간</th>
+                        <th scope="col">변경 전 근무 시작 일정</th>
+                        <!--                        <th scope="col">변경 전 시간</th>-->
+                        <th scope="col">변경 후 근무 시작 일정</th>
+                        <!--                        <th scope="col">변경 후 시간</th>-->
                         <th scope="col">승인</th>
                     </tr>
-                    <tr>
-                        <td class="line">1</td>
-                        <td class="line">USER1</td>
-                        <td class="line">박태영</td>
-                        <td class="line">2022-01-14</td>
-                        <td class="line">2시</td>
-                        <td class="line">2022-01-15</td>
-                        <td class="line">2시</td>
-                        <td class="line"><input name="approval" type="checkbox" value="approval"/></td>
-                    </tr>
-                    <tr>
-                        <td class="line">1</td>
-                        <td class="line">USER1</td>
-                        <td class="line">박태영</td>
-                        <td class="line">2022-01-14</td>
-                        <td class="line">2시</td>
-                        <td class="line">2022-01-15</td>
-                        <td class="line">2시</td>
-                        <td class="line"><input name="approval" type="checkbox" value="approval"/></td>
-                    </tr>
-                    <tr>
-                        <td class="line">1</td>
-                        <td class="line">USER1</td>
-                        <td class="line">박태영</td>
-                        <td class="line">2022-01-14</td>
-                        <td class="line">2시</td>
-                        <td class="line">2022-01-15</td>
-                        <td class="line">2시</td>
-                        <td class="line"><input name="approval" type="checkbox" value="approval"/></td>
-                    </tr>
-                    <tr>
-                        <td class="line">1</td>
-                        <td class="line">USER1</td>
-                        <td class="line">박태영</td>
-                        <td class="line">2022-01-14</td>
-                        <td class="line">2시</td>
-                        <td class="line">2022-01-15</td>
-                        <td class="line">2시</td>
-                        <td class="line"><input name="approval" type="checkbox" value="approval"/></td>
-                    </tr>
-                    <tr>
-                        <td class="line">1</td>
-                        <td class="line">USER1</td>
-                        <td class="line">박태영</td>
-                        <td class="line">2022-01-14</td>
-                        <td class="line">2시</td>
-                        <td class="line">2022-01-15</td>
-                        <td class="line">2시</td>
-                        <td class="line"><input name="approval" type="checkbox" value="approval"/></td>
-                    </tr>
-                    <tr>
-                        <td class="line">1</td>
-                        <td class="line">USER1</td>
-                        <td class="line">박태영</td>
-                        <td class="line">2022-01-14</td>
-                        <td class="line">2시</td>
-                        <td class="line">2022-01-15</td>
-                        <td class="line">2시</td>
-                        <td class="line"><input name="approval" type="checkbox" value="approval"/></td>
-                    </tr>
-                    <tr>
-                        <td class="line">1</td>
-                        <td class="line">USER1</td>
-                        <td class="line">박태영</td>
-                        <td class="line">2022-01-14</td>
-                        <td class="line">2시</td>
-                        <td class="line">2022-01-15</td>
-                        <td class="line">2시</td>
-                        <td class="line"><input name="approval" type="checkbox" value="approval"/></td>
-                    </tr>
-                    <tr>
-                        <td class="line">1</td>
-                        <td class="line">USER1</td>
-                        <td class="line">박태영</td>
-                        <td class="line">2022-01-14</td>
-                        <td class="line">2시</td>
-                        <td class="line">2022-01-15</td>
-                        <td class="line">2시</td>
-                        <td class="line"><input name="approval" type="checkbox" value="approval"/></td>
-                    </tr>
+                    <form id="frm">
+                        <tbody>
+                        <tr th:if="${not #lists.isEmpty(updateReqList)}" th:each="row : ${updateReqList}">
+                            <td class="line">1</td>
+                            <td class="line" th:text="${row.assignSchedule.user.getId()}"></td>
+                            <td class="line" th:text="${row.assignSchedule.user.getUsername()}"></td>
+                            <td class="line" th:text="${row.assignSchedule.schedule.getScheduleDateTimeStart()}"></td>
+                            <td class="line" th:text="${row.changeDate}"></td>
+                            <td class="line"><input name="chkList" type="checkbox" th:value="${row.id}"/></td>
+                        </tr>
+                        </tbody>
+                    </form>
                 </table>
             </div>
-
         </div>
     </div>
 </th:block>
 </html>
+<script type="text/javascript">
+    function checkAll() {
+        $("input[type=checkbox]").prop("checked", true);
+    }
+
+    function nonecheckAll() {
+        $("input[type=checkbox]").prop("checked", false);
+    }
+
+    // function checkAll(selectAll) {
+    //     if ($("input:checkbox[name='chkList']").prop("checked")) {
+    //         $("input[type=checkbox]").prop("checked", true);
+    //     } else {
+    //         $("input[type=checkbox]").prop("checked", false);
+    //     }
+    // }
+
+    function accept() {
+        let answer = confirm("선택한 수정 요청을 수락하시겠습니까?");
+        if (answer == true) {
+            $("#frm").attr("action", "/acceptRequest");
+            $("#frm").submit();
+        }
+    }
+
+
+</script>

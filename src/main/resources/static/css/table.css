@@ -19,3 +19,12 @@ th {
 	border-top:2.25px solid #D9D9D9;
 	border-bottom:2.25px solid #D9D9D9;
 }
+
+.page_ul {
+	list-style:none;
+	/*display: inline-block;*/
+}
+
+.page_li {
+	display: inline-block;
+}

@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/menu_layout}">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/menu_layout}">
 <head>
     <title>현재 근무중인 매니저 목록</title>
     <link th:href="@{/css/manager_list.css}" rel="stylesheet"/>
+
     <style media="screen">
         .btn {
             padding: 10px 20px;
@@ -30,23 +32,31 @@
                     <h1>현재 근무중인 매니저 목록</h1>
                 </div>
                 <div class="select-wrap1">
-                    <select name="list_align" class="list_align">
-                        <option value="manager_score" selected="selected">평점순</option>
-                        <option value="manager_name">매니저명</option>
-                        <option value="join_date">가입일자</option>
-                    </select>
-                    <div class="search">
-                        <select name="select_search" class="select_search">
-                            <option value="manager_name" selected="selected">매니저명</option>
-                            <option value="manager_id">매니저ID</option>
+                    <form name="manager_list_form" class="manager_list_form" method="get">
+                        <select th:name="align" id="align" class="list_align" onchange="this.form.submit()">
+                            <option th:value="managerScore" th:selected="${condition.align == 'managerScore'}">평점순
+                            </option>
+                            <option th:value="username" th:selected="${condition.align == 'username'}">매니저명</option>
+                            <option th:value="joindate_desc" th:selected="${condition.align == 'joindate_asc'}">
+                                가입일자(최신순)
+                            </option>
+                            <option th:value="joindate_asc" th:selected="${condition.align == 'joindate_desc'}">
+                                가입일자(오래된순)
+                            </option>
                         </select>
-                        <label>
-                            <input name="search" type="text" placeholder="검색어 입력"/>
-                        </label>
-
-                        <button class="btn btn-6 btn-6b search-btn">검색</button>
-                        <br/>
-                    </div>
+                        <div class="search">
+                            <select th:name="type" id="type" class="select_search">
+                                <option th:value="username" th:selected="${condition.type == 'username'}">매니저명</option>
+                                <option th:value="id" th:selected="${condition.type == 'id'}">매니저ID</option>
+                            </select>
+                            <label>
+                                <input th:name="keyword" id="keyword" type="text" placeholder="검색어 입력"
+                                       th:value="${condition.keyword}"/>
+                            </label>
+                            <button type="submit" class="btn btn-6 btn-6b search-btn">검색</button>
+                            <br/>
+                        </div>
+                    </form>
                 </div>
                 <div>
                     <table width="700" border="0" cellspacing="0" cellpadding="0" class="list_text_center">
@@ -60,145 +70,52 @@
                             <th scope="col">평점</th>
                             <th scope="col">사용자관리</th>
                         </tr>
-
-                        <tr>
-                            <td class="line">1</td>
-                            <td class="line">USER1</td>
-                            <td class="line">박태영</td>
-                            <td class="line">010-1234-5678</td>
-                            <td class="line">2022-01-14</td>
-                            <td class="line">5.0</td>
+                        <tr th:if="${users.getTotalPages() != 0}" th:each="user : ${users}">
+                            <td class="line" th:text="${userStat.count} + ${users.number} * 10"></td>
+                            <td class="line" th:text="${user.id}"></td>
+                            <td class="line" th:text="${user.username}"></td>
+                            <td class="line" th:text="${user.userTel}"></td>
+                            <td class="line" th:text="${#temporals.format(user.user_joinDate, 'yyyy-MM-dd')}"></td>
+                            <td class="line" th:text="${#numbers.formatDecimal(user.managerScore, 1, 1)}"></td>
                             <td class="line">
-                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail'">관리
+                                <button type="submit" class="btn btn-6 btn-6b"
+                                        th:onclick="|location.href='@{/manager_detail/{userId}(userId=${user.id})}'|">관리
                                 </button>
                             </td>
                         </tr>
-                        <tr>
-                            <td class="line">2</td>
-                            <td class="line">USER1</td>
-                            <td class="line">박태영</td>
-                            <td class="line">010-1234-5678</td>
-                            <td class="line">2022-01-14</td>
-                            <td class="line">5.0</td>
-                            <td class="line">
-                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail'">관리
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="line">3</td>
-                            <td class="line">USER1</td>
-                            <td class="line">박태영</td>
-                            <td class="line">010-1234-5678</td>
-                            <td class="line">2022-01-14</td>
-                            <td class="line">5.0</td>
-                            <td class="line">
-                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail'">관리
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="line">4</td>
-                            <td class="line">USER1</td>
-                            <td class="line">박태영</td>
-                            <td class="line">010-1234-5678</td>
-                            <td class="line">2022-01-14</td>
-                            <td class="line">5.0</td>
-                            <td class="line">
-                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail'">관리
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="line">5</td>
-                            <td class="line">USER1</td>
-                            <td class="line">박태영</td>
-                            <td class="line">010-1234-5678</td>
-                            <td class="line">2022-01-14</td>
-                            <td class="line">5.0</td>
-                            <td class="line">
-                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail'">관리
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="line">6</td>
-                            <td class="line">USER1</td>
-                            <td class="line">박태영</td>
-                            <td class="line">010-1234-5678</td>
-                            <td class="line">2022-01-14</td>
-                            <td class="line">5.0</td>
-                            <td class="line">
-                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail'">관리
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="line">7</td>
-                            <td class="line">USER1</td>
-                            <td class="line">박태영</td>
-                            <td class="line">010-1234-5678</td>
-                            <td class="line">2022-01-14</td>
-                            <td class="line">5.0</td>
-                            <td class="line">
-                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail'">관리
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="line">8</td>
-                            <td class="line">USER1</td>
-                            <td class="line">박태영</td>
-                            <td class="line">010-1234-5678</td>
-                            <td class="line">2022-01-14</td>
-                            <td class="line">5.0</td>
-                            <td class="line">
-                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail'">관리
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="line">9</td>
-                            <td class="line">USER1</td>
-                            <td class="line">박태영</td>
-                            <td class="line">010-1234-5678</td>
-                            <td class="line">2022-01-14</td>
-                            <td class="line">5.0</td>
-                            <td class="line">
-                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail'">관리
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="line">10</td>
-                            <td class="line">USER1</td>
-                            <td class="line">박태영</td>
-                            <td class="line">010-1234-5678</td>
-                            <td class="line">2022-01-14</td>
-                            <td class="line">5.0</td>
-                            <td class="line">
-                                <button class="btn btn-6 btn-6b" onclick="location.href='manager_detail'">관리
-                                </button>
-                            </td>
+                        <tr th:if="${users.getTotalPages() == 0}">
+                            <td class="line" colspan="7">조회된 결과가 없습니다.</td>
                         </tr>
                     </table>
+
                 </div>
                 <div class="page_wrap">
                     <div class="page_nation">
-                        <a class="arrow pprev" href="#"></a>
-                        <a class="arrow prev" href="#"></a>
-                        <a href="#" class="active">1</a>
-                        <a href="#">2</a>
-                        <a href="#">3</a>
-                        <a href="#">4</a>
-                        <a href="#">5</a>
-                        <a href="#">6</a>
-                        <a href="#">7</a>
-                        <a href="#">8</a>
-                        <a href="#">9</a>
-                        <a href="#">10</a>
-                        <a class="arrow next" href="#"></a>
-                        <a class="arrow nnext" href="#"></a>
+                        <ul class="page_ul" onclick="listSubmit()"
+                            th:if="${users.getTotalPages() != 0}"
+                            th:with="start=${T(Math).floor(users.number/10)*10 + 1},
+                                  last=(${start + 9 < users.totalPages ? start + 9 : users.totalPages})">
+                            <li class="page_li">
+                                <a class="arrow pprev"
+                                   th:href="@{/all_manager_list(page=1,align=${condition.align},type=${condition.type},keyword=${condition.keyword})}"></a>
+                            </li>
+                            <li class="page_li">
+                                <a class="arrow prev"
+                                   th:href="${users.first} ? '#' : @{/all_manager_list(page=${users.number},align=${condition.align},type=${condition.type},keyword=${condition.keyword})}"></a>
+                            </li>
+                            <li class="page_li" th:each="page: ${#numbers.sequence(start, last)}">
+                                <a th:text="${page}" th:class="${page == users.number + 1} ? 'active'"
+                                   th:href="@{/all_manager_list(page=${page},align=${condition.align},type=${condition.type},keyword=${condition.keyword})}"></a>
+                            </li>
+                            <li class="page_li">
+                                <a class="arrow next"
+                                   th:href="${users.last} ? '#' : @{/all_manager_list(page=${users.number + 2},align=${condition.align},type=${condition.type},keyword=${condition.keyword})}"></a>
+                            </li>
+                            <li class="page_li">
+                                <a class="arrow nnext"
+                                   th:href="@{/all_manager_list(page=${users.totalPages},align=${condition.align},type=${condition.type},keyword=${condition.keyword})}"></a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>

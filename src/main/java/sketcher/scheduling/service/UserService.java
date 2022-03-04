@@ -1,31 +1,57 @@
 package sketcher.scheduling.service;
 
+
+import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.*;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.UserDto;
+import sketcher.scheduling.dto.UserSearchCondition;
 import sketcher.scheduling.repository.UserRepository;
-
+import sketcher.scheduling.repository.UserRepositoryCustom;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
-
     private final UserRepository userRepository;
+    private final UserRepositoryCustom userRepositoryCustom;
 
-    private Optional<User> findByCode(int code) {
+    public List<User> findAll(){
+        return userRepository.findAll();
+    }
+
+    public Optional<User> findByCode(int code) {
         return userRepository.findByCode(code);
     }
 
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public Optional<User> findById(String id) {
+        return userRepository.findById(id);
+    }
+
+	@Transactional(readOnly = true)
+    public ArrayList<String> findDetailById(String id) {
+        return userRepositoryCustom.findDetailById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<UserDto> findAllManager(UserSearchCondition condition, Pageable pageable) {
+        return userRepositoryCustom.findAllManager(condition, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public List<User> withdrawalManagers(UserSearchCondition condition) {
+        return userRepositoryCustom.withdrawalManagers(condition);
     }
 
     /**
@@ -44,7 +70,6 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user.toEntity()).getId();
 
     }
-
     //아이디로 유저 검색
     @Override  //반환값 다운캐스팅 (UserDetails->User)
     public User loadUserByUsername(String userid) throws UsernameNotFoundException {
@@ -68,5 +93,10 @@ public class UserService implements UserDetailsService {
 
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    //탈퇴요청리스트
+    public List<User> dropoutUserList(){
+        return userRepository.dropoutUserList();
     }
 }

@@ -32,7 +32,7 @@ public class ManagerHopeTimeController {
     @RequestMapping("/saveHopeTime")
     public String saveHopeTime(@RequestParam List<String> worktime,
                                @RequestParam("userid") String userid) {
-        System.out.println("[userid]" + userid);
+//        System.out.println("[userid]" + userid);
         if (userid != null) {
             for (String s : worktime) {
                 String[] time = s.split(":");

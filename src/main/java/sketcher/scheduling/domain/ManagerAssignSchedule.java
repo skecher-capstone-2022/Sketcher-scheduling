@@ -12,12 +12,10 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 public class ManagerAssignSchedule {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "assign_schedule_id")
     private Integer id;
-
-    @Column(name = "schedule_update_req_check")
-    private Character scheduleUpdateReqCheck;
 
     /**
      * 연관관계 매핑
@@ -32,26 +30,30 @@ public class ManagerAssignSchedule {
     private Schedule schedule;
 
 
+    @OneToOne(mappedBy = "assignSchedule")
+    private ScheduleUpdateReq updateReq;
+
     /**
      * 연관관계 편의 메소드
      */
     @Builder
-    public ManagerAssignSchedule(Integer id, Character scheduleUpdateReqCheck, User user, Schedule schedule) {
+    public ManagerAssignSchedule(Integer id, User user, Schedule schedule,ScheduleUpdateReq updateReq) {
         this.id = id;
-        this.scheduleUpdateReqCheck = scheduleUpdateReqCheck;
+        this.updateReq = updateReq;
 
-        if(this.user != null){
+        if (this.user != null) {
             user.getManagerAssignScheduleList().remove(this);
         }
         this.user = user;
         user.getManagerAssignScheduleList().add(this);
 
-        if(this.schedule != null){
+        if (this.schedule != null) {
             schedule.getManagerAssignScheduleList().remove(this);
         }
         this.schedule = schedule;
         schedule.getManagerAssignScheduleList().add(this);
     }
 
-    protected ManagerAssignSchedule(){}
+    protected ManagerAssignSchedule() {
+    }
 }

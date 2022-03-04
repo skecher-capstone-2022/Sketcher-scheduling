@@ -1,10 +1,16 @@
 package sketcher.scheduling.service;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,9 +19,12 @@ import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.repository.UserRepository;
 
 import javax.persistence.EntityManager;
-import java.util.Optional;
+import java.util.List;import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
+//import static sketcher.scheduling.domain.QUser.user;
+
+//import static org.junit.Assert.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -108,4 +117,5 @@ public class UserServiceTest {
         //then
         Assertions.assertEquals(result, false);
     }
+
 }

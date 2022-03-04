@@ -57,11 +57,26 @@ public class ManagerHopeTimeServiceTest {
          * ManagerHopeTime 을 userA 에 저장
          *  / 연관관계 편의 메소드로 인해 User 클래스의 HopeTime 에 입력
          */
+        ManagerHopeTimeDto managerHopeTime1 = ManagerHopeTimeDto.builder()
+                .start_time(3)
+                .finish_time(5)
+                .user(userA)
+                .build();
 //        ManagerHopeTimeDto managerHopeTime1 = ManagerHopeTimeDto.builder()
 //                .start_time(5)
 //                .finish_time(7)
 //                .user(userA)
 //                .build();
+
+        ManagerHopeTimeDto managerHopeTime2 = ManagerHopeTimeDto.builder()
+                .start_time(1)
+                .finish_time(10)
+                .user(userA)
+                .build();
+
+
+
+
 
 
 //        ManagerHopeTimeDto managerHopeTime2 = ManagerHopeTimeDto.builder()
@@ -70,23 +85,28 @@ public class ManagerHopeTimeServiceTest {
 //                .user(userA)
 //                .build();
 
+        managerHopeTimeService.saveManagerHopeTime(managerHopeTime1);
+        managerHopeTimeService.saveManagerHopeTime(managerHopeTime2);
 
         managerHopeTimeService.saveManagerHopeTime(new ManagerHopeTimeDto(5,7,userA));
 //        managerHopeTimeService.saveManagerHopeTime(managerHopeTime2);
 
         List<ManagerHopeTime> managerHopeTimeByUsers = managerHopeTimeRepository.findManagerHopeTimeByUser(userA);
         ManagerHopeTime managerHopeTimeA = managerHopeTimeByUsers.get(0);
+        ManagerHopeTime managerHopeTimeB = managerHopeTimeByUsers.get(1);
 //        ManagerHopeTime managerHopeTimeB = managerHopeTimeByUsers.get(1);
 
         //    //when
 
         Integer start_timeA = managerHopeTimeA.getStart_time(); // -> 3
+        Integer start_timeB = managerHopeTimeB.getStart_time(); // -> 1
 //        Integer start_timeB = managerHopeTimeB.getStart_time(); // -> 1
 //        //then
         /**
          * user에서 가져온 userA의 hopetime 과  managerHopeTimeRepo 에서 가져온 HopeTime 일치 확인
          */
         Integer user_A_Start_TimeA = userA.getManagerHopeTimeList().get(0).getStart_time(); // -> 3
+        Integer user_A_Start_TimeB = userA.getManagerHopeTimeList().get(1).getStart_time(); // -> 1
 //        Integer user_A_Start_TimeB = userA.getManagerHopeTimeList().get(1).getStart_time(); // -> 1
 
         Assertions.assertEquals(user_A_Start_TimeA, start_timeA);

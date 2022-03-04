@@ -1,5 +1,6 @@
 package sketcher.scheduling.domain;
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.Getter;
 import org.apache.catalina.Manager;
@@ -20,7 +21,8 @@ import java.util.*;
 @Getter
 public class User implements UserDetails {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_code")
     private Integer code;
 
@@ -34,8 +36,9 @@ public class User implements UserDetails {
     @NotEmpty
 //    @Pattern(regexp = "^[a-zA-Z0-9]{3,12}$", message = "아이디를 3~12자로 입력해주세요. [특수문자 X]")
     private String id;
-
     @Column(name = "auth_role")
+
+//    @Enumerated(EnumType.STRING)
     private String authRole;
 
     @Column(name = "user_pw")
