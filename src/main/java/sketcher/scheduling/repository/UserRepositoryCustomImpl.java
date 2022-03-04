@@ -95,7 +95,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                         user.managerScore
                 ))
                 .from(user)
-                .join(managerAssignSchedule.user, user).fetchJoin().join(managerAssignSchedule.schedule, schedule) // 다대다 조인
+                .join(managerAssignSchedule.user, user).fetchJoin()/*.join(managerAssignSchedule.schedule, schedule) // 다대다 조인*/
                 .where(
                         managerList(condition.getType(), condition.getKeyword()),
                         userJoinSchedule() // 확인 X
@@ -116,7 +116,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                         user.managerScore
                 ))
                 .from(user)
-                .join(managerAssignSchedule.user, user).fetchJoin().join(managerAssignSchedule.schedule, schedule) // 다대다 조인
+                .join(managerAssignSchedule.user, user).fetchJoin()/*.join(managerAssignSchedule.schedule, schedule) // 다대다 조인*/
                 .where(
                         managerList(condition.getType(), condition.getKeyword()),
                         userJoinSchedule() // 확인 X
@@ -257,7 +257,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
     }
 
     private BooleanExpression userJoinSchedule() {
-        return user.code.eq(managerAssignSchedule.user.code).and(schedule.id.eq(managerAssignSchedule.schedule.id));
+        return user.code.eq(managerAssignSchedule.user.code)/*.and(schedule.id.eq(managerAssignSchedule.schedule.id))*/;
     }
 
 //    private BooleanExpression workTime() {

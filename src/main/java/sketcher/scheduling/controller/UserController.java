@@ -141,15 +141,15 @@ public class UserController {
         return "mypage/manager_mypage";
     }
 
-    @RequestMapping(value = "/withdrawal_req_list", method = RequestMethod.GET)
-    public String withdrawal_req_list(Model model,
-                                      @RequestParam(required = false, defaultValue = "managerScore") String align,
-                                      @RequestParam(required = false, defaultValue = "") String type,
-                                      @RequestParam(required = false, defaultValue = "") String keyword) {
-        UserSearchCondition condition = new UserSearchCondition(align, type, keyword);
-        List<UserDto> users = userService.findAllManager(condition, null);
-        model.addAttribute("condition", condition);
-        model.addAttribute("users", users);
-        return "request/withdrawal_req_list";
-    }
+//    @RequestMapping(value = "/withdrawal_req_list", method = RequestMethod.GET)
+//    public String withdrawal_req_list(Model model,
+//                                      @RequestParam(required = false, defaultValue = "managerScore") String align,
+//                                      @RequestParam(required = false, defaultValue = "") String type,
+//                                      @RequestParam(required = false, defaultValue = "") String keyword) {
+//        UserSearchCondition condition = new UserSearchCondition(align, type, keyword);
+//        List<UserDto> users = userService.findAllManager(condition, null);
+//        model.addAttribute("condition", condition);
+//        model.addAttribute("users", users);
+//        return "request/withdrawal_req_list";
+//    }
 }

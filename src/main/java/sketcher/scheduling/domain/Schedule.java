@@ -46,15 +46,12 @@ public class Schedule{
 
     private LocalDateTime update_date;
 
-    /**
-     * 연관관계 매핑
-     */
-
-    @OneToMany(mappedBy = "schedule")
-    private List<ManagerWorkingSchedule> managerWorkingScheduleList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "schedule")
-    private List<ManagerAssignSchedule> managerAssignScheduleList = new ArrayList<>();
+//    /**
+//     * 연관관계 매핑
+//     */
+//
+//    @OneToMany(mappedBy = "schedule")
+//    private List<ManagerAssignSchedule> managerAssignScheduleList = new ArrayList<>();
 
     /**
      * Builder 에 관한 설명은 /domain/User에!
