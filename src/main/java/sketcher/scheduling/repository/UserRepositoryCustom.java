@@ -15,4 +15,6 @@ public interface UserRepositoryCustom {
     Page<UserDto> findAllManager(UserSearchCondition condition, Pageable pageable);
 
     ArrayList<String> findDetailById(String id);
+
+    List<User> withdrawalManagers(UserSearchCondition condition);
 }

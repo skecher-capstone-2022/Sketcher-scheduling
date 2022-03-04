@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sketcher.scheduling.domain.Schedule;
+import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.ScheduleDto;
 import sketcher.scheduling.repository.ScheduleRepository;
 
@@ -26,5 +27,7 @@ public class ScheduleService {
         return scheduleRepository.findAll();
     }
 
-
+    public Optional<Schedule> findById(Integer id) {
+        return scheduleRepository.findById(id);
+    }
 }

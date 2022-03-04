@@ -1,6 +1,7 @@
 package sketcher.scheduling.repository;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.domain.QManagerHopeTime;
+import sketcher.scheduling.domain.ScheduleUpdateReq;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.dto.UserSearchCondition;
@@ -27,6 +29,7 @@ import static org.springframework.util.StringUtils.hasText;
 import static sketcher.scheduling.domain.QManagerAssignSchedule.managerAssignSchedule;
 import static sketcher.scheduling.domain.QManagerHopeTime.managerHopeTime;
 import static sketcher.scheduling.domain.QSchedule.schedule;
+import static sketcher.scheduling.domain.QScheduleUpdateReq.scheduleUpdateReq;
 import static sketcher.scheduling.domain.QUser.user;
 
 @Repository
@@ -92,7 +95,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                         user.managerScore
                 ))
                 .from(user)
-                .join(managerAssignSchedule.user, user).fetchJoin().join(managerAssignSchedule.schedule, schedule) // 다대다 조인
+                .join(managerAssignSchedule.user, user).fetchJoin()/*.join(managerAssignSchedule.schedule, schedule) // 다대다 조인*/
                 .where(
                         managerList(condition.getType(), condition.getKeyword()),
                         userJoinSchedule() // 확인 X
@@ -113,7 +116,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                         user.managerScore
                 ))
                 .from(user)
-                .join(managerAssignSchedule.user, user).fetchJoin().join(managerAssignSchedule.schedule, schedule) // 다대다 조인
+                .join(managerAssignSchedule.user, user).fetchJoin()/*.join(managerAssignSchedule.schedule, schedule) // 다대다 조인*/
                 .where(
                         managerList(condition.getType(), condition.getKeyword()),
                         userJoinSchedule() // 확인 X
@@ -158,6 +161,17 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         }
 
         return hope;
+    }
+
+    @Override
+    public List<User> withdrawalManagers(UserSearchCondition condition) {
+        QueryResults<User> content = queryFactory
+                .selectFrom(user)
+                .where(user.dropoutReqCheck.eq('Y'))
+                .orderBy(userSort(condition.getAlign(), null))
+                .fetchResults();
+
+        return content.getResults();
     }
 
     private Pageable pageableSetting(UserSearchCondition condition, Pageable pageable) {
@@ -243,7 +257,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
     }
 
     private BooleanExpression userJoinSchedule() {
-        return user.code.eq(managerAssignSchedule.user.code).and(schedule.id.eq(managerAssignSchedule.schedule.id));
+        return user.code.eq(managerAssignSchedule.user.code)/*.and(schedule.id.eq(managerAssignSchedule.schedule.id))*/;
     }
 
 //    private BooleanExpression workTime() {

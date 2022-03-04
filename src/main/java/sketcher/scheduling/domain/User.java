@@ -65,9 +65,6 @@ public class User implements UserDetails {
     private List<ManagerHopeTime> managerHopeTimeList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<ManagerWorkingSchedule> managerWorkingScheduleList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
     private List<ManagerAssignSchedule> managerAssignScheduleList = new ArrayList<>();
 
     protected User() {

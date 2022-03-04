@@ -50,8 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
              .formLogin()
                 .usernameParameter("userid")
                 .passwordParameter("password")
-                .loginPage("/login")
-                .permitAll()
+                .loginPage("/login")                .permitAll()
                 .and()
                 .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
@@ -101,6 +100,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) {
         authenticationManagerBuilder.authenticationProvider(customAuthenticationProvider());
     }
-
 
 }

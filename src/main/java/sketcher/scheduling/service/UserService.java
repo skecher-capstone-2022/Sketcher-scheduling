@@ -15,7 +15,7 @@ import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.dto.UserSearchCondition;
 import sketcher.scheduling.repository.UserRepository;
 import sketcher.scheduling.repository.UserRepositoryCustom;
-
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -49,6 +49,11 @@ public class UserService implements UserDetailsService {
         return userRepositoryCustom.findAllManager(condition, pageable);
     }
 
+    @Transactional(readOnly = true)
+    public List<User> withdrawalManagers(UserSearchCondition condition) {
+        return userRepositoryCustom.withdrawalManagers(condition);
+    }
+
     /**
      * 저장하고 id 값 리턴
      * (회원정보 저장 시, 비밀번호 값을 그대로 DB에 넣는게 아니라
@@ -59,7 +64,9 @@ public class UserService implements UserDetailsService {
         //패스워드 인코딩
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
-
+        user.setUser_joinDate(LocalDateTime.now());
+        user.setManagerScore(0.0);
+        user.setDropoutReqCheck('N');
         return userRepository.save(user.toEntity()).getId();
 
     }
@@ -86,5 +93,10 @@ public class UserService implements UserDetailsService {
 
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    //탈퇴요청리스트
+    public List<User> dropoutUserList(){
+        return userRepository.dropoutUserList();
     }
 }
