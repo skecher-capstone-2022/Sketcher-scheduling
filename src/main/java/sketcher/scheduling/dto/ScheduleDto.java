@@ -38,7 +38,8 @@ public class ScheduleDto {
      *
      */
     @Builder
-    public ScheduleDto(LocalDateTime scheduleDateTimeStart, LocalDateTime scheduleDateTimeEnd, Integer workforce, Integer expected_card_cnt, String creator_id, String update_id, LocalDateTime create_date, LocalDateTime update_date) {
+    public ScheduleDto(Integer id, LocalDateTime scheduleDateTimeStart, LocalDateTime scheduleDateTimeEnd, Integer workforce, Integer expected_card_cnt, String creator_id, String update_id, LocalDateTime create_date, LocalDateTime update_date) {
+        this.id = id;
         this.scheduleDateTimeStart = scheduleDateTimeStart;
         this.scheduleDateTimeEnd = scheduleDateTimeEnd;
         this.workforce = workforce;
@@ -60,5 +61,10 @@ public class ScheduleDto {
                 .create_date(create_date)
                 .update_date(update_date)
                 .build();
+    }
+
+    public void update(LocalDateTime scheduleDateTimeStart,LocalDateTime scheduleDateTimeEnd){
+        this.scheduleDateTimeStart = scheduleDateTimeStart;
+        this.scheduleDateTimeEnd = scheduleDateTimeEnd;
     }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -17,19 +18,20 @@ import java.util.List;
 @Table(name = "schedule")
 @Getter
 
+@DynamicUpdate
 public class Schedule{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "schedule_id")
     private Integer id;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+9")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     @Column(name = "schedule_date_time_start")
     private LocalDateTime scheduleDateTimeStart;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+9")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "GMT+9")
     @Column(name = "schedule_date_time_end")
     private LocalDateTime scheduleDateTimeEnd;
 
@@ -60,7 +62,8 @@ public class Schedule{
      * Builder 에 관한 설명은 /domain/User에!
      */
     @Builder
-    public Schedule(LocalDateTime scheduleDateTimeStart, LocalDateTime scheduleDateTimeEnd, Integer workforce, Integer expected_card_cnt, String creator_id, String update_id, LocalDateTime create_date, LocalDateTime update_date) {
+    public Schedule(Integer id, LocalDateTime scheduleDateTimeStart, LocalDateTime scheduleDateTimeEnd, Integer workforce, Integer expected_card_cnt, String creator_id, String update_id, LocalDateTime create_date, LocalDateTime update_date) {
+        this.id = id;
         this.scheduleDateTimeStart = scheduleDateTimeStart;
         this.scheduleDateTimeEnd = scheduleDateTimeEnd;
         this.workforce = workforce;
@@ -71,6 +74,10 @@ public class Schedule{
         this.update_date = update_date;
     }
 
+    public void update(LocalDateTime scheduleDateTimeStart,LocalDateTime scheduleDateTimeEnd){
+        this.scheduleDateTimeStart = scheduleDateTimeStart;
+        this.scheduleDateTimeEnd = scheduleDateTimeEnd;
+    }
 
     protected Schedule() {
     }
