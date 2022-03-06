@@ -61,6 +61,7 @@ public class ScheduleUpdateReqService {
                 .id(req.getId())
                 .changeDate(req.getChangeDate())
                 .assignSchedule(req.getAssignSchedule())
+                .reqTime(req.getReqTime())
                 .reqAcceptCheck('Y')
                 .build();
         updateReqRepository.save(assignReq);
