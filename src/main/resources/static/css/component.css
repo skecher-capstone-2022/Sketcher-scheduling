@@ -32,17 +32,24 @@ body {
     border-radius: 15px;
 }
 
+.access_user_hello {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #5e5e5e;
+    display: flex;
+    width: max-content;
+}
+
 .logo {
     display: block;
     margin: 45px auto 5px auto;
 }
 
 .access_user {
-    width: 300px;
-    height: 100px;
     float: right;
     margin-right: 100px;
     padding-top: 50px;
+    padding-bottom: 12px;
 }
 
 .scroller {

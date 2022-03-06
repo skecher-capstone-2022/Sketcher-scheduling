@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sketcher.scheduling.domain.ManagerAssignSchedule;
 import sketcher.scheduling.domain.Schedule;
+import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.ScheduleDto;
 import sketcher.scheduling.repository.ScheduleRepository;
 
@@ -53,5 +54,8 @@ public class ScheduleService {
     @Transactional
     public void deleteById(Integer Id){
         scheduleRepository.deleteById(Id);
+    }
+    public Optional<Schedule> findById(Integer id) {
+        return scheduleRepository.findById(id);
     }
 }

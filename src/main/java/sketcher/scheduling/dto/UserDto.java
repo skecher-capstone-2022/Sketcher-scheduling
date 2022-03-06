@@ -23,7 +23,7 @@ public class UserDto {
     private Character dropoutReqCheck;
 
     @Builder
-    public UserDto(Integer code, String id, String authRole, String password, String username, String userTel, LocalDateTime user_joinDate, Double managerScore, Character dropoutReqCheck) {
+	public UserDto(Integer code, String id, String authRole, String password, String username, String userTel, LocalDateTime user_joinDate, Double managerScore, Character dropoutReqCheck) {
         this.code = code;
         this.id = id;
         this.authRole = authRole;

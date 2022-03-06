@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/user_layout}">
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>회원가입 STEP1</title>
     <link th:href="@{/css/step1.css}" rel="stylesheet"/>
     <style>
@@ -10,22 +11,26 @@
             height: 20px;
         }
     </style>
+
 </head>
 
 <th:block layout:fragment="step-wrap">
+
     <div class="step">
         <div style="text-align : center;"><img th:src="@{/img/step1.png}"></div>
         <div class="user_input_wrap">
             <div class="user_input">
                 <h1>약관 동의</h1>
                 <label>
-                    <input type="checkbox" name="all_chk" value="all_chk">
+                    <input type="checkbox"  name="chkAll"
+                           id="checkAll" class="chkAll" onclick="checkAll_click()">
                     전체 동의</label>
                 <br/>
                 <details>
                     <summary>개인정보 수집항목
                         <label class="terms">
-                            <input type="checkbox" name="chk1" value="chk1">
+                            <input type="checkbox" id="chk1"
+                                   name="chk" onclick="checkbox_click()">
                             동의합니다.</label>
                     </summary>
                     <div class="tpt">ABC</div>
@@ -33,7 +38,8 @@
                 <details>
                     <summary>개인정보 수집목적
                         <label class="terms">
-                            <input type="checkbox" name="chk2" value="chk1">
+                            <input type="checkbox" id="chk2"
+                                   name="chk" onclick="checkbox_click()">
                             동의합니다.</label>
                     </summary>
                     <div class="tpt">ABC</div>
@@ -41,7 +47,8 @@
                 <details>
                     <summary>개인정보 보유 및 이용기간
                         <label class="terms">
-                            <input type="checkbox" name="chk3" value="chk1">
+                            <input type="checkbox" id="chk3"
+                                   name="chk" onclick="checkbox_click()">
                             동의합니다.</label>
                     </summary>
                     <div class="tpt">ABC</div>
@@ -49,7 +56,8 @@
                 <details>
                     <summary>개인정보 제3자 제공동의
                         <label class="terms">
-                            <input type="checkbox" name="chk4" value="chk1">
+                            <input type="checkbox" id="chk4"
+                                   name="chk" onclick="checkbox_click()">
                             동의합니다.</label>
                     </summary>
                     <div class="tpt">ABC</div>
@@ -65,9 +73,46 @@
     <div style="margin-top:100px;">
         <section class="color-4">
             <p>
-                <button class="btn btn-4 btn-4a icon-arrow-right" onclick="location.href='/step2'">NEXT</button>
+                <button class="btn btn-4 btn-4a icon-arrow-right" onclick="checkAll_submit();">NEXT</button>
             </p>
         </section>
     </div>
+    <script>
+        //전체 선택
+        function checkAll_click() {
+            if ($('input:checkbox[id="checkAll"]').is(":checked"))
+                $('input:checkbox[name="chk"]').prop("checked", true);
+            else
+                $('input:checkbox[name="chk"]').prop("checked", false);
+        }
+
+        //체크박스 선택 시 전체 선택 및 해제
+        function checkbox_click() {
+            if ($('input:checkbox[id="chk1"]').is(":checked") == false
+                || $('input:checkbox[id="chk2"]').is(":checked") == false
+            ||$('input:checkbox[id="chk3"]').is(":checked") == false
+            ||$('input:checkbox[id="chk4"]').is(":checked") == false)
+                $('input:checkbox[id="checkAll"]').prop("checked", false);
+            else if ($('input:checkbox[id="chk1"]').is(":checked") == true
+                || $('input:checkbox[id="chk2"]').is(":checked") == true
+            ||$('input:checkbox[id="chk3"]').is(":checked") == true
+            ||$('input:checkbox[id="chk4"]').is(":checked") == true)
+                $('input:checkbox[id="checkAll"]').prop("checked", true);
+        }
+
+        //전체 선택을 만족한 경우 넘어감
+        function checkAll_submit() {
+            if ($('input:checkbox[id="chk1"]').is(":checked") == true
+                && $('input:checkbox[id="chk2"]').is(":checked") == true
+                && $('input:checkbox[id="chk3"]').is(":checked") == true
+                && $('input:checkbox[id="chk4"]').is(":checked") == true) {
+                location.href="/step2";
+            } else {
+                alert("이용약관과 개인정보 수집 및 이용에 대한 안내 모두 동의해주세요.");
+                return false;
+            }
+        }
+    </script>
 </th:block>
+
 </html>

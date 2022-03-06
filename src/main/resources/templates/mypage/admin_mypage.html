@@ -60,9 +60,9 @@
 <!--                            <img src="../../static/img/admin.svg" width="100" height="100">-->
                         </div>
                         <div class="info"><span style="color:#E75757;">Admin</span><br/>
-                            <span>박태영</span><br/>
-                            2022월 1월 15일 가입<br/>
-                            010-1234-5678<br/>
+                            <span th:text="${user.user_name}"></span><br/>
+                            <p th:text="${user.user_joindate}"> 가입</p><br/>
+                            <p th:text="${user.user_tel}"></p><br/>
                         </div>
                     </div>
                     <div>

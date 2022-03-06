@@ -20,8 +20,6 @@ public class ScheduleDto {
 
     private LocalDateTime scheduleDateTimeStart;
 
-    private LocalDateTime scheduleDateTimeEnd;
-
     private Integer workforce;
 
     private Integer expected_card_cnt;
@@ -38,10 +36,8 @@ public class ScheduleDto {
      *
      */
     @Builder
-    public ScheduleDto(Integer id, LocalDateTime scheduleDateTimeStart, LocalDateTime scheduleDateTimeEnd, Integer workforce, Integer expected_card_cnt, String creator_id, String update_id, LocalDateTime create_date, LocalDateTime update_date) {
-        this.id = id;
+    public ScheduleDto(LocalDateTime scheduleDateTimeStart, Integer workforce, Integer expected_card_cnt, String creator_id, String update_id, LocalDateTime create_date, LocalDateTime update_date) {
         this.scheduleDateTimeStart = scheduleDateTimeStart;
-        this.scheduleDateTimeEnd = scheduleDateTimeEnd;
         this.workforce = workforce;
         this.expected_card_cnt = expected_card_cnt;
         this.creator_id = creator_id;
@@ -53,7 +49,6 @@ public class ScheduleDto {
     public Schedule toEntity(){
         return Schedule.builder()
                 .scheduleDateTimeStart(scheduleDateTimeStart)
-                .scheduleDateTimeEnd(scheduleDateTimeEnd)
                 .workforce(workforce)
                 .expected_card_cnt(expected_card_cnt)
                 .creator_id(creator_id)

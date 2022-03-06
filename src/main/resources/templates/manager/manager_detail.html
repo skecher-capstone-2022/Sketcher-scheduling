@@ -48,8 +48,6 @@
 </head>
 
 <th:block layout:fragment="ground-wrap">
-
-
     <div class="ground">
         <div class="main">
             <div class="all_manaer_list">
@@ -57,24 +55,31 @@
                     <h1>매니저 상세 정보 조회</h1>
                 </div>
                 <div class="manager_detail">
-                    <table class="detail_tb">
+                    <table class="detail_tb" th:with="user=${users.get()}">
                         <tr>
                             <th scope="row">매니저ID</th>
-                            <td>USER1</td>
+                            <td th:text="${user.id}"></td>
                             <th scope="row">매니저명</th>
-                            <td>박태영</td>
+                            <td th:text="${user.username}"></td>
                         </tr>
                         <tr>
                             <th scope="row">전화번호</th>
-                            <td>010-1234-5678</td>
+                            <td th:text="${user.userTel}"></td>
                             <th scope="row">가입일자</th>
-                            <td>2022-01-14</td>
+                            <td th:text="${#temporals.format(user.user_joinDate, 'yyyy-MM-dd')}"></td>
                         </tr>
                         <tr>
                             <th scope="row">평점</th>
-                            <td>5.0</td>
+                            <td th:text="${user.managerScore}"></td>
                             <th scope="row">희망 근무 시간</th>
-                            <td>오후 12시 ~ 18시, 저녁 18시 ~ 24시</td>
+                            <td>
+                                <span th:if="${hope.size()==0}">정보가 없습니다.</span>
+                                <span th:if="${hope.size()>0}" th:text="${hope.get(0)}"></span>
+                                <span th:if="${hope.size()>1}" th:text="', ' + ${hope.get(1)}"></span><br/>
+                                <span th:if="${hope.size()>2}" th:text="${hope.get(2)}"></span>
+                                <span th:if="${hope.size()>3}" th:text="', ' + ${hope.get(3)}"></span>
+                                <span th:if="${hope.size()>3}" th:text="', ' + ${hope.get(3)}"></span>
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -139,10 +144,14 @@
                     <div class="detail-page-btn-box">
                         <div class="btn_align">
                             <div style="display: inline-block">
-                                <button class="btn btn-6 btn-6b update-user-btn md-trigger" data-modal="modal-5">사용자 권한 수정</button>
+                                <button class="btn btn-6 btn-6b update-user-btn md-trigger" data-modal="modal-5">사용자 권한
+                                    수정
+                                </button>
                             </div>
                             <div style="display: inline-block">
-                                <button class="btn btn-6 btn-6b dropout-user-btn md-trigger" data-modal="modal-6">탈퇴 처리</button>
+                                <button class="btn btn-6 btn-6b dropout-user-btn md-trigger" data-modal="modal-6">탈퇴
+                                    처리
+                                </button>
                             </div>
                         </div>
                     </div>
