@@ -76,10 +76,9 @@
                         <th scope="col">INDEX</th>
                         <th scope="col">매니저ID</th>
                         <th scope="col">매니저명</th>
-                        <th scope="col">변경 전 근무 시작 일정</th>
-                        <!--                        <th scope="col">변경 전 시간</th>-->
-                        <th scope="col">변경 후 근무 시작 일정</th>
-                        <!--                        <th scope="col">변경 후 시간</th>-->
+                        <th scope="col">변경 전 근무 시작 시간</th>
+                        <th scope="col">변경 전 근무 종료 시간</th>
+                        <th scope="col">변경 요청 시작시간</th>
                         <th scope="col">승인</th>
                     </tr>
                     <form id="frm">
@@ -88,7 +87,8 @@
                             <td class="line">1</td>
                             <td class="line" th:text="${row.assignSchedule.user.getId()}"></td>
                             <td class="line" th:text="${row.assignSchedule.user.getUsername()}"></td>
-                            <td class="line" th:text="${row.assignSchedule.schedule.getScheduleDateTimeStart()}"></td>
+                            <td class="line" th:text="${row.assignSchedule.getScheduleDateTimeStart()}"></td>
+                            <td class="line" th:text="${row.assignSchedule.getScheduleDateTimeEnd()}"></td>
                             <td class="line" th:text="${row.changeDate}"></td>
                             <td class="line"><input name="chkList" type="checkbox" th:value="${row.id}"/></td>
                         </tr>

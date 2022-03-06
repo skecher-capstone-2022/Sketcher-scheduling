@@ -48,13 +48,10 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
     public void run(ApplicationArguments args) throws Exception {
 
         LocalDateTime date1 = LocalDateTime.of(2022,2,19,1,00);
-        LocalDateTime date2 = LocalDateTime.of(2022,2,19,4,00);
         LocalDateTime date3 = LocalDateTime.of(2022,2,19,20,00);
-        LocalDateTime date4 = LocalDateTime.of(2022,2,19,23,00);
         LocalDateTime date5 = LocalDateTime.of(2022,2,20,17,00);
-        LocalDateTime date6 = LocalDateTime.of(2022,2,20,22,00);
         LocalDateTime date7 = LocalDateTime.of(2022,2,21,7,00);
-        LocalDateTime date8 = LocalDateTime.of(2022,2,21,18,00);
+
 
         UserDto userA = UserDto.builder()
                 .id("user111111")
@@ -117,21 +114,22 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
         Schedule scheduleB = scheduleService.findById(scheduleIdByA).get();
 
 
-//        ScheduleDto schedule1 = setScheduleDto(date1);
-//        ScheduleDto schedule2 = setScheduleDto(date2);
-//        ScheduleDto schedule3 = setScheduleDto(date3);
-//        ScheduleDto schedule4 = setScheduleDto(date4);
-//        //when
-//        scheduleService.saveSchedule(schedule1);
+        LocalDateTime date2 = LocalDateTime.of(2022,2,19,4,00);
+        LocalDateTime date4 = LocalDateTime.of(2022,2,19,6,00);
+        LocalDateTime date6 = LocalDateTime.of(2022,2,20,22,00);
+        LocalDateTime date8 = LocalDateTime.of(2022,2,20,23,00);
+
 
 //        스케줄 배정
         ManagerAssignScheduleDto assignSchedule = ManagerAssignScheduleDto.builder()
                 .user(userJ)
-                .schedule(scheduleA)
+                .scheduleDateTimeStart(date2)
+                .scheduleDateTimeEnd(date4)
                 .build();
         ManagerAssignScheduleDto assignSchedule2 = ManagerAssignScheduleDto.builder()
                 .user(userT)
-                .schedule(scheduleB)
+                .scheduleDateTimeStart(date6)
+                .scheduleDateTimeEnd(date8)
                 .build();
         Integer assignedId = managerAssignScheduleService.saveManagerAssignSchedule(assignSchedule);
         Integer assignedId2 = managerAssignScheduleService.saveManagerAssignSchedule(assignSchedule2);
@@ -139,7 +137,7 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
         ManagerAssignSchedule managerAssignSchedule2 = managerAssignScheduleService.findById(assignedId2).get();
 
 //        희망 변경시간
-        LocalDateTime changeDate = LocalDateTime.of(2033,2,19,1,00);
+        LocalDateTime changeDate = LocalDateTime.of(2033,3,6,12,00);
 
         ScheduleUpdateReqDto updateReq = ScheduleUpdateReqDto.builder()
                 .assignSchedule(managerAssignSchedule)

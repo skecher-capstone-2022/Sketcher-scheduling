@@ -6,6 +6,8 @@ import sketcher.scheduling.domain.Schedule;
 import sketcher.scheduling.domain.ScheduleUpdateReq;
 import sketcher.scheduling.domain.User;
 
+import java.time.LocalDateTime;
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
@@ -15,22 +17,28 @@ public class ManagerAssignScheduleDto {
     private User user;
     private Schedule schedule;
     private ScheduleUpdateReq updateReq;
+    private LocalDateTime scheduleDateTimeStart;
+    private LocalDateTime scheduleDateTimeEnd;
 
 
     @Builder
-    public ManagerAssignScheduleDto(Integer id, User user, Schedule schedule, ScheduleUpdateReq updateReq) {
+    public ManagerAssignScheduleDto(Integer id, User user, ScheduleUpdateReq updateReq, LocalDateTime scheduleDateTimeStart, LocalDateTime scheduleDateTimeEnd) {
         this.id = id;
         this.user = user;
-        this.schedule = schedule;
         this.updateReq = updateReq;
+        this.scheduleDateTimeStart = scheduleDateTimeStart;
+        this.scheduleDateTimeEnd = scheduleDateTimeEnd;
     }
+
+
 
     public ManagerAssignSchedule toEntity() {
         return ManagerAssignSchedule.builder()
                 .id(id)
                 .user(user)
-                .schedule(schedule)
                 .updateReq(updateReq)
+                .scheduleDateTimeStart(scheduleDateTimeStart)
+                .scheduleDateTimeEnd(scheduleDateTimeEnd)
                 .build();
     }
 }
