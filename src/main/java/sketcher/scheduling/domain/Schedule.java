@@ -69,9 +69,8 @@ public class Schedule{
         this.update_date = update_date;
     }
 
-    public void update(LocalDateTime scheduleDateTimeStart,LocalDateTime scheduleDateTimeEnd){
+    public void update(LocalDateTime scheduleDateTimeStart){
         this.scheduleDateTimeStart = scheduleDateTimeStart;
-        this.scheduleDateTimeEnd = scheduleDateTimeEnd;
     }
 
     protected Schedule() {

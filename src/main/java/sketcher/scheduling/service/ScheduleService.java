@@ -43,19 +43,17 @@ public class ScheduleService {
     public Optional<Schedule> findByScheduleDateTimeStartAndScheduleDateTimeEnd(LocalDateTime startDate, LocalDateTime endDate){
         return scheduleRepository.findByScheduleDateTimeStartAndScheduleDateTimeEnd(startDate, endDate);
     }
-    @Transactional
-    public void update(Integer id, ScheduleDto dto){
-        Schedule schedule = scheduleRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("해당 스케줄이 없습니다. " + id));
-
-            schedule.update(dto.getScheduleDateTimeStart(), dto.getScheduleDateTimeEnd());
-    }
+//    @Transactional
+//    public void update(Integer id, ScheduleDto dto){
+//        Schedule schedule = scheduleRepository.findById(id).orElseThrow(() ->
+//                new IllegalArgumentException("해당 스케줄이 없습니다. " + id));
+//
+//            schedule.update(dto.getScheduleDateTimeStart(), dto.getScheduleDateTimeEnd());
+//    }
 
     @Transactional
     public void deleteById(Integer Id){
         scheduleRepository.deleteById(Id);
     }
-    public Optional<Schedule> findById(Integer id) {
-        return scheduleRepository.findById(id);
-    }
+
 }

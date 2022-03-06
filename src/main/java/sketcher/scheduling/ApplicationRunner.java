@@ -46,16 +46,16 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-//
+
         LocalDateTime date1 = LocalDateTime.of(2022,2,19,1,00);
         LocalDateTime date2 = LocalDateTime.of(2022,2,19,4,00);
-//        LocalDateTime date3 = LocalDateTime.of(2022,2,19,20,00);
-//        LocalDateTime date4 = LocalDateTime.of(2022,2,19,23,00);
-//        LocalDateTime date5 = LocalDateTime.of(2022,2,20,17,00);
-//        LocalDateTime date6 = LocalDateTime.of(2022,2,20,22,00);
-//        LocalDateTime date7 = LocalDateTime.of(2022,2,21,7,00);
-//        LocalDateTime date8 = LocalDateTime.of(2022,2,21,18,00);
-//
+        LocalDateTime date3 = LocalDateTime.of(2022,2,19,20,00);
+        LocalDateTime date4 = LocalDateTime.of(2022,2,19,23,00);
+        LocalDateTime date5 = LocalDateTime.of(2022,2,20,17,00);
+        LocalDateTime date6 = LocalDateTime.of(2022,2,20,22,00);
+        LocalDateTime date7 = LocalDateTime.of(2022,2,21,7,00);
+        LocalDateTime date8 = LocalDateTime.of(2022,2,21,18,00);
+
         UserDto userA = UserDto.builder()
                 .id("user111111")
                 .authRole("MANAGER")
@@ -95,26 +95,6 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
         ScheduleDto scheduleDto1 = ScheduleDto.builder()
                 .scheduleDateTimeStart(date1)
                 .build();
-//
-//        ScheduleDto scheduleDto2 = ScheduleDto.builder()
-//                .scheduleDateTimeStart(date3)
-//                .scheduleDateTimeEnd(date4)
-//                .build();
-//
-//        ScheduleDto scheduleDto3 = ScheduleDto.builder()
-//                .scheduleDateTimeStart(date5)
-//                .scheduleDateTimeEnd(date6)
-//                .build();
-//
-//        ScheduleDto scheduleDto4 = ScheduleDto.builder()
-//                .scheduleDateTimeStart(date7)
-//                .scheduleDateTimeEnd(date8)
-//                .build();
-//
-//        scheduleService.saveSchedule(scheduleDto1);
-//        scheduleService.saveSchedule(scheduleDto2);
-//        scheduleService.saveSchedule(scheduleDto3);
-//        scheduleService.saveSchedule(scheduleDto4);
 
         ScheduleDto scheduleDto2 = ScheduleDto.builder()
                 .scheduleDateTimeStart(date3)

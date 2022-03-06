@@ -39,7 +39,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id);
     }
 
-	@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     public ArrayList<String> findDetailById(String id) {
         return userRepositoryCustom.findDetailById(id);
     }
@@ -69,8 +69,6 @@ public class UserService implements UserDetailsService {
         user.setDropoutReqCheck('N');
         return userRepository.save(user.toEntity()).getId();
 
-    public String saveUser(UserDto user){
-        return userRepository.save(user.toEntity()).getId();
     }
     //아이디로 유저 검색
     @Override  //반환값 다운캐스팅 (UserDetails->User)

@@ -58,8 +58,7 @@ public class ScheduleDto {
                 .build();
     }
 
-    public void update(LocalDateTime scheduleDateTimeStart,LocalDateTime scheduleDateTimeEnd){
+    public void update(LocalDateTime scheduleDateTimeStart){
         this.scheduleDateTimeStart = scheduleDateTimeStart;
-        this.scheduleDateTimeEnd = scheduleDateTimeEnd;
     }
 }
