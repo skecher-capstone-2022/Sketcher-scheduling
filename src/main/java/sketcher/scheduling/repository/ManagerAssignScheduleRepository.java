@@ -17,5 +17,7 @@ public interface ManagerAssignScheduleRepository extends JpaRepository<ManagerAs
     List<ManagerAssignSchedule> findByUser(User user);
     Integer deleteByUser(User user);
 
-
+    @Modifying
+    @Query("update ManagerAssignSchedule a set a.user=null where a.user=:user")
+    int bulkUserSetNull(@Param("user") User user);
 }

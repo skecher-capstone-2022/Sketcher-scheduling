@@ -7,14 +7,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sketcher.scheduling.domain.ManagerAssignSchedule;
 import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.domain.User;
+import sketcher.scheduling.dto.ManagerAssignScheduleDto;
 import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.dto.UserSearchCondition;
+import sketcher.scheduling.repository.ManagerAssignScheduleRepository;
+import sketcher.scheduling.repository.ManagerHopeTimeRepository;
 import sketcher.scheduling.repository.UserRepository;
 import sketcher.scheduling.repository.UserRepositoryCustom;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +33,7 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final UserRepositoryCustom userRepositoryCustom;
 
-    public List<User> findAll(){
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 
@@ -39,7 +45,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id);
     }
 
-	@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     public ArrayList<String> findDetailById(String id) {
         return userRepositoryCustom.findDetailById(id);
     }
@@ -70,6 +76,7 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user.toEntity()).getId();
 
     }
+
     //아이디로 유저 검색
     @Override  //반환값 다운캐스팅 (UserDetails->User)
     public User loadUserByUsername(String userid) throws UsernameNotFoundException {
@@ -96,7 +103,26 @@ public class UserService implements UserDetailsService {
     }
 
     //탈퇴요청리스트
-    public List<User> dropoutUserList(){
+    public List<User> dropoutUserList() {
         return userRepository.dropoutUserList();
+    }
+
+
+    private final ManagerAssignScheduleRepository assignScheduleRepository;
+    private final ManagerHopeTimeRepository hopeTimeRepository;
+
+
+    //유저삭제
+    @Transactional
+    public void userSetNull(User user) {
+        //1. 배정스케줄 및 희망스케줄 연결관계 삭제 (NULL로 처리)
+        assignScheduleRepository.bulkUserSetNull(user);
+        hopeTimeRepository.bulkUserSetNull(user);
+        //2. 유저 삭제
+        deleteUser(user);
+    }
+
+    public void deleteUser(User user) {
+        userRepository.delete(user);
     }
 }
