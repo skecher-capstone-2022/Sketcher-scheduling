@@ -50,14 +50,14 @@ public class ManagerHopeTimeController {
     }
 
     @RequestMapping(value = "/updateManager", method = RequestMethod.POST)
-    public String updateHopeTime(@RequestParam List<String> worktime,
+    public String updateManager(@RequestParam List<String> worktime,
                                  @RequestParam String userid,
                                  @RequestParam String username,
                                  @RequestParam String userTel) {
 
         if (userid != null) {
             User user = userService.loadUserByUsername(userid);
-            hopeTimeService.updateHopeTimeCheck(user, username, userTel);
+            userService.updateUserCheck(user, username, userTel);
             hopeTimeService.deleteByUserId(userid);
             worktimeSplit(worktime, user);
 

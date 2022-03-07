@@ -150,8 +150,26 @@ public class UserController {
         if (userid != null) {
             User user = userService.loadUserByUsername(userid);
             userService.updateDropoutReqCheck(user);
+
+            if (user.getAuthRole().equals("MANAGER")) {
+                return "redirect:/manager_mypage";
+            }
+            else if (user.getAuthRole().equals("ADMIN")) {
+                return "redirect:/admin_mypage";
+            }
         }
-        return "redirect:/manager_mypage";
+        return "redirect:/login";
+    }
+
+    @RequestMapping(value = "/updateAdmin", method = RequestMethod.POST)
+    public String updateAdmin(@RequestParam String userid,
+                                   @RequestParam String username,
+                                   @RequestParam String userTel) {
+        if (userid != null) {
+            User user = userService.loadUserByUsername(userid);
+            userService.updateUserCheck(user, username, userTel);
+        }
+        return "redirect:/admin_mypage";
     }
 
 

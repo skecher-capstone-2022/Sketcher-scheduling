@@ -130,6 +130,7 @@
                             <td><input type="text" name="userTel" th:value="${user.userTel}"></td>
                         </tr>
                     </table>
+                    <input type="hidden" name="userid" th:value="${user.id}">
                     <div class="md-close-wrap">
                         <button type="submit" class="btn btn-1 btn-1a md-close">정보 수정</button>
                     </div>
@@ -141,8 +142,8 @@
 </th:block>
 </html>
 <footer>
-    <script src="/js/classie5.js"></script>
-    <script src="/js/modalEffects.js"></script>
+    <!--    <script src="/js/classie5.js"></script>-->
+    <!--    <script src="/js/modalEffects.js"></script>-->
     <!--    <script th:src="@{/js/classie5.js}" type="text/javascript"></script>-->
     <!--    <script th:src="@{/js/modalEffects.js}" type="text/javascript"></script>-->
 

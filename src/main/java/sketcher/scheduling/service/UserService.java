@@ -103,6 +103,25 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
+    public void updateUserCheck(User user, String username, String userTel) {
+        UserDto userDto = UserDto.builder()
+                .code(user.getCode())
+                .id(user.getId())
+                .authRole(user.getAuthRole())
+                .password(user.getPassword())
+                .username(username)
+                .userTel(userTel)
+                .user_joinDate(user.getUser_joinDate())
+                .managerScore(user.getManagerScore())
+                .dropoutReqCheck(user.getDropoutReqCheck())
+                .build();
+
+        updateUser(userDto);
+        // 여기서는 트랜잭션이 종료되기 때문에 DB값은 변경이 됐음
+        // 하지만 세션값은 변경되지 않은 상태이기때문에 세션값 갱신이 필요함
+    }
+
+    @Transactional
     public void updateDropoutReqCheck(User user) {
         UserDto userDto = UserDto.builder()
                 .code(user.getCode())
