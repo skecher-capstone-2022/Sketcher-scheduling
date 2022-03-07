@@ -6,29 +6,21 @@ import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.DateTimePath;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import sketcher.scheduling.domain.ManagerHopeTime;
-import sketcher.scheduling.domain.QManagerHopeTime;
-import sketcher.scheduling.domain.ScheduleUpdateReq;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.dto.UserSearchCondition;
 
-import java.time.LocalDateTime;
-import java.time.chrono.ChronoLocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.util.StringUtils.hasText;
 import static sketcher.scheduling.domain.QManagerAssignSchedule.managerAssignSchedule;
 import static sketcher.scheduling.domain.QManagerHopeTime.managerHopeTime;
-import static sketcher.scheduling.domain.QSchedule.schedule;
 import static sketcher.scheduling.domain.QScheduleUpdateReq.scheduleUpdateReq;
 import static sketcher.scheduling.domain.QUser.user;
 
@@ -163,15 +155,34 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         return hope;
     }
 
+
     @Override
     public List<User> withdrawalManagers(UserSearchCondition condition) {
-        QueryResults<User> content = queryFactory
+
+        List<User> content = queryFactory
                 .selectFrom(user)
                 .where(user.dropoutReqCheck.eq('Y'))
-                .orderBy(userSort(condition.getAlign(), null))
-                .fetchResults();
+                .orderBy(withdrawalSort(condition.getAlign()))
+                .fetch(); // count 쿼리 제외하고 content 쿼리만 날림
 
-        return content.getResults();
+        return content;
+    }
+
+    private OrderSpecifier<?> withdrawalSort(String list_align) {
+        switch (list_align) {
+            case "managerScore":
+                return new OrderSpecifier(Order.DESC, user.managerScore);
+
+            case "username":
+                return new OrderSpecifier(Order.ASC, user.username);
+
+            case "joindate_asc":
+                return new OrderSpecifier(Order.ASC, user.user_joinDate);
+
+            case "joindate_desc":
+                return new OrderSpecifier(Order.DESC, user.user_joinDate);
+        }
+        return null;
     }
 
     private Pageable pageableSetting(UserSearchCondition condition, Pageable pageable) {

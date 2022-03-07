@@ -2,8 +2,6 @@ package sketcher.scheduling.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
-import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.dto.UserSearchCondition;

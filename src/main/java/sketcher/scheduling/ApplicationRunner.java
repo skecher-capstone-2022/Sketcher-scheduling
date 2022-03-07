@@ -131,8 +131,20 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
                 .scheduleDateTimeStart(date6)
                 .scheduleDateTimeEnd(date8)
                 .build();
+        ManagerAssignScheduleDto assignSchedule3 = ManagerAssignScheduleDto.builder()
+                .user(userT)
+                .scheduleDateTimeStart(date6)
+                .scheduleDateTimeEnd(date8)
+                .build();
+        ManagerAssignScheduleDto assignSchedule4 = ManagerAssignScheduleDto.builder()
+                .user(userT)
+                .scheduleDateTimeStart(date6)
+                .scheduleDateTimeEnd(date8)
+                .build();
         Integer assignedId = managerAssignScheduleService.saveManagerAssignSchedule(assignSchedule);
         Integer assignedId2 = managerAssignScheduleService.saveManagerAssignSchedule(assignSchedule2);
+        Integer assignedId3 = managerAssignScheduleService.saveManagerAssignSchedule(assignSchedule3);
+        Integer assignedId4 = managerAssignScheduleService.saveManagerAssignSchedule(assignSchedule4);
         ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.findById(assignedId).get();
         ManagerAssignSchedule managerAssignSchedule2 = managerAssignScheduleService.findById(assignedId2).get();
 

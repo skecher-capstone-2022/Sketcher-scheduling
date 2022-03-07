@@ -5,6 +5,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.data.domain.Page;
@@ -141,15 +142,24 @@ public class UserController {
         return "mypage/manager_mypage";
     }
 
-//    @RequestMapping(value = "/withdrawal_req_list", method = RequestMethod.GET)
-//    public String withdrawal_req_list(Model model,
-//                                      @RequestParam(required = false, defaultValue = "managerScore") String align,
-//                                      @RequestParam(required = false, defaultValue = "") String type,
-//                                      @RequestParam(required = false, defaultValue = "") String keyword) {
-//        UserSearchCondition condition = new UserSearchCondition(align, type, keyword);
-//        List<UserDto> users = userService.findAllManager(condition, null);
-//        model.addAttribute("condition", condition);
-//        model.addAttribute("users", users);
-//        return "request/withdrawal_req_list";
-//    }
+    @RequestMapping(value = "/withdrawal_req_list", method = RequestMethod.GET)
+    public String withdrawal_req_list(Model model,
+                                      @RequestParam(required = false, defaultValue = "managerScore") String align,
+                                      @RequestParam(required = false, defaultValue = "") String type,
+                                      @RequestParam(required = false, defaultValue = "") String keyword) {
+        UserSearchCondition condition = new UserSearchCondition(align, type, keyword);
+        List<User> users = userService.withdrawalManagers(condition);
+        model.addAttribute("condition", condition);
+        model.addAttribute("users", users);
+        return "request/withdrawal_req_list";
+    }
+
+    //회원탈퇴
+    @RequestMapping(value = "/withdrawalUser", method = RequestMethod.GET)
+    public String withdrawalUser(@RequestParam(value = "userid") String userid) {
+        User user = userService.findById(userid).orElseThrow(() -> new UsernameNotFoundException(userid));
+        userService.userSetNull(user);
+
+        return "redirect:/withdrawal_req_list";
+    }
 }
