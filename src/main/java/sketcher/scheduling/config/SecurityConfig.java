@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-//import sketcher.scheduling.domain.User;
 import sketcher.scheduling.service.UserService;
 
 @Configuration
@@ -46,8 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
              .formLogin()
                 .usernameParameter("userid")
                 .passwordParameter("password")
-                .loginPage("/login")
-                .permitAll()
+                .loginPage("/login")                .permitAll()
                 .and()
                 .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
@@ -98,7 +96,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationManagerBuilder.authenticationProvider(customAuthenticationProvider());
     }
 
-    @Bean
+	@Bean
     @Override // AuthenticationManager 클래스를 오버라이딩해서 Bean으로 등록
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean(); // 회원수정 후에 세션을 유지

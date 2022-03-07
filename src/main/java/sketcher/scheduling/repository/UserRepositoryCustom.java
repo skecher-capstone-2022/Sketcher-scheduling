@@ -8,12 +8,13 @@ import sketcher.scheduling.dto.UserSearchCondition;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public interface UserRepositoryCustom {
     Page<UserDto> findAllManager(UserSearchCondition condition, Pageable pageable);
     Page<UserDto> findWorkManager(UserSearchCondition condition, Pageable pageable);
+//    ArrayList<String> findDetailById(String id);
 
-//    ArrayList<String> findHopeTimeById(String id);
-//    String updateUser(UserDto user);
+    List<User> withdrawalManagers(UserSearchCondition condition);
 }

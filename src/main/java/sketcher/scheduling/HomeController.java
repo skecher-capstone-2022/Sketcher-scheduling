@@ -18,15 +18,8 @@ import java.util.Optional;
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
-    @RequestMapping(value = "/schedule_upd_list", method = RequestMethod.GET)
-    public String schedule_upd_list(HttpServletRequest request) {
-        return "request/schedule_upd_list";
-    }
 
-    @RequestMapping(value = "/withdrawal_req_list", method = RequestMethod.GET)
-    public String withdrawal_req_list(HttpServletRequest request) {
-        return "request/withdrawal_req_list";
-    }
+
 
     @RequestMapping(value = "/calendar", method = RequestMethod.GET)
     public String calendar(HttpServletRequest request) {

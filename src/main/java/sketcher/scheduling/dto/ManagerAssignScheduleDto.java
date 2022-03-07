@@ -3,29 +3,42 @@ package sketcher.scheduling.dto;
 import lombok.*;
 import sketcher.scheduling.domain.ManagerAssignSchedule;
 import sketcher.scheduling.domain.Schedule;
+import sketcher.scheduling.domain.ScheduleUpdateReq;
 import sketcher.scheduling.domain.User;
 
+import java.time.LocalDateTime;
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter @Setter
+@Getter
+@Setter
 public class ManagerAssignScheduleDto {
 
     private Integer id;
-    private Character schedule_update_req_check;
     private User user;
     private Schedule schedule;
+    private ScheduleUpdateReq updateReq;
+    private LocalDateTime scheduleDateTimeStart;
+    private LocalDateTime scheduleDateTimeEnd;
+
 
     @Builder
-    public ManagerAssignScheduleDto(Character schedule_update_req_check, User user, Schedule schedule) {
-        this.schedule_update_req_check = schedule_update_req_check;
+    public ManagerAssignScheduleDto(Integer id, User user, ScheduleUpdateReq updateReq, LocalDateTime scheduleDateTimeStart, LocalDateTime scheduleDateTimeEnd) {
+        this.id = id;
         this.user = user;
-        this.schedule = schedule;
+        this.updateReq = updateReq;
+        this.scheduleDateTimeStart = scheduleDateTimeStart;
+        this.scheduleDateTimeEnd = scheduleDateTimeEnd;
     }
 
-    public ManagerAssignSchedule toEntity(){
-       return ManagerAssignSchedule.builder()
-                .schedule_update_req_check(schedule_update_req_check)
+
+
+    public ManagerAssignSchedule toEntity() {
+        return ManagerAssignSchedule.builder()
+                .id(id)
                 .user(user)
-                .schedule(schedule)
+                .updateReq(updateReq)
+                .scheduleDateTimeStart(scheduleDateTimeStart)
+                .scheduleDateTimeEnd(scheduleDateTimeEnd)
                 .build();
     }
 }

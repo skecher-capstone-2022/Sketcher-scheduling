@@ -84,6 +84,8 @@
                 </div>
                 <div class="schedule">
                     <h2>배정 근무 스케줄</h2>
+<!--                    <span th:text="${#calendars.format(#calendars.createNow(), 'yyyy년 MM월 dd일')}"></span>-->
+                    <span id="week"></span>
                     <table width="700" border="0" cellspacing="0" cellpadding="0">
                         <tr>
                             <th scope="col">INDEX</th>
@@ -91,53 +93,15 @@
                             <th scope="col">요일</th>
                             <th scope="col">시간</th>
                         </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>2022.01.09</td>
-                            <td>일</td>
-                            <td>1시</td>
+                        <tr th:if="${schedules.size() != 0}" th:each="schedule : ${schedules}">
+                            <td th:text="${scheduleStat.count}"></td>
+                            <td th:text="${#temporals.format(schedule.scheduleDateTimeStart, 'yyyy-MM-dd')}"></td>
+                            <td th:text="${#temporals.format(schedule.scheduleDateTimeStart, 'E')}"></td>
+                            <td th:text="${#temporals.format(schedule.scheduleDateTimeStart, 'HH:mm')} + ' ~ '
+                            + ${#temporals.format(schedule.scheduleDateTimeEnd, 'HH:mm')}"></td>
                         </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>2022.01.09</td>
-                            <td>일</td>
-                            <td>1시</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>2022.01.09</td>
-                            <td>일</td>
-                            <td>1시</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>2022.01.09</td>
-                            <td>일</td>
-                            <td>1시</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>2022.01.09</td>
-                            <td>일</td>
-                            <td>1시</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>2022.01.09</td>
-                            <td>일</td>
-                            <td>1시</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>2022.01.09</td>
-                            <td>일</td>
-                            <td>1시</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>2022.01.09</td>
-                            <td>일</td>
-                            <td>1시</td>
+                        <tr th:if="${schedules.size() == 0}"> <!--users 리스트의 페이지가 0이면 다음 문장 출력-->
+                            <td class="line" colspan="4">조회된 결과가 없습니다.</td>
                         </tr>
                     </table>
                     <div class="detail-page-btn-box">

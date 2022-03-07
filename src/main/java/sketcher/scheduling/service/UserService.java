@@ -4,27 +4,24 @@ package sketcher.scheduling.service;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.*;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
-import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.dto.UserSearchCondition;
+import sketcher.scheduling.repository.ManagerAssignScheduleRepository;
 import sketcher.scheduling.repository.ManagerHopeTimeRepository;
-import sketcher.scheduling.repository.ManagerHopeTimeRepositoryCustomImpl;
-import sketcher.scheduling.repository.UserRepository;
+import sketcher.scheduling.repository.ManagerHopeTimeRepositoryCustomImpl;import sketcher.scheduling.repository.UserRepository;
 import sketcher.scheduling.repository.UserRepositoryCustom;
 
-import javax.validation.constraints.NotEmpty;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 
 @Service
 @Transactional(readOnly = true)
@@ -34,8 +31,7 @@ public class UserService implements UserDetailsService {
     private final UserRepositoryCustom userRepositoryCustom;
     private final ManagerHopeTimeRepositoryCustomImpl managerHopeTimeRepositoryCustom;
 
-
-    public List<User> findAll() {
+    public List<User> findAll(){
         return userRepository.findAll();
     }
 
@@ -47,7 +43,11 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id);
     }
 
-    @Transactional(readOnly = true)
+//	@Transactional(readOnly = true)
+//    public ArrayList<String> findDetailById(String id) {
+//        return userRepositoryCustom.findDetailById(id);
+//    }
+	@Transactional(readOnly = true)
     public ArrayList<String> findHopeTimeById(String id) {
         return managerHopeTimeRepositoryCustom.findHopeTimeById(id);
     }
@@ -57,11 +57,15 @@ public class UserService implements UserDetailsService {
         return userRepositoryCustom.findAllManager(condition, pageable);
     }
 
-    @Transactional(readOnly = true)
+	@Transactional(readOnly = true)
+    public List<User> withdrawalManagers(UserSearchCondition condition) {
+        return userRepositoryCustom.withdrawalManagers(condition);
+    }
+	
+	@Transactional(readOnly = true)
     public Page<UserDto> findWorkManager(UserSearchCondition condition, Pageable pageable) {
         return userRepositoryCustom.findWorkManager(condition, pageable);
     }
-
     /**
      * 저장하고 id 값 리턴
      * (회원정보 저장 시, 비밀번호 값을 그대로 DB에 넣는게 아니라
@@ -72,9 +76,12 @@ public class UserService implements UserDetailsService {
         //패스워드 인코딩
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
-
+        user.setUser_joinDate(LocalDateTime.now());
+        user.setManagerScore(0.0);
+        user.setDropoutReqCheck('N');
         return userRepository.save(user.toEntity()).getId();
     }
+
 
     //아이디로 유저 검색
     @Override  //반환값 다운캐스팅 (UserDetails->User)
@@ -101,8 +108,29 @@ public class UserService implements UserDetailsService {
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+	//탈퇴요청리스트
+    public List<User> dropoutUserList() {
+        return userRepository.dropoutUserList();
+    }
 
+    private final ManagerAssignScheduleRepository assignScheduleRepository;
+    private final ManagerHopeTimeRepository hopeTimeRepository;
+
+    //유저삭제
     @Transactional
+    public void userSetNull(User user) {
+        //1. 배정스케줄 및 희망스케줄 연결관계 삭제 (NULL로 처리)
+        assignScheduleRepository.bulkUserSetNull(user);
+        hopeTimeRepository.bulkUserSetNull(user);
+        //2. 유저 삭제
+        deleteUser(user);
+    }
+
+    public void deleteUser(User user) {
+        userRepository.delete(user);
+    }
+
+	@Transactional
     public void updateUserCheck(User user, String username, String userTel) {
         UserDto userDto = UserDto.builder()
                 .code(user.getCode())

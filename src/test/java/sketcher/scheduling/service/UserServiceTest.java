@@ -22,13 +22,14 @@ import javax.persistence.EntityManager;
 import java.util.List;import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static sketcher.scheduling.domain.QUser.user;
+//import static sketcher.scheduling.domain.QUser.user;
 
 //import static org.junit.Assert.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-@Rollback(false)public class UserServiceTest {
+@Rollback(false)
+public class UserServiceTest {
 
     @Autowired
     EntityManager em;

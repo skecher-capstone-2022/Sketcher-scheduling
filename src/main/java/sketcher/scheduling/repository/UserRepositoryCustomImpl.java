@@ -1,32 +1,34 @@
 package sketcher.scheduling.repository;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.DateTimeExpression;
+import com.querydsl.core.types.dsl.DateTimePath;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import sketcher.scheduling.domain.ManagerAssignSchedule;
+import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.dto.UserSearchCondition;
 
-import javax.validation.constraints.NotEmpty;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 
 import static org.springframework.util.StringUtils.hasText;
 import static sketcher.scheduling.domain.QManagerAssignSchedule.managerAssignSchedule;
-import static sketcher.scheduling.domain.QManagerHopeTime.managerHopeTime;
-import static sketcher.scheduling.domain.QSchedule.schedule;
 import static sketcher.scheduling.domain.QUser.user;
 
 @Repository
@@ -94,10 +96,11 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                         user.managerScore
                 ))
                 .from(user)
-                .join(managerAssignSchedule.user, user).fetchJoin().join(managerAssignSchedule.schedule, schedule) // 다대다 조인
+                .join(managerAssignSchedule.user, user)/*.fetchJoin().join(managerAssignSchedule.schedule, schedule) // 다대다 조인*/
                 .where(
                         managerList(condition.getType(), condition.getKeyword()),
-                        userJoinSchedule() // 확인 X
+                        userScheduleCodeEq() // 확인
+//                        workTime()
                 )
                 .orderBy(userSort(condition.getAlign(), pageable))
                 .offset(pageable.getOffset())
@@ -115,65 +118,16 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                         user.managerScore
                 ))
                 .from(user)
-                .join(managerAssignSchedule.user, user).fetchJoin().join(managerAssignSchedule.schedule, schedule) // 다대다 조인
+                .join(managerAssignSchedule.user, user)/*.fetchJoin().join(managerAssignSchedule.schedule, schedule) // 다대다 조인*/
                 .where(
-                        managerList(condition.getType(), condition.getKeyword()),
-                        userJoinSchedule(),
-                        workTime(LocalDateTime.now())
+                        managerList(condition.getType(), condition.getKeyword())
+//                        userScheduleCodeEq()
+//                        workTime()
                 )
                 .fetchCount();
 
         return new PageImpl<>(content, pageable, total);
     }
-
-//    public ArrayList<String> findHopeTimeById(String id) {
-//        Integer code = userRepository.findById(id).get().getCode();
-//        List<Integer> content = queryFactory
-//                .select(managerHopeTime.start_time)
-//                .from(managerHopeTime)
-//                .join(managerHopeTime.user, user)
-//                .where(
-//                        hopeJoinUser(),
-//                        userCodeEq(code)
-//                )
-//                .orderBy(detailSort())
-//                .fetch();
-//
-//        ArrayList<String> hope = new ArrayList<>();
-//        for (Integer start_time : content) {
-//            switch (start_time) {
-//                case 0:
-//                    hope.add("새벽 0시 ~ 6시");
-//                    break;
-//
-//                case 6:
-//                    hope.add("오전 6시 ~ 12시");
-//                    break;
-//
-//                case 12:
-//                    hope.add("오후 12시 ~ 18시");
-//                    break;
-//
-//                case 18:
-//                    hope.add("저녁 18시 ~ 24시");
-//                    break;
-//            }
-//        }
-//
-//        return hope;
-//    }
-
-//    @Override
-//    public String updateUser(UserDto user) {
-//        User userEntity = userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("해당 회원이 없습니다. id=" + user.getId()));
-//        userEntity.update(user.getUsername(), user.getUserTel());
-//
-////        //세션 등록
-////        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-////        SecurityContextHolder.getContext().setAuthentication(authentication);
-//
-//        return userRepository.save(user.toEntity()).getId();
-//    }
 
     private Pageable pageableSetting(UserSearchCondition condition, Pageable pageable) {
         String align = condition.getAlign();
@@ -225,45 +179,49 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
     private OrderSpecifier<?> userSort(String list_align, Pageable page) {
         //서비스에서 보내준 Pageable 객체에 정렬조건 null 값 체크
         if (!page.getSort().isEmpty()) { //정렬값이 들어 있으면 값을 가져온다
-            switch (list_align) {
-                case "managerScore":
-                    return new OrderSpecifier(Order.DESC, user.managerScore);
-
-                case "username":
-                    return new OrderSpecifier(Order.ASC, user.username);
-
-                case "joindate_asc":
-                    return new OrderSpecifier(Order.ASC, user.user_joinDate);
-
-                case "joindate_desc":
-                    return new OrderSpecifier(Order.DESC, user.user_joinDate);
-            }
+            return listSort(list_align);
         }
         return null;
     }
 
-//    private BooleanExpression hopeJoinUser() {
-//        return managerHopeTime.user.code.eq(user.code);
-//    }
-//
-//    private BooleanExpression userCodeEq(Integer userCode) {
-//        return hasText(String.valueOf(userCode)) ? user.code.eq(userCode) : null;
-//    }
-//
-//    private OrderSpecifier<?> detailSort() {
-//        if (user.managerHopeTimeList != null) {
-//            return new OrderSpecifier(Order.ASC, managerHopeTime.start_time);
-//        }
-//        return null;
-//    }
-
-    private BooleanExpression userJoinSchedule() {
-        return user.code.eq(managerAssignSchedule.user.code).and(schedule.id.eq(managerAssignSchedule.schedule.id));
+    private BooleanExpression userScheduleCodeEq() {
+        return user.code.eq(managerAssignSchedule.user.code)/*.and(schedule.id.eq(managerAssignSchedule.schedule.id))*/;
     }
 
-    private BooleanExpression workTime(LocalDateTime now) {
-        return managerAssignSchedule.schedule.scheduleDateTimeStart.after(now)
-                .and(managerAssignSchedule.schedule.scheduleDateTimeEnd.before(now));
+    private BooleanExpression workTime() {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return managerAssignSchedule.scheduleDateTimeStart.after(now).and(managerAssignSchedule.scheduleDateTimeEnd.before(now));
     }
 
+    @Override
+    public List<User> withdrawalManagers(UserSearchCondition condition) {
+
+        List<User> content = queryFactory
+                .selectFrom(user)
+                .where(user.dropoutReqCheck.eq('Y'),
+                        managerList(condition.getType(), condition.getKeyword())
+                )
+                .orderBy(listSort(condition.getAlign()))
+                .fetch(); // count 쿼리 제외하고 content 쿼리만 날림
+
+        return content;
+    }
+
+    private OrderSpecifier<?> listSort(String list_align) {
+        switch (list_align) {
+            case "managerScore":
+                return new OrderSpecifier(Order.DESC, user.managerScore);
+
+            case "username":
+                return new OrderSpecifier(Order.ASC, user.username);
+
+            case "joindate_asc":
+                return new OrderSpecifier(Order.ASC, user.user_joinDate);
+
+            case "joindate_desc":
+                return new OrderSpecifier(Order.DESC, user.user_joinDate);
+        }
+        return null;
+    }
 }
