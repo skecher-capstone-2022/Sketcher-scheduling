@@ -124,4 +124,10 @@ public class User implements UserDetails {
         // 계정이 사용 가능한지 확인하는 로직
         return true; // true -> 사용 가능
     }
+
+    public void update(String username, String userTel, Character dropoutReqCheck) {
+        this.username = username;
+        this.userTel = userTel;
+        this.dropoutReqCheck = dropoutReqCheck;
+    }
 }

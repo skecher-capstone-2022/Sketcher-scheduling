@@ -42,14 +42,14 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        LocalDateTime date1 = LocalDateTime.of(2022,2,19,1,00);
-        LocalDateTime date2 = LocalDateTime.of(2022,2,19,4,00);
-        LocalDateTime date3 = LocalDateTime.of(2022,2,19,20,00);
-        LocalDateTime date4 = LocalDateTime.of(2022,2,19,23,00);
-        LocalDateTime date5 = LocalDateTime.of(2022,2,20,17,00);
-        LocalDateTime date6 = LocalDateTime.of(2022,2,20,22,00);
-        LocalDateTime date7 = LocalDateTime.of(2022,2,21,7,00);
-        LocalDateTime date8 = LocalDateTime.of(2022,2,21,18,00);
+        LocalDateTime date1 = LocalDateTime.of(2022, 2, 19, 1, 00);
+        LocalDateTime date2 = LocalDateTime.of(2022, 2, 19, 4, 00);
+        LocalDateTime date3 = LocalDateTime.of(2022, 2, 19, 20, 00);
+        LocalDateTime date4 = LocalDateTime.of(2022, 2, 19, 23, 00);
+        LocalDateTime date5 = LocalDateTime.of(2022, 2, 20, 17, 00);
+        LocalDateTime date6 = LocalDateTime.of(2022, 2, 20, 22, 00);
+        LocalDateTime date7 = LocalDateTime.of(2022, 2, 21, 7, 00);
+        LocalDateTime date8 = LocalDateTime.of(2022, 2, 21, 18, 00);
 
         UserDto userA = UserDto.builder()
                 .id("user1")
@@ -61,7 +61,7 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
                 .managerScore(5.0)
                 .build();
         String user1 = userService.saveUser(userA);
-//        User userJ = userRepository.findByUsername(user1).get();
+        User userJ = userRepository.findById(user1).get();
 
         UserDto userB = UserDto.builder()
                 .id("user2")
@@ -73,7 +73,7 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
                 .managerScore(5.0)
                 .build();
         String user2 = userService.saveUser(userB);
-//        User userT = userRepository.findByUsername(user2).get();
+        User userT = userRepository.findById(user2).get();
 
         UserDto userC = UserDto.builder()
                 .id("user3")
@@ -85,32 +85,57 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
                 .managerScore(5.0)
                 .build();
         String user3 = userService.saveUser(userC);
-//        User userL = userRepository.findByUsername(user3).get();
+        User userL = userRepository.findById(user3).get();
 
-        ScheduleDto scheduleDto1 = ScheduleDto.builder()
-                .scheduleDateTimeStart(date1)
-                .scheduleDateTimeEnd(date2)
+        ManagerHopeTimeDto hope1 = ManagerHopeTimeDto.builder()
+                .start_time(12)
+                .finish_time(18)
+                .user(userJ)
                 .build();
 
-        ScheduleDto scheduleDto2 = ScheduleDto.builder()
-                .scheduleDateTimeStart(date3)
-                .scheduleDateTimeEnd(date4)
+        managerHopeTimeService.saveManagerHopeTime(hope1);
+
+        ManagerHopeTimeDto hope2 = ManagerHopeTimeDto.builder()
+                .start_time(18)
+                .finish_time(24)
+                .user(userT)
                 .build();
 
-        ScheduleDto scheduleDto3 = ScheduleDto.builder()
-                .scheduleDateTimeStart(date5)
-                .scheduleDateTimeEnd(date6)
-                .build();
+        managerHopeTimeService.saveManagerHopeTime(hope2);
 
-        ScheduleDto scheduleDto4 = ScheduleDto.builder()
-                .scheduleDateTimeStart(date7)
-                .scheduleDateTimeEnd(date8)
-                .build();
 
-        scheduleService.saveSchedule(scheduleDto1);
-        scheduleService.saveSchedule(scheduleDto2);
-        scheduleService.saveSchedule(scheduleDto3);
-        scheduleService.saveSchedule(scheduleDto4);
+        ManagerHopeTimeDto hope3 = ManagerHopeTimeDto.builder()
+                .start_time(6)
+                .finish_time(12)
+                .user(userL)
+                .build();
+        managerHopeTimeService.saveManagerHopeTime(hope3);
+
+
+//        ScheduleDto scheduleDto1 = ScheduleDto.builder()
+//                .scheduleDateTimeStart(date1)
+//                .scheduleDateTimeEnd(date2)
+//                .build();
+//
+//        ScheduleDto scheduleDto2 = ScheduleDto.builder()
+//                .scheduleDateTimeStart(date3)
+//                .scheduleDateTimeEnd(date4)
+//                .build();
+//
+//        ScheduleDto scheduleDto3 = ScheduleDto.builder()
+//                .scheduleDateTimeStart(date5)
+//                .scheduleDateTimeEnd(date6)
+//                .build();
+//
+//        ScheduleDto scheduleDto4 = ScheduleDto.builder()
+//                .scheduleDateTimeStart(date7)
+//                .scheduleDateTimeEnd(date8)
+//                .build();
+//
+//        scheduleService.saveSchedule(scheduleDto1);
+//        scheduleService.saveSchedule(scheduleDto2);
+//        scheduleService.saveSchedule(scheduleDto3);
+//        scheduleService.saveSchedule(scheduleDto4);
 
 
 //        ScheduleDto schedule1 = setScheduleDto(date1);

@@ -1,24 +1,30 @@
 package sketcher.scheduling.service;
 
 
-import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.*;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.dto.UserSearchCondition;
+import sketcher.scheduling.repository.ManagerHopeTimeRepository;
+import sketcher.scheduling.repository.ManagerHopeTimeRepositoryCustomImpl;
 import sketcher.scheduling.repository.UserRepository;
 import sketcher.scheduling.repository.UserRepositoryCustom;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import javax.validation.constraints.NotEmpty;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -26,8 +32,10 @@ import java.util.Optional;
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final UserRepositoryCustom userRepositoryCustom;
+    private final ManagerHopeTimeRepositoryCustomImpl managerHopeTimeRepositoryCustom;
 
-    public List<User> findAll(){
+
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 
@@ -39,14 +47,19 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id);
     }
 
-	@Transactional(readOnly = true)
-    public ArrayList<String> findDetailById(String id) {
-        return userRepositoryCustom.findDetailById(id);
+    @Transactional(readOnly = true)
+    public ArrayList<String> findHopeTimeById(String id) {
+        return managerHopeTimeRepositoryCustom.findHopeTimeById(id);
     }
 
     @Transactional(readOnly = true)
     public Page<UserDto> findAllManager(UserSearchCondition condition, Pageable pageable) {
         return userRepositoryCustom.findAllManager(condition, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<UserDto> findWorkManager(UserSearchCondition condition, Pageable pageable) {
+        return userRepositoryCustom.findWorkManager(condition, pageable);
     }
 
     /**
@@ -61,13 +74,14 @@ public class UserService implements UserDetailsService {
         user.setPassword(encoder.encode(user.getPassword()));
 
         return userRepository.save(user.toEntity()).getId();
-
     }
+
     //아이디로 유저 검색
     @Override  //반환값 다운캐스팅 (UserDetails->User)
     public User loadUserByUsername(String userid) throws UsernameNotFoundException {
         return userRepository.findById(userid).orElseThrow(() -> new UsernameNotFoundException(userid));
     }
+
 //    spring security 인증 과정
 //    1. 유저 세션 생성
 //    2. 반환된 User객체를 시큐리티 컨텍스트 폴더에 저장
@@ -86,5 +100,30 @@ public class UserService implements UserDetailsService {
 
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    @Transactional
+    public void updateDropoutReqCheck(User user) {
+        UserDto userDto = UserDto.builder()
+                .code(user.getCode())
+                .id(user.getId())
+                .authRole(user.getAuthRole())
+                .password(user.getPassword())
+                .username(user.getUsername())
+                .userTel(user.getUserTel())
+                .user_joinDate(user.getUser_joinDate())
+                .managerScore(user.getManagerScore())
+                .dropoutReqCheck('Y')
+                .build();
+
+        updateUser(userDto);
+    }
+
+    @Transactional
+    public String updateUser(UserDto userDto) {
+        User user = userRepository.findById(userDto.getId()).orElseThrow(() -> new IllegalArgumentException("해당 회원이 없습니다. id=" + userDto.getId()));
+        user.update(userDto.getUsername(), userDto.getUserTel(), userDto.getDropoutReqCheck());
+
+        return userRepository.save(userDto.toEntity()).getId();
     }
 }

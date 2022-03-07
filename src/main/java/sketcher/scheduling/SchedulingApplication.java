@@ -1,5 +1,6 @@
 package sketcher.scheduling;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,8 +8,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.ManagerHopeTimeDto;
 import sketcher.scheduling.dto.UserDto;
+import sketcher.scheduling.repository.UserRepository;
 import sketcher.scheduling.service.ManagerHopeTimeService;
 import sketcher.scheduling.service.UserService;
 
@@ -37,7 +40,8 @@ public class SchedulingApplication {
 							.managerScore(i*2/5.0)
 							.build();
 
-					userService.saveUser(user1);
+					String userId = userService.saveUser(user1);
+//					User user = userService.findById(userId).get();
 
 //					UserDto user2 =  UserDto.builder()
 //							.id(i+"user")
@@ -50,9 +54,8 @@ public class SchedulingApplication {
 //							.build();
 //
 //					userService.saveUser(user2);
-
+//
 //					ManagerHopeTimeDto hope1 = ManagerHopeTimeDto.builder()
-//							.user(user1.toEntity())
 //							.start_time(12)
 //							.finish_time(18)
 //							.build();
@@ -60,26 +63,25 @@ public class SchedulingApplication {
 //					hopeService.saveManagerHopeTime(hope1);
 //
 //					ManagerHopeTimeDto hope2 = ManagerHopeTimeDto.builder()
-//							.user(user1.toEntity())
 //							.start_time(18)
 //							.finish_time(24)
 //							.build();
 //
 //					hopeService.saveManagerHopeTime(hope2);
 //
-//
+
 //					ManagerHopeTimeDto hope3 = ManagerHopeTimeDto.builder()
-//							.user(user1.toEntity())
 //							.start_time(6)
 //							.finish_time(12)
+//							.user(user)
 //							.build();
 //
 //					hopeService.saveManagerHopeTime(hope3);
-
+//
 //					ManagerHopeTimeDto hope4 = ManagerHopeTimeDto.builder()
-//							.user(user1.toEntity())
 //							.start_time(0)
 //							.finish_time(6)
+//							.user(user)
 //							.build();
 //
 //					hopeService.saveManagerHopeTime(hope4);

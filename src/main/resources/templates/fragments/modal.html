@@ -17,37 +17,41 @@
         </div>
     </div>
 </div>
-<!--사용자 정보 수정 modal-->
+
+사용자 정보 수정 modal
 <div class="md-modal md-effect-1" id="modal-2">
     <div class="md-content">
         <h3>사용자 정보 수정</h3>
+        <form>
         <div>
             <h4>변경할 정보를 입력해주세요.</h4>
             <table>
                 <tr>
                     <td>사용자 이름</td>
-                    <td><input type="text" value="박태영"></td>
+                    <td><input type="text" name="username" th:value="${user.username}"></td>
                 </tr>
                 <tr>
                     <td>전화번호</td>
-                    <td><input type="text" value="010-1234-5678"></td>
+                    <td><input type="text" name="userTel" th:value="${user.userTel}"></td>
                 </tr>
             </table>
             <br><br>
             <h4>변경할 정보를 입력해주세요.</h4>
             <p>희망하는 근무 타임을 선택해주세요.<span class="modal_span">(여러 개 선택 가능)</span></p>
-            <p><label><input type="checkbox"> 새벽 0시 ~ 6시</label></p>
-            <p><label><input type="checkbox"> 오전 6시 ~ 12시</label></p>
-            <p><label><input type="checkbox"> 오후 12시 ~ 18시</label></p>
-            <p><label><input type="checkbox"> 저녁 18시 ~ 24시</label></p>
-
+            <p><label><input name="worktime" type="checkbox" value="0:6" th:checked="${hope.size()>0}"> 새벽 0시 ~ 6시</label></p>
+            <p><label><input name="worktime" type="checkbox" value="6:12" th:checked="${hope.size()>1}"> 오전 6시 ~ 12시</label></p>
+            <p><label><input name="worktime" type="checkbox" value="12:18" th:checked="${hope.size()>2}"> 오후 12시 ~ 18시</label></p>
+            <p><label><input name="worktime" type="checkbox" value="18:24" th:checked="${hope.size()>3}"> 저녁 18시 ~ 24시</label></p>
+            <input type="hidden" name="userid" th:value="${user.id}">
             <!--            style="vertical-align: top;"-->
             <div class="md-close-wrap">
-                <button class="btn btn-1 btn-1a md-close">정보 수정</button>
+                <button type="submit" class="btn btn-1 btn-1a md-close" onclick="go_checkbox(); return false;">정보 수정</button>
             </div>
         </div>
+        </form>
     </div>
 </div>
+
 <!--스케줄 수정 요청 modal-->
 <div class="md-modal md-effect-1" id="modal-3">
     <div class="md-content">

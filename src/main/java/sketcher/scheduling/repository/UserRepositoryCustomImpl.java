@@ -5,21 +5,21 @@ import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.DateTimePath;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import sketcher.scheduling.domain.ManagerHopeTime;
-import sketcher.scheduling.domain.QManagerHopeTime;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.dto.UserSearchCondition;
 
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
-import java.time.chrono.ChronoLocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +36,8 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
 
     private final UserRepository userRepository;
     private final JPAQueryFactory queryFactory;
+//    private final AuthenticationManager authenticationManager;
+
 
     @Override
     public Page<UserDto> findAllManager(UserSearchCondition condition, Pageable pageable) {
@@ -103,7 +105,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                 .fetch(); // count쿼리는 제외하고 content 쿼리만 날린다.
 
         long total = queryFactory
-                .select(Projections.bean(UserDto.class,
+                .select(Projections.fields(UserDto.class,
                         user.code,
                         user.id,
                         user.authRole,
@@ -116,49 +118,62 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                 .join(managerAssignSchedule.user, user).fetchJoin().join(managerAssignSchedule.schedule, schedule) // 다대다 조인
                 .where(
                         managerList(condition.getType(), condition.getKeyword()),
-                        userJoinSchedule() // 확인 X
+                        userJoinSchedule(),
+                        workTime(LocalDateTime.now())
                 )
                 .fetchCount();
 
         return new PageImpl<>(content, pageable, total);
     }
 
-    public ArrayList<String> findDetailById(String id) {
-        Integer code = userRepository.findById(id).get().getCode();
-        List<Integer> content = queryFactory
-                .select(managerHopeTime.start_time)
-                .from(managerHopeTime)
-                .join(managerHopeTime.user, user)
-                .where(
-                        hopeJoinUser(),
-                        userCodeEq(code)
-                )
-                .orderBy(detailSort())
-                .fetch();
+//    public ArrayList<String> findHopeTimeById(String id) {
+//        Integer code = userRepository.findById(id).get().getCode();
+//        List<Integer> content = queryFactory
+//                .select(managerHopeTime.start_time)
+//                .from(managerHopeTime)
+//                .join(managerHopeTime.user, user)
+//                .where(
+//                        hopeJoinUser(),
+//                        userCodeEq(code)
+//                )
+//                .orderBy(detailSort())
+//                .fetch();
+//
+//        ArrayList<String> hope = new ArrayList<>();
+//        for (Integer start_time : content) {
+//            switch (start_time) {
+//                case 0:
+//                    hope.add("새벽 0시 ~ 6시");
+//                    break;
+//
+//                case 6:
+//                    hope.add("오전 6시 ~ 12시");
+//                    break;
+//
+//                case 12:
+//                    hope.add("오후 12시 ~ 18시");
+//                    break;
+//
+//                case 18:
+//                    hope.add("저녁 18시 ~ 24시");
+//                    break;
+//            }
+//        }
+//
+//        return hope;
+//    }
 
-        ArrayList<String> hope = new ArrayList<>();
-        for (Integer start_time : content) {
-            switch (start_time) {
-                case 0:
-                    hope.add("새벽 0시 ~ 6시");
-                    break;
-
-                case 6:
-                    hope.add("오전 6시 ~ 12시");
-                    break;
-
-                case 12:
-                    hope.add("오후 12시 ~ 18시");
-                    break;
-
-                case 18:
-                    hope.add("저녁 18시 ~ 24시");
-                    break;
-            }
-        }
-
-        return hope;
-    }
+//    @Override
+//    public String updateUser(UserDto user) {
+//        User userEntity = userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("해당 회원이 없습니다. id=" + user.getId()));
+//        userEntity.update(user.getUsername(), user.getUserTel());
+//
+////        //세션 등록
+////        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+////        SecurityContextHolder.getContext().setAuthentication(authentication);
+//
+//        return userRepository.save(user.toEntity()).getId();
+//    }
 
     private Pageable pageableSetting(UserSearchCondition condition, Pageable pageable) {
         String align = condition.getAlign();
@@ -227,31 +242,28 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         return null;
     }
 
-    private BooleanExpression hopeJoinUser() {
-        return managerHopeTime.user.code.eq(user.code);
-    }
-
-    private BooleanExpression userCodeEq(Integer userCode) {
-        return hasText(String.valueOf(userCode)) ? user.code.eq(userCode) : null;
-    }
-
-    private OrderSpecifier<?> detailSort() {
-        if (user.managerHopeTimeList != null) {
-            return new OrderSpecifier(Order.ASC, managerHopeTime.start_time);
-        }
-        return null;
-    }
+//    private BooleanExpression hopeJoinUser() {
+//        return managerHopeTime.user.code.eq(user.code);
+//    }
+//
+//    private BooleanExpression userCodeEq(Integer userCode) {
+//        return hasText(String.valueOf(userCode)) ? user.code.eq(userCode) : null;
+//    }
+//
+//    private OrderSpecifier<?> detailSort() {
+//        if (user.managerHopeTimeList != null) {
+//            return new OrderSpecifier(Order.ASC, managerHopeTime.start_time);
+//        }
+//        return null;
+//    }
 
     private BooleanExpression userJoinSchedule() {
         return user.code.eq(managerAssignSchedule.user.code).and(schedule.id.eq(managerAssignSchedule.schedule.id));
     }
 
-//    private BooleanExpression workTime() {
-//        LocalDateTime now = LocalDateTime.now();
-//        DateTimePath<LocalDateTime> start = schedule.scheduleDateTimeStart;
-//        DateTimePath<LocalDateTime> end = schedule.scheduleDateTimeEnd;
-//
-//        return now.isBefore((ChronoLocalDateTime<?>) end) now.isAfter((ChronoLocalDateTime<?>) start);
-//    }
+    private BooleanExpression workTime(LocalDateTime now) {
+        return managerAssignSchedule.schedule.scheduleDateTimeStart.after(now)
+                .and(managerAssignSchedule.schedule.scheduleDateTimeEnd.before(now));
+    }
 
 }
