@@ -155,36 +155,6 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         return hope;
     }
 
-
-    @Override
-    public List<User> withdrawalManagers(UserSearchCondition condition) {
-
-        List<User> content = queryFactory
-                .selectFrom(user)
-                .where(user.dropoutReqCheck.eq('Y'))
-                .orderBy(withdrawalSort(condition.getAlign()))
-                .fetch(); // count 쿼리 제외하고 content 쿼리만 날림
-
-        return content;
-    }
-
-    private OrderSpecifier<?> withdrawalSort(String list_align) {
-        switch (list_align) {
-            case "managerScore":
-                return new OrderSpecifier(Order.DESC, user.managerScore);
-
-            case "username":
-                return new OrderSpecifier(Order.ASC, user.username);
-
-            case "joindate_asc":
-                return new OrderSpecifier(Order.ASC, user.user_joinDate);
-
-            case "joindate_desc":
-                return new OrderSpecifier(Order.DESC, user.user_joinDate);
-        }
-        return null;
-    }
-
     private Pageable pageableSetting(UserSearchCondition condition, Pageable pageable) {
         String align = condition.getAlign();
         Sort sort = Sort.by(align).descending();
@@ -271,12 +241,41 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         return user.code.eq(managerAssignSchedule.user.code)/*.and(schedule.id.eq(managerAssignSchedule.schedule.id))*/;
     }
 
-//    private BooleanExpression workTime() {
+    //    private BooleanExpression workTime() {
 //        LocalDateTime now = LocalDateTime.now();
 //        DateTimePath<LocalDateTime> start = schedule.scheduleDateTimeStart;
 //        DateTimePath<LocalDateTime> end = schedule.scheduleDateTimeEnd;
 //
 //        return now.isBefore((ChronoLocalDateTime<?>) end) now.isAfter((ChronoLocalDateTime<?>) start);
 //    }
+    @Override
+    public List<User> withdrawalManagers(UserSearchCondition condition) {
 
+        List<User> content = queryFactory
+                .selectFrom(user)
+                .where(user.dropoutReqCheck.eq('Y'),
+                        managerList(condition.getType(), condition.getKeyword())
+                )
+                .orderBy(withdrawalSort(condition.getAlign()))
+                .fetch(); // count 쿼리 제외하고 content 쿼리만 날림
+
+        return content;
+    }
+
+    private OrderSpecifier<?> withdrawalSort(String list_align) {
+        switch (list_align) {
+            case "managerScore":
+                return new OrderSpecifier(Order.DESC, user.managerScore);
+
+            case "username":
+                return new OrderSpecifier(Order.ASC, user.username);
+
+            case "joindate_asc":
+                return new OrderSpecifier(Order.ASC, user.user_joinDate);
+
+            case "joindate_desc":
+                return new OrderSpecifier(Order.DESC, user.user_joinDate);
+        }
+        return null;
+    }
 }
