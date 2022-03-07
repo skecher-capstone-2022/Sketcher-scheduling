@@ -161,13 +161,7 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
                 .build();
         updateReqService.saveScheduleUpdateReq(updateReq);
         updateReqService.saveScheduleUpdateReq(updateReq2);
-//        Integer updateReqId = updateReqService.saveScheduleUpdateReq(updateReq2);
 
-//        List<ScheduleUpdateReq> all = updateReqService.updateReqResultList();
-//        for (ScheduleUpdateReq scheduleUpdateReq : all) {
-//            System.out.println("@@@@@@@@@@"+scheduleUpdateReq.getId()+" / "+scheduleUpdateReq.getAssignSchedule().getUser().getUsername()
-//            +" / "+scheduleUpdateReq.getAssignSchedule().getSchedule().getScheduleDateTimeStart());
-//        }
 
     }
 
