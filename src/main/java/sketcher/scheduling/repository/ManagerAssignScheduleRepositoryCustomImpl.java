@@ -50,15 +50,11 @@ public class ManagerAssignScheduleRepositoryCustomImpl implements ManagerAssignS
                         .withNano(0);     // 나노초 변경
 
 
-        System.out.println("날짜" + date);
         DayOfWeek dayOfWeek = date.getDayOfWeek();
         int dayOfWeekNumber = dayOfWeek.getValue() - 1;
 
         LocalDateTime start = date.minusDays(dayOfWeekNumber);
         LocalDateTime end = date.plusDays(dayOfWeekNumber + 7);
-
-        System.out.println("날짜" + start);
-        System.out.println("날짜" + end);
 
         return managerAssignSchedule.scheduleDateTimeStart.between(start, end)
                 .and(managerAssignSchedule.scheduleDateTimeEnd.between(start, end));

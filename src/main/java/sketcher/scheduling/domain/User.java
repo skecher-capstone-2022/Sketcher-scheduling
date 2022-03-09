@@ -36,8 +36,8 @@ public class User implements UserDetails {
     @NotEmpty
 //    @Pattern(regexp = "^[a-zA-Z0-9]{3,12}$", message = "아이디를 3~12자로 입력해주세요. [특수문자 X]")
     private String id;
-    @Column(name = "auth_role")
 
+    @Column(name = "auth_role")
 //    @Enumerated(EnumType.STRING)
     private String authRole;
 

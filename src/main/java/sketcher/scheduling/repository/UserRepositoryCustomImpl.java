@@ -20,7 +20,9 @@ import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.dto.UserSearchCondition;
 
+import java.security.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -66,7 +68,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                 .fetch(); // count 쿼리 제외하고 content 쿼리만 날림
 
         long total = queryFactory
-                .select(Projections.bean(User.class,
+                .select(Projections.bean(UserDto.class,
                         user.id,
                         user.username,
                         user.userTel,
@@ -75,7 +77,8 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                 ))
                 .from(user)
                 .where(
-                        managerList(condition.getType(), condition.getKeyword())
+                        managerList(condition.getType(), condition.getKeyword()),
+                        workTime()
                 )
                 .fetchCount();
 
@@ -87,21 +90,22 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
 
         List<UserDto> content = queryFactory
                 .select(Projections.bean(UserDto.class,
-                        user.code,
                         user.id,
                         user.authRole,
                         user.username,
                         user.userTel,
                         user.user_joinDate,
                         user.managerScore
+//                        managerAssignSchedule.scheduleDateTimeStart,
+//                        managerAssignSchedule.scheduleDateTimeEnd
                 ))
-                .from(user)
+                .from(managerAssignSchedule)
                 .join(managerAssignSchedule.user, user)/*.fetchJoin().join(managerAssignSchedule.schedule, schedule) // 다대다 조인*/
                 .where(
                         managerList(condition.getType(), condition.getKeyword()),
-                        userScheduleCodeEq() // 확인
-//                        workTime()
+                        workTime()
                 )
+                .groupBy(user.code)
                 .orderBy(userSort(condition.getAlign(), pageable))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -109,21 +113,21 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
 
         long total = queryFactory
                 .select(Projections.fields(UserDto.class,
-                        user.code,
                         user.id,
                         user.authRole,
                         user.username,
                         user.userTel,
                         user.user_joinDate,
                         user.managerScore
+//                        managerAssignSchedule.scheduleDateTimeStart,
+//                        managerAssignSchedule.scheduleDateTimeEnd
                 ))
-                .from(user)
+                .from(managerAssignSchedule)
                 .join(managerAssignSchedule.user, user)/*.fetchJoin().join(managerAssignSchedule.schedule, schedule) // 다대다 조인*/
                 .where(
                         managerList(condition.getType(), condition.getKeyword())
-//                        userScheduleCodeEq()
-//                        workTime()
                 )
+                .groupBy(user.code)
                 .fetchCount();
 
         return new PageImpl<>(content, pageable, total);
@@ -184,19 +188,24 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         return null;
     }
 
-    private BooleanExpression userScheduleCodeEq() {
-        return user.code.eq(managerAssignSchedule.user.code)/*.and(schedule.id.eq(managerAssignSchedule.schedule.id))*/;
-    }
+//    private BooleanExpression userScheduleCodeEq() {
+//        return user.code.eq(managerAssignSchedule.user.code);
+//    }
 
     private BooleanExpression workTime() {
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        return managerAssignSchedule.scheduleDateTimeStart.after(now).and(managerAssignSchedule.scheduleDateTimeEnd.before(now));
+
+        LocalDateTime date = LocalDateTime.now();
+//        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+//        DayOfWeek dayOfWeek = date.getDayOfWeek();
+//        int dayOfWeekNumber = dayOfWeek.getValue() - 1;
+
+        return null;
+//                Expressions.currentTimestamp().between(managerAssignSchedule.scheduleDateTimeStart, managerAssignSchedule.scheduleDateTimeEnd);
     }
 
     @Override
     public List<User> withdrawalManagers(UserSearchCondition condition) {
-
         List<User> content = queryFactory
                 .selectFrom(user)
                 .where(user.dropoutReqCheck.eq('Y'),
