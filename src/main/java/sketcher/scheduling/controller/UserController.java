@@ -130,7 +130,9 @@ public class UserController {
     @RequestMapping(value = "/admin_mypage", method = RequestMethod.GET)
     public String admin_mypage(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) authentication.getPrincipal();
+        User userSession = (User) authentication.getPrincipal();
+
+        User user = userService.findById(userSession.getId()).get();
 
         model.addAttribute("user", user);
         return "mypage/admin_mypage";
@@ -140,9 +142,10 @@ public class UserController {
     @RequestMapping(value = "/manager_mypage", method = {RequestMethod.GET, RequestMethod.POST})
     public String manager_mypage(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) authentication.getPrincipal();
+        User userSession = (User) authentication.getPrincipal();
 
-        ArrayList<String> hope = userService.findHopeTimeById(user.getId());
+        User user = userService.findById(userSession.getId()).get();
+        ArrayList<String> hope = userService.findHopeTimeById(userSession.getId());
 
         model.addAttribute("user", user);
         model.addAttribute("hope", hope);

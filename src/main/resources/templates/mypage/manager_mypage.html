@@ -66,7 +66,7 @@
                                     </div>
                                     <div class="info"><span class="bold_span" sec:authentication="authorities"
                                                             style="color:#E75757;">Manager</span><br/>
-                                        <span class="bold_span" sec:authentication="name"></span><br/>
+                                        <span class="bold_span" th:text="${user.username}"></span><br/>
                                         <div th:text="${user.id}"></div>
                                         <div th:text="|${#temporals.format(user.user_joinDate, 'yyyy-MM-dd')} 가입|"></div>
                                         <div th:text="${user.userTel}"></div>
@@ -346,5 +346,4 @@
             }
         }
     </script>
-
 </footer>
