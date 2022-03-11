@@ -6,13 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import sketcher.scheduling.domain.ManagerAssignSchedule;
-import sketcher.scheduling.domain.ManagerHopeTime;
-import sketcher.scheduling.domain.QManagerAssignSchedule;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
 import java.util.List;
 
 import static org.springframework.util.StringUtils.hasText;
@@ -33,7 +29,7 @@ public class ManagerAssignScheduleRepositoryCustomImpl implements ManagerAssignS
         return queryFactory
                 .selectFrom(managerAssignSchedule)
                 .where(userCodeEq(code),
-                        week())
+                        week()) // 주단위 스케줄 가져옴
                 .orderBy(managerAssignSchedule.scheduleDateTimeStart.asc())
                 .fetch();
     }
@@ -43,20 +39,23 @@ public class ManagerAssignScheduleRepositoryCustomImpl implements ManagerAssignS
     }
 
     public BooleanExpression week() {
-        LocalDateTime date = LocalDateTime.now()
+        LocalDateTime date = LocalDateTime.now() // 오늘 날짜 가져옴
                         .withHour(0)      // 시간 변경
                         .withMinute(0)    // 분 변경
                         .withSecond(0)    // 초 변경
                         .withNano(0);     // 나노초 변경
 
 
-        DayOfWeek dayOfWeek = date.getDayOfWeek();
-        int dayOfWeekNumber = dayOfWeek.getValue() - 1;
+        DayOfWeek dayOfWeek = date.getDayOfWeek(); // 오늘 날짜의 요일 가져옴
+        int dayOfWeekNumber = dayOfWeek.getValue() - 1; // 요일의 지정 숫자에서 1을 뺌 (월: 0)
 
         LocalDateTime start = date.minusDays(dayOfWeekNumber);
-        LocalDateTime end = date.plusDays(dayOfWeekNumber + 7);
+        LocalDateTime end = date.plusDays(7 - dayOfWeekNumber);
 
         return managerAssignSchedule.scheduleDateTimeStart.between(start, end)
                 .and(managerAssignSchedule.scheduleDateTimeEnd.between(start, end));
+
+        //BETWEEN '2022-03-11' AND '2022-03-12'은
+        //2022-03-11 00:00:00 이상, 2022-03-12 00:00:00 미만
     }
 }

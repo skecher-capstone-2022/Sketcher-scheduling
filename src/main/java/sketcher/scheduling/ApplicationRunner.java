@@ -38,10 +38,10 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        LocalDateTime date1 = LocalDateTime.of(2022,2,19,1,00);
-        LocalDateTime date3 = LocalDateTime.of(2022,2,19,20,00);
-        LocalDateTime date5 = LocalDateTime.of(2022,2,20,17,00);
-        LocalDateTime date7 = LocalDateTime.of(2022,2,21,7,00);
+        LocalDateTime date1 = LocalDateTime.of(2022,3,10,1,00);
+        LocalDateTime date3 = LocalDateTime.of(2022,3,10,20,00);
+        LocalDateTime date5 = LocalDateTime.of(2022,3,10,17,00);
+        LocalDateTime date7 = LocalDateTime.of(2022,3,10,7,00);
 
 
         UserDto userA = UserDto.builder()
@@ -105,37 +105,52 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
         Schedule scheduleB = scheduleService.findById(scheduleIdByA).get();
 
 
-        LocalDateTime date2 = LocalDateTime.of(2022,3,7,4,00);
-        LocalDateTime date4 = LocalDateTime.of(2022,3,14,6,00);
-        LocalDateTime date6 = LocalDateTime.of(2022,3,15,22,00);
-        LocalDateTime date8 = LocalDateTime.of(2022,3,8,23,00);
+        LocalDateTime date2 = LocalDateTime.of(2022,3,10,4,00);
+        LocalDateTime date4 = LocalDateTime.of(2022,3,10,6,00);
+        LocalDateTime date6 = LocalDateTime.of(2022,3,10,22,00);
+        LocalDateTime date8 = LocalDateTime.of(2022,3,10,23,00);
+
+        LocalDateTime date11 = LocalDateTime.of(2022,3,6,2,00);
+        LocalDateTime date12 = LocalDateTime.of(2022,3,6,4,00);
+        LocalDateTime date13 = LocalDateTime.of(2022,3,7,6,00);
+        LocalDateTime date14 = LocalDateTime.of(2022,3,7,9,00);
+        LocalDateTime date15 = LocalDateTime.of(2022,3,13,13,00);
+        LocalDateTime date16 = LocalDateTime.of(2022,3,13,16,00);
+        LocalDateTime date17 = LocalDateTime.of(2022,3,14,20,00);
+        LocalDateTime date18 = LocalDateTime.of(2022,3,14,22,00);
 
 
 //        스케줄 배정
         ManagerAssignScheduleDto assignSchedule = ManagerAssignScheduleDto.builder()
                 .user(userJ)
-                .scheduleDateTimeStart(date2)
-                .scheduleDateTimeEnd(date4)
+                .scheduleDateTimeStart(date1)
+                .scheduleDateTimeEnd(date3)
                 .build();
         ManagerAssignScheduleDto assignSchedule2 = ManagerAssignScheduleDto.builder()
                 .user(userT)
-                .scheduleDateTimeStart(date6)
-                .scheduleDateTimeEnd(date8)
+                .scheduleDateTimeStart(date11)
+                .scheduleDateTimeEnd(date12)
                 .build();
         ManagerAssignScheduleDto assignSchedule3 = ManagerAssignScheduleDto.builder()
                 .user(userT)
-                .scheduleDateTimeStart(date6)
-                .scheduleDateTimeEnd(date8)
+                .scheduleDateTimeStart(date13)
+                .scheduleDateTimeEnd(date14)
                 .build();
         ManagerAssignScheduleDto assignSchedule4 = ManagerAssignScheduleDto.builder()
                 .user(userT)
-                .scheduleDateTimeStart(date6)
-                .scheduleDateTimeEnd(date8)
+                .scheduleDateTimeStart(date15)
+                .scheduleDateTimeEnd(date16)
+                .build();
+        ManagerAssignScheduleDto assignSchedule5 = ManagerAssignScheduleDto.builder()
+                .user(userT)
+                .scheduleDateTimeStart(date17)
+                .scheduleDateTimeEnd(date18)
                 .build();
         Integer assignedId = managerAssignScheduleService.saveManagerAssignSchedule(assignSchedule);
         Integer assignedId2 = managerAssignScheduleService.saveManagerAssignSchedule(assignSchedule2);
         Integer assignedId3 = managerAssignScheduleService.saveManagerAssignSchedule(assignSchedule3);
         Integer assignedId4 = managerAssignScheduleService.saveManagerAssignSchedule(assignSchedule4);
+        Integer assignedId5 = managerAssignScheduleService.saveManagerAssignSchedule(assignSchedule5);
         ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.findById(assignedId).get();
         ManagerAssignSchedule managerAssignSchedule2 = managerAssignScheduleService.findById(assignedId2).get();
 

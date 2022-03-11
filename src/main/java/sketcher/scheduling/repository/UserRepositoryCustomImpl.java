@@ -1,32 +1,18 @@
 package sketcher.scheduling.repository;
 
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Order;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.DateTimeExpression;
-import com.querydsl.core.types.dsl.DateTimePath;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import sketcher.scheduling.domain.ManagerAssignSchedule;
-import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.dto.UserSearchCondition;
 
-import java.security.Timestamp;
-import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import java.util.List;
 
 import static org.springframework.util.StringUtils.hasText;
@@ -77,8 +63,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                 ))
                 .from(user)
                 .where(
-                        managerList(condition.getType(), condition.getKeyword()),
-                        workTime()
+                        managerList(condition.getType(), condition.getKeyword())
                 )
                 .fetchCount();
 
@@ -96,11 +81,9 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                         user.userTel,
                         user.user_joinDate,
                         user.managerScore
-//                        managerAssignSchedule.scheduleDateTimeStart,
-//                        managerAssignSchedule.scheduleDateTimeEnd
                 ))
                 .from(managerAssignSchedule)
-                .join(managerAssignSchedule.user, user)/*.fetchJoin().join(managerAssignSchedule.schedule, schedule) // 다대다 조인*/
+                .join(managerAssignSchedule.user, user)
                 .where(
                         managerList(condition.getType(), condition.getKeyword()),
                         workTime()
@@ -119,13 +102,12 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                         user.userTel,
                         user.user_joinDate,
                         user.managerScore
-//                        managerAssignSchedule.scheduleDateTimeStart,
-//                        managerAssignSchedule.scheduleDateTimeEnd
                 ))
                 .from(managerAssignSchedule)
-                .join(managerAssignSchedule.user, user)/*.fetchJoin().join(managerAssignSchedule.schedule, schedule) // 다대다 조인*/
+                .join(managerAssignSchedule.user, user)
                 .where(
-                        managerList(condition.getType(), condition.getKeyword())
+                        managerList(condition.getType(), condition.getKeyword()),
+                        workTime()
                 )
                 .groupBy(user.code)
                 .fetchCount();
@@ -188,20 +170,12 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         return null;
     }
 
-//    private BooleanExpression userScheduleCodeEq() {
-//        return user.code.eq(managerAssignSchedule.user.code);
-//    }
-
     private BooleanExpression workTime() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.of(now.getYear(), now.getMonthValue(), now.getDayOfMonth(), now.getHour(), now.getMinute());
 
-        LocalDateTime date = LocalDateTime.now();
-//        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
-//        DayOfWeek dayOfWeek = date.getDayOfWeek();
-//        int dayOfWeekNumber = dayOfWeek.getValue() - 1;
-
-        return null;
-//                Expressions.currentTimestamp().between(managerAssignSchedule.scheduleDateTimeStart, managerAssignSchedule.scheduleDateTimeEnd);
+        return managerAssignSchedule.scheduleDateTimeStart.before(date)
+                .and(managerAssignSchedule.scheduleDateTimeEnd.after(date));
     }
 
     @Override

@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sketcher.scheduling.domain.ManagerAssignSchedule;
-import sketcher.scheduling.domain.Schedule;
-import sketcher.scheduling.domain.ScheduleUpdateReq;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.ManagerAssignScheduleDto;
 import sketcher.scheduling.repository.ManagerAssignScheduleRepository;
@@ -44,10 +42,10 @@ public class ManagerAssignScheduleService {
         managerAssignScheduleRepository.deleteByUser(user1);
         return user1.getCode();
     }
+
     @Transactional
     public List<ManagerAssignSchedule> findByUserId(String id) {
         return scheduleRepositoryCustom.findByUserId(id);
     }
-
 
 }

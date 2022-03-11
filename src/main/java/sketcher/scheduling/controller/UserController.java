@@ -1,8 +1,6 @@
 package sketcher.scheduling.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,20 +12,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import sketcher.scheduling.config.CustomAuthenticationProvider;
 import sketcher.scheduling.domain.ManagerAssignSchedule;
-import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.dto.UserSearchCondition;
-import sketcher.scheduling.repository.UserRepository;
 import sketcher.scheduling.service.ManagerAssignScheduleService;
-import sketcher.scheduling.service.ManagerHopeTimeService;
 import sketcher.scheduling.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.temporal.WeekFields;
 import java.util.*;
 
 @Controller
@@ -129,7 +124,6 @@ public class UserController {
         model.addAttribute("users", users);
         model.addAttribute("hope", hope);
         model.addAttribute("schedules", schedules);
-
         return "manager/manager_detail";
     }
 
