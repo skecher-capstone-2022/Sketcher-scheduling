@@ -55,7 +55,7 @@
                                 <input th:name="keyword" id="keyword" type="text" placeholder="검색어 입력"
                                        th:value="${condition.keyword}"/> <!--검색 값 유지되도록 value 설정-->
                             </label>
-                            <button type="submit" class="btn btn-6 btn-6b search-btn">검색</button>
+                            <button type="button" class="btn btn-6 btn-6b search-btn" onclick="searchCheck()">검색</button>
                             <!--버튼 누르면 form submit-->
                             <br/>
                         </div>
@@ -135,3 +135,15 @@
     </div>
 </th:block>
 </html>
+<footer>
+    <script>
+        function searchCheck() {
+            if (document.getElementById("keyword").value == "") {
+                alert("검색어을 입력해주세요");
+                return false;
+            } else {
+                document.manager_list_form.submit();
+            }
+        }
+    </script>
+</footer>
