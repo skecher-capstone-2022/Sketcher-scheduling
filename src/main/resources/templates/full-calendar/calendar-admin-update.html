@@ -14,22 +14,11 @@
     <script>
 
         var calendar = null;
+        var initialLocaleCode = 'ko';
         var localeSelectorEl = document.getElementById('locale-selector');
 
-        var ceoColor = '#ffc107'; //대표일정 황색
-        var regColor = '#343a40';	//일반직원등록 흑색
+            $(document).ready(function (){
 
-        $(document).ready(function () {
-
-
-            $(function () {
-                var request = $.ajax({
-                    url: "/full-calendar/calendar-admin-update", // 변경하기
-                    method: "GET",
-                    contentType: 'application/json'
-                });
-                request.done(function (data) {
-                    console.log(data); // log 로 데이터 찍어주기.
                     var calendarEl = document.getElementById('calendar');
                     calendar = new FullCalendar.Calendar(calendarEl, {
                         initialDate: '2022-02-07',
@@ -51,188 +40,115 @@
                         /**
                          * 드래그로 이벤트 수정하기
                          */
-                        eventDrop: function (info) {
-
-                            if (confirm("'" + info.event.title + "' 매니저의 일정을 수정하시겠습니까 ?") == true) {
-
-                                var events = new Array(); // Json 데이터를 받기 위한 배열 선언
-                                var obj = new Object();
-
-                                obj.title = info.event._def.title;
-                                obj.start = info.event._instance.range.start;
-                                obj.end = info.event._instance.range.end;
-
-                                obj.oldTitle = info.oldEvent._def.title;
-                                obj.oldStart = info.oldEvent._instance.range.start;
-                                obj.oldEnd = info.oldEvent._instance.range.end;
-
-                                events.push(obj);
-                                console.log(events);
-
-                                $(function modifyData() {
-                                    $.ajax({
-                                        url: "/full-calendar/calendar-admin-update",
-                                        method: "PATCH",
-                                        // dataType: "json",
-                                        data: JSON.stringify(events),
-                                        contentType: 'application/json',
-                                    })
-                                        .done(function () {
-                                            alert(info.event.title + " 매니저의 스케줄이 수정됐습니다.");
-                                        })
-                                })
-
-                            } else {
-                                location.reload();
-                            }
-
-                        },
-                        eventResize: function (info) {
+                        eventDrop: function (info){
                             console.log(info);
-                            if (confirm("'" + info.event.title + "' 매니저의 일정을 수정하시겠습니까 ?")) {
-
-                                var events = new Array(); // Json 데이터를 받기 위한 배열 선언
-                                var obj = new Object();
-
-                                obj.title = info.event._def.title;
-                                obj.start = info.event._instance.range.start;
-                                obj.end = info.event._instance.range.end;
-
-                                obj.oldTitle = info.oldEvent._def.title;
-                                obj.oldStart = info.oldEvent._instance.range.start;
-                                obj.oldEnd = info.oldEvent._instance.range.end;
-
-                                events.push(obj);
-
-                                console.log(events);
-
-                                $(function modifyData() {
-                                    $.ajax({
-                                        url: "/full-calendar/calendar-admin-update",
-                                        method: "PATCH",
-                                        // dataType: "json",
-                                        data: JSON.stringify(events),
-                                        contentType: 'application/json',
-                                    })
-                                        .done(function () {
-                                            alert(info.event.title + " 매니저의 스케줄이 수정됐습니다.");
-                                        })
-                                })
-                            } else {
-                                location.reload();
+                            if(confirm("'"+ info.event.title +"' 매니저의 일정을 수정하시겠습니까 ?")){
                             }
+                            var events = new Array(); // Json 데이터를 받기 위한 배열 선언
+                            var obj = new Object();
+
+                            obj.title = info.event._def.title;
+                            obj.start = info.event._instance.range.start;
+                            obj.end = info.event._instance.range.end;
+                            events.push(obj);
+
+                            console.log(events);
+                            $(function modifyData() {
+                                $.ajax({
+                                    url: "/full-calendar/calendar-admin-update",
+                                    method: "PATCH",
+                                    dataType: "json",
+                                    data: JSON.stringify(events),
+                                    contentType: 'application/json',
+                                })
+                            })
                         },
 
                         /**
                          * 드래그로 이벤트 추가하기
-                         * 이름 다른 경우 표현 안돼야 하는데 어떻게 해야할까?..
                          */
                         select: function (arg) { // 캘린더에서 이벤트를 생성할 수 있다.
 
-                            var title = prompt('매니저 이름을 입력해주세요.');
+                            var title = prompt('일정을 입력해주세요.');
                             if (title) {
                                 calendar.addEvent({
                                     title: title,
                                     start: arg.start,
                                     end: arg.end,
                                     allDay: arg.allDay,
-                                    backgroundColor : regColor
                                 })
+                            }
 
-                                console.log(arg);
+                            var allEvent = calendar.getEvents(); // .getEvents() 함수로 모든 이벤트를 Array 형식으로 가져온다. (FullCalendar 기능 참조)
 
-                                var events = new Array(); // Json 데이터를 받기 위한 배열 선언
+                            var events = new Array(); // Json 데이터를 받기 위한 배열 선언
+                            for (var i = 0; i < allEvent.length; i++) {
                                 var obj = new Object();     // Json 을 담기 위해 Object 선언
-
-                                obj.title = title; // 이벤트 명칭  ConsoleLog 로 확인 가능.
-                                obj.start = arg.start; // 시작
-                                obj.end = arg.end; // 끝
-                                obj.backgroundColor = regColor;
+                                // alert(allEvent[i]._def.title); // 이벤트 명칭 알람
+                                obj.title = allEvent[i]._def.title; // 이벤트 명칭  ConsoleLog 로 확인 가능.
+                                obj.start = allEvent[i]._instance.range.start; // 시작
+                                obj.end = allEvent[i]._instance.range.end; // 끝
 
                                 events.push(obj);
-                                // var jsondata = JSON.stringify(events);
-                                // console.log(jsondata);
-                                console.log(obj);
-
-                                $(function saveData(jsondata) {
-                                    var xhr = $.ajax({
-                                        url: "/full-calendar/calendar-admin-update",
-                                        method: "POST",
-                                        // dataType: "json",
-                                        data: JSON.stringify(events),
-                                        contentType: 'application/json',
-
-                                    })
-                                        .done(function () {
-                                            alert(title + " 매니저의 스케줄이 생성됐습니다.");
-                                        })
-                                        .fail(function (request, status, error) {
-                                            alert("매니저의 이름을 잘못 입력했습니다." + error);
-                                            location.reload();
-                                        });
-                                    calendar.unselect()
-                                });
                             }
+                            var jsondata = JSON.stringify(events);
+                            console.log(jsondata);
+                            // saveData(jsondata);
+
+                            $(function saveData(jsondata) {
+                                $.ajax({
+                                    url: "/full-calendar/calendar-admin-update",
+                                    method: "POST",
+                                    dataType: "json",
+                                    data: JSON.stringify(events),
+                                    contentType: 'application/json',
+                                })
+                                    .done(function (result) {
+                                        // alert(result);
+                                    })
+                                    .fail(function (request, status, error) {
+                                         // alert("에러 발생" + error);
+                                    });
+                                calendar.unselect()
+                            });
                         },
 
                         /**
                          * 이벤트 선택해서 삭제하기
                          */
-                        eventClick: function (info) {
-                            if (confirm("'" + info.event.title + "' 매니저의 일정을 삭제하시겠습니까 ?")) {
+                        eventClick: function (info){
+                            if(confirm("'"+ info.event.title +"' 매니저의 일정을 삭제하시겠습니까 ?")){
                                 // 확인 클릭 시
                                 info.event.remove();
+                            }
 
-                                console.log(info);
-
-                                console.log(info.event);
-                                var events = new Array(); // Json 데이터를 받기 위한 배열 선언
-                                var obj = new Object();
+                            console.log(info.event);
+                            var events = new Array(); // Json 데이터를 받기 위한 배열 선언
+                            var obj = new Object();
                                 obj.title = info.event._def.title;
                                 obj.start = info.event._instance.range.start;
-                                obj.end = info.event._instance.range.end;
                                 events.push(obj);
 
-                                console.log(events);
-
-                                $(function deleteData() {
-                                    $.ajax({
-                                        url: "/full-calendar/calendar-admin-update",
-                                        method: "DELETE",
-                                        // dataType: "json",
-                                        data: JSON.stringify(events),
-                                        contentType: 'application/json',
-                                    })
-                                        .done(function () {
-                                            alert(info.event.title + " 매니저의 스케줄이 삭제됐습니다.");
-                                        })
-                                        .fail(function (request, status, error) {
-                                            alert(error);
-                                            location.reload();
-                                        });
+                            console.log(events);
+                            $(function deleteData(){
+                                $.ajax({
+                                    url: "/full-calendar/calendar-admin-update",
+                                    method: "DELETE",
+                                    dataType: "json",
+                                    data: JSON.stringify(events),
+                                    contentType: 'application/json',
                                 })
-                            }
+                            })
                         },
-
-                        // eventDidMount: function(info){
-                        //     var gColor = 'lightGreen';
-                        //     var status = info.event.extendedProps.status;
-                        //     if(info.event.extendedProps.status == 'done'){
-                        //         info.el.style.backgroundColor = gColor;
-                        //     }
-                        // },
-                        locale: 'ko',
                         // eventRemove: function (obj) { // 이벤트가 삭제되면 발생하는 이벤트
                         //
                         // },
-                        events: data
+
                     });
                     calendar.render();
-                });
-
-            });
-
         });
+
+
 
 
     </script>
@@ -308,11 +224,11 @@
             <div class="title1">
                 <h1>스케줄 수정</h1>
             </div>
-            <div id='calendar-wrap'>
-                <div id='calendar'></div>
+                <div id='calendar-wrap'>
+                    <div id='calendar'></div>
+                </div>
             </div>
         </div>
-    </div>
     </div>
 
     <script src="fullcalendar/lib/locales-all.js"></script>
