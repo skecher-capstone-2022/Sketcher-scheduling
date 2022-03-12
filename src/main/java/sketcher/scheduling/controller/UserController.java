@@ -1,9 +1,11 @@
 package sketcher.scheduling.controller;
 
+import com.querydsl.core.Tuple;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,34 +14,36 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import sketcher.scheduling.domain.ManagerAssignSchedule;
+import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.dto.UserSearchCondition;
-import sketcher.scheduling.service.ManagerAssignScheduleService;
+import sketcher.scheduling.repository.UserRepository;
 import sketcher.scheduling.service.UserService;
+import sketcher.scheduling.form.LoginForm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.time.LocalDate;
-import java.time.temporal.WeekFields;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
-    private final ManagerAssignScheduleService managerAssignScheduleService;
-
-
+    private final UserRepository userRepository;
 //
 //    @NonNull
 //    private final BCryptPasswordEncoder passwordEncoder;
 
 
     @GetMapping(value = "/login")
-    public String loginView(Model model, @RequestParam(value = "error", required = false) String error, @RequestParam(value = "exception", required = false) String exception) {
+    public String loginView(Model model,
+                            @RequestParam(value = "error", required = false) String error,
+                            @RequestParam(value = "exception", required = false) String exception) {
         model.addAttribute("error", error);
         model.addAttribute("exception", exception);
         return "user/login";
@@ -48,7 +52,8 @@ public class UserController {
 
     @GetMapping("/logout")
     public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
-        new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
+        new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder
+                .getContext().getAuthentication());
         return "redirect:/login";
     }
 
@@ -84,12 +89,13 @@ public class UserController {
     }
 
     @RequestMapping(value = "/all_manager_list", method = RequestMethod.GET)
-    public String all_manager_list(Model model,
+    public String all_manager_list(
+            Model model,
 //            @RequestParam(required = false, defaultValue = "") UserSearchCondition condition,
-                                   @RequestParam(required = false, defaultValue = "managerScore") String align,
-                                   @RequestParam(required = false, defaultValue = "") String type,
-                                   @RequestParam(required = false, defaultValue = "") String keyword,
-                                   @PageableDefault Pageable pageable) {
+            @RequestParam(required = false, defaultValue = "managerScore") String align,
+            @RequestParam(required = false, defaultValue = "") String type,
+            @RequestParam(required = false, defaultValue = "") String keyword,
+            @PageableDefault Pageable pageable) {
 
         UserSearchCondition condition = new UserSearchCondition(align, type, keyword);
         Page<UserDto> users = userService.findAllManager(condition, pageable);
@@ -98,104 +104,52 @@ public class UserController {
         return "manager/all_manager_list";
     }
 
-
-    @RequestMapping(value = "/work_manager_list", method = RequestMethod.GET)
-    public String work_manager_list(Model model,
-//            @RequestParam(required = false, defaultValue = "") UserSearchCondition condition,
-                                    @RequestParam(required = false, defaultValue = "managerScore") String align,
-                                    @RequestParam(required = false, defaultValue = "") String type,
-                                    @RequestParam(required = false, defaultValue = "") String keyword,
-                                    @PageableDefault Pageable pageable) {
-
-        UserSearchCondition condition = new UserSearchCondition(align, type, keyword);
-        Page<UserDto> users = userService.findWorkManager(condition, pageable);
-        model.addAttribute("condition", condition);
-        model.addAttribute("users", users);
-        return "manager/work_manager_list";
-    }
-
     @RequestMapping(value = "/manager_detail/{userId}", method = RequestMethod.GET)
     public String manager_detail(Model model, @PathVariable(value = "userId") String id) {
         Optional<User> users = userService.findById(id);
-        ArrayList<String> hope = userService.findHopeTimeById(id);
-
-        List<ManagerAssignSchedule> schedules = managerAssignScheduleService.findByUserId(id);
+        ArrayList<String> hope = userService.findDetailById(id);
 
         model.addAttribute("users", users);
         model.addAttribute("hope", hope);
-        model.addAttribute("schedules", schedules);
+
         return "manager/manager_detail";
     }
 
+    @RequestMapping(value = "/work_manager_list", method = RequestMethod.GET)
+    public String work_manager_list(
+            Model model,
+//            @RequestParam(required = false, defaultValue = "") UserSearchCondition condition,
+            @RequestParam(required = false, defaultValue = "managerScore") String align,
+            @RequestParam(required = false, defaultValue = "") String type,
+            @RequestParam(required = false, defaultValue = "") String keyword,
+            @PageableDefault Pageable pageable) {
+
+        UserSearchCondition condition = new UserSearchCondition(align, type, keyword);
+        Page<UserDto> users = userService.findAllManager(condition, pageable);
+        model.addAttribute("users", users);
+        model.addAttribute("condition", condition);
+        return "manager/work_manager_list";
+    }
+
     @RequestMapping(value = "/admin_mypage", method = RequestMethod.GET)
-    public String admin_mypage(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User userSession = (User) authentication.getPrincipal();
-
-        User user = userService.findById(userSession.getId()).get();
-
-        model.addAttribute("user", user);
+    public String admin_mypage(HttpServletRequest request) {
         return "mypage/admin_mypage";
     }
 
-
-    @RequestMapping(value = "/manager_mypage", method = {RequestMethod.GET, RequestMethod.POST})
-    public String manager_mypage(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User userSession = (User) authentication.getPrincipal();
-
-        User user = userService.findById(userSession.getId()).get();
-        ArrayList<String> hope = userService.findHopeTimeById(userSession.getId());
-
-        model.addAttribute("user", user);
-        model.addAttribute("hope", hope);
+    @RequestMapping(value = "/manager_mypage", method = RequestMethod.GET)
+    public String manager_mypage(HttpServletRequest request) {
         return "mypage/manager_mypage";
     }
 
-    @RequestMapping(value = "/withdrawal_req_list", method = RequestMethod.GET)
-    public String withdrawal_req_list(Model model,
-                                      @RequestParam(required = false, defaultValue = "managerScore") String align,
-                                      @RequestParam(required = false, defaultValue = "") String type,
-                                      @RequestParam(required = false, defaultValue = "") String keyword) {
-        UserSearchCondition condition = new UserSearchCondition(align, type, keyword);
-        List<User> users = userService.withdrawalManagers(condition);
-        model.addAttribute("condition", condition);
-        model.addAttribute("users", users);
-        return "request/withdrawal_req_list";
-    }
-
-    //회원탈퇴
-    @RequestMapping(value = "/withdrawalUser", method = RequestMethod.GET)
-    public String withdrawalUser(@RequestParam(value = "userid") String userid) {
-        User user = userService.findById(userid).orElseThrow(() -> new UsernameNotFoundException(userid));
-        userService.userSetNull(user);
-
-        return "redirect:/withdrawal_req_list";
-    }
-
-    @RequestMapping(value = "/dropoutReq", method = RequestMethod.POST)
-    public String updateDropoutReq(@RequestParam String userid) {
-        if (userid != null) {
-            User user = userService.loadUserByUsername(userid);
-            userService.updateDropoutReqCheck(user);
-
-            if (user.getAuthRole().equals("MANAGER")) {
-                return "redirect:/manager_mypage";
-            } else if (user.getAuthRole().equals("ADMIN")) {
-                return "redirect:/admin_mypage";
-            }
-        }
-        return "redirect:/login";
-    }
-
-    @RequestMapping(value = "/updateAdmin", method = RequestMethod.POST)
-    public String updateAdmin(@RequestParam String userid,
-                              @RequestParam String username,
-                              @RequestParam String userTel) {
-        if (userid != null) {
-            User user = userService.loadUserByUsername(userid);
-            userService.updateUserCheck(user, username, userTel);
-        }
-        return "redirect:/admin_mypage";
-    }
+//    @RequestMapping(value = "/withdrawal_req_list", method = RequestMethod.GET)
+//    public String withdrawal_req_list(Model model,
+//                                      @RequestParam(required = false, defaultValue = "managerScore") String align,
+//                                      @RequestParam(required = false, defaultValue = "") String type,
+//                                      @RequestParam(required = false, defaultValue = "") String keyword) {
+//        UserSearchCondition condition = new UserSearchCondition(align, type, keyword);
+//        List<UserDto> users = userService.findAllManager(condition, null);
+//        model.addAttribute("condition", condition);
+//        model.addAttribute("users", users);
+//        return "request/withdrawal_req_list";
+//    }
 }
