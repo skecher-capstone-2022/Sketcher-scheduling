@@ -1,9 +1,11 @@
 package sketcher.scheduling.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -16,15 +18,16 @@ import java.util.List;
 @Entity
 @Table(name = "schedule")
 @Getter
-
+//@DynamicUpdate
 public class Schedule{
+
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "schedule_id")
     private Integer id;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+9")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     @Column(name = "schedule_date_time_start")
     private LocalDateTime scheduleDateTimeStart;
 
