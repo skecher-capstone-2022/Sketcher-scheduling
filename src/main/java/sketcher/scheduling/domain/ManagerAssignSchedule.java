@@ -51,6 +51,7 @@ public class ManagerAssignSchedule {
     @Builder
     public ManagerAssignSchedule(Integer id, User user, ScheduleUpdateReq updateReq, LocalDateTime scheduleDateTimeStart, LocalDateTime scheduleDateTimeEnd) {
         this.id = id;
+        this.user = user;
         this.updateReq = updateReq;
         this.scheduleDateTimeStart = scheduleDateTimeStart;
         this.scheduleDateTimeEnd = scheduleDateTimeEnd;
@@ -66,6 +67,11 @@ public class ManagerAssignSchedule {
 //        }
 //        this.schedule = schedule;
 //        schedule.getManagerAssignScheduleList().add(this);
+    }
+
+    public void update(LocalDateTime scheduleDateTimeStart, LocalDateTime scheduleDateTimeEnd){
+        this.scheduleDateTimeStart = scheduleDateTimeStart;
+        this.scheduleDateTimeEnd = scheduleDateTimeEnd;
     }
 
     protected ManagerAssignSchedule() {

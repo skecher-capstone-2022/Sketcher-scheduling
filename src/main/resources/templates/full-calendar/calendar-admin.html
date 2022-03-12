@@ -36,13 +36,8 @@
                         },
                         editable: true,
                         droppable: true, // this allows things to be dropped onto the calendar
-                        drop: function (arg) {
-                            // is the "remove after drop" checkbox checked?
-                            if (document.getElementById('drop-remove').checked) {
-                                // if so, remove the element from the "Draggable Events" list
-                                arg.draggedEl.parentNode.removeChild(arg.draggedEl);
-                            }
-                        },
+
+                        locale: 'ko',
                         /**
                          * data 로 값이 넘어온다. log 값 전달.
                          */
@@ -52,167 +47,12 @@
                     calendar.render();
                 });
 
-                request.fail(function( jqXHR, textStatus ) {
-                    // alert( "Request failed: " + textStatus );
-                });
+                // request.fail(function( jqXHR, textStatus ) {
+                //     alert( "Request failed: " + textStatus );
+                // });
             });
 
         });
-
-        /**
-         * 기존 설정
-         */
-        //     var calendar = new FullCalendar.Calendar(calendarEl, {
-        //         initialDate: '2022-02-07',
-        //         initialView: 'timeGridWeek',
-        //         nowIndicator: true,
-        //         headerToolbar: {
-        //             left: 'prev,next today',
-        //             center: 'title',
-        //             right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-        //         },
-        //         navLinks: false, // can click day/week names to navigate views
-        //         editable: false,  // 수정 기능만 true로 해놓기 (조회 기능은 false)
-        //         selectable: false,  // 수정 기능만 true로 해놓기 (조회 기능은 false)
-        //         selectMirror: true,
-        //         dayMaxEvents: true, // allow "more" link when too many events
-        //         events: [
-        //             {
-        //                 title: '스케줄 수정 요청 기간',
-        //                 color: 'darksalmon',
-        //                 start: '2022-02-07',
-        //                 end: '2022-02-13'
-        //             },
-        //             {
-        //                 groupId: 999,
-        //                 title: '김희수',
-        //                 color: 'yellowgreen',
-        //                 start: '2022-02-10T11:00:00',
-        //                 end: '2022-02-10T13:00:00'
-        //             },
-        //             {
-        //                 groupId: 999,
-        //                 title: '김희수',
-        //                 color: 'yellowgreen',
-        //                 start: '2022-02-08T11:00:00',
-        //                 end: '2022-02-08T13:00:00'
-        //             },
-        //             {
-        //                 groupId: 999,
-        //                 title: '김희수',
-        //                 color: 'yellowgreen',
-        //                 start: '2022-02-07T11:00:00',
-        //                 end: '2022-02-07T13:00:00'
-        //             },
-        //             {
-        //                 groupId: 999,
-        //                 title: '정민환',
-        //                 color: '#3788d8',
-        //                 start: '2022-02-07T08:00:00',
-        //                 end: '2022-02-07T10:00:00'
-        //             },
-        //             {
-        //                 groupId: 999,
-        //                 title: '정민환',
-        //                 color: '#3788d8',
-        //                 start: '2022-02-09T08:00:00',
-        //                 end: '2022-02-09T10:00:00'
-        //             },
-        //             {
-        //                 groupId: 999,
-        //                 title: '정민환',
-        //                 color: '#3788d8',
-        //                 start: '2022-02-12T08:00:00',
-        //                 end: '2022-02-12T10:00:00'
-        //             },
-        //             {
-        //                 groupId: 999,
-        //                 title: '박태영',
-        //                 color: 'coral',
-        //                 start: '2022-02-07T16:00:00',
-        //                 end: '2022-02-07T18:00:00'
-        //             },
-        //             {
-        //                 groupId: 999,
-        //                 title: '박태영',
-        //                 color: 'coral',
-        //                 start: '2022-02-11T16:00:00',
-        //                 end: '2022-02-11T18:00:00'
-        //             },
-        //             {
-        //                 groupId: 999,
-        //                 title: '이혜원',
-        //                 color: 'darkorchid',
-        //                 start: '2022-02-12T15:00:00',
-        //                 end: '2022-02-12T17:30:00'
-        //             },
-        //             {
-        //                 groupId: 999,
-        //                 title: '이혜원',
-        //                 color: 'darkorchid',
-        //                 start: '2022-02-07T15:00:00',
-        //                 end: '2022-02-07T17:30:00'
-        //             },
-        //             {
-        //                 groupId: 999,
-        //                 title: '박태영',
-        //                 color: 'coral',
-        //                 start: '2022-02-09T16:00:00',
-        //                 end: '2022-02-09T18:30:00'
-        //             },
-        //             {
-        //                 groupId: 999,
-        //                 title: '이혜원',
-        //                 color: 'darkorchid',
-        //                 start: '2022-02-09T17:00:00',
-        //                 end: '2022-02-09T19:30:00'
-        //             },
-        //             {
-        //                 groupId: 999,
-        //                 title: '이혜원',
-        //                 start: '2020-09-16T16:00:00'
-        //             },
-        //             {
-        //                 title: 'Conference',
-        //                 start: '2020-09-11',
-        //                 end: '2020-09-13'
-        //             },
-        //             {
-        //                 title: 'Meeting',
-        //                 start: '2020-09-12T10:30:00',
-        //                 end: '2020-09-12T12:30:00'
-        //             },
-        //             {
-        //                 title: 'Lunch',
-        //                 start: '2020-09-12T12:00:00'
-        //             },
-        //             {
-        //                 title: 'Meeting',
-        //                 start: '2020-09-12T14:30:00'
-        //             },
-        //             {
-        //                 title: 'Happy Hour',
-        //                 start: '2020-09-12T17:30:00'
-        //             },
-        //             {
-        //                 title: 'Dinner',
-        //                 start: '2020-09-12T20:00:00'
-        //             },
-        //             {
-        //                 title: 'Birthday Party',
-        //                 start: '2020-09-13T07:00:00'
-        //             },
-        //             {
-        //                 title: 'Click for Google',
-        //                 url: 'http://google.com/',
-        //                 start: '2020-09-28'
-        //             }
-        //         ]
-        //     });
-        //
-        //     calendar.render();
-        // });
-
     </script>
     <style>
 
