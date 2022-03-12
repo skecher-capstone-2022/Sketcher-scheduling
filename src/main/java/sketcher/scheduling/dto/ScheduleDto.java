@@ -57,4 +57,8 @@ public class ScheduleDto {
                 .update_date(update_date)
                 .build();
     }
+
+    public void update(LocalDateTime scheduleDateTimeStart){
+        this.scheduleDateTimeStart = scheduleDateTimeStart;
+    }
 }
