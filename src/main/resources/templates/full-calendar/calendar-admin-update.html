@@ -165,6 +165,7 @@
                                     })
                                         .done(function () {
                                             alert(title + " 매니저의 스케줄이 생성됐습니다.");
+                                            location.reload();
                                         })
                                         .fail(function (request, status, error) {
                                             alert("매니저의 아이디를 잘못 입력했습니다." + error);
