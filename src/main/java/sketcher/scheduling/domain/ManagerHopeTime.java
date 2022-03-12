@@ -44,9 +44,4 @@ public class ManagerHopeTime {
     protected ManagerHopeTime(){
 
     }
-
-    public void update(Integer start_time, Integer finish_time) {
-        this.start_time = start_time;
-        this.finish_time = finish_time;
-    }
 }
