@@ -80,17 +80,30 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
         String user3 = userService.saveUser(userC);
 //        User userL = userRepository.findByUsername(user3).get();
 
-        ScheduleDto scheduleDto1 = ScheduleDto.builder()
-                .scheduleDateTimeStart(date1)
-                .build();
+//        ScheduleDto scheduleDto1 = ScheduleDto.builder()
+//                .scheduleDateTimeStart(date1)
+//                .build();
+//
+//        ScheduleDto scheduleDto2 = ScheduleDto.builder()
+//                .scheduleDateTimeStart(date3)
+//                .build();
+//
+//        ScheduleDto scheduleDto3 = ScheduleDto.builder()
+//                .scheduleDateTimeStart(date5)
+//                .build();
+//
+//        ScheduleDto scheduleDto4 = ScheduleDto.builder()
+//                .scheduleDateTimeStart(date7)
+//                .build();
 
-        ScheduleDto scheduleDto2 = ScheduleDto.builder()
-                .scheduleDateTimeStart(date3)
-                .build();
+//        Integer scheduleIdByA = scheduleService.saveSchedule(scheduleDto1);
+//        Integer scheduleIdByB = scheduleService.saveSchedule(scheduleDto2);
+//        scheduleService.saveSchedule(scheduleDto3);
+//        scheduleService.saveSchedule(scheduleDto4);
+//
+//        Schedule scheduleA = scheduleService.findById(scheduleIdByA).get();
+//        Schedule scheduleB = scheduleService.findById(scheduleIdByA).get();
 
-        ScheduleDto scheduleDto3 = ScheduleDto.builder()
-                .scheduleDateTimeStart(date5)
-                .build();
 
         ScheduleDto scheduleDto4 = ScheduleDto.builder()
                 .scheduleDateTimeStart(date7)
