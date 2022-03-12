@@ -25,45 +25,83 @@
             let date = (today.getDate()).toString().padStart(2, '0');  // 날짜
             // let day = today.getDay();  // 요일
 
-            $(function () {
-                var request = $.ajax({
-                    url: "/full-calendar/calendar", // 변경하기
-                    method: "GET",
-                    contentType: 'application/json'
-                })
-                    .fail(function (request, status, error) {
-                        alert("로그인해주세요." + error);
-                        // location.reload();
-                    })
-                    .done(function (data) {
-                        console.log(data); // log 로 데이터 찍어주기.
-
-                        var calendar = new FullCalendar.Calendar(calendarEl, {
-                            headerToolbar: {
-                                left: 'prev,next today',
-                                center: 'title',
-                                right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
-                            },
-                            initialDate: year + "-" + month + "-" + date,
-                            locale: initialLocaleCode,
-                            buttonIcons: false, // show the prev/next text
-                            weekNumbers: false,
-                            navLinks: true, // can click day/week names to navigate views
-                            editable: false,
-                            dayMaxEvents: true, // allow "more" link when too many events
-
-
-                            events: data
-                        });
-
-                        calendar.render();
-
-                    });
-
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+                },
+                initialDate: year + "-" + month + "-" + date,
+                locale: initialLocaleCode,
+                buttonIcons: false, // show the prev/next text
+                weekNumbers: false,
+                navLinks: true, // can click day/week names to navigate views
+                editable: false,
+                dayMaxEvents: true, // allow "more" link when too many events
+                events: [
+                    {
+                        title: '근무',
+                        color: 'darksalmon',
+                        start: '2022-02-01T20:00:00'
+                    },
+                    // {
+                    //     title: 'Long Event',
+                    //     start: '2022-02-07',
+                    //     end: '2022-02-10'
+                    // },
+                    {
+                        groupId: 999,
+                        color: 'darksalmon',
+                        title: '근무',
+                        start: '2022-02-09T16:00:00'
+                    },
+                    {
+                        groupId: 999,
+                        color: 'darksalmon',
+                        title: '근무',
+                        start: '2022-02-16T16:00:00'
+                    },
+                    {
+                        title: '스케줄 수정 요청 기간',
+                        color: 'darksalmon',
+                        start: '2022-02-07',
+                        end: '2022-02-13'
+                    },
+                    {
+                        title: '근무',
+                        color: 'darksalmon',
+                        start: '2022-02-12T12:00:00'
+                    },
+                    {
+                        title: '근무',
+                        color: 'darksalmon',
+                        start: '2022-02-12T14:30:00'
+                    },
+                    {
+                        title: '근무',
+                        color: 'darksalmon',
+                        start: '2022-02-12T17:30:00'
+                    },
+                    {
+                        title: '근무',
+                        color: 'darksalmon',
+                        start: '2022-02-12T20:00:00'
+                    },
+                    {
+                        title: '근무',
+                        color: 'darksalmon',
+                        start: '2022-02-13T07:00:00'
+                    }
+                    // {
+                    //     title: 'Click for Google',
+                    //     url: 'http://google.com/',
+                    //     start: '2022-02-28'
+                    // }
+                ]
             });
 
-                // calendar.render();
-            });
+            calendar.render();
+
             // build the locale selector's options
             calendar.getAvailableLocaleCodes().forEach(function (localeCode) {
                 var optionEl = document.createElement('option');
@@ -80,7 +118,7 @@
                 }
             });
 
-        // });
+        });
 
     </script>
     <style>
