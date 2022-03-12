@@ -92,65 +92,57 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
         String user3 = userService.saveUser(userC);
 //        User userL = userRepository.findByUsername(user3).get();
 
-        ScheduleDto scheduleDto1 = ScheduleDto.builder()
-                .scheduleDateTimeStart(date1)
-                .build();
+//        ScheduleDto scheduleDto1 = ScheduleDto.builder()
+//                .scheduleDateTimeStart(date1)
+//                .build();
+//
+//        ScheduleDto scheduleDto2 = ScheduleDto.builder()
+//                .scheduleDateTimeStart(date3)
+//                .build();
+//
+//        ScheduleDto scheduleDto3 = ScheduleDto.builder()
+//                .scheduleDateTimeStart(date5)
+//                .build();
+//
+//        ScheduleDto scheduleDto4 = ScheduleDto.builder()
+//                .scheduleDateTimeStart(date7)
+//                .build();
 
-        ScheduleDto scheduleDto2 = ScheduleDto.builder()
-                .scheduleDateTimeStart(date3)
-                .build();
+//        Integer scheduleIdByA = scheduleService.saveSchedule(scheduleDto1);
+//        Integer scheduleIdByB = scheduleService.saveSchedule(scheduleDto2);
+//        scheduleService.saveSchedule(scheduleDto3);
+//        scheduleService.saveSchedule(scheduleDto4);
+//
+//        Schedule scheduleA = scheduleService.findById(scheduleIdByA).get();
+//        Schedule scheduleB = scheduleService.findById(scheduleIdByA).get();
 
-        ScheduleDto scheduleDto3 = ScheduleDto.builder()
-                .scheduleDateTimeStart(date5)
-                .build();
-
-        ScheduleDto scheduleDto4 = ScheduleDto.builder()
-                .scheduleDateTimeStart(date7)
-                .build();
-
-        Integer scheduleIdByA = scheduleService.saveSchedule(scheduleDto1);
-        Integer scheduleIdByB = scheduleService.saveSchedule(scheduleDto2);
-        scheduleService.saveSchedule(scheduleDto3);
-        scheduleService.saveSchedule(scheduleDto4);
-
-        Schedule scheduleA = scheduleService.findById(scheduleIdByA).get();
-        Schedule scheduleB = scheduleService.findById(scheduleIdByA).get();
-
-
-//        ScheduleDto schedule1 = setScheduleDto(date1);
-//        ScheduleDto schedule2 = setScheduleDto(date2);
-//        ScheduleDto schedule3 = setScheduleDto(date3);
-//        ScheduleDto schedule4 = setScheduleDto(date4);
-//        //when
-//        scheduleService.saveSchedule(schedule1);
 
 //        스케줄 배정
-        ManagerAssignScheduleDto assignSchedule = ManagerAssignScheduleDto.builder()
-                .user(userJ)
-                .schedule(scheduleA)
-                .build();
-        ManagerAssignScheduleDto assignSchedule2 = ManagerAssignScheduleDto.builder()
-                .user(userT)
-                .schedule(scheduleB)
-                .build();
-        Integer assignedId = managerAssignScheduleService.saveManagerAssignSchedule(assignSchedule);
-        Integer assignedId2 = managerAssignScheduleService.saveManagerAssignSchedule(assignSchedule2);
-        ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.findById(assignedId).get();
-        ManagerAssignSchedule managerAssignSchedule2 = managerAssignScheduleService.findById(assignedId2).get();
+//        ManagerAssignScheduleDto assignSchedule = ManagerAssignScheduleDto.builder()
+//                .user(userJ)
+//                .build();
+//        ManagerAssignScheduleDto assignSchedule2 = ManagerAssignScheduleDto.builder()
+//                .user(userT)
+//                .build();
+//
+//        Integer assignedId = managerAssignScheduleService.saveManagerAssignSchedule(assignSchedule);
+//        Integer assignedId2 = managerAssignScheduleService.saveManagerAssignSchedule(assignSchedule2);
+//        ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.findById(assignedId).get();
+//        ManagerAssignSchedule managerAssignSchedule2 = managerAssignScheduleService.findById(assignedId2).get();
 
 //        희망 변경시간
-        LocalDateTime changeDate = LocalDateTime.of(2033,2,19,1,00);
-
-        ScheduleUpdateReqDto updateReq = ScheduleUpdateReqDto.builder()
-                .assignSchedule(managerAssignSchedule)
-                .changeDate(changeDate)
-                .build();
-        ScheduleUpdateReqDto updateReq2 = ScheduleUpdateReqDto.builder()
-                .assignSchedule(managerAssignSchedule2)
-                .changeDate(changeDate)
-                .build();
-        updateReqService.saveScheduleUpdateReq(updateReq);
-        updateReqService.saveScheduleUpdateReq(updateReq2);
+//        LocalDateTime changeDate = LocalDateTime.of(2033,2,19,1,00);
+//
+//        ScheduleUpdateReqDto updateReq = ScheduleUpdateReqDto.builder()
+//                .assignSchedule(managerAssignSchedule)
+//                .changeDate(changeDate)
+//                .build();
+//        ScheduleUpdateReqDto updateReq2 = ScheduleUpdateReqDto.builder()
+//                .assignSchedule(managerAssignSchedule2)
+//                .changeDate(changeDate)
+//                .build();
+//        updateReqService.saveScheduleUpdateReq(updateReq);
+//        updateReqService.saveScheduleUpdateReq(updateReq2);
 //        Integer updateReqId = updateReqService.saveScheduleUpdateReq(updateReq2);
 
 //        List<ScheduleUpdateReq> all = updateReqService.updateReqResultList();

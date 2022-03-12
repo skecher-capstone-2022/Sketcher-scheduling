@@ -1,6 +1,7 @@
 package sketcher.scheduling.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,9 +18,9 @@ import java.util.List;
 @Entity
 @Table(name = "schedule")
 @Getter
-
-@DynamicUpdate
+//@DynamicUpdate
 public class Schedule{
+
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "schedule_id")
@@ -69,9 +70,6 @@ public class Schedule{
         this.update_date = update_date;
     }
 
-    public void update(LocalDateTime scheduleDateTimeStart){
-        this.scheduleDateTimeStart = scheduleDateTimeStart;
-    }
 
     protected Schedule() {
     }

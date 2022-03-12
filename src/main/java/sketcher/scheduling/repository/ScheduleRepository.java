@@ -16,8 +16,6 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
 
     Optional<Schedule> findById(Integer id);
 
-    Optional<Schedule> findByScheduleDateTimeStartAndScheduleDateTimeEnd(LocalDateTime startDate, LocalDateTime endDate);
-
     void deleteById(Integer Id);
 
 }

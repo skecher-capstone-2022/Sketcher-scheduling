@@ -49,8 +49,9 @@ public class ManagerAssignSchedule {
      * 연관관계 편의 메소드
      */
     @Builder
-    public ManagerAssignSchedule(Integer id, User user, Schedule schedule,ScheduleUpdateReq updateReq, LocalDateTime scheduleDateTimeStart, LocalDateTime scheduleDateTimeEnd) {
+    public ManagerAssignSchedule(Integer id, User user, ScheduleUpdateReq updateReq, LocalDateTime scheduleDateTimeStart, LocalDateTime scheduleDateTimeEnd) {
         this.id = id;
+        this.user = user;
         this.updateReq = updateReq;
         this.scheduleDateTimeStart = scheduleDateTimeStart;
         this.scheduleDateTimeEnd = scheduleDateTimeEnd;
@@ -66,6 +67,11 @@ public class ManagerAssignSchedule {
 //        }
 //        this.schedule = schedule;
 //        schedule.getManagerAssignScheduleList().add(this);
+    }
+
+    public void update(LocalDateTime scheduleDateTimeStart, LocalDateTime scheduleDateTimeEnd){
+        this.scheduleDateTimeStart = scheduleDateTimeStart;
+        this.scheduleDateTimeEnd = scheduleDateTimeEnd;
     }
 
     protected ManagerAssignSchedule() {
