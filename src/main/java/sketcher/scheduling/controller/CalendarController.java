@@ -39,7 +39,7 @@ import java.util.*;
 @RequiredArgsConstructor
 @RequestMapping("/full-calendar")
 public class CalendarController {
-// 수정
+
     private static final Logger log = LoggerFactory.getLogger(CalendarController.class);
 
     private final ManagerAssignScheduleService managerAssignScheduleService;
@@ -174,23 +174,23 @@ public class CalendarController {
             LocalDateTime endDate = endDateUTC.plusHours(9);
             try {
 
-            User user = userService.findByUsername(eventName).get();
-            String username = user.getUsername();
+                User user = userService.findByUsername(eventName).get();
+                String username = user.getUsername();
 
-            /**
-             * exception 처리를 통해 존재하지 않는 경우 alert 필요
-             */
+                /**
+                 * exception 처리를 통해 존재하지 않는 경우 alert 필요
+                 */
 
-            if (eventName.equals(username)) {
+                if (eventName.equals(username)) {
 
-                ManagerAssignScheduleDto managerAssignScheduleDto = ManagerAssignScheduleDto.builder()
-                        .user(user)
-                        .scheduleDateTimeStart(startDate)
-                        .scheduleDateTimeEnd(endDate)
-                        .build();
+                    ManagerAssignScheduleDto managerAssignScheduleDto = ManagerAssignScheduleDto.builder()
+                            .user(user)
+                            .scheduleDateTimeStart(startDate)
+                            .scheduleDateTimeEnd(endDate)
+                            .build();
 
-                managerAssignScheduleService.saveManagerAssignSchedule(managerAssignScheduleDto);
-            }
+                    managerAssignScheduleService.saveManagerAssignSchedule(managerAssignScheduleDto);
+                }
             }catch (NoSuchElementException e){
                 throw new NoSuchElementException("매니저가 존재하지 않습니다.");
             }

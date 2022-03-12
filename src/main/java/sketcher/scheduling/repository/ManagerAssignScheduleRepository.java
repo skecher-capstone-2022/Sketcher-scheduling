@@ -1,12 +1,10 @@
 package sketcher.scheduling.repository;
 
-import org.apache.tomcat.jni.Local;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import sketcher.scheduling.domain.ManagerAssignSchedule;
-import sketcher.scheduling.domain.Schedule;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.UserDto;
 
@@ -21,4 +19,8 @@ public interface ManagerAssignScheduleRepository extends JpaRepository<ManagerAs
     Optional<ManagerAssignSchedule> findByUserAndScheduleDateTimeStartAndScheduleDateTimeEnd(User user, LocalDateTime startDate, LocalDateTime endDate);
     Integer deleteByUser(User user);
     void deleteById(Integer Id);
+
+    @Modifying
+    @Query("update ManagerAssignSchedule a set a.user=null where a.user=:user")
+    int bulkUserSetNull(@Param("user") User user);
 }
