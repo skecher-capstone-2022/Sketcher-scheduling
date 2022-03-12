@@ -39,7 +39,7 @@ import java.util.*;
 @RequiredArgsConstructor
 @RequestMapping("/full-calendar")
 public class CalendarController {
-
+// 수정
     private static final Logger log = LoggerFactory.getLogger(CalendarController.class);
 
     private final ManagerAssignScheduleService managerAssignScheduleService;
