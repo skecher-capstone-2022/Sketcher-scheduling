@@ -32,17 +32,15 @@
                     <h1>현재 근무중인 매니저 목록</h1>
                 </div>
                 <div class="select-wrap1">
-                    <form name="manager_list_form" class="manager_list_form" method="get"> <!--form으로 정렬과 검색 부분 묶음-->
+                    <form name="manager_list_form" class="manager_list_form" method="get">
                         <select th:name="align" id="align" class="list_align" onchange="this.form.submit()">
-                            <!--select 부분은 변경할 때마다 submit이 되도록 이벤트 걸어놓음-->
                             <option th:value="managerScore" th:selected="${condition.align == 'managerScore'}">평점순
                             </option>
-                            <!--controller에서 넘어온 값에 따라 옵션 선택-->
                             <option th:value="username" th:selected="${condition.align == 'username'}">매니저명</option>
-                            <option th:value="joindate_desc" th:selected="${condition.align == 'joindate_desc'}">
+                            <option th:value="joindate_desc" th:selected="${condition.align == 'joindate_asc'}">
                                 가입일자(최신순)
                             </option>
-                            <option th:value="joindate_asc" th:selected="${condition.align == 'joindate_asc'}">
+                            <option th:value="joindate_asc" th:selected="${condition.align == 'joindate_desc'}">
                                 가입일자(오래된순)
                             </option>
                         </select>
@@ -53,10 +51,9 @@
                             </select>
                             <label>
                                 <input th:name="keyword" id="keyword" type="text" placeholder="검색어 입력"
-                                       th:value="${condition.keyword}"/> <!--검색 값 유지되도록 value 설정-->
+                                       th:value="${condition.keyword}"/>
                             </label>
-                            <button type="button" class="btn btn-6 btn-6b search-btn" onclick="searchCheck()">검색</button>
-                            <!--버튼 누르면 form submit-->
+                            <button type="submit" class="btn btn-6 btn-6b search-btn">검색</button>
                             <br/>
                         </div>
                     </form>
@@ -74,23 +71,19 @@
                             <th scope="col">사용자관리</th>
                         </tr>
                         <tr th:if="${users.getTotalPages() != 0}" th:each="user : ${users}">
-                            <!--users 리스트의 페이지가 0이 아니면 하나씩 꺼내서 user에 넣어줌-->
                             <td class="line" th:text="${userStat.count} + ${users.number} * 10"></td>
-                            <!--인덱스 계산 : (현재 번호) + (현재 페이지 - 1) * (한 페이지 당 보이는 리스트 개수)-->
                             <td class="line" th:text="${user.id}"></td>
                             <td class="line" th:text="${user.username}"></td>
                             <td class="line" th:text="${user.userTel}"></td>
                             <td class="line" th:text="${#temporals.format(user.user_joinDate, 'yyyy-MM-dd')}"></td>
-                            <!--날짜 포맷 설정 (시간 제외, 날짜만)-->
                             <td class="line" th:text="${#numbers.formatDecimal(user.managerScore, 1, 1)}"></td>
-                            <!--소수점 포맷 설정 (#.# 형식)-->
                             <td class="line">
                                 <button type="submit" class="btn btn-6 btn-6b"
                                         th:onclick="|location.href='@{/manager_detail/{userId}(userId=${user.id})}'|">관리
-                                </button> <!--버튼 클릭 시 매니저 상세 페이지로 이동 (아이디 값 전달)-->
+                                </button>
                             </td>
                         </tr>
-                        <tr th:if="${users.getTotalPages() == 0}"> <!--users 리스트의 페이지가 0이면 다음 문장 출력-->
+                        <tr th:if="${users.getTotalPages() == 0}">
                             <td class="line" colspan="7">조회된 결과가 없습니다.</td>
                         </tr>
                     </table>
@@ -98,26 +91,21 @@
                 </div>
                 <div class="page_wrap">
                     <div class="page_nation">
-                        <ul class="page_ul"
+                        <ul class="page_ul" onclick="listSubmit()"
                             th:if="${users.getTotalPages() != 0}"
                             th:with="start=${T(Math).floor(users.number/10)*10 + 1},
                                   last=(${start + 9 < users.totalPages ? start + 9 : users.totalPages})">
-                            <!--with: 변수 설정-->
-                            <!--start: 현제 페이지를 통해 현재 페이지 그룹의 시작 페이지를 구하는 로직-->
-                            <!--last: 전체 페이지 수와 현재 페이지 그룹의 시작 페이지를 통해 현재 페이지 그룹의 마지막 페이지를 구하는 로직-->
                             <li class="page_li">
                                 <a class="arrow pprev"
                                    th:href="@{/all_manager_list(page=1,align=${condition.align},type=${condition.type},keyword=${condition.keyword})}"></a>
-                                <!--페이지 번호, 정렬, 검색 타입, 검색어 get 방식으로 넘겨줌-->
                             </li>
                             <li class="page_li">
                                 <a class="arrow prev"
                                    th:href="${users.first} ? '#' : @{/all_manager_list(page=${users.number},align=${condition.align},type=${condition.type},keyword=${condition.keyword})}"></a>
                             </li>
-                            <li class="page_li" th:each="page: ${#numbers.sequence(start, last)}"> <!--반복문으로 페이지 번호 출력-->
+                            <li class="page_li" th:each="page: ${#numbers.sequence(start, last)}">
                                 <a th:text="${page}" th:class="${page == users.number + 1} ? 'active'"
                                    th:href="@{/all_manager_list(page=${page},align=${condition.align},type=${condition.type},keyword=${condition.keyword})}"></a>
-                                <!--조건문으로 active class 적용 (현재 페이지 표시)-->
                             </li>
                             <li class="page_li">
                                 <a class="arrow next"
@@ -135,15 +123,3 @@
     </div>
 </th:block>
 </html>
-<footer>
-    <script>
-        function searchCheck() {
-            if (document.getElementById("keyword").value == "") {
-                alert("검색어을 입력해주세요");
-                return false;
-            } else {
-                document.manager_list_form.submit();
-            }
-        }
-    </script>
-</footer>
