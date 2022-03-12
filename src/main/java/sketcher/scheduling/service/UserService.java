@@ -50,9 +50,6 @@ public class UserService implements UserDetailsService {
 	@Transactional(readOnly = true)
     public ArrayList<String> findHopeTimeById(String id) {
         return managerHopeTimeRepositoryCustom.findHopeTimeById(id);
-    @Transactional(readOnly = true)
-    public ArrayList<String> findDetailById(String id) {
-        return userRepositoryCustom.findDetailById(id);
     }
 
     @Transactional(readOnly = true)
