@@ -29,6 +29,7 @@ public class UpdateReqController {
     public String schedule_upd_list(Model model,
                                     @RequestParam(value="list_align", required = false, defaultValue = "req_date_desc") String sort) {
 
+        System.out.println("@@@@@@@@@"+sort);
         List<ScheduleUpdateReq> updateReqList = updateReqService.updateReqResultList(sort);
         model.addAttribute("updateReqList", updateReqList);
         model.addAttribute("list_align", sort);
