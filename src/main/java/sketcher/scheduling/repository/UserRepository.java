@@ -2,6 +2,7 @@ package sketcher.scheduling.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,9 +22,8 @@ public interface UserRepository extends JpaRepository<User , Integer> {
 	@Query("select u from User u where u.id = :userid")
     List<User> idCheck(@Param("userid") String userid);
 
-    Optional<User> findByCode(int code);
+	Optional<User> findByCode(int code);
 
-    @Query("select u from User u where u.dropoutReqCheck='Y'")
+	@Query("select u from User u where u.dropoutReqCheck='Y'")
     List<User> dropoutUserList();
-
 }
