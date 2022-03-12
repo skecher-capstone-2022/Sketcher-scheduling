@@ -21,7 +21,7 @@ import java.util.List;
 //        @ApiResponse(code = 400, message = "Bad Request !"),
 //        @ApiResponse(code = 500, message = "Internal Server Error")
 //})
-
+@Api(tags = {"스케줄 로직 API "})
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/schedule")
