@@ -174,13 +174,26 @@ public class CalendarController {
             LocalDateTime endDate = endDateUTC.plusHours(9);
             try {
 
-                User user = userService.findByUsername(eventName).get();
-                String username = user.getUsername();
+//                User user = userService.findByUsername(eventName).get();
 
+                User user = userService.findById(eventName).get();
+                String username = user.getId();
+
+                System.out.println("username = " + username);
                 /**
                  * exception 처리를 통해 존재하지 않는 경우 alert 필요
                  */
 
+//                if (eventName.equals(username)) {
+//
+//                    ManagerAssignScheduleDto managerAssignScheduleDto = ManagerAssignScheduleDto.builder()
+//                            .user(user)
+//                            .scheduleDateTimeStart(startDate)
+//                            .scheduleDateTimeEnd(endDate)
+//                            .build();
+//
+//                    managerAssignScheduleService.saveManagerAssignSchedule(managerAssignScheduleDto);
+//                }
                 if (eventName.equals(username)) {
 
                     ManagerAssignScheduleDto managerAssignScheduleDto = ManagerAssignScheduleDto.builder()
@@ -226,6 +239,9 @@ public class CalendarController {
 
             User user = userService.findByUsername(eventName).get();
             String username = user.getUsername();
+
+//            User user = userService.findById(eventName).get();
+//            String username = user.getId();
 
             ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.findByUserAndScheduleDateTimeStartAndScheduleDateTimeEnd(user, startDate, endDate).get();
             Integer assignScheduleId = managerAssignSchedule.getId();
@@ -275,6 +291,9 @@ public class CalendarController {
 
             User user = userService.findByUsername(eventName).get();
             String username = user.getUsername();
+
+//            User user = userService.findById(eventName).get();
+//            String username = user.getId();
 
             ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.findByUserAndScheduleDateTimeStartAndScheduleDateTimeEnd(user, oldStart, oldEnd).get();
             Integer assignScheduleId = managerAssignSchedule.getId();
