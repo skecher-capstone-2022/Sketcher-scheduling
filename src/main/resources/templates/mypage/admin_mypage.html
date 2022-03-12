@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/menu_layout}">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout/menu_layout}">
 <head>
     <title>마이페이지</title>
     <link th:href="@{/css/mypage.css}" rel="stylesheet"/>
@@ -57,25 +58,141 @@
                     <div class="info_wrap">
                         <div style="float:left;">
                             <img th:src="@{/img/admin.svg}" width="100" height="100">
-<!--                            <img src="../../static/img/admin.svg" width="100" height="100">-->
+                            <!--                            <img src="../../static/img/admin.svg" width="100" height="100">-->
                         </div>
-                        <div class="info"><span style="color:#E75757;">Admin</span><br/>
-                            <span th:text="${user.user_name}"></span><br/>
-                            <p th:text="${user.user_joindate}"> 가입</p><br/>
-                            <p th:text="${user.user_tel}"></p><br/>
+                        <div class="info"><span span sec:authentication="authorities"
+                                                style="color:#E75757;"></span><br/>
+                            <span th:text="${user.username}"></span><br/>
+                            <div th:text="${user.id}"></div>
+                            <div th:text="|${#temporals.format(user.user_joinDate, 'yyyy-MM-dd')} 가입|"></div>
+                            <div th:text="${user.userTel}"></div>
                         </div>
                     </div>
                     <div>
-                    <div class="btn_align">
-                        <button class="btn btn-6 btn-6b reqbtn1 md-trigger" data-modal="modal-2">사용자 정보 수정</button>
-                    </div>
-                    <div class="btn_align">
-                        <button class="btn btn-6 btn-6b reqbtn2 md-trigger" data-modal="modal-1">탈퇴하기</button>
-                    </div>
+                        <div class="btn_align">
+                            <button class="btn btn-6 btn-6b reqbtn1 md-trigger" data-modal="modal-2">사용자 정보 수정
+                            </button>
+                        </div>
+                        <div class="btn_align">
+                            <button class="btn btn-6 btn-6b reqbtn2 md-trigger" data-modal="modal-1">탈퇴 요청
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!--회원탈퇴 요청 modal-->
+    <div class="md-modal md-effect-1" id="modal-1">
+        <div class="md-content">
+            <h3>회원탈퇴 요청</h3>
+            <div th:if="${user.dropoutReqCheck.compareTo('N') == 0}">
+                <p>회원탈퇴를 신청하기 전에 안내 사항을 꼭 확인해주세요.</p>
+                <p>
+                    <span class="modal_span">사용하고 계신 아이디( [[${user.id}]] )</span>는 탈퇴할 경우 재사용 및 복구가 불가능합니다.
+                    탈퇴한 아이디는 본인과 타인 모두 재사용 및 복구가 불가하오니 신중하게 선택하시기 바랍니다.
+                </p><br>
+                <form id="dropoutForm" name="dropoutForm" autocomplete="off" method="post" action="/dropoutReq"
+                      onsubmit="return dropoutCheck()">
+                    <p><input name="dropout" type="checkbox"/>
+                        <label style="vertical-align: top;">안내 사항을 모두 확인하였으며, 이에 동의합니다.</label></p>
+                    <input type="hidden" name="userid" th:value="${user.id}">
+                    <div class="md-close-wrap">
+                        <button type="submit" class="btn btn-1 btn-1a md-close">탈퇴 요청</button>
+                    </div>
+                </form>
+            </div>
+            <div th:if="${user.dropoutReqCheck.compareTo('Y') == 0}">
+                <p><span class="modal_span">사용하고 계신 아이디( [[${user.id}]] )</span>는 이미 탈퇴 요청이 되었습니다.</p>
+                <div class="md-close-wrap">
+                    <button type="submit" class="btn btn-1 btn-1a md-close">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--사용자 정보 수정 modal-->
+    <div class="md-modal md-effect-1" id="modal-2">
+        <div class="md-content">
+            <h3>사용자 정보 수정</h3>
+            <div>
+                <h4>변경할 정보를 입력해주세요.</h4>
+                <form id="updateForm" name="updateForm" autocomplete="off" method="post" action="/updateAdmin"
+                      onsubmit="return updateCheck()">
+                    <table>
+                        <tr>
+                            <td>사용자 이름</td>
+                            <td><input type="text" name="username" th:value="${user.username}"></td>
+                        </tr>
+                        <tr>
+                            <td>전화번호</td>
+                            <td><input type="text" name="userTel" th:value="${user.userTel}"></td>
+                        </tr>
+                    </table>
+                    <input type="hidden" name="userid" th:value="${user.id}">
+                    <div class="md-close-wrap">
+                        <button type="submit" class="btn btn-1 btn-1a md-close">정보 수정</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="md-overlay"></div>
 </th:block>
 </html>
+<footer>
+    <!--    <script src="/js/classie5.js"></script>-->
+    <!--    <script src="/js/modalEffects.js"></script>-->
+    <!--    <script th:src="@{/js/classie5.js}" type="text/javascript"></script>-->
+    <!--    <script th:src="@{/js/modalEffects.js}" type="text/javascript"></script>-->
+
+    <script type="text/JavaScript">
+        function dropoutCheck() {
+            if (document.dropoutForm.dropout.checked) {
+                let answer = confirm("탈퇴 요청을 하시겠습니까??");
+                if (answer == true) {
+                    $("#dropoutForm").attr("action", "/dropoutReq");
+                    $("#dropoutForm").submit();
+                }
+            } else {
+                alert("탈퇴 요청을 위해 안내 사항에 동의해주세요.");
+                return false;
+            }
+        }
+    </script>
+
+    <script type="text/JavaScript">
+        function updateCheck() {
+            var count = 0;
+            var length = document.updateForm.worktime.length;
+            var i = 0;
+
+            var username = document.updateForm.username.value.trim();
+            var userTel = document.updateForm.userTel.value.trim();
+
+            while (i < length) {
+                if (document.updateForm.worktime[i].checked) {
+                    count = count + 1;
+                }
+                i++;
+            }
+            if (username == "") {
+                alert("이름을 입력해주세요.");
+                document.updateForm.username.focus();
+                return false;
+            } else if (userTel == "") {
+                alert("전화번호를 입력해주세요.");
+                document.updateForm.userTel.focus();
+                return false;
+            } else {
+                let answer = confirm("변경 사항을 저장하시겠습니까?");
+                if (answer == true) {
+                    $("#updateForm").attr("action", "/updateAdmin");
+                    $("#updateForm").submit();
+                }
+            }
+        }
+    </script>
+
+</footer>
