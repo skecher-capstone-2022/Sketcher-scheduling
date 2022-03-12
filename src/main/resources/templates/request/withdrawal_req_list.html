@@ -31,38 +31,28 @@
                     <h1>회원탈퇴 요청 목록</h1>
                 </div>
                 <div class="select-wrap1">
-                    <form name="manager_list_form" class="manager_list_form" method="get"> <!--form으로 정렬과 검색 부분 묶음-->
-                        <select th:name="align" id="align" class="list_align" onchange="this.form.submit()">
-                            <!--select 부분은 변경할 때마다 submit이 되도록 이벤트 걸어놓음-->
-                            <option th:value="managerScore" th:selected="${condition.align == 'managerScore'}">평점순
-                            </option>
-                            <!--controller에서 넘어온 값에 따라 옵션 선택-->
-                            <option th:value="username" th:selected="${condition.align == 'username'}">매니저명</option>
-                            <option th:value="joindate_desc" th:selected="${condition.align == 'joindate_desc'}">
-                                가입일자(최신순)
-                            </option>
-                            <option th:value="joindate_asc" th:selected="${condition.align == 'joindate_asc'}">
-                                가입일자(오래된순)
-                            </option>
+                    <select name="list_align" class="list_align">
+                        <option value="manager_score" selected="selected">평점순</option>
+                        <option value="manager_name">매니저명</option>
+                        <option value="join_date">가입일자</option>
+                    </select>
+                    <div class="search">
+                        <select name="select_search" class="select_search">
+                            <option value="manager_name" selected="selected">매니저명</option>
+                            <option value="manager_id">매니저ID</option>
                         </select>
-                        <div class="search">
-                            <select th:name="type" id="type" class="select_search">
-                                <option th:value="username" th:selected="${condition.type == 'username'}">매니저명</option>
-                                <option th:value="id" th:selected="${condition.type == 'id'}">매니저ID</option>
-                            </select>
-                            <label>
-                                <input th:name="keyword" id="keyword" type="text" placeholder="검색어 입력"
-                                       th:value="${condition.keyword}"/> <!--검색 값 유지되도록 value 설정-->
-                            </label>
-                            <button type="submit" class="btn btn-6 btn-6b search-btn">검색</button>
-                            <!--버튼 누르면 form submit-->
-                            <br/>
-                        </div>
-                    </form>
+                        <label>
+                            <input name="search" type="text" placeholder="검색어 입력"/>
+                        </label>
+
+                        <button class="btn btn-6 btn-6b search-btn">검색</button>
+                        <br/>
+                    </div>
                 </div>
                 <div>
                     <table width="700" border="0" cellspacing="0" cellpadding="0" class="list_text_center">
                         <tr>
+                            <th scope="col">INDEX</th>
                             <th scope="col">매니저ID</th>
                             <th scope="col">매니저명</th>
                             <th scope="col">전화번호</th>
@@ -70,17 +60,114 @@
                             <th scope="col">평점</th>
                             <th scope="col">탈퇴처리</th>
                         </tr>
-                        <tr th:if="${not #lists.isEmpty(users)}" th:each="user : ${users}">
-                            <td class="line" th:data-userid="${user.id}" th:text="${user.id}"></td>
-                            <td class="line" th:text="${user.username}"></td>
-                            <td class="line" th:text="${user.userTel}"></td>
-                            <td class="line" th:text="${#temporals.format(user.user_joinDate, 'yyyy-MM-dd')}"></td>
-                            <!--날짜 포맷 설정 (시간 제외, 날짜만)-->
-                            <td class="line" th:text="${#numbers.formatDecimal(user.managerScore, 1, 1)}"></td>
-                            <!--소수점 포맷 설정 (#.# 형식)-->
-                            <td class="line" >
-                                <button type="submit" th:data-param="${user.id}" class="btn btn-6 btn-6b md-trigger" data-modal="modal-7"
-                                        th:onclick="withdrawal_input(this.getAttribute('data-param'))">탈퇴</button>
+                        <tr>
+                            <td class="line">1</td>
+                            <td class="line">USER1</td>
+                            <td class="line">박태영</td>
+                            <td class="line">010-1234-5678</td>
+                            <td class="line">2022-01-14</td>
+                            <td class="line">5.0</td>
+                            <td class="line">
+                                <button class="btn btn-6 btn-6b md-trigger" data-modal="modal-7">탈퇴</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="line">2</td>
+                            <td class="line">USER1</td>
+                            <td class="line">박태영</td>
+                            <td class="line">010-1234-5678</td>
+                            <td class="line">2022-01-14</td>
+                            <td class="line">5.0</td>
+                            <td class="line">
+                                <button class="btn btn-6 btn-6b md-trigger" data-modal="modal-7">탈퇴</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="line">3</td>
+                            <td class="line">USER1</td>
+                            <td class="line">박태영</td>
+                            <td class="line">010-1234-5678</td>
+                            <td class="line">2022-01-14</td>
+                            <td class="line">5.0</td>
+                            <td class="line">
+                                <button class="btn btn-6 btn-6b md-trigger" data-modal="modal-7">탈퇴</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="line">4</td>
+                            <td class="line">USER1</td>
+                            <td class="line">박태영</td>
+                            <td class="line">010-1234-5678</td>
+                            <td class="line">2022-01-14</td>
+                            <td class="line">5.0</td>
+                            <td class="line">
+                                <button class="btn btn-6 btn-6b md-trigger" data-modal="modal-7">탈퇴</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="line">5</td>
+                            <td class="line">USER1</td>
+                            <td class="line">박태영</td>
+                            <td class="line">010-1234-5678</td>
+                            <td class="line">2022-01-14</td>
+                            <td class="line">5.0</td>
+                            <td class="line">
+                                <button class="btn btn-6 btn-6b md-trigger" data-modal="modal-7">탈퇴</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="line">6</td>
+                            <td class="line">USER1</td>
+                            <td class="line">박태영</td>
+                            <td class="line">010-1234-5678</td>
+                            <td class="line">2022-01-14</td>
+                            <td class="line">5.0</td>
+                            <td class="line">
+                                <button class="btn btn-6 btn-6b md-trigger" data-modal="modal-7">탈퇴</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="line">7</td>
+                            <td class="line">USER1</td>
+                            <td class="line">박태영</td>
+                            <td class="line">010-1234-5678</td>
+                            <td class="line">2022-01-14</td>
+                            <td class="line">5.0</td>
+                            <td class="line">
+                                <button class="btn btn-6 btn-6b md-trigger" data-modal="modal-7">탈퇴</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="line">8</td>
+                            <td class="line">USER1</td>
+                            <td class="line">박태영</td>
+                            <td class="line">010-1234-5678</td>
+                            <td class="line">2022-01-14</td>
+                            <td class="line">5.0</td>
+                            <td class="line">
+                                <button class="btn btn-6 btn-6b md-trigger" data-modal="modal-7">탈퇴</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="line">9</td>
+                            <td class="line">USER1</td>
+                            <td class="line">박태영</td>
+                            <td class="line">010-1234-5678</td>
+                            <td class="line">2022-01-14</td>
+                            <td class="line">5.0</td>
+                            <td class="line">
+                                <button class="btn btn-6 btn-6b md-trigger" data-modal="modal-7">탈퇴</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="line">10</td>
+                            <td class="line">USER1</td>
+                            <td class="line">박태영</td>
+                            <td class="line">010-1234-5678</td>
+                            <td class="line">2022-01-14</td>
+                            <td class="line">5.0</td>
+                            <td class="line">
+                                <button class="btn btn-6 btn-6b md-trigger" data-modal="modal-7">탈퇴</button>
                             </td>
                         </tr>
                     </table>
@@ -90,15 +177,3 @@
     </div>
 </th:block>
 </html>
-<script>
-    var userid='';
-
-    function withdrawal_input(value) {
-        userid=value;
-    }
-
-    function withdrawal_accept() {
-        // var userid = document.getElementById('deleteUserid').innerText;
-        location.href="/withdrawalUser?userid="+userid;
-    }
-</script>
