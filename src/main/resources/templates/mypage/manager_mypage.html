@@ -53,7 +53,7 @@
             <div class="title1">
                 <h1>마이페이지</h1>
             </div>
-            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-bottom:none;">
                 <tr>
                     <td width="49%" style="border-right:1px solid #E6E6E6;">
                         <div class="user_info_wrap">
@@ -161,10 +161,10 @@
                 <form id="updateForm" name="updateForm" autocomplete="off" method="post" action="/updateManager"
                       onsubmit="return updateCheck()">
                     <table>
-                        <tr>
-                            <td>사용자 이름</td>
-                            <td><input type="text" name="username" th:value="${user.username}"></td>
-                        </tr>
+<!--                        <tr>-->
+<!--                            <td>사용자 이름</td>-->
+<!--                            <td><input type="text" name="username" th:value="${user.username}"></td>-->
+<!--                        </tr>-->
                         <tr>
                             <td>전화번호</td>
                             <td><input type="text" name="userTel" th:value="${user.userTel}"></td>
@@ -317,7 +317,7 @@
             var length = document.updateForm.worktime.length;
             var i = 0;
 
-            var username = document.updateForm.username.value.trim();
+            // var username = document.updateForm.username.value.trim();
             var userTel = document.updateForm.userTel.value.trim();
 
             while (i < length) {
@@ -329,10 +329,10 @@
             if (count == 0) {
                 alert("한 개 이상의 타임을 선택해주세요.");
                 return false;
-            } else if (username == "") {
-                alert("이름을 입력해주세요.");
-                document.updateForm.username.focus();
-                return false;
+            // } else if (username == "") {
+            //     alert("이름을 입력해주세요.");
+            //     document.updateForm.username.focus();
+            //     return false;
             } else if (userTel == "") {
                 alert("전화번호를 입력해주세요.");
                 document.updateForm.userTel.focus();

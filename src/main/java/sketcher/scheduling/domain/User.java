@@ -122,8 +122,8 @@ public class User implements UserDetails {
         return true; // true -> 사용 가능
     }
 
-    public void update(String username, String userTel, Character dropoutReqCheck) {
-        this.username = username;
+    public void update(String authRole, String userTel, Character dropoutReqCheck) {
+        this.authRole = authRole;
         this.userTel = userTel;
         this.dropoutReqCheck = dropoutReqCheck;
     }
