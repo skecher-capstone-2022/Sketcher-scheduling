@@ -21,6 +21,8 @@ import sketcher.scheduling.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
 import java.util.*;
@@ -127,6 +129,40 @@ public class UserController {
         return "manager/manager_detail";
     }
 
+    @RequestMapping(value = "/withdrawalUserDetail", method = RequestMethod.GET)
+    public void withdrawalUserDetail(HttpServletResponse response,
+                                     @RequestParam String userid) throws IOException {
+        User user = userService.findById(userid).orElseThrow(() -> new UsernameNotFoundException(userid));
+        userService.userSetNull(user);
+
+        response.setContentType("text/html; charset=euc-kr");
+        PrintWriter out = response.getWriter();
+
+        out.println("<script>");
+        out.println("history.go(-2)");
+        out.println("</script>");
+
+        out.flush();
+    }
+
+    @RequestMapping(value = "/authUpdateUserDetail", method = RequestMethod.GET)
+    public void authUpdateUserDetail(HttpServletResponse response,
+                                     @RequestParam String userid) throws IOException {
+        if (userid != null) {
+            User user = userService.loadUserByUsername(userid);
+            userService.updateAuthRole(user);
+        }
+
+        response.setContentType("text/html; charset=euc-kr");
+        PrintWriter out = response.getWriter();
+
+        out.println("<script>");
+        out.println("history.go(-2)");
+        out.println("</script>");
+
+        out.flush();
+    }
+
     @RequestMapping(value = "/admin_mypage", method = RequestMethod.GET)
     public String admin_mypage(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -188,13 +224,21 @@ public class UserController {
         return "redirect:/login";
     }
 
+    @RequestMapping(value = "/dropout", method = RequestMethod.POST)
+    public String updateDropout(@RequestParam String userid) {
+        if (userid != null) {
+            User user = userService.findById(userid).orElseThrow(() -> new UsernameNotFoundException(userid));
+            userService.userSetNull(user);
+        }
+        return "redirect:/login";
+    }
+
     @RequestMapping(value = "/updateAdmin", method = RequestMethod.POST)
     public String updateAdmin(@RequestParam String userid,
-                              @RequestParam String username,
                               @RequestParam String userTel) {
         if (userid != null) {
             User user = userService.loadUserByUsername(userid);
-            userService.updateUserCheck(user, username, userTel);
+            userService.updateUserTel(user, userTel);
         }
         return "redirect:/admin_mypage";
     }
