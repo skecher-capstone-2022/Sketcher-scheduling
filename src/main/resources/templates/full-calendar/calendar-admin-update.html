@@ -16,8 +16,8 @@
         var calendar = null;
         var localeSelectorEl = document.getElementById('locale-selector');
 
-        var ceoColor = '#ffc107'; //대표일정 황색
-        var regColor = '#343a40';	//일반직원등록 흑색
+        // var ceoColor = '#ffc107'; //대표일정 황색
+        // var regColor = '#343a40';	//일반직원등록 흑색
 
         $(document).ready(function () {
 
@@ -135,7 +135,7 @@
                          */
                         select: function (arg) { // 캘린더에서 이벤트를 생성할 수 있다.
 
-                            var title = prompt('매니저 아이디를 입력해주세요.');
+                            var title = prompt('매니저 이름을 입력해주세요.');
                             if (title) {
                                 calendar.addEvent({
                                     title: title,
