@@ -21,6 +21,12 @@
 
         $(document).ready(function () {
 
+            let today = new Date();
+
+            let year = today.getFullYear(); // 년도
+            let month = (today.getMonth() + 1).toString().padStart(2, '0');  // 월
+            let date = (today.getDate()).toString().padStart(2, '0');  // 날짜
+
 
             $(function () {
                 var request = $.ajax({
@@ -32,7 +38,7 @@
                     console.log(data); // log 로 데이터 찍어주기.
                     var calendarEl = document.getElementById('calendar');
                     calendar = new FullCalendar.Calendar(calendarEl, {
-                        initialDate: '2022-02-07',
+                        initialDate: year + "-" + month + "-" + date,
                         initialView: 'timeGridWeek',
                         headerToolbar: {
                             left: 'prev,next today',

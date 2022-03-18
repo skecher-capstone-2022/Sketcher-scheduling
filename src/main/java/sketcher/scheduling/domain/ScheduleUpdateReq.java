@@ -43,5 +43,10 @@ public class ScheduleUpdateReq {
         this.reqTime = reqTime;
     }
 
+    public void update(ManagerAssignSchedule assignSchedule, LocalDateTime changeDate){
+        this.assignSchedule = assignSchedule;
+        this.changeDate = changeDate;
+    }
+
     protected ScheduleUpdateReq(){}
 }

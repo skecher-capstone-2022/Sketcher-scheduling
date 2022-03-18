@@ -23,22 +23,22 @@ public class SchedulingApplication {
 		SpringApplication.run(SchedulingApplication.class, args);
 	}
 
-	@Bean
-	public CommandLineRunner initData(UserService userService, ManagerHopeTimeService hopeService) {
-		return args ->
-				IntStream.rangeClosed(4, 22).forEach(i -> {
-					UserDto user1 =  UserDto.builder()
-							.id("user"+i)
-							.authRole("MANAGER")
-							.password(new BCryptPasswordEncoder().encode("1234"))
-							.username("이혜원"+i)
-							.userTel("010-1234-5678")
-							.user_joinDate(LocalDateTime.now())
-							.managerScore(3.5)
-							.dropoutReqCheck('N')
-							.build();
-
-					userService.saveUser(user1);
+//	@Bean
+//	public CommandLineRunner initData(UserService userService, ManagerHopeTimeService hopeService) {
+//		return args ->
+//				IntStream.rangeClosed(4, 22).forEach(i -> {
+//					UserDto user1 =  UserDto.builder()
+//							.id("user"+i)
+//							.authRole("MANAGER")
+//							.password(new BCryptPasswordEncoder().encode("1234"))
+//							.username("이혜원"+i)
+//							.userTel("010-1234-5678")
+//							.user_joinDate(LocalDateTime.now())
+//							.managerScore(3.5)
+//							.dropoutReqCheck('N')
+//							.build();
+//
+//					userService.saveUser(user1);
 
 //					UserDto user2 =  UserDto.builder()
 //							.id(i+"user")
@@ -95,8 +95,8 @@ public class SchedulingApplication {
 //							.build();
 //					userService.saveUser(user3);
 				});
-
-
+//
+//
 	}
 
 }
