@@ -38,9 +38,6 @@ public class ScheduleUpdateReqService {
     @Transactional
     public void updateCheck(Integer id) {
 
-        
-
-
         ScheduleUpdateReq req = updateReqRepository.findById(id).orElseThrow(() -> new IllegalStateException("Not Found Id"));
         ManagerAssignSchedule assignSchedule = req.getAssignSchedule();
 
@@ -77,5 +74,17 @@ public class ScheduleUpdateReqService {
 
     public List<ScheduleUpdateReq> updateReqResultList(String sort) {
         return updateReqRepoCustom.sort(sort);
+    }
+
+    public Optional<ScheduleUpdateReq> findByAssignSchedule(ManagerAssignSchedule managerAssignSchedule){
+        return updateReqRepository.findByAssignSchedule(managerAssignSchedule);
+    }
+    @Transactional
+    public void duplicateUpdateRequest(Integer id, ScheduleUpdateReqDto dto){
+//        ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleRepository.findById(id).orElseThrow(() ->
+//                new IllegalArgumentException("해당 스케줄이 없습니다." + id));
+        ScheduleUpdateReq scheduleUpdateReq = updateReqRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("해당 스케줄이 없습니다." + id));
+        scheduleUpdateReq.update(dto.getAssignSchedule(), dto.getChangeDate());
     }
 }

@@ -36,6 +36,9 @@ public class ScheduleUpdateReqDto {
                 .reqTime(reqTime)
                 .build();
     }
-
+    public void update(ManagerAssignSchedule assignSchedule, LocalDateTime changeDate){
+        this.assignSchedule = assignSchedule;
+        this.changeDate = changeDate;
+    }
 
 }

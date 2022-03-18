@@ -44,7 +44,7 @@ public class ManagerAssignScheduleDto {
                 .build();
     }
 
-    public void update(LocalDateTime scheduleDateTimeStart, LocalDateTime scheduleDateTimeEnd){
+    public void update(LocalDateTime scheduleDateTimeStart, LocalDateTime scheduleDateTimeEnd) {
         this.scheduleDateTimeStart = scheduleDateTimeStart;
         this.scheduleDateTimeEnd = scheduleDateTimeEnd;
     }
