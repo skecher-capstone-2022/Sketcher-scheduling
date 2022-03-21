@@ -48,9 +48,87 @@
                             locale: initialLocaleCode,
                             buttonIcons: false, // show the prev/next text
                             weekNumbers: false,
-                            navLinks: true, // can click day/week names to navigate views
-                            editable: false,
-                            dayMaxEvents: true, // allow "more" link when too many events
+                            navLinks: true,
+                            editable: true,
+                            selectable: true,
+                            droppable: true, // this allows things to be dropped onto the calendar
+
+                            /**
+                             * 드래그로 이벤트 수정하기
+                             */
+                            eventDrop: function (info) {
+
+                                if (confirm("스케줄 수정을 요청하시겠습니까 ?") == true) {
+
+                                    var events = new Array(); // Json 데이터를 받기 위한 배열 선언
+                                    var obj = new Object();
+
+                                    obj.title = info.event._def.title;
+                                    obj.start = info.event._instance.range.start;
+                                    obj.end = info.event._instance.range.end;
+
+                                    obj.oldTitle = info.oldEvent._def.title;
+                                    obj.oldStart = info.oldEvent._instance.range.start;
+                                    obj.oldEnd = info.oldEvent._instance.range.end;
+
+                                    events.push(obj);
+                                    console.log(events);
+
+                                    $(function modifyData() {
+                                        $.ajax({
+                                            url: "/full-calendar/calendar",
+                                            method: "POST",
+                                            // dataType: "json",
+                                            data: JSON.stringify(events),
+                                            contentType: 'application/json',
+                                        })
+                                            .done(function () {
+                                                alert("스케줄 수정 요청을 보냈습니다.");
+                                                location.reload();
+                                            })
+                                    })
+
+                                } else {
+                                    location.reload();
+                                }
+
+                            },
+                            eventResize: function (info) {
+                                console.log(info);
+                                if (confirm("스케줄 수정을 요청하시겠습니까 ?")) {
+
+                                    var events = new Array(); // Json 데이터를 받기 위한 배열 선언
+                                    var obj = new Object();
+
+                                    obj.title = info.event._def.title;
+                                    obj.start = info.event._instance.range.start;
+                                    obj.end = info.event._instance.range.end;
+
+                                    obj.oldTitle = info.oldEvent._def.title;
+                                    obj.oldStart = info.oldEvent._instance.range.start;
+                                    obj.oldEnd = info.oldEvent._instance.range.end;
+
+                                    events.push(obj);
+
+                                    console.log(events);
+
+                                    $(function modifyData() {
+                                        $.ajax({
+                                            url: "/full-calendar/calendar",
+                                            method: "POST",
+                                            // dataType: "json",
+                                            data: JSON.stringify(events),
+                                            contentType: 'application/json',
+                                        })
+                                            .done(function () {
+                                                alert("스케줄 수정 요청을 보냈습니다.");
+                                                location.reload();
+                                            })
+                                    })
+                                } else {
+                                    location.reload();
+                                }
+                            },
 
 
                             events: data

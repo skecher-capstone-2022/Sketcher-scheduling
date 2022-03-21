@@ -14,6 +14,13 @@
     <script>
 
         document.addEventListener('DOMContentLoaded', function () {
+
+            let today = new Date();
+
+            let year = today.getFullYear(); // 년도
+            let month = (today.getMonth() + 1).toString().padStart(2, '0');  // 월
+            let date = (today.getDate()).toString().padStart(2, '0');  // 날짜
+
             $(function () {
                 var request = $.ajax({
                     url: "/full-calendar/calendar-admin", // 변경하기
@@ -27,7 +34,7 @@
                     var calendarEl = document.getElementById('calendar');
 
                     var calendar = new FullCalendar.Calendar(calendarEl, {
-                        initialDate: '2022-02-07',
+                        initialDate: year + "-" + month + "-" + date,
                         initialView: 'timeGridWeek',
                         headerToolbar: {
                             left: 'prev,next today',
@@ -36,6 +43,8 @@
                         },
                         editable: true,
                         droppable: true, // this allows things to be dropped onto the calendar
+
+
 
                         locale: 'ko',
                         /**
