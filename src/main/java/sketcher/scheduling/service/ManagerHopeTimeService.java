@@ -42,6 +42,7 @@ public class ManagerHopeTimeService {
         return managerHopeTimeRepository.save(managerHopeTimeDto.toEntity()).getId();
     }
 
+    @Transactional(readOnly = false)
     public void deleteByUserId(String id) {
         managerHopeTimeRepositoryCustom.deleteByUserId(id);
     }
