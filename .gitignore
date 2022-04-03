@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+#RDS계정 보안
+application.properties

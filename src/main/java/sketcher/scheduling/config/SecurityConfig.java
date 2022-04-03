@@ -35,9 +35,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 //        모든 작업 끝나면 경로마다 권한 부여해야 함
         http.csrf().disable().authorizeRequests()
-                .antMatchers("/calendar").hasAuthority("MANAGER")  //인증 사용자만 허용
-                .antMatchers("/calendar_admin").hasAuthority("ADMIN")   //인증 사용자만 허용
-//                .antMatchers("/schedule/**").authenticated()   //인증 사용자만 허용
+//                .antMatchers("/calendar").hasAuthority("MANAGER")  //인증 사용자만 허용
+//                .antMatchers("/calendar_admin").hasAuthority("ADMIN")   //인증 사용자만 허용
+                .antMatchers("/calendar").authenticated()   //인증 사용자만 허용
+                .antMatchers("/calendar_admin").authenticated()   //인증 사용자만 허용
                 .antMatchers("/login").anonymous()    //인증되지 않은 사용자만 허용
 //                .antMatchers("/**").permitAll()    //모든 사용자 허용
                 .and()
