@@ -25,6 +25,7 @@ public class HomeController {
 
     @RequestMapping(value = "/calendar", method = RequestMethod.GET)
     public String calendar(HttpServletRequest request) {
+        //사용자 권한에 따라 admin이면 /calendar_damin으로 이동할 수 있도록 조건문 추가
         return "full-calendar/calendar";
     }
 
