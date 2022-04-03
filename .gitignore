@@ -1,3 +1,6 @@
+#RDS계정 보안
+application-aws.properties
+
 HELP.md
 .gradle
 build/
@@ -36,5 +39,3 @@ out/
 ### VS Code ###
 .vscode/
 
-#RDS계정 보안
-application-aws.properties
