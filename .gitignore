@@ -1,5 +1,3 @@
-#RDS계정 보안
-application-aws.properties
 
 HELP.md
 .gradle
@@ -21,6 +19,8 @@ bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
+application-aws.properties
+
 .idea
 *.iws
 *.iml
