@@ -19,8 +19,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class HomeController {
 
-
-
     @RequestMapping(value = "/calendar", method = RequestMethod.GET)
     public String calendar(HttpServletRequest request) {
         return "full-calendar/calendar";

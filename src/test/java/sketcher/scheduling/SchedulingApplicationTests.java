@@ -10,7 +10,6 @@ import javax.persistence.EntityManager;
 //@SpringBootTest
 @Transactional
 class SchedulingApplicationTests {
-
 	@Test
 	void contextLoads() {
 	}
