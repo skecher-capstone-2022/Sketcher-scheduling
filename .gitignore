@@ -37,4 +37,4 @@ out/
 .vscode/
 
 #RDS계정 보안
-application.properties
+application-aws.properties
