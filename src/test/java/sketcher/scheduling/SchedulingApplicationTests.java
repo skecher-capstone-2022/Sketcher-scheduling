@@ -7,10 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
-@SpringBootTest
+//@SpringBootTest
 @Transactional
 class SchedulingApplicationTests {
-
 	@Test
 	void contextLoads() {
 	}

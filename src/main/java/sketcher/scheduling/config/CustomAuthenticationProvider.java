@@ -21,7 +21,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     //실제 인증에 대한 부분★★★★★
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-//        return null;
+
         UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
 
         // AuthenticaionFilter에서 생성된 토큰으로부터 아이디와 비밀번호를 조회함
