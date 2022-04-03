@@ -1,5 +1,5 @@
 #RDS계정 보안
-application-aws.properties
+!**/src/main/resources/application-aws.properties
 
 HELP.md
 .gradle
