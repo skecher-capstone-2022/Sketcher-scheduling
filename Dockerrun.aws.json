@@ -1,7 +1,7 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "taeong/sketcher-proj:latest",
+    "Name": "taeong/sketcher-proj:v1",
     "Update": "true"
   },
   "Ports": [
