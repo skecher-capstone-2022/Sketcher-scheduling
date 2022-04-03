@@ -1,0 +1,58 @@
+name: Test & Deploy
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  test-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Latest Repo
+        uses: actions/checkout@master
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+
+
+        ### Gradle ###
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+
+      - name: Docker build
+        run: |
+          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+          docker build -t sketcher-proj .
+          docker tag sketcher-proj taeong/sketcher-proj:v1
+          docker push taeong/sketcher-proj:v1
+      - name: Get timestamp
+        uses: gerred/actions/current-time@master
+        id: current-time
+
+      - name: Run string replace
+        uses: frabert/replace-string-action@master
+        id: format-time
+        with:
+          pattern: '[:\.]+'
+          string: "${{ steps.current-time.outputs.time }}"
+          replace-with: '-'
+          flags: 'g'
+
+      # Beanstalk 플러그인을 사용
+      # 미리 생성해둔 IAM 인증키를 사용
+      - name: Beanstalk Deploy
+        uses: einaregilsson/beanstalk-deploy@v20
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: Sketcher-scheduling-service
+          environment_name: Sketcherschedulingservice-env
+          version_label: "github-action--${{ steps.format-time.outputs.replaced }}"
+          region: ap-northeast-2
+          deployment_package: Dockerrun.aws.json

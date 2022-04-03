@@ -33,7 +33,7 @@
                 })
                     .fail(function (request, status, error) {
                         alert("로그인해주세요." + error);
-                        // location.reload();
+                        location.href="/login"
                     })
                     .done(function (data) {
                         console.log(data); // log 로 데이터 찍어주기.
