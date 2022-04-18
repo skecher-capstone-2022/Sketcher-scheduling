@@ -55,6 +55,8 @@ public class CalendarController {
     private final ScheduleUpdateReqService updateReqService;
 
 
+
+
     @ApiOperation(value = "스케줄 개별 조회")
     @GetMapping("/calendar")
     @ResponseBody
@@ -64,17 +66,7 @@ public class CalendarController {
         JSONArray jsonArr = new JSONArray();
 
         HashMap<String, Object> hash = new HashMap<>();
-        List<String> color = new ArrayList<>();
-        color.add("#FFEBCD");
-        color.add("#FA8072");
-        color.add("#FF7F50");
-        color.add("#FFD700");
-        color.add("#B0E0E6");
-        color.add("#48D1CC");
-        color.add("#9370DB");
-        color.add("#FF69B4");
-        color.add("#FFB6C1");
-        color.add("#00BFFF");
+        List<String> color = getColor();
 
 
         User principal = (User) authentication.getPrincipal();
@@ -111,6 +103,8 @@ public class CalendarController {
         log.info("jsonArrCheck: {}", jsonArr);
         return jsonArr;
     }
+
+
 
 
     @PostMapping("/calendar")
@@ -190,29 +184,10 @@ public class CalendarController {
 
         HashMap<String, Object> hash = new HashMap<>();
 
-        List<String> color = new ArrayList<>();
-        color.add("#FFEBCD");
-        color.add("#FA8072");
-        color.add("#FF7F50");
-        color.add("#FFD700");
-        color.add("#B0E0E6");
-        color.add("#48D1CC");
-        color.add("#9370DB");
-        color.add("#FF69B4");
-        color.add("#FFB6C1");
-        color.add("#00BFFF");
+        List<String> color = getColor();
 
 
         List<ManagerAssignSchedule> list = managerAssignScheduleService.findAll();
-
-//        for (ManagerAssignSchedule managerAssignSchedule : list) {
-//            hash.put("title", managerAssignSchedule.getUser().getUsername());
-//            hash.put("start", managerAssignSchedule.getScheduleDateTimeStart());
-//            hash.put("end", managerAssignSchedule.getScheduleDateTimeEnd());
-//
-//            jsonObj = new JSONObject(hash);
-//            jsonArr.add(jsonObj);
-//        }
 
         for (ManagerAssignSchedule managerAssignSchedule : list) {
             hash.put("title", managerAssignSchedule.getUser().getUsername());
@@ -247,17 +222,7 @@ public class CalendarController {
 
         HashMap<String, Object> hash = new HashMap<>();
 
-        List<String> color = new ArrayList<>();
-        color.add("#FFEBCD");
-        color.add("#FA8072");
-        color.add("#FF7F50");
-        color.add("#FFD700");
-        color.add("#B0E0E6");
-        color.add("#48D1CC");
-        color.add("#9370DB");
-        color.add("#FF69B4");
-        color.add("#FFB6C1");
-        color.add("#00BFFF");
+        List<String> color = getColor();
 
         List<ManagerAssignSchedule> list = managerAssignScheduleService.findAll();
 
@@ -449,5 +414,20 @@ public class CalendarController {
             }
         }
         return "/full-calendar/calendar-admin-update";
+    }
+
+    private List<String> getColor() {
+        List<String> color = new ArrayList<>();
+        color.add("#FFEBCD");
+        color.add("#FA8072");
+        color.add("#FF7F50");
+        color.add("#FFD700");
+        color.add("#B0E0E6");
+        color.add("#48D1CC");
+        color.add("#9370DB");
+        color.add("#FF69B4");
+        color.add("#FFB6C1");
+        color.add("#00BFFF");
+        return color;
     }
 }

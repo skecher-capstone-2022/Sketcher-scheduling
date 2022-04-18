@@ -56,9 +56,9 @@
                     calendar.render();
                 });
 
-                // request.fail(function( jqXHR, textStatus ) {
-                //     alert( "Request failed: " + textStatus );
-                // });
+                request.fail(function( jqXHR, textStatus ) {
+                    alert( "Request failed: " + textStatus );
+                });
             });
 
         });
