@@ -1,35 +1,42 @@
-*,
-*:after,
-*::before {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
-body {
-    background-image: url(../img/background.jpg);
-
-    /* background-repeat: no-repeat; */
-    background-size: cover;
-}
-
-/*html, body, .container, .scroller {*/
-/*	height: 100%;*/
+/**,*/
+/**:after,*/
+/**::before {*/
+/*    -webkit-box-sizing: border-box;*/
+/*    -moz-box-sizing: border-box;*/
+/*    box-sizing: border-box;*/
 /*}*/
 
 .title1 {
-    margin: 50px 0px 50px 0px;
+    border-bottom: 1px solid gray;
+    padding-left: 100px;
+    padding-right: 100px;
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.title1 h1{
+    flex-grow: 1;
+}
+.top-wrap {
+    width: 100%;
+    display: flow-root;
+    background-color: white;
+    height: 80px;
+}
+
+.second-wrap {
+    background-color: #E7E6E6;
+    height: 20px;
 }
 
 .ground {
-    width: 90%;
-    /*position: relative;*/
     min-height: 1000px;
     margin: auto;
-    padding: 30px;
+    /*padding: 30px;*/
     background-color: #ffffff;
-    /*top: 100px;*/
-    border-radius: 15px;
+    /* top: 100px; */
+    /* border-radius: 15px; */
+    border-top: solid gray 1px;
 }
 
 .access_user_hello {
@@ -48,8 +55,8 @@ body {
 .access_user {
     float: right;
     margin-right: 100px;
-    padding-top: 50px;
-    padding-bottom: 12px;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 .scroller {
@@ -86,8 +93,8 @@ body {
     left: 0;
     width: 40px;
     height: 6px;
-    background: #fff;
-    box-shadow: 0 6px rgba(52, 73, 94, 0), 0 12px #fff, 0 18px rgba(52, 73, 94, 0), 0 24px #fff;
+    background: #ff2d2d;
+    box-shadow: 0 6px rgba(52, 73, 94, 0), 0 12px #ff2d2d, 0 18px rgba(52, 73, 94, 0), 0 24px #ff2d2d;
 }
 
 .mp-pusher {
@@ -96,6 +103,11 @@ body {
     /*height: 100%;*/
     perspective: 1000px;
 }
+
+.mp-menu a{
+    color: #5e5e5e;
+}
+
 
 .mp-menu {
     position: absolute;
@@ -114,7 +126,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url(../img/background_menu.png);
+    background-image: url(../img/background_white.png);
     background-repeat: no-repeat;
     background-size: cover;
     -webkit-transform: translate3d(-100%, 0, 0);

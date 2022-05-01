@@ -13,14 +13,19 @@ body {
 	font-style: normal;
 }
 
+.signup {
+	position: relative;
+	top: 20%;
+}
+
 .signup > h1 {
-	font-size: 30pt;
+	font-size: 32pt;
 	font-family: 'TmonMonsori', serif;
 
 }
 
 .signup > h4 {
-	font-size: 15pt;
+	font-size: 17pt;
 	font-family: 'TmonMonsori', serif;
 }
 
@@ -50,7 +55,8 @@ body {
 	justify-content:center;
 	align-items:center;
 
-	background-image:url(../img/background.jpg);
+	/*background-image:url(../img/background.jpg);*/
+	background-image:url(../img/login_side_opacity.jpg);
 	background-repeat : no-repeat;
     background-size : cover;
 	box-sizing: border-box;

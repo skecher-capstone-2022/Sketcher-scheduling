@@ -10,27 +10,18 @@
         .btn {
             padding: 10px 20px;
             width: max-content;
-            font-size: 0.8rem;
-            margin-top: 0;
-        }
-
-        input {
-            height: 30px;
-        }
-
-        select {
-            height: 30px;
         }
     </style>
 </head>
 
 <th:block layout:fragment="ground-wrap">
     <div class="ground">
+        <div class="title1">
+            <h1>근무중인 매니저</h1>
+            <img src="/img/logo1.png" height="80"/>
+        </div>
         <div class="main">
             <div class="all_manaer_list">
-                <div class="title1">
-                    <h1>현재 근무중인 매니저 목록</h1>
-                </div>
                 <div class="select-wrap1">
                     <form name="manager_list_form" class="manager_list_form" method="get"> <!--form으로 정렬과 검색 부분 묶음-->
                         <select th:name="align" id="align" class="list_align" onchange="this.form.submit()">
