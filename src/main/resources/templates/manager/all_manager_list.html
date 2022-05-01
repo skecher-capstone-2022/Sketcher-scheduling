@@ -9,8 +9,6 @@
     <style media="screen">
         .btn {
             padding: 10px 20px;
-            width: max-content;
-            font-size: 0.8rem;
             margin-top: 0;
         }
 
@@ -26,11 +24,13 @@
 
 <th:block layout:fragment="ground-wrap">
     <div class="ground">
+        <div class="title1">
+            <h1>전체 매니저 조회</h1>
+            <img src="/img/logo1.png" height="80"/>
+        </div>
         <div class="main">
             <div class="all_manaer_list">
-                <div class="title1">
-                    <h1>전체 매니저 목록</h1>
-                </div>
+
                 <div class="select-wrap1">
                     <form name="manager_list_form" class="manager_list_form" method="get"> <!--form으로 정렬과 검색 부분 묶음-->
                         <select th:name="align" id="align" class="list_align" onchange="this.form.submit()">
@@ -55,7 +55,8 @@
                                 <input th:name="keyword" id="keyword" type="text" placeholder="검색어 입력"
                                        th:value="${condition.keyword}"/> <!--검색 값 유지되도록 value 설정-->
                             </label>
-                            <button type="button" class="btn btn-6 btn-6b search-btn" onclick="searchCheck()">검색</button>
+                            <button type="button" class="btn btn-6 btn-6b search-btn" onclick="searchCheck()">검색
+                            </button>
                             <!--버튼 누르면 form submit-->
                             <br/>
                         </div>
