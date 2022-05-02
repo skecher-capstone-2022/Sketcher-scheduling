@@ -2,68 +2,97 @@
 /* CSS Document */
 
 .info {
-	float: left;
-	margin-left: 50px;
- //margin-bottom: 10px;
-	box-sizing: border-box;
-	font-size: 1.2rem;
+    float: left;
+    margin-left: 50px;
+/ / margin-bottom: 10 px;
+    box-sizing: border-box;
+    font-size: 1.2rem;
 }
+
 .my_page_wrap {
-	display: flex;
-	justify-content: center;
-	align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
 .hope_time {
-	/*margin-left: 75px;*/
-	margin-bottom: 30px;
-	font-size: 1.2rem;
+    /*margin-left: 75px;*/
+    margin-bottom: 30px;
+    font-size: 1.2rem;
 }
+
 .btn_align {
-	text-align: center;
-	margin: 10px 0px 10px 20px;
+    text-align: center;
+    margin: 10px 0px 10px 20px;
 }
+
 .info_wrap {
-	float: left;
-	margin: 30px 50px 50px 50px;
+    float: left;
+    margin: 30px 50px 50px 50px;
 }
+
 .user_info_wrap {
- //float:left;
- //width:49%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+/ / float: left;
+/ / width: 49 %;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
 .work_record_wrap {
- //float:right;
- //width:49%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+/ / float: right;
+/ / width: 49 %;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
 .info_work {
-	float: left;
-	margin-left: 50px;
-	margin-bottom: 50px;
-	box-sizing: border-box;
-	font-size: 1.2rem;
+    float: left;
+    margin-left: 50px;
+    margin-bottom: 50px;
+    box-sizing: border-box;
+    font-size: 1.2rem;
 }
+
+.info_manger {
+    float: left;
+    margin-top: 50px;
+    margin-left: 50px;
+    margin-bottom: 50px;
+    box-sizing: border-box;
+    font-size: 1.2rem;
+}
+
+.info_response {
+    float: left;
+    margin-top: 80px;
+    margin-left: 50px;
+    /*margin-bottom: 50px;*/
+    box-sizing: border-box;
+    font-size: 1.2rem;
+}
+
 button.btn.btn-6.btn-6b.reqbtn1 {
-	width: 266px;
-	background-color: #939393;
-	border-radius: 8px;
+    width: 266px;
+    background-color: #939393;
+    border-radius: 8px;
 }
+
 button.btn.btn-6.btn-6b.reqbtn1:hover {
-	width: 266px;
-	background-color: #606060;
-	border-radius: 8px;
+    width: 266px;
+    background-color: #606060;
+    border-radius: 8px;
 }
+
 button.btn.btn-6.btn-6b.reqbtn2 {
-	width: 266px;
-	background-color: tomato;
-	border-radius: 8px;
+    width: 266px;
+    background-color: tomato;
+    border-radius: 8px;
 }
+
 button.btn.btn-6.btn-6b.reqbtn2:hover {
-	width: 266px;
-	background-color: #ff3f1d;
-	border-radius: 8px;
+    width: 266px;
+    background-color: #ff3f1d;
+    border-radius: 8px;
 }

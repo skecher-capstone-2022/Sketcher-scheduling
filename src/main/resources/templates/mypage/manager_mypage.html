@@ -52,9 +52,9 @@
             <img src="/img/logo1.png" height="80"/>
         </div>
         <div class="main">
-            <table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-bottom:none;">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
                 <tr>
-                    <td width="49%" style="border-right:1px solid #E6E6E6;">
+                    <td width="49%" style="border-right:1px solid #E6E6E6; border-bottom:none;">
                         <div class="user_info_wrap">
                             <div>
                                 <h2 style="text-align:center">사용자 정보 조회</h2>
@@ -89,7 +89,7 @@
                             </div>
                         </div>
                     </td>
-                    <td width="85" height="85">
+                    <td width="85" height="85" style="border-bottom:none;">
                         <div class="work_record_wrap">
                             <div>
                                 <h2 style="text-align:center">근무 기록</h2>
@@ -160,10 +160,10 @@
                 <form id="updateForm" name="updateForm" autocomplete="off" method="post" action="/updateManager"
                       onsubmit="return updateCheck()">
                     <table>
-<!--                        <tr>-->
-<!--                            <td>사용자 이름</td>-->
-<!--                            <td><input type="text" name="username" th:value="${user.username}"></td>-->
-<!--                        </tr>-->
+                        <!--                        <tr>-->
+                        <!--                            <td>사용자 이름</td>-->
+                        <!--                            <td><input type="text" name="username" th:value="${user.username}"></td>-->
+                        <!--                        </tr>-->
                         <tr>
                             <td>전화번호</td>
                             <td><input type="text" name="userTel" th:value="${user.userTel}"></td>
@@ -193,8 +193,8 @@
 </th:block>
 </html>
 <footer>
-<!--    <script src="/js/classie5.js"></script>-->
-<!--    <script src="/js/modalEffects.js"></script>-->
+    <!--    <script src="/js/classie5.js"></script>-->
+    <!--    <script src="/js/modalEffects.js"></script>-->
     <!--    <script th:src="@{/js/classie5.js}" type="text/javascript"></script>-->
     <!--    <script th:src="@{/js/modalEffects.js}" type="text/javascript"></script>-->
 
@@ -209,6 +209,7 @@
                     if (chart.config.options.elements.center) {
                         //Get ctx from string
                         var ctx = chart.chart.ctx;
+
                         //Get options from the center object in options
                         var centerConfig = chart.config.options.elements.center;
                         var fontSize = centerConfig.fontSize || '20';
@@ -219,22 +220,28 @@
                         var sidePaddingCalculated = (sidePadding / 100) * (chart.innerRadius * 2)
                         //Start with a base font of 30px
                         ctx.font = fontSize + "px " + fontStyle;
+
                         //Get the width of the string and also the width of the element minus 10 to give it 5px side padding
                         var stringWidth = ctx.measureText(txt).width;
                         var elementWidth = (chart.innerRadius * 2) - sidePaddingCalculated;
+
                         // Find out how much the font can grow in width.
                         var widthRatio = elementWidth / stringWidth;
                         var newFontSize = Math.floor(30 * widthRatio);
                         var elementHeight = (chart.innerRadius * 0.7);
+
                         // Pick a new font size so it will not be larger than the height of label.
                         var fontSizeToUse = Math.min(newFontSize, elementHeight);
+
                         //Set font settings to draw it correctly.
                         ctx.textAlign = 'center';
                         ctx.textBaseline = 'middle';
                         var centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
                         var centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+
                         ctx.font = fontSizeToUse + "px " + fontStyle;
                         ctx.fillStyle = color;
+
                         //Draw text in center
                         ctx.fillText(txt, centerX, centerY);
                     }
@@ -328,10 +335,10 @@
             if (count == 0) {
                 alert("한 개 이상의 타임을 선택해주세요.");
                 return false;
-            // } else if (username == "") {
-            //     alert("이름을 입력해주세요.");
-            //     document.updateForm.username.focus();
-            //     return false;
+                // } else if (username == "") {
+                //     alert("이름을 입력해주세요.");
+                //     document.updateForm.username.focus();
+                //     return false;
             } else if (userTel == "") {
                 alert("전화번호를 입력해주세요.");
                 document.updateForm.userTel.focus();
