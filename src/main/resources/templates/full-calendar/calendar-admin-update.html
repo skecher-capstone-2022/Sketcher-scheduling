@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/menu_layout}">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/menu_layout}">
 <head>
     <title>스케줄 수정</title>
     <link th:href="@{/css/manager_list.css}" rel="stylesheet"/>
@@ -142,7 +143,7 @@
                                     start: arg.start,
                                     end: arg.end,
                                     allDay: arg.allDay,
-                                    backgroundColor : regColor
+                                    backgroundColor: regColor
                                 })
 
                                 console.log(arg);
