@@ -41,6 +41,6 @@ public class HomeController {
 
     @GetMapping(value = "/create_schedule")
     public String createSchedule() {
-        return "/full-calendar/calendar_create";
+        return "full-calendar/calendar_create";
     }
 }
