@@ -90,7 +90,7 @@
                                 <div class="info_wrap">
                                     <h2 style="text-align:center">매니저 근태관리</h2>
                                     <div style="float:left;">
-                                        <canvas id="managerChart" width="130" height="130"></canvas>
+                                        <canvas id="managerChart" width="100" height="100"></canvas>
                                     </div>
                                     <div class="info_manger">
                                         <span class="bold_span">금일 근무 매니저  |</span> 30 명<br/>
@@ -101,7 +101,7 @@
                                     <h2 style="text-align:center">금주 수정요청 미응답 건수</h2>
                                     <div class="info_wrap">
                                         <div style="float:left;">
-                                            <canvas id="responseChart" width="130" height="130"></canvas>
+                                            <canvas id="responseChart" width="100" height="100"></canvas>
                                         </div>
                                         <div class="info_response">
                                             <span class="bold_span">3건</span> / 총 12 건<br/>
@@ -215,7 +215,7 @@
                         ctx.textAlign = 'center';
                         ctx.textBaseline = 'middle';
                         var centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
-                        var centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 1.6);
+                        var centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
 
                         ctx.font = fontSizeToUse + "px " + fontStyle;
                         ctx.fillStyle = color;
@@ -268,8 +268,8 @@
                     },
                     maintainAspectRatio: false,
                     cutoutPercentage: 70,
-                    rotation: 1 * Math.PI,
-                    circumference: 1 * Math.PI
+                    // rotation: 1 * Math.PI,
+                    // circumference: 1 * Math.PI
                     //animation:false
                 }
             };
@@ -315,8 +315,8 @@
                     },
                     maintainAspectRatio: false,
                     cutoutPercentage: 70,
-                    rotation: 1 * Math.PI,
-                    circumference: 1 * Math.PI
+                    // rotation: 1 * Math.PI,
+                    // circumference: 1 * Math.PI
                     //animation:false
                 }
             };

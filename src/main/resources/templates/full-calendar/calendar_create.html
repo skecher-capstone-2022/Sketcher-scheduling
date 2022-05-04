@@ -5,6 +5,7 @@
 <head>
     <title>근무 스케줄 배정</title>
     <link th:href="@{/css/modal-component.css}" rel="stylesheet"/>
+    <link th:href="@{/css/create_schedule.css}" rel="stylesheet"/>
     <style media="screen">
         .no-csstransforms3d .mp-pusher, .no-js .mp-pusher {
             padding-left: 0;
@@ -13,102 +14,18 @@
         .menu-trigger {
             display: none;
         }
-
-        /*----------------------*/
-
         .title1 {
             align-items: center;
         }
-
         .title1 > button {
             height: fit-content;
         }
-
-        .user_remote_controller {
-            height: 800px;
-            width: 300px;
-        }
-
-        .left_content {
-            width: 90%;
-        }
-
         .main {
             margin: 0 50px 100px 50px;
             display: flex;
         }
+        /*----------------------*/
 
-        .remocons {
-            margin: 0 50px;
-            display: flex;
-            height: 150px;
-        }
-
-        .remote {
-            width: 50%;
-            height: 150px;
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            align-content: center;
-            /* flex-wrap: nowrap; */
-        }
-
-
-        .days {
-            height: 50px;
-            margin: 0 50px;
-            margin-top: 10px;
-        }
-
-        .schedule_box {
-            height: 50px;
-            margin: 0 50px;
-            margin-top: 10px;
-            padding-right: 300px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        table, td {
-            border: 1px solid #8080803d;
-        }
-
-        .remote_img {
-            display: flex;
-            align-items: center;
-        }
-
-        input[type="checkbox"] {
-            width: 15px;
-            height: 15px;
-        }
-
-        .button_box > button {
-            height: 100px;
-        }
-
-        button.btn.btn-1.btn-1a.md-close {
-            margin: 0;
-            padding: 0px;
-        }
-
-        .days > button {
-            height: 40px;
-            width: 40px;
-        }
-
-        .managers {
-            overflow-y: scroll;
-        }
-
-        .manager {
-            display: flex;
-            align-items: center;
-            margin-left: 10px;
-            border-bottom: 1px solid #80808082;
-        }
     </style>
 </head>
 
@@ -770,10 +687,5 @@
 </th:block>
 </html>
 <footer>
-    <!--    <script src="/js/classie5.js"></script>-->
-    <!--    <script src="/js/modalEffects.js"></script>-->
-    <!--    <script th:src="@{/js/classie5.js}" type="text/javascript"></script>-->
-    <!--    <script th:src="@{/js/modalEffects.js}" type="text/javascript"></script>-->
-
 
 </footer>
