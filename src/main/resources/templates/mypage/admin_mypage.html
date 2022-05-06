@@ -9,8 +9,6 @@
     <style media="screen">
         .btn {
             padding: 10px 20px;
-            width: max-content;
-            font-size: 0.8rem;
             margin-top: 0;
         }
 
@@ -48,40 +46,76 @@
 
 <th:block layout:fragment="ground-wrap">
     <div class="ground">
+        <div class="title1">
+            <h1>마이페이지</h1>
+            <img src="/img/logo1.png" height="80"/>
+        </div>
         <div class="main">
-            <div class="title1">
-                <h1>마이페이지</h1>
-            </div>
-            <div class="my_page_wrap">
-                <div>
-                    <h2 style="text-align:center">사용자 정보 조회</h2>
-                    <div class="info_wrap">
-                        <div style="float:left;">
-                            <img th:src="@{/img/admin.svg}" width="100" height="100">
-                            <!--                            <img src="../../static/img/admin.svg" width="100" height="100">-->
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td width="49%" style="border-right:1px solid #E6E6E6; border-bottom: none;">
+                        <div class="my_page_wrap">
+                            <div>
+                                <h2 style="text-align:center">사용자 정보 조회</h2>
+                                <div class="info_wrap">
+                                    <div style="float:left;">
+                                        <img th:src="@{/img/admin.svg}" width="100" height="100">
+                                        <!--                            <img src="../../static/img/admin.svg" width="100" height="100">-->
+                                    </div>
+                                    <div class="info"><span class="bold_span" sec:authentication="authorities"
+                                                            style="color:#E75757;"></span><br/>
+                                        <span class="bold_span" th:text="${user.username}"></span><br/>
+                                        <div th:text="${user.id}"></div>
+                                        <div th:text="|${#temporals.format(user.user_joinDate, 'yyyy-MM-dd')} 가입|"></div>
+                                        <div th:text="${user.userTel}"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="btn_align">
+                                        <button class="btn btn-6 btn-6b reqbtn1 md-trigger" data-modal="modal-2">사용자 정보
+                                            수정
+                                        </button>
+                                    </div>
+                                    <div class="btn_align">
+                                        <button class="btn btn-6 btn-6b reqbtn2 md-trigger" data-modal="modal-1">탈퇴하기
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="info"><span span sec:authentication="authorities"
-                                                style="color:#E75757;"></span><br/>
-                            <span th:text="${user.username}"></span><br/>
-                            <div th:text="${user.id}"></div>
-                            <div th:text="|${#temporals.format(user.user_joinDate, 'yyyy-MM-dd')} 가입|"></div>
-                            <div th:text="${user.userTel}"></div>
+                    </td>
+                    <td width="85" height="85" style="border-bottom: none;">
+                        <div class="work_record_wrap">
+                            <div>
+                                <div class="info_wrap">
+                                    <h2 style="text-align:center">매니저 근태관리</h2>
+                                    <div style="float:left;">
+                                        <canvas id="managerChart" width="100" height="100"></canvas>
+                                    </div>
+                                    <div class="info_manger">
+                                        <span class="bold_span">금일 근무 매니저  |</span> 30 명<br/>
+                                        <span class="bold_span">현재 근무 매니저  |</span> 15 명<br/>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h2 style="text-align:center">금주 수정요청 미응답 건수</h2>
+                                    <div class="info_wrap">
+                                        <div style="float:left;">
+                                            <canvas id="responseChart" width="100" height="100"></canvas>
+                                        </div>
+                                        <div class="info_response">
+                                            <span class="bold_span">3건</span> / 총 12 건<br/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <div class="btn_align">
-                            <button class="btn btn-6 btn-6b reqbtn1 md-trigger" data-modal="modal-2">사용자 정보 수정
-                            </button>
-                        </div>
-                        <div class="btn_align">
-                            <button class="btn btn-6 btn-6b reqbtn2 md-trigger" data-modal="modal-1">탈퇴하기
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
+    <!--    </div>-->
 
     <!--회원탈퇴 요청 modal-->
     <div class="md-modal md-effect-1" id="modal-1">
@@ -115,10 +149,10 @@
                 <form id="updateForm" name="updateForm" autocomplete="off" method="post" action="/updateAdmin"
                       onsubmit="return updateCheck()">
                     <table>
-<!--                        <tr>-->
-<!--                            <td>사용자 이름</td>-->
-<!--                            <td><input type="text" name="username" th:value="${user.username}"></td>-->
-<!--                        </tr>-->
+                        <!--                        <tr>-->
+                        <!--                            <td>사용자 이름</td>-->
+                        <!--                            <td><input type="text" name="username" th:value="${user.username}"></td>-->
+                        <!--                        </tr>-->
                         <tr>
                             <td>전화번호</td>
                             <td><input type="text" name="userTel" th:value="${user.userTel}"></td>
@@ -140,6 +174,160 @@
     <!--    <script src="/js/modalEffects.js"></script>-->
     <!--    <script th:src="@{/js/classie5.js}" type="text/javascript"></script>-->
     <!--    <script th:src="@{/js/modalEffects.js}" type="text/javascript"></script>-->
+
+    <!-- /chart -->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.0/Chart.bundle.min.js"></script>
+    <script type="text/javascript">
+        var num = 0.14;
+        var num2 = 0.25;
+        window.onload = function () {
+            Chart.pluginService.register({
+                beforeDraw: function (chart) {
+                    if (chart.config.options.elements.center) {
+                        //Get ctx from string
+                        var ctx = chart.chart.ctx;
+
+                        //Get options from the center object in options
+                        var centerConfig = chart.config.options.elements.center;
+                        var fontSize = centerConfig.fontSize || '20';
+                        var fontStyle = centerConfig.fontStyle || 'Arial';
+                        var txt = centerConfig.text;
+                        var color = centerConfig.color || '#000';
+                        var sidePadding = centerConfig.sidePadding || 20;
+                        var sidePaddingCalculated = (sidePadding / 100) * (chart.innerRadius * 2)
+                        //Start with a base font of 30px
+                        ctx.font = fontSize + "px " + fontStyle;
+
+                        //Get the width of the string and also the width of the element minus 10 to give it 5px side padding
+                        var stringWidth = ctx.measureText(txt).width;
+                        var elementWidth = (chart.innerRadius * 2) - sidePaddingCalculated;
+
+                        // Find out how much the font can grow in width.
+                        var widthRatio = elementWidth / stringWidth;
+                        var newFontSize = Math.floor(30 * widthRatio);
+                        var elementHeight = (chart.innerRadius * 0.7);
+
+                        // Pick a new font size so it will not be larger than the height of label.
+                        var fontSizeToUse = Math.min(newFontSize, elementHeight);
+
+                        //Set font settings to draw it correctly.
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        var centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+                        var centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+
+                        ctx.font = fontSizeToUse + "px " + fontStyle;
+                        ctx.fillStyle = color;
+
+                        //Draw text in center
+                        ctx.fillText(txt, centerX, centerY);
+                    }
+                }
+            });
+
+
+            var config = {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        "지각 매니저 수",
+                        "현재 근무 매니저"
+                    ],
+                    datasets: [{
+                        data: [num, 1 - num],
+                        backgroundColor: [
+                            "#336699",
+                            "#DDEEFF"
+                        ],
+                        hoverBackgroundColor: [
+                            "#336699",
+                            "#DDEEFF"
+                        ],
+                        borderWidth: 0,
+                        scaleBeginAtZero: true
+                    }]
+                },
+                options: {
+                    tooltips: {enabled: false},
+                    hover: {
+                        //animationDuration: 0
+                        mode: null
+                    },
+                    responsive: true,
+                    legend: {
+                        display: false
+                    },
+                    elements: {
+                        center: {
+                            text: Math.round(num * 100) + "%",
+                            color: '#336699', // Default is #000000
+                            fontStyle: 'Arial', // Default is Arial
+                            sidePadding: 15 // Defualt is 20 (as a percentage)
+                        }
+                    },
+                    maintainAspectRatio: false,
+                    cutoutPercentage: 70,
+                    // rotation: 1 * Math.PI,
+                    // circumference: 1 * Math.PI
+                    //animation:false
+                }
+            };
+
+            var config2 = {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        "미응답 건수",
+                        "금주 총 요청 건 수"
+                    ],
+                    datasets: [{
+                        data: [num2, 1 - num2],
+                        backgroundColor: [
+                            "#336699",
+                            "#DDEEFF"
+                        ],
+                        hoverBackgroundColor: [
+                            "#336699",
+                            "#DDEEFF"
+                        ],
+                        borderWidth: 0,
+                        scaleBeginAtZero: true
+                    }]
+                },
+                options: {
+                    tooltips: {enabled: false},
+                    hover: {
+                        //animationDuration: 0
+                        mode: null
+                    },
+                    responsive: true,
+                    legend: {
+                        display: false
+                    },
+                    elements: {
+                        center: {
+                            text: Math.round(num2 * 100) + "%",
+                            color: '#336699', // Default is #000000
+                            fontStyle: 'Arial', // Default is Arial
+                            sidePadding: 15 // Defualt is 20 (as a percentage)
+                        }
+                    },
+                    maintainAspectRatio: false,
+                    cutoutPercentage: 70,
+                    // rotation: 1 * Math.PI,
+                    // circumference: 1 * Math.PI
+                    //animation:false
+                }
+            };
+
+            var ctx = document.getElementById("managerChart").getContext("2d");
+            var managerChart = new Chart(ctx, config);
+
+            var ctx = document.getElementById("responseChart").getContext("2d");
+            var responseChart = new Chart(ctx, config2);
+        }
+    </script>
 
     <script type="text/JavaScript">
         function dropoutCheck() {
@@ -188,5 +376,4 @@
             }
         }
     </script>
-
 </footer>
