@@ -1,0 +1,82 @@
+.user_remote_controller {
+    height: 800px;
+    width: 300px;
+}
+
+.left_content {
+    width: 90%;
+}
+
+
+
+.remocons {
+    margin: 0 50px;
+    display: flex;
+    height: 150px;
+}
+
+.remote {
+    width: 50%;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    align-content: center;
+    /* flex-wrap: nowrap; */
+}
+
+
+.days {
+    height: 50px;
+    margin: 0 50px;
+    margin-top: 10px;
+}
+
+.schedule_box {
+    height: 50px;
+    margin: 0 50px;
+    margin-top: 10px;
+    padding-right: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+table, td {
+    border: 1px solid #8080803d;
+}
+
+.remote_img {
+    display: flex;
+    align-items: center;
+}
+
+input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+}
+
+.button_box > button {
+    height: 100px;
+}
+
+button.btn.btn-1.btn-1a.md-close {
+    margin: 0;
+    padding: 0px;
+}
+
+.days > button {
+    height: 40px;
+    width: 40px;
+}
+
+.managers {
+    overflow-y: scroll;
+}
+
+.manager {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    border-bottom: 1px solid #80808082;
+}

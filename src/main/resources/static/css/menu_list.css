@@ -1,15 +1,17 @@
 @charset "utf-8";
 /* CSS Document */
 
-body {
-	margin:0;
-	/*height:100vh;*/
-	background-image:url(../img/background.jpg);
-	background-repeat : no-repeat;
-    background-size : cover;
-	background-attachment: fixed;
-	
+
+.md-content button {
+	/* position: relative; */
+	/* left: 70%; */
+	float: right;
+	font-size: 1.0rem;
+	border-radius: 8px;
+	color: white;
+	background: #939393;
 }
+
 .menu {
 	clear:both;
 	float:left;
@@ -75,4 +77,5 @@ li a.home {
 	width: max-content;
 	font-size: 0.8rem;
 }
+
 
