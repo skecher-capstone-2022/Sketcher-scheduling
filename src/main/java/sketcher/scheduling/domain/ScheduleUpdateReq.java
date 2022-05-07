@@ -1,6 +1,7 @@
 package sketcher.scheduling.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -17,25 +18,25 @@ public class ScheduleUpdateReq {
     @Column(name = "update_req_id")
     private Integer id;
 
-    @OneToOne
-    @JoinColumn(name = "assign_schedule_id")
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "updateReq")
     private ManagerAssignSchedule assignSchedule;
 
     @Column(name = "req_accept_check")
     private Character reqAcceptCheck;
 
-    @Column(name="change_date")
+    @Column(name = "change_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+9")
     private LocalDateTime changeDate;
 
-    @Column(name="req_time")
+    @Column(name = "req_time")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+9")
     private LocalDateTime reqTime;
 
     @Builder
-    public ScheduleUpdateReq(Integer id,ManagerAssignSchedule assignSchedule, Character reqAcceptCheck, LocalDateTime changeDate,LocalDateTime reqTime) {
+    public ScheduleUpdateReq(Integer id, ManagerAssignSchedule assignSchedule, Character reqAcceptCheck, LocalDateTime changeDate, LocalDateTime reqTime) {
         this.id = id;
         this.assignSchedule = assignSchedule;
         this.reqAcceptCheck = reqAcceptCheck;
@@ -43,10 +44,11 @@ public class ScheduleUpdateReq {
         this.reqTime = reqTime;
     }
 
-    public void update(ManagerAssignSchedule assignSchedule, LocalDateTime changeDate){
+    public void update(ManagerAssignSchedule assignSchedule, LocalDateTime changeDate) {
         this.assignSchedule = assignSchedule;
         this.changeDate = changeDate;
     }
 
-    protected ScheduleUpdateReq(){}
+    protected ScheduleUpdateReq() {
+    }
 }

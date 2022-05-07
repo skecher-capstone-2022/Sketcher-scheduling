@@ -2,6 +2,7 @@ package sketcher.scheduling.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -29,7 +30,9 @@ public class ManagerAssignSchedule {
 //    private Schedule schedule;
 
 
-    @OneToOne(mappedBy = "assignSchedule")
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "update_req_id")
     private ScheduleUpdateReq updateReq;
 
 
