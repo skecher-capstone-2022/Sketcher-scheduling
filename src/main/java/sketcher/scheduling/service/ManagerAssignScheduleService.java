@@ -11,6 +11,9 @@ import sketcher.scheduling.repository.ManagerAssignScheduleRepositoryCustomImpl;
 import sketcher.scheduling.repository.ScheduleRepository;
 import sketcher.scheduling.repository.UserRepository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -26,8 +29,18 @@ public class ManagerAssignScheduleService {
     private final UserRepository userRepository;
     private final ScheduleRepository scheduleRepository;
 
-    public List<ManagerAssignSchedule> findAll(){
+    @PersistenceContext
+    private EntityManager em;
+
+    public List<ManagerAssignSchedule> findAll() {
         return managerAssignScheduleRepository.findAll();
+    }
+
+    public List<ManagerAssignSchedule> AssignScheduleFindAll() {
+        return em.createQuery("select s from ManagerAssignSchedule s"
+                      + " join fetch s.user u"
+                        , ManagerAssignSchedule.class)
+                .getResultList();
     }
 
     public Optional<ManagerAssignSchedule> findById(Integer id) {
@@ -35,21 +48,21 @@ public class ManagerAssignScheduleService {
     }
 
     @Transactional(rollbackFor = {NoSuchElementException.class})
-    public Integer saveManagerAssignSchedule(ManagerAssignScheduleDto managerAssignScheduleDto) throws NoSuchElementException{
+    public Integer saveManagerAssignSchedule(ManagerAssignScheduleDto managerAssignScheduleDto) throws NoSuchElementException {
         managerAssignScheduleDto.setUpdateReq(null);
         return managerAssignScheduleRepository.save(managerAssignScheduleDto.toEntity()).getId();
     }
 
-    public List<ManagerAssignSchedule> findByUser(User user){
+    public List<ManagerAssignSchedule> findByUser(User user) {
         return user.getManagerAssignScheduleList();
     }
 
-    public Optional<ManagerAssignSchedule> findByUserAndScheduleDateTimeStartAndScheduleDateTimeEnd(User user, LocalDateTime startDate, LocalDateTime endDate){
+    public Optional<ManagerAssignSchedule> findByUserAndScheduleDateTimeStartAndScheduleDateTimeEnd(User user, LocalDateTime startDate, LocalDateTime endDate) {
         return managerAssignScheduleRepository.findByUserAndScheduleDateTimeStartAndScheduleDateTimeEnd(user, startDate, endDate);
     }
 
     @Transactional
-    public Integer deleteByUser(User user){
+    public Integer deleteByUser(User user) {
         User user1 = userRepository.findByUsername(user.getUsername()).get();
         managerAssignScheduleRepository.deleteByUser(user1);
         return user1.getCode();
@@ -61,14 +74,15 @@ public class ManagerAssignScheduleService {
     }
 
     @Transactional
-    public void update(Integer id, ManagerAssignScheduleDto dto){
+    public void update(Integer id, ManagerAssignScheduleDto dto) {
         ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("해당 스케줄이 없습니다." + id));
 
         managerAssignSchedule.update(dto.getScheduleDateTimeStart(), dto.getScheduleDateTimeEnd());
     }
+
     @Transactional
-    public void deleteById(Integer id){
+    public void deleteById(Integer id) {
         managerAssignScheduleRepository.deleteById(id);
     }
 

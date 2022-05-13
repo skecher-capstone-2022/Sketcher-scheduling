@@ -3550,11 +3550,38 @@
         }
     }
 
-    // let kim = new Person('kim', '24', 'seoul');
-    // console.log(kim);
+    // ---절차---
+    // 1. 셀 선택 : select_cell (ajax)
+    // 2. 매니저 리스트업 : update_manager_list (js)
+    // 3. 매니저 선택 : select_manager (ajax)
+    // 4. 스케줄표에 반영 : update_tmp_schedule (ajax)
+    // 5. 등록 버튼 누름(스케줄 저장) : save_schedule (ajax)
 
 
 
+    function select_cell(id) {
+        alert(id);
+        $.ajax({
+            contentType : "application/json; charset=utf-8;",
+            type : "GET",
+            url : "/select_cell",
+            data : {
+                "cellId" : id
+            },
+            success : function(response) {
+
+                setTimeout(function(){
+                    $(".text-danger").hide();
+                    $("#directda_img").show();
+                    $("#indirect_msg3").text("해당 자산의 상세 유형은 "+response+"입니다.");
+                },2200);
+            },
+            error : function(request, status, error) {
+                alert("code:" + request.status + "\n" + "message:"
+                    + request.responseText + "\n" + "error:" + error);
+            }
+        })
+    }
 
 </script>
 <footer>

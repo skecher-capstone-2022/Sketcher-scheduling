@@ -36,6 +36,10 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
+    public List<User> findAllManager() {
+        return userRepository.findAllManager();
+    }
+
     public Optional<User> findByCode(int code) {
         return userRepository.findByCode(code);
     }
