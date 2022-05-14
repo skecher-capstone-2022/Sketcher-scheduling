@@ -71,7 +71,8 @@ public class TmpManagerTest {
         int i = 0;
         for (TmpManager tmpManager : tmpObjects) {
             i++;
-            System.out.print("[ " + i + " ] " + tmpManager.getUserid() + " : " + tmpManager.getUsername() + " (hopetime : ");
+            System.out.print("[ " + i + " ] " + tmpManager.getUser().getId() + " : "
+                    + tmpManager.getUser().getUsername() + " (hopetime : ");
             for (int j : tmpManager.getHopeTime()) {
                 System.out.print(j + ",");
             }

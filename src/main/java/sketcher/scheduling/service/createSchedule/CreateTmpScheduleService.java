@@ -76,4 +76,8 @@ public class CreateTmpScheduleService {
         }
         return findManagertmpScheduleList;
     }
+
+    public void reset(){
+        tmpScheduleList.clear();
+    }
 }

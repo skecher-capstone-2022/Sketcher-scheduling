@@ -1,12 +1,11 @@
 package sketcher.scheduling.object;
 
 import lombok.Getter;
+import sketcher.scheduling.domain.User;
 
 @Getter
 public class TmpManager {
-    private final int usercode;
-    private final String userid;
-    private final String username;
+    private final User user;
     private int[] hopeTime;
     private int totalTime = 0;
     private int weekendTime = 0;
@@ -18,19 +17,15 @@ public class TmpManager {
     }
 
     @lombok.Builder
-    public TmpManager(int usercode, String userid, String username, int[] hopeTime) {
-        this.usercode = usercode;
-        this.userid = userid;
-        this.username = username;
+    public TmpManager(User user, int[] hopeTime) {
+        this.user = user;
         this.hopeTime = hopeTime;
     }
 
     public TmpManager toEntity(){
 
         return TmpManager.builder()
-                .usercode(usercode)
-                .userid(userid)
-                .username(username)
+                .user(user)
                 .hopeTime(hopeTime)
                 .build();
     }

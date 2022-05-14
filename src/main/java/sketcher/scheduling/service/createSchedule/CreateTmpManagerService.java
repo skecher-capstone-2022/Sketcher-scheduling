@@ -40,9 +40,7 @@ public class CreateTmpManagerService {
 
     private TmpManager createNewTmpManager(User user, int[] hopeTime) {
         return TmpManager.builder()
-                .usercode(user.getCode())
-                .userid(user.getId())
-                .username(user.getUsername())
+                .user(user)
                 .hopeTime(hopeTime)
                 .build();
     }
