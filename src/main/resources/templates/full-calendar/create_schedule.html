@@ -6,6 +6,7 @@
     <title>근무 스케줄 배정</title>
     <link th:href="@{/css/modal-component.css}" rel="stylesheet"/>
     <link th:href="@{/css/create_schedule.css}" rel="stylesheet"/>
+
     <style media="screen">
         .no-csstransforms3d .mp-pusher, .no-js .mp-pusher {
             padding-left: 0;
@@ -14,12 +15,15 @@
         .menu-trigger {
             display: none;
         }
+
         .title1 {
             align-items: center;
         }
+
         .title1 > button {
             height: fit-content;
         }
+
         .main {
             margin: 0 50px 100px 50px;
             display: flex;
@@ -27,6 +31,39 @@
     </style>
 </head>
 
+<script type="text/javascript" src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    // var isChecked = document.getElementById('listAll');
+    // if(!isChecked){
+    //     alert("체크해주세요.");
+    // }
+    // window.onload = function(){
+    //     console.log('checkedBox is ' + document.getElementById('listAll'));
+    //     console.log('uncheckedBox is ' + document.getElementById('unchecked'));
+    // };
+    var $check = $j("input[class=checktypes]:checked");
+    // var $check = $("input:checkbox[name=listAll]:checked");
+    var param = $check.serialize();
+    // alert($check);
+    //
+    // var len = $("input[name='lists']:checked").length;
+    // console.log(len);
+    // if(len>1){
+    //     $("input[name='lists']:checked").each(function(e){
+    //         console.log($(this).val())
+    //     })
+    // }
+
+    $.ajax({
+        url:"/full-calendar/create_schedule",
+        method:"POST",
+        datatype: "json",
+        data : param,
+        success: function (data){
+            console.log("값 : " + param);
+        }
+    });
+</script>
 <th:block layout:fragment="ground-wrap">
     <div class="ground">
         <div class="title1">
@@ -55,17 +92,24 @@
             <div class="remote" style="border-left: 2px solid #8080805e;">
                 <div class="remote_img"><img src="/img/remocon.svg" width="50" height="50"/>
                     <p><b>매니저<br>리모컨</b></p></div>
-                <div class="checks">
-                    <p><input type="checkbox"> 근무 조건 미달성</p>
-                    <p><input type="checkbox"> 주말 2시간 근무 미배정</p>
-                    <p><input type="checkbox"> 총 근무시간 10시간 이하</p>
 
+
+                <div class="checktypes">
+                    <form method="post" action="/full-calendar/create_schedule.html">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                    <p><input type="checkbox" name="lists" id="listAll" class="checktypes" value="lists" > 근무 조건 미달성</p>
+                    <p><input type="checkbox" name="lists" value="lists"> 주말 2시간 근무 미배정</p>
+                    <p><input type="checkbox" name="lists"> 총 근무시간 10시간 이하</p>
+                        <button class="btn btn-1 btn-1a md-close" style="margin: 0; padding: 15px;"
+                                onclick="" id="btnManager">매니저<br>조회
+                        </button>
+                    </form>
                 </div>
                 <div class="button_box">
-                    <button class="btn btn-1 btn-1a md-close" style="margin: 0; padding: 15px;"
-                            onclick="">매니저<br>조회
-                    </button>
+
                 </div>
+
+
             </div>
         </div>
         <div class="schedule_box">
@@ -579,102 +623,12 @@
                     <option></option>
                     <option></option>
                 </select></div>
-                <div class="managers">
-                    <div class="manager">
-                        <img src="/img/ok.svg" height="35"/>&nbsp
-                        <p><b>박태영</b></p>&nbsp
-                        <p>user1</p>&nbsp
-                        <p style="color: blue;">(10시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/no.svg" height="35"/>&nbsp
-                        <p><b>이혜원</b></p>&nbsp
-                        <p>user2</p>&nbsp
-                        <p style="color: red;">(8시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/ok.svg" height="35"/>&nbsp
-                        <p><b>박태영</b></p>&nbsp
-                        <p>user1</p>&nbsp
-                        <p style="color: blue;">(10시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/ok.svg" height="35"/>&nbsp
-                        <p><b>박태영</b></p>&nbsp
-                        <p>user1</p>&nbsp
-                        <p style="color: blue;">(10시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/ok.svg" height="35"/>&nbsp
-                        <p><b>박태영</b></p>&nbsp
-                        <p>user1</p>&nbsp
-                        <p style="color: blue;">(10시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/no.svg" height="35"/>&nbsp
-                        <p><b>이혜원</b></p>&nbsp
-                        <p>user2</p>&nbsp
-                        <p style="color: red;">(8시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/no.svg" height="35"/>&nbsp
-                        <p><b>이혜원</b></p>&nbsp
-                        <p>user2</p>&nbsp
-                        <p style="color: red;">(8시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/no.svg" height="35"/>&nbsp
-                        <p><b>이혜원</b></p>&nbsp
-                        <p>user2</p>&nbsp
-                        <p style="color: red;">(8시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/ok.svg" height="35"/>&nbsp
-                        <p><b>박태영</b></p>&nbsp
-                        <p>user1</p>&nbsp
-                        <p style="color: blue;">(10시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/no.svg" height="35"/>&nbsp
-                        <p><b>이혜원</b></p>&nbsp
-                        <p>user2</p>&nbsp
-                        <p style="color: red;">(8시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/ok.svg" height="35"/>&nbsp
-                        <p><b>박태영</b></p>&nbsp
-                        <p>user1</p>&nbsp
-                        <p style="color: blue;">(10시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/ok.svg" height="35"/>&nbsp
-                        <p><b>박태영</b></p>&nbsp
-                        <p>user1</p>&nbsp
-                        <p style="color: blue;">(10시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/ok.svg" height="35"/>&nbsp
-                        <p><b>박태영</b></p>&nbsp
-                        <p>user1</p>&nbsp
-                        <p style="color: blue;">(10시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/no.svg" height="35"/>&nbsp
-                        <p><b>이혜원</b></p>&nbsp
-                        <p>user2</p>&nbsp
-                        <p style="color: red;">(8시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/no.svg" height="35"/>&nbsp
-                        <p><b>이혜원</b></p>&nbsp
-                        <p>user2</p>&nbsp
-                        <p style="color: red;">(8시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/no.svg" height="35"/>&nbsp
-                        <p><b>이혜원</b></p>&nbsp
-                        <p>user2</p>&nbsp
-                        <p style="color: red;">(8시간)</p>
+                <div class="managers" >
+                    <div class="manager" th:each="user : ${users}">
+                            <img src="/img/ok.svg" height="35"/>&nbsp
+                            <p><b th:text="${user.username}"></b></p>&nbsp
+                        <p style="color: blue;" th:text="${times[userStat.index]} + '시간'"></p>
+                            </tr>
                     </div>
                 </div>
             </div>
@@ -683,6 +637,7 @@
 
     <div class="md-overlay"></div>
 </th:block>
+
 </html>
 <footer>
 
