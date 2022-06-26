@@ -15,7 +15,7 @@ public interface ScheduleUpdateReqRepository extends JpaRepository<ScheduleUpdat
     List<ScheduleUpdateReq> findAll();
 
     Optional<ScheduleUpdateReq> findById(Integer id);
-    Optional<ScheduleUpdateReq> findByAssignSchedule(ManagerAssignSchedule managerAssignSchedule);
+    Integer findByAssignSchedule(ManagerAssignSchedule managerAssignSchedule);
 //    private int id;
 //    private int scheduleId;
 //    private char reqAcceptCheck;

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import sketcher.scheduling.domain.ManagerAssignSchedule;
-import sketcher.scheduling.domain.ScheduleUpdateReq;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.ManagerAssignScheduleDto;
 import sketcher.scheduling.dto.ScheduleUpdateReqDto;
@@ -23,7 +22,6 @@ import sketcher.scheduling.service.ScheduleUpdateReqService;
 import sketcher.scheduling.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Array;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -85,7 +83,7 @@ public class CalendarController {
 
     @PostMapping("/calendar")
     @ResponseBody
-    public String sendModifyRequest(@RequestBody List<Map<String, Object>> param) {
+    public String sendModifyRequest(@RequestBody List<Map<String, Object>> param) throws Exception {
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
 
@@ -104,23 +102,29 @@ public class CalendarController {
             LocalDateTime oldStart = LocalDateTime.parse(oldStartString, dateTimeFormatter);
             LocalDateTime oldEnd = LocalDateTime.parse(oldEndString, dateTimeFormatter);
 
-            User user = userService.findByUsername(eventName).get();
+//            User user = userService.findByUsername(eventName).get();
+            User user = userService.findByUsername(eventName).orElseThrow(() -> new Exception("입력한 매니저가 존재하지 않습니다."));
 
-            ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.getBeforeSchedule(user, oldStart, oldEnd).get();
-            Optional<ScheduleUpdateReq> updateCheck = updateReqService.findByAssignSchedule(managerAssignSchedule);
+            ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.getBeforeSchedule(user, oldStart, oldEnd)
+                    .orElseThrow(()-> new Exception("해당 스케줄이 존재하지 않습니다."));
+            Integer updateCheck = updateReqService.findByAssignSchedule(managerAssignSchedule);
+//            Optional<ScheduleUpdateReq> updateCheck = updateReqService.findByAssignSchedule(managerAssignSchedule);
+//            Integer updateCheck2 = Optional.ofNullable(updateReqService.findByAssignSchedule(managerAssignSchedule))
+//                    .orElseGet();
 
-            if (!updateCheck.isPresent()) {
+            if (updateCheck == null) {
                 ScheduleUpdateReqDto scheduleUpdateReqDto = ScheduleUpdateReqDto.builder()
                         .assignSchedule(managerAssignSchedule)
                         .changeDate(modifiedStartDate)
                         .build();
                 updateReqService.saveScheduleUpdateReq(scheduleUpdateReqDto);
-            } else if (updateCheck.isPresent()) {
+
+            } else if (updateCheck != null) {
                 ScheduleUpdateReqDto scheduleUpdateReqDtoUpdate = ScheduleUpdateReqDto.builder()
                         .assignSchedule(managerAssignSchedule)
                         .changeDate(modifiedStartDate)
                         .build();
-                updateReqService.duplicateUpdateRequest(updateCheck.get().getId(), scheduleUpdateReqDtoUpdate);
+                updateReqService.duplicateUpdateRequest(updateCheck, scheduleUpdateReqDtoUpdate);
 //                        }
             }
 
@@ -155,15 +159,6 @@ public class CalendarController {
             if (code / 10 > 0)
                 code = code % 10;
             hash.put("backgroundColor", color.get(code));
-
-
-//            User user = userService.findByUsername(hash.get("title").toString()).get();
-//            Integer code = user.getCode();
-//            if (code / 10 > 0)
-//                code = code % 10;
-//            if (user != null) {
-//                hash.put("backgroundColor", color.get(code));
-//            }
 
             jsonObj = new JSONObject(hash);
             jsonArr.add(jsonObj);
@@ -210,7 +205,7 @@ public class CalendarController {
     @ApiOperation(value = "스케줄 생성")
     @PostMapping("/calendar-admin-update")
     @ResponseBody
-    public String addEvent(@RequestBody List<Map<String, Object>> param) throws RuntimeException {
+    public String addEvent(@RequestBody List<Map<String, Object>> param) throws Exception {
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
 
@@ -225,28 +220,24 @@ public class CalendarController {
 
             LocalDateTime startDate = startDateUTC.plusHours(9);
             LocalDateTime endDate = endDateUTC.plusHours(9);
-            try {
-
-
-                User user = userService.findByUsername(eventName).get();
+//            try {
+//                User user = userService.findByUsername(eventName).get();
+                User user = userService.findByUsername(eventName).orElseThrow(() -> new Exception("입력한 매니저가 존재하지 않습니다."));
                 String username = user.getUsername();
                 /**
                  * exception 처리를 통해 존재하지 않는 경우 alert 필요
                  */
-
                 if (eventName.equals(username)) {
-
                     ManagerAssignScheduleDto managerAssignScheduleDto = ManagerAssignScheduleDto.builder()
                             .user(user)
                             .scheduleDateTimeStart(startDate)
                             .scheduleDateTimeEnd(endDate)
                             .build();
-
                     managerAssignScheduleService.saveManagerAssignSchedule(managerAssignScheduleDto);
                 }
-            } catch (NoSuchElementException e) {
-                throw new NoSuchElementException("매니저가 존재하지 않습니다.");
-            }
+//            } catch (NoSuchElementException e) {
+//                throw new NoSuchElementException("매니저가 존재하지 않습니다.");
+//            }
         }
 
         return "/full-calendar/calendar-admin-update";
@@ -258,7 +249,7 @@ public class CalendarController {
     @ApiOperation(value = "스케줄 삭제")
     @DeleteMapping("/calendar-admin-update")
     @ResponseBody
-    public String deleteEvent(@RequestBody List<Map<String, Object>> param) {
+    public String deleteEvent(@RequestBody List<Map<String, Object>> param) throws Exception{
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
 
@@ -271,7 +262,7 @@ public class CalendarController {
             LocalDateTime startDate = LocalDateTime.parse(startDateString, dateTimeFormatter);
             LocalDateTime endDate = LocalDateTime.parse(endDateString, dateTimeFormatter);
 
-            User user = userService.findByUsername(eventName).get();
+            User user = userService.findByUsername(eventName).orElseThrow(() -> new Exception("입력한 매니저가 존재하지 않습니다."));
             String username = user.getUsername();
 
             ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.getBeforeSchedule(user, startDate, endDate).get();
@@ -293,7 +284,7 @@ public class CalendarController {
     @ApiOperation(value = "스케줄 수정")
     @PatchMapping("/calendar-admin-update")
     @ResponseBody
-    public String modifyEvent(@RequestBody List<Map<String, Object>> param) {
+    public String modifyEvent(@RequestBody List<Map<String, Object>> param) throws Exception {
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
 
@@ -314,19 +305,16 @@ public class CalendarController {
             LocalDateTime oldEnd = LocalDateTime.parse(oldEndString, dateTimeFormatter);
 
             User user = userService.findByUsername(eventName).get();
-            String username = user.getUsername();
 
-            ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.getBeforeSchedule(user, oldStart, oldEnd).get();
+            ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.getBeforeSchedule(user, oldStart, oldEnd)
+                    .orElseThrow(() -> new Exception("해당 스케줄이 존재하지 않습니다."));
             Integer assignScheduleId = managerAssignSchedule.getId();
 
             if (assignScheduleId != null) {
-
                 ManagerAssignScheduleDto managerAssignScheduleDto = ManagerAssignScheduleDto.builder()
                         .scheduleDateTimeStart(modifiedStartDate)
                         .scheduleDateTimeEnd(modifiedEndDate)
                         .build();
-
-
                 managerAssignScheduleService.update(assignScheduleId, managerAssignScheduleDto);
             }
         }

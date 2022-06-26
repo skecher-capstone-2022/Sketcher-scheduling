@@ -76,7 +76,7 @@ public class ScheduleUpdateReqService {
         return updateReqRepoCustom.sort(sort);
     }
 
-    public Optional<ScheduleUpdateReq> findByAssignSchedule(ManagerAssignSchedule managerAssignSchedule){
+    public Integer findByAssignSchedule(ManagerAssignSchedule managerAssignSchedule){
         return updateReqRepository.findByAssignSchedule(managerAssignSchedule);
     }
     @Transactional
