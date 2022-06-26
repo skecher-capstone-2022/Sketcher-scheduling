@@ -23,6 +23,7 @@ import sketcher.scheduling.service.ScheduleUpdateReqService;
 import sketcher.scheduling.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Array;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -103,7 +104,8 @@ public class CalendarController {
 
             ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.findByUserAndScheduleDateTimeStartAndScheduleDateTimeEnd(user, oldStart, oldEnd).get();
             Optional<ScheduleUpdateReq> updateCheck = updateReqService.findByAssignSchedule(managerAssignSchedule);
-
+            System.out.println("결과 : ");
+            System.out.println("managerAssignSchedule = " + managerAssignSchedule);
             if (!updateCheck.isPresent()) {
                 ScheduleUpdateReqDto scheduleUpdateReqDto = ScheduleUpdateReqDto.builder()
                         .assignSchedule(managerAssignSchedule)
@@ -336,14 +338,16 @@ public class CalendarController {
         Long CalHours = 0L;
         List<Long> betweenHours = new ArrayList<>();
 
-
+/**
+ * 매주마다 달라지는 근무 시간에 따른 몆 주차 계산하기
+ */
 
 //        LocalDateTime today = LocalDateTime.now();
-//        Calendar c = Calendar.getInstance();
+        Calendar c = Calendar.getInstance();
 //        String week = String.valueOf(c.get(Calendar.WEEK_OF_MONTH));
-//        String year = String.valueOf(c.get(Calendar.WEEK_OF_YEAR));
+        String year = String.valueOf(c.get(Calendar.WEEK_OF_YEAR));
 //        System.out.println("week = " + week);
-//        System.out.println("year = " + year);
+        System.out.println("year = " + year);
 //
 //        int monthValue = today.getMonthValue();
 //        System.out.println("monthValue = " + monthValue);
@@ -363,17 +367,24 @@ public class CalendarController {
         return "/full-calendar/create_schedule";
     }
 
+//
     @PostMapping("/create_schedule")
     @ResponseBody
-    public String getChecked(HttpServletRequest request){
+    public String getChecked(HttpServletRequest request , @RequestParam(value = "checkBoxArr[]") List<String> checkBoxArr){
 
-        System.out.println("ajax 시작 ");
-//        String[] checktypes = request.getParameterValues("checktypes");
-//        for (int i=0;i<checktypes.length;i++){
-//            System.out.println("i = " + i);
-//            System.out.println("checktypes = " + checktypes[i]);
+//        String value[] = new String[5];
+        System.out.println("checkBoxArr = " + checkBoxArr);
+        if(checkBoxArr.contains("allCondition"))
+            System.out.println("wow = " );
+        if(checkBoxArr.contains("weekendTwoHours"))
+            System.out.println("weekend = ");
+        if (checkBoxArr.contains("totalWorkHours"))
+            System.out.println("totalwork = ");
+//        for (int i = 0; i < checkBoxArr.size(); i++) {
+//            value[i] = checkBoxArr.get(i);
+//            System.out.println("value = " + value);
 //        }
-
+//        System.out.println("value = " + value);
         return "/full-calendar/create_schedule";
     }
 
