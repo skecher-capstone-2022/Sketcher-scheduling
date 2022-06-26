@@ -57,8 +57,8 @@ public class ManagerAssignScheduleService {
         return user.getManagerAssignScheduleList();
     }
 
-    public Optional<ManagerAssignSchedule> findByUserAndScheduleDateTimeStartAndScheduleDateTimeEnd(User user, LocalDateTime startDate, LocalDateTime endDate) {
-        return managerAssignScheduleRepository.findByUserAndScheduleDateTimeStartAndScheduleDateTimeEnd(user, startDate, endDate);
+    public Optional<ManagerAssignSchedule> getBeforeSchedule(User user, LocalDateTime startDate, LocalDateTime endDate) {
+        return managerAssignScheduleRepository.getBeforeSchedule(user, startDate, endDate);
     }
 
     @Transactional

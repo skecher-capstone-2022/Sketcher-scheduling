@@ -56,25 +56,29 @@ public class CalendarController {
 
         User principal = (User) authentication.getPrincipal();
         String username = principal.getUsername();
-        if (!username.isEmpty()) {
-            User user = userService.findByUsername(username).get();
-            List<ManagerAssignSchedule> byUser = managerAssignScheduleService.findByUser(user);
+        try{
+            if (!username.isEmpty()) {
+                User user = userService.findByUsername(username).get();
+                List<ManagerAssignSchedule> byUser = managerAssignScheduleService.findByUser(user);
 
-            for (ManagerAssignSchedule managerAssignSchedule : byUser) {
-                hash.put("title", managerAssignSchedule.getUser().getUsername());
-                hash.put("start", managerAssignSchedule.getScheduleDateTimeStart());
-                hash.put("end", managerAssignSchedule.getScheduleDateTimeEnd());
+                for (ManagerAssignSchedule managerAssignSchedule : byUser) {
+                    hash.put("title", managerAssignSchedule.getUser().getUsername());
+                    hash.put("start", managerAssignSchedule.getScheduleDateTimeStart());
+                    hash.put("end", managerAssignSchedule.getScheduleDateTimeEnd());
 
-                Integer code = managerAssignSchedule.getUser().getCode();
-                if (code / 10 > 0)
-                    code = code % 10;
-                hash.put("backgroundColor", color.get(code));
+                    Integer code = managerAssignSchedule.getUser().getCode();
+                    if (code / 10 > 0)
+                        code = code % 10;
+                    hash.put("backgroundColor", color.get(code));
 
-                jsonObj = new JSONObject(hash);
-                jsonArr.add(jsonObj);
+                    jsonObj = new JSONObject(hash);
+                    jsonArr.add(jsonObj);
+                }
             }
-
+        }catch (NoSuchElementException e){
+            throw new NoSuchElementException("로그인 정보가 존재하지 않습니다.");
         }
+
         return jsonArr;
     }
 
@@ -87,7 +91,7 @@ public class CalendarController {
 
         for (Map<String, Object> list : param) {
 
-            String eventName = (String) list.get("title"); // 이름 받아오기
+            String eventName = (String) list.get("title");
             String startDateString = (String) list.get("start");
             String endDateString = (String) list.get("end");
 
@@ -102,10 +106,9 @@ public class CalendarController {
 
             User user = userService.findByUsername(eventName).get();
 
-            ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.findByUserAndScheduleDateTimeStartAndScheduleDateTimeEnd(user, oldStart, oldEnd).get();
+            ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.getBeforeSchedule(user, oldStart, oldEnd).get();
             Optional<ScheduleUpdateReq> updateCheck = updateReqService.findByAssignSchedule(managerAssignSchedule);
-            System.out.println("결과 : ");
-            System.out.println("managerAssignSchedule = " + managerAssignSchedule);
+
             if (!updateCheck.isPresent()) {
                 ScheduleUpdateReqDto scheduleUpdateReqDto = ScheduleUpdateReqDto.builder()
                         .assignSchedule(managerAssignSchedule)
@@ -271,7 +274,7 @@ public class CalendarController {
             User user = userService.findByUsername(eventName).get();
             String username = user.getUsername();
 
-            ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.findByUserAndScheduleDateTimeStartAndScheduleDateTimeEnd(user, startDate, endDate).get();
+            ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.getBeforeSchedule(user, startDate, endDate).get();
             Integer assignScheduleId = managerAssignSchedule.getId();
 
             if (eventName.equals(username)) {
@@ -313,7 +316,7 @@ public class CalendarController {
             User user = userService.findByUsername(eventName).get();
             String username = user.getUsername();
 
-            ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.findByUserAndScheduleDateTimeStartAndScheduleDateTimeEnd(user, oldStart, oldEnd).get();
+            ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.getBeforeSchedule(user, oldStart, oldEnd).get();
             Integer assignScheduleId = managerAssignSchedule.getId();
 
             if (assignScheduleId != null) {

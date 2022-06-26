@@ -24,7 +24,11 @@ public interface ManagerAssignScheduleRepository extends JpaRepository<ManagerAs
 //    List<ManagerAssignSchedule> findScheduleAll();
     Optional<ManagerAssignSchedule> findById(Integer id);
     List<ManagerAssignSchedule> findByUser(User user);
-    Optional<ManagerAssignSchedule> findByUserAndScheduleDateTimeStartAndScheduleDateTimeEnd(User user, LocalDateTime startDate, LocalDateTime endDate);
+    @Query(value ="select s from ManagerAssignSchedule s where " +
+            "s.scheduleDateTimeStart = :startDate and s.user = :user and s.scheduleDateTimeEnd = :endDate")
+    Optional<ManagerAssignSchedule> getBeforeSchedule(@Param("user")User user,
+                                                      @Param("startDate") LocalDateTime startDate,
+                                                      @Param("endDate") LocalDateTime endDate);
     Integer deleteByUser(User user);
     void deleteById(Integer Id);
 
