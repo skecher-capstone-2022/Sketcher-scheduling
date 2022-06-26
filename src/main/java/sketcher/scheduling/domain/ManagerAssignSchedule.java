@@ -25,18 +25,10 @@ public class ManagerAssignSchedule {
     @JoinColumn(name = "user_code")
     private User user;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "schedule_id")
-//    private Schedule schedule;
-
-
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "update_req_id")
     private ScheduleUpdateReq updateReq;
-
-
-//    근무시작시간, 근무종료시간 추가
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+9")
@@ -64,12 +56,6 @@ public class ManagerAssignSchedule {
         }
         this.user = user;
         user.getManagerAssignScheduleList().add(this);
-
-//        if (this.schedule != null) {
-//            schedule.getManagerAssignScheduleList().remove(this);
-//        }
-//        this.schedule = schedule;
-//        schedule.getManagerAssignScheduleList().add(this);
     }
 
     public void update(LocalDateTime scheduleDateTimeStart, LocalDateTime scheduleDateTimeEnd){

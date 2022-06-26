@@ -5,42 +5,28 @@ package sketcher.scheduling.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.jni.Local;
-import org.hibernate.Session;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import sketcher.scheduling.domain.ManagerAssignSchedule;
-import sketcher.scheduling.domain.Schedule;
 import sketcher.scheduling.domain.ScheduleUpdateReq;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.ManagerAssignScheduleDto;
-import sketcher.scheduling.dto.ScheduleDto;
 import sketcher.scheduling.dto.ScheduleUpdateReqDto;
-import sketcher.scheduling.dto.UserDto;
-import sketcher.scheduling.repository.ScheduleRepository;
-import sketcher.scheduling.repository.UserRepository;
 import sketcher.scheduling.service.ManagerAssignScheduleService;
-import sketcher.scheduling.service.ScheduleService;
 import sketcher.scheduling.service.ScheduleUpdateReqService;
 import sketcher.scheduling.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.PrintWriter;
-import java.security.Principal;
-import java.time.LocalDate;
+import java.sql.Array;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Api(tags = {"스케줄 로직 API "})
@@ -118,7 +104,8 @@ public class CalendarController {
 
             ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.findByUserAndScheduleDateTimeStartAndScheduleDateTimeEnd(user, oldStart, oldEnd).get();
             Optional<ScheduleUpdateReq> updateCheck = updateReqService.findByAssignSchedule(managerAssignSchedule);
-
+            System.out.println("결과 : ");
+            System.out.println("managerAssignSchedule = " + managerAssignSchedule);
             if (!updateCheck.isPresent()) {
                 ScheduleUpdateReqDto scheduleUpdateReqDto = ScheduleUpdateReqDto.builder()
                         .assignSchedule(managerAssignSchedule)
@@ -343,6 +330,64 @@ public class CalendarController {
         return "/full-calendar/calendar-admin-update";
     }
 
+    //    @ApiOperation(value = "리모컨 조회")
+    @GetMapping("/create_schedule")
+    public String managerRemote(Model model) {
+
+        List<User> allUser = userService.findAll();
+        Long CalHours = 0L;
+        List<Long> betweenHours = new ArrayList<>();
+
+/**
+ * 매주마다 달라지는 근무 시간에 따른 몆 주차 계산하기
+ */
+
+//        LocalDateTime today = LocalDateTime.now();
+        Calendar c = Calendar.getInstance();
+//        String week = String.valueOf(c.get(Calendar.WEEK_OF_MONTH));
+        String year = String.valueOf(c.get(Calendar.WEEK_OF_YEAR));
+//        System.out.println("week = " + week);
+        System.out.println("year = " + year);
+//
+//        int monthValue = today.getMonthValue();
+//        System.out.println("monthValue = " + monthValue);
+
+        for (User user : allUser) {
+            List<ManagerAssignSchedule> managerAssignScheduleList = user.getManagerAssignScheduleList();
+            for (ManagerAssignSchedule managerAssignSchedule : managerAssignScheduleList) {
+                CalHours += ChronoUnit.HOURS.between(managerAssignSchedule.getScheduleDateTimeStart(), managerAssignSchedule.getScheduleDateTimeEnd());
+            }
+            betweenHours.add(CalHours);
+            CalHours = 0L;
+        }
+
+        model.addAttribute("users", allUser);
+        model.addAttribute("times", betweenHours);
+
+        return "/full-calendar/create_schedule";
+    }
+
+//
+    @PostMapping("/create_schedule")
+    @ResponseBody
+    public String getChecked(HttpServletRequest request , @RequestParam(value = "checkBoxArr[]") List<String> checkBoxArr){
+
+//        String value[] = new String[5];
+        System.out.println("checkBoxArr = " + checkBoxArr);
+        if(checkBoxArr.contains("allCondition"))
+            System.out.println("wow = " );
+        if(checkBoxArr.contains("weekendTwoHours"))
+            System.out.println("weekend = ");
+        if (checkBoxArr.contains("totalWorkHours"))
+            System.out.println("totalwork = ");
+//        for (int i = 0; i < checkBoxArr.size(); i++) {
+//            value[i] = checkBoxArr.get(i);
+//            System.out.println("value = " + value);
+//        }
+//        System.out.println("value = " + value);
+        return "/full-calendar/create_schedule";
+    }
+
     private List<String> getColor() {
         List<String> color = new ArrayList<>();
         color.add("#FFEBCD");
@@ -357,4 +402,5 @@ public class CalendarController {
         color.add("#00BFFF");
         return color;
     }
+
 }
