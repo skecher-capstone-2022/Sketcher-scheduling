@@ -71,21 +71,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManager());
         customAuthenticationFilter.setFilterProcessesUrl("/loginProcess");
-        customAuthenticationFilter.setAuthenticationSuccessHandler(customLoginSuccessHandler());
-        customAuthenticationFilter.setAuthenticationFailureHandler(customLoginFailureHandler());
+//        customAuthenticationFilter.setAuthenticationSuccessHandler(customLoginSuccessHandler());
+//        customAuthenticationFilter.setAuthenticationFailureHandler(customLoginFailureHandler());
         customAuthenticationFilter.afterPropertiesSet();
         return customAuthenticationFilter;
     }
 
-    @Bean
-    public CustomLoginSuccessHandler customLoginSuccessHandler() {
-        return new CustomLoginSuccessHandler();
-    }
-
-    @Bean
-    public CustomLoginFailureHandler customLoginFailureHandler() {
-        return new CustomLoginFailureHandler();
-    }
+//    @Bean
+//    public CustomLoginSuccessHandler customLoginSuccessHandler() {
+//        return new CustomLoginSuccessHandler();
+//    }
+//
+//    @Bean
+//    public CustomLoginFailureHandler customLoginFailureHandler() {
+//        return new CustomLoginFailureHandler();
+//    }
 
     @Bean//CustomAuthenticationProvider : 인증 처리 핵심 로직
     public CustomAuthenticationProvider customAuthenticationProvider() {
