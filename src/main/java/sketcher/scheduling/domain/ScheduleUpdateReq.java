@@ -60,4 +60,7 @@ public class ScheduleUpdateReq {
         this.changeEndDate = changeEndDate;
     }
 
+    public void updateReqAcceptCheckToY(){
+        this.reqAcceptCheck = 'Y';
+    }
 }

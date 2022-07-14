@@ -25,10 +25,11 @@ public class ScheduleUpdateReqService {
     private final ScheduleUpdateReqRepositoryCustom updateReqRepoCustom;
 
     @Transactional
-    public void saveScheduleUpdateReq(ManagerAssignSchedule assignSchedule, LocalDateTime modifiedStartDate,LocalDateTime modifiedEndDate ) {
+    public Integer saveScheduleUpdateReq(ManagerAssignSchedule assignSchedule, LocalDateTime modifiedStartDate,LocalDateTime modifiedEndDate ) {
         Integer saveReqId = saveUpdateReq(assignSchedule, modifiedStartDate, modifiedEndDate);
         ScheduleUpdateReq savedUpdateReq = updateReqRepository.findById(saveReqId).get();
         assignSchedule.updateReqId(savedUpdateReq);
+        return saveReqId;
     }
 
     public Integer saveUpdateReq(ManagerAssignSchedule assignSchedule,LocalDateTime modifiedStartDate, LocalDateTime modifiedEndDate) {
@@ -43,34 +44,30 @@ public class ScheduleUpdateReqService {
         return saveReqId;
     }
 
+    @Transactional
+    public void duplicateUpdateRequest(ManagerAssignSchedule assignSchedule, LocalDateTime modifiedStartDate,LocalDateTime modifiedEndDate ){
+        ScheduleUpdateReq scheduleUpdateReq = updateReqRepository.findById(assignSchedule.getUpdateReq().getId()).get();
+        scheduleUpdateReq.update(assignSchedule,modifiedStartDate,modifiedEndDate);
+    }
+
     // ScheduleUpdateReq updateReq, LocalDateTime scheduleDateTimeStart, LocalDateTime scheduleDateTimeEnd
 
     @Transactional
-    public void updateCheck(Integer id) {
+    public void acceptReq(Integer id) {
 
-        //TODO 수정 요청 수락
-        ScheduleUpdateReq req = updateReqRepository.findById(id).orElseThrow(() -> new IllegalStateException("Not Found Id"));
-        ManagerAssignSchedule assignSchedule = req.getAssignSchedule();
-
-//        ManagerAssignSchedule assign_updateReq = ManagerAssignSchedule.builder()
-//                .id(assignSchedule.getId())
-//                .user(assignSchedule.getUser())
-//                .updateReq(req)
-//                .scheduleDateTimeStart(req.getChangeDate())
-//                .scheduleDateTimeEnd(req.getChangeDate().plusHours(between_time))
-//                .build();
+//        ScheduleUpdateReq updateReq = updateReqRepository.findById(id).orElseThrow(() -> new IllegalStateException("Not Found Id"));
+//        ManagerAssignSchedule assignSchedule = req.getAssignSchedule();
+//
+////        ManagerAssignSchedule assign_updateReq = ManagerAssignSchedule.builder()
+////                .id(assignSchedule.getId())
+////                .user(assignSchedule.getUser())
+////                .updateReq(req)
+////                .scheduleDateTimeStart(req.getChangeDate())
+////                .scheduleDateTimeEnd(req.getChangeDate().plusHours(between_time))
+////                .build();
 //        assignScheduleRepository.save(assign_updateReq);
-//
-////        req.getAssignSchedule().
-//
-//        ScheduleUpdateReq assignReq = ScheduleUpdateReq.builder()
-//                .id(req.getId())
-//                .changeDate(req.getChangeDate())
-//                .assignSchedule(req.getAssignSchedule())
-//                .reqTime(req.getReqTime())
-//                .reqAcceptCheck('Y')
-//                .build();
-//        updateReqRepository.save(assignReq);
+
+//        updateReq.updateReqAcceptCheckToY();
     }
 
     public Optional<ScheduleUpdateReq> findById(int id) {
@@ -86,13 +83,5 @@ public class ScheduleUpdateReqService {
         return updateReqRepository.findByAssignSchedule(managerAssignSchedule);
     }
 
-    //TODO DUPLICATION
-    @Transactional
-    public void duplicateUpdateRequest(Integer id, ScheduleUpdateReqDto dto){
-//        ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleRepository.findById(id).orElseThrow(() ->
-//                new IllegalArgumentException("해당 스케줄이 없습니다." + id));
-        ScheduleUpdateReq scheduleUpdateReq = updateReqRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("해당 스케줄이 없습니다." + id));
-//        scheduleUpdateReq.update(dto.getAssignSchedule(), dto.getChangeDate());
-    }
+
 }

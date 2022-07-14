@@ -23,7 +23,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UpdateReqController {
 
-//    private final ManagerAssignScheduleService assignScheduleService;
     private final ScheduleUpdateReqService updateReqService;
     private final ManagerAssignScheduleService assignScheduleService;
 
@@ -31,20 +30,16 @@ public class UpdateReqController {
     public String schedule_upd_list(Model model,
                                     @RequestParam(value="list_align", required = false, defaultValue = "req_date_desc") String sort) {
         List<ManagerAssignSchedule> updateReqList = assignScheduleService.findUpdateReqIdIsNotNull();
-//        List<ScheduleUpdateReq> updateReqList = updateReqService.updateReqResultList(sort);
         model.addAttribute("updateReqList", updateReqList);
-//        model.addAttribute("list_align", sort);
 
         return "request/schedule_upd_list";
     }
 
-
-    //수정요청 수락
     @RequestMapping(value = "/acceptRequest")
     public String acceptRequest(@RequestParam(value="chkList",required=true) List<Integer> requestId){
 
         for (Integer id : requestId) {
-            updateReqService.updateCheck(id);
+            updateReqService.acceptReq(id);
         }
         return "redirect:schedule_upd_list";
     }
