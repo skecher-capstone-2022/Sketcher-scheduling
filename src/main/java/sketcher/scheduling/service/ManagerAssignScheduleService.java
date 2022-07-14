@@ -4,12 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sketcher.scheduling.domain.ManagerAssignSchedule;
+import sketcher.scheduling.domain.ScheduleUpdateReq;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.ManagerAssignScheduleDto;
-import sketcher.scheduling.repository.ManagerAssignScheduleRepository;
-import sketcher.scheduling.repository.ManagerAssignScheduleRepositoryCustomImpl;
-import sketcher.scheduling.repository.ScheduleRepository;
-import sketcher.scheduling.repository.UserRepository;
+import sketcher.scheduling.repository.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -26,6 +24,7 @@ public class ManagerAssignScheduleService {
 
     private final ManagerAssignScheduleRepository managerAssignScheduleRepository;
     private final ManagerAssignScheduleRepositoryCustomImpl scheduleRepositoryCustom;
+    private final ScheduleUpdateReqRepository updateReqRepository;
     private final UserRepository userRepository;
     private final ScheduleRepository scheduleRepository;
 
@@ -80,6 +79,14 @@ public class ManagerAssignScheduleService {
 
         managerAssignSchedule.update(dto.getScheduleDateTimeStart(), dto.getScheduleDateTimeEnd());
     }
+
+    public List<ManagerAssignSchedule> findUpdateReqIdIsNotNull() {
+        return em.createQuery("select s from ManagerAssignSchedule s"
+                        + " where s.updateReq is not null"
+                , ManagerAssignSchedule.class)
+                .getResultList();
+    }
+
 
     @Transactional
     public void deleteById(Integer id) {

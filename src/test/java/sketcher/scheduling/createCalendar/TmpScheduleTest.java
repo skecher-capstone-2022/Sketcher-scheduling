@@ -111,14 +111,18 @@ public class TmpScheduleTest {
 
 
         System.out.println();
-        Assertions.assertEquals(tmpScheduleService.getTmpScheduleList().size(),4);
+        Assertions.assertEquals(tmpScheduleService.getTmpScheduleList().size(), 4);
         //when
 
         saveScheduleService.saveAssignSchedule();
 
         //then
-        Assertions.assertEquals(tmpScheduleService.getTmpScheduleList().size(),0);
+        Assertions.assertEquals(tmpScheduleService.getTmpScheduleList().size(), 0);
 
     }
+
+
+
+
 
 }

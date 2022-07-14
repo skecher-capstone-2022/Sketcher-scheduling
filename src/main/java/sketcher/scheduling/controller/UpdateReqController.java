@@ -8,6 +8,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import sketcher.scheduling.domain.ManagerAssignSchedule;
 import sketcher.scheduling.domain.ScheduleUpdateReq;
 import sketcher.scheduling.dto.ScheduleUpdateReqDto;
 import sketcher.scheduling.service.ManagerAssignScheduleService;
@@ -24,14 +25,15 @@ public class UpdateReqController {
 
 //    private final ManagerAssignScheduleService assignScheduleService;
     private final ScheduleUpdateReqService updateReqService;
+    private final ManagerAssignScheduleService assignScheduleService;
 
     @RequestMapping(value = "/schedule_upd_list", method = RequestMethod.GET)
     public String schedule_upd_list(Model model,
                                     @RequestParam(value="list_align", required = false, defaultValue = "req_date_desc") String sort) {
-
-        List<ScheduleUpdateReq> updateReqList = updateReqService.updateReqResultList(sort);
+        List<ManagerAssignSchedule> updateReqList = assignScheduleService.findUpdateReqIdIsNotNull();
+//        List<ScheduleUpdateReq> updateReqList = updateReqService.updateReqResultList(sort);
         model.addAttribute("updateReqList", updateReqList);
-        model.addAttribute("list_align", sort);
+//        model.addAttribute("list_align", sort);
 
         return "request/schedule_upd_list";
     }

@@ -55,12 +55,13 @@
         <div class="main">
             <div class="all_manaer_list">
                 <div class="align">
-                    <form action="/schedule_upd_list" method="get">
-                    <select name="list_align" class="list_align" onchange="this.form.submit()">
-                        <option th:value="req_date_desc" th:selected="${list_align == 'req_date_desc'}">최신순</option>
-                        <option th:value="req_date_asc" th:selected="${list_align == 'req_date_asc'}">오래된순</option>
-                    </select>
-                    </form>
+                    <!--TODO 수정요청 정렬 -->
+<!--                    <form action="/schedule_upd_list" method="get">-->
+<!--                    <select name="list_align" class="list_align" onchange="this.form.submit()">-->
+<!--                        <option th:value="req_date_desc" th:selected="${list_align == 'req_date_desc'}">최신순</option>-->
+<!--                        <option th:value="req_date_asc" th:selected="${list_align == 'req_date_asc'}">오래된순</option>-->
+<!--                    </select>-->
+<!--                    </form>-->
 
                     <!--                        <div class="btn-wrapper">-->
                     <div class="btn_align">
@@ -79,18 +80,20 @@
                         <th scope="col">변경 전 근무 시작 시간</th>
                         <th scope="col">변경 전 근무 종료 시간</th>
                         <th scope="col">변경 요청 시작시간</th>
+                        <th scope="col">변경 요청 종료시간</th>
                         <th scope="col">승인</th>
                     </tr>
                     <form id="frm">
-                        <tbody>
+                        <tbody> <!-- TODO 태영 -->
                         <tr th:if="${not #lists.isEmpty(updateReqList)}" th:each="row : ${updateReqList}">
-                            <td class="line">1</td>
-                            <td class="line" th:text="${row.assignSchedule.user.getId()}"></td>
-                            <td class="line" th:text="${row.assignSchedule.user.getUsername()}"></td>
-                            <td class="line_time" th:text="${row.assignSchedule.getScheduleDateTimeStart()}"></td>
-                            <td class="line_time" th:text="${row.assignSchedule.getScheduleDateTimeEnd()}"></td>
-                            <td class="line_time" th:text="${row.changeDate}" style="color: red; font-weight: 600;"></td>
-                            <td class="line"><input name="chkList" type="checkbox" th:value="${row.id}"/></td>
+                            <td class="line" th:text="${rowStat.count}"></td>
+                            <td class="line" th:text="${row.getUser().getId()}"></td>
+                            <td class="line" th:text="${row.getUser().getUsername()}"></td>
+                            <td class="line_time" th:text="${row.getScheduleDateTimeStart()}"></td>
+                            <td class="line_time" th:text="${row.getScheduleDateTimeEnd()}"></td>
+                            <td class="line_time" th:text="${row.updateReq.getChangeStartDate()}" style="color: red; font-weight: 600;"></td>
+                            <td class="line_time" th:text="${row.updateReq.getChangeEndDate()}" style="color: red; font-weight: 600;"></td>
+                            <td class="line"><input name="chkList" type="checkbox" th:value="${row.updateReq.getId()}"/></td>
                         </tr>
                         </tbody>
                     </form>
@@ -118,14 +121,6 @@
     function nonecheckAll() {
         $("input[type=checkbox]").prop("checked", false);
     }
-
-    // function checkAll(selectAll) {
-    //     if ($("input:checkbox[name='chkList']").prop("checked")) {
-    //         $("input[type=checkbox]").prop("checked", true);
-    //     } else {
-    //         $("input[type=checkbox]").prop("checked", false);
-    //     }
-    // }
 
     function accept() {
         let answer = confirm("선택한 수정 요청을 수락하시겠습니까?");
