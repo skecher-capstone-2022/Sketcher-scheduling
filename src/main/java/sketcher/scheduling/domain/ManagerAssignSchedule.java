@@ -77,6 +77,11 @@ public class ManagerAssignSchedule {
         this.scheduleDateTimeEnd = scheduleDateTimeEnd;
     }
 
+    public void updateReqId(ScheduleUpdateReq updatReq){
+        this.updateReq = updatReq;
+    }
+
+
     protected ManagerAssignSchedule() {
     }
 }

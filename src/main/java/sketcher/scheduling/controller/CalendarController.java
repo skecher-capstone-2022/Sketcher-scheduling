@@ -119,18 +119,16 @@ public class CalendarController {
             ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.findByUserAndScheduleDateTimeStartAndScheduleDateTimeEnd(user, oldStart, oldEnd).get();
             Optional<ScheduleUpdateReq> updateCheck = updateReqService.findByAssignSchedule(managerAssignSchedule);
 
+
             if (!updateCheck.isPresent()) {
-                ScheduleUpdateReqDto scheduleUpdateReqDto = ScheduleUpdateReqDto.builder()
-                        .assignSchedule(managerAssignSchedule)
-                        .changeDate(modifiedStartDate)
-                        .build();
-                updateReqService.saveScheduleUpdateReq(scheduleUpdateReqDto);
+                updateReqService.saveScheduleUpdateReq(managerAssignSchedule,modifiedStartDate,modifiedEndDate);
             } else if (updateCheck.isPresent()) {
-                ScheduleUpdateReqDto scheduleUpdateReqDtoUpdate = ScheduleUpdateReqDto.builder()
-                        .assignSchedule(managerAssignSchedule)
-                        .changeDate(modifiedStartDate)
-                        .build();
-                updateReqService.duplicateUpdateRequest(updateCheck.get().getId(), scheduleUpdateReqDtoUpdate);
+                //TODO 스케줄 수정 재요청
+//                ScheduleUpdateReqDto scheduleUpdateReqDtoUpdate = ScheduleUpdateReqDto.builder()
+//                        .assignSchedule(managerAssignSchedule)
+//                        .changeDate(modifiedStartDate)
+//                        .build();
+//                updateReqService.duplicateUpdateRequest(updateCheck.get().getId(), scheduleUpdateReqDtoUpdate);
 //                        }
             }
 

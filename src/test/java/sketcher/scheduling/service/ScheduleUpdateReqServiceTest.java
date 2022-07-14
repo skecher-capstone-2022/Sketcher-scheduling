@@ -58,27 +58,23 @@
 //        String userId = userService.saveUser(user);
 //        Optional<User> userOptional = userService.findById(userId);
 //
-//        //스케줄 모델 생성
-//        ScheduleDto schedule = ScheduleDto.builder()
-//                .scheduleDateTimeStart(LocalDateTime.now())
-//                .scheduleDateTimeEnd(LocalDateTime.now())
-//                .workforce(10)
-//                .expected_card_cnt(50)
-//                .creator_id(userId)
-//                .update_id(userId)
-//                .create_date(LocalDateTime.now())
-//                .update_date(LocalDateTime.now())
-//                .build();
-//
-//        Integer scheduleId = scheduleService.saveSchedule(schedule);
-//        Optional<Schedule> scheduleOptional = scheduleService.findById(scheduleId);
+////        //스케줄 모델 생성
+////        ScheduleDto schedule = ScheduleDto.builder()
+////                .scheduleDateTimeStart(LocalDateTime.now())
+////                .scheduleDateTimeEnd(LocalDateTime.now())
+////                .workforce(10)
+////                .expected_card_cnt(50)
+////                .creator_id(userId)
+////                .update_id(userId)
+////                .create_date(LocalDateTime.now())
+////                .update_date(LocalDateTime.now())
+////                .build();
+////
+////        Integer scheduleId = scheduleService.saveSchedule(schedule);
+////        Optional<Schedule> scheduleOptional = scheduleService.findById(scheduleId);
 //
 //        //스케줄 배정
 //
-//        ManagerAssignScheduleDto assignSchedule = ManagerAssignScheduleDto.builder()
-//                .user(userOptional.get())
-//                .schedule(scheduleOptional.get())
-//                .build();
 //        Integer assignedId = assignScheduleService.saveManagerAssignSchedule(assignSchedule);
 ////        Optional<ManagerAssignSchedule> assignedSchedule = assignScheduleService.findById(assignedId);
 //

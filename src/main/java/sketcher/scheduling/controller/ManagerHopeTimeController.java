@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.ManagerHopeTimeDto;
 import sketcher.scheduling.dto.UserDto;
+import sketcher.scheduling.object.TmpManager;
 import sketcher.scheduling.repository.UserRepositoryCustomImpl;
 import sketcher.scheduling.service.ManagerHopeTimeService;
 import sketcher.scheduling.service.UserService;
