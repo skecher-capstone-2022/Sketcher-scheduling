@@ -72,6 +72,11 @@ public class UserService implements UserDetailsService {
         return userRepositoryCustom.findWorkManager(condition, pageable);
     }
 
+    @Transactional(readOnly = true)
+    public long countByTodayWorkManager() {
+        return userRepositoryCustom.countByTodayWorkManager();
+    }
+
     /**
      * 저장하고 id 값 리턴
      * (회원정보 저장 시, 비밀번호 값을 그대로 DB에 넣는게 아니라
