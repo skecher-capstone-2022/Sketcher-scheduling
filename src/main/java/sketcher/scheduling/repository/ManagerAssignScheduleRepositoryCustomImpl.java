@@ -7,14 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import sketcher.scheduling.config.LocalDateTimeConfig;
-import sketcher.scheduling.config.OrderByNull;
+import sketcher.scheduling.object.OrderByNull;
 import sketcher.scheduling.domain.ManagerAssignSchedule;
 
-import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.util.StringUtils.hasText;

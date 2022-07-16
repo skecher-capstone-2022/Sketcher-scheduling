@@ -1,4 +1,4 @@
-package sketcher.scheduling.config;
+package sketcher.scheduling.object;
 
 import com.querydsl.core.types.NullExpression;
 import com.querydsl.core.types.Order;
