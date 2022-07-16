@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -77,11 +78,15 @@ public class ManagerAssignSchedule {
         this.scheduleDateTimeEnd = scheduleDateTimeEnd;
     }
 
-    public void updateReqId(ScheduleUpdateReq updatReq){
+    public void addUpdateReq(ScheduleUpdateReq updatReq){
         this.updateReq = updatReq;
+        updateReq.setAssignSchedule(this);
     }
 
 
     protected ManagerAssignSchedule() {
     }
+
+
+
 }

@@ -80,11 +80,13 @@ public class ManagerAssignScheduleService {
         managerAssignSchedule.update(dto.getScheduleDateTimeStart(), dto.getScheduleDateTimeEnd());
     }
 
-    public List<ManagerAssignSchedule> findUpdateReqIdIsNotNull() {
-        return em.createQuery("select s from ManagerAssignSchedule s"
-                        + " where s.updateReq is not null"
+    @Transactional
+    public List<ManagerAssignSchedule> findAcceptReqCheckIsN() {
+        return em.createQuery("select a from ManagerAssignSchedule a inner join ScheduleUpdateReq r " +
+                        "on a.updateReq.id = r.id where r.reqAcceptCheck= 'N'"
                 , ManagerAssignSchedule.class)
                 .getResultList();
+
     }
 
 
