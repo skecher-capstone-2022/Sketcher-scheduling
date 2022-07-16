@@ -116,7 +116,8 @@ public class CalendarController {
 
             User user = userService.findByUsername(eventName).get();
 
-            ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.findByUserAndScheduleDateTimeStartAndScheduleDateTimeEnd(user, oldStart, oldEnd).get();
+            ManagerAssignSchedule managerAssignSchedule =
+                    managerAssignScheduleService.findByUserAndScheduleDateTimeStartAndScheduleDateTimeEnd(user, oldStart, oldEnd).get();
 
             if (managerFirstRequestUpdateSchedule(managerAssignSchedule)) {
                 updateReqService.saveScheduleUpdateReq(managerAssignSchedule, modifiedStartDate, modifiedEndDate);

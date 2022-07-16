@@ -12,7 +12,6 @@ import sketcher.scheduling.repository.ScheduleUpdateReqRepository;
 import sketcher.scheduling.repository.ScheduleUpdateReqRepositoryCustom;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,13 +21,12 @@ public class ScheduleUpdateReqService {
     private final ManagerAssignScheduleRepository assignScheduleRepository;
     private final ManagerAssignScheduleService assignScheduleService;
     private final ScheduleUpdateReqRepository updateReqRepository;
-    private final ScheduleUpdateReqRepositoryCustom updateReqRepoCustom;
 
     @Transactional
     public Integer saveScheduleUpdateReq(ManagerAssignSchedule assignSchedule, LocalDateTime modifiedStartDate,LocalDateTime modifiedEndDate ) {
         Integer saveReqId = saveUpdateReq(assignSchedule, modifiedStartDate, modifiedEndDate);
         ScheduleUpdateReq savedUpdateReq = updateReqRepository.findById(saveReqId).get();
-        assignSchedule.updateReqId(savedUpdateReq);
+        assignSchedule.addUpdateReq(savedUpdateReq);
         return saveReqId;
     }
 
@@ -40,8 +38,7 @@ public class ScheduleUpdateReqService {
                 .changeEndDate(modifiedEndDate)
                 .reqTime(LocalDateTime.now())
                 .build();
-        Integer saveReqId = updateReqRepository.save(scheduleUpdateReqDto.toEntity()).getId();
-        return saveReqId;
+        return updateReqRepository.save(scheduleUpdateReqDto.toEntity()).getId();
     }
 
     @Transactional
@@ -50,24 +47,12 @@ public class ScheduleUpdateReqService {
         scheduleUpdateReq.update(assignSchedule,modifiedStartDate,modifiedEndDate);
     }
 
-    // ScheduleUpdateReq updateReq, LocalDateTime scheduleDateTimeStart, LocalDateTime scheduleDateTimeEnd
-
     @Transactional
     public void acceptReq(Integer id) {
-
-//        ScheduleUpdateReq updateReq = updateReqRepository.findById(id).orElseThrow(() -> new IllegalStateException("Not Found Id"));
-//        ManagerAssignSchedule assignSchedule = req.getAssignSchedule();
-//
-////        ManagerAssignSchedule assign_updateReq = ManagerAssignSchedule.builder()
-////                .id(assignSchedule.getId())
-////                .user(assignSchedule.getUser())
-////                .updateReq(req)
-////                .scheduleDateTimeStart(req.getChangeDate())
-////                .scheduleDateTimeEnd(req.getChangeDate().plusHours(between_time))
-////                .build();
-//        assignScheduleRepository.save(assign_updateReq);
-
-//        updateReq.updateReqAcceptCheckToY();
+        ScheduleUpdateReq updateReq = updateReqRepository.findById(id).orElseThrow(() -> new IllegalStateException("Not Found Id"));
+        ManagerAssignSchedule assignSchedule = updateReq.getAssignSchedule();
+        assignSchedule.update(updateReq.getChangeStartDate(),updateReq.getChangeEndDate());
+        updateReq.updateReqAcceptCheckToY();
     }
 
     public Optional<ScheduleUpdateReq> findById(int id) {
@@ -78,10 +63,6 @@ public class ScheduleUpdateReqService {
         return updateReqRepository.findAll();
     }
 
-
-    public Optional<ScheduleUpdateReq> findByAssignSchedule(ManagerAssignSchedule managerAssignSchedule){
-        return updateReqRepository.findByAssignSchedule(managerAssignSchedule);
-    }
 
 
 }

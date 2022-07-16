@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import sketcher.scheduling.domain.ManagerAssignSchedule;
+import sketcher.scheduling.domain.ScheduleUpdateReq;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.ManagerAssignScheduleDto;
 import sketcher.scheduling.dto.UserDto;
@@ -71,16 +72,21 @@ public class ScheduleUpdateReqTest {
 
     }
 
-//    @Test
-//    public void 수정_요청을_수락하는_경우(){
-//        //given
-//
-//
-//        //when
-////        updateReqService.acceptReq();
-//
-//        //then
-//    }
+    @Transactional
+    @Test
+    public void 수정_요청을_수락하는_경우(){
+        //given
+        Integer updateReqId = 1;
+
+        //when
+        updateReqService.acceptReq(updateReqId);
+
+        //then
+        ScheduleUpdateReq scheduleUpdateReq = updateReqService.findById(1).get();
+        Assertions.assertEquals(scheduleUpdateReq.getReqAcceptCheck(), 'Y');
+        Assertions.assertEquals(scheduleUpdateReq.getAssignSchedule().getScheduleDateTimeStart(), LocalDateTime.of(2022, 6, 30, 9, 30));
+        Assertions.assertEquals(scheduleUpdateReq.getAssignSchedule().getScheduleDateTimeEnd(), LocalDateTime.of(2022, 6, 30, 11, 0));
+    }
 
 
 
@@ -95,8 +101,7 @@ public class ScheduleUpdateReqTest {
 
         userService.saveUser(user);
 
-        User saveduser = userRepository.findById(user.getId()).get();
-        return saveduser;
+        return userRepository.findById(user.getId()).get();
     }
 
     @Transactional
@@ -106,8 +111,7 @@ public class ScheduleUpdateReqTest {
     }
 
     private ManagerAssignSchedule getAssignSchedule(Integer savedId) {
-        ManagerAssignSchedule originalSchedule = scheduleService.findById(savedId).get();
-        return originalSchedule;
+        return scheduleService.findById(savedId).get();
     }
 
     private Integer createAssignSchedule() {
@@ -118,8 +122,7 @@ public class ScheduleUpdateReqTest {
                 .scheduleDateTimeStart(scheduleDateTimeStart)
                 .scheduleDateTimeEnd(scheduleDateTimeEnd)
                 .build();
-        Integer savedId = scheduleService.saveManagerAssignSchedule(assignScheduleDto);
-        return savedId;
+        return scheduleService.saveManagerAssignSchedule(assignScheduleDto);
     }
 }
 
