@@ -27,21 +27,17 @@ public class UpdateReqController {
     private final ManagerAssignScheduleService assignScheduleService;
 
     @RequestMapping(value = "/schedule_upd_list", method = RequestMethod.GET)
-    public String schedule_upd_list(Model model,
-                                    @RequestParam(value="list_align", required = false, defaultValue = "req_date_desc") String sort) {
-        List<ManagerAssignSchedule> updateReqList = assignScheduleService.findUpdateReqIdIsNotNull();
+    public String schedule_upd_list(Model model) {
+        List<ManagerAssignSchedule> updateReqList = assignScheduleService.findAcceptReqCheckIsN();
         model.addAttribute("updateReqList", updateReqList);
-
         return "request/schedule_upd_list";
     }
 
     @RequestMapping(value = "/acceptRequest")
-    public String acceptRequest(@RequestParam(value="chkList",required=true) List<Integer> requestId){
-
+    public String acceptRequest(@RequestParam(value = "chkList", required = true) List<Integer> requestId) {
         for (Integer id : requestId) {
             updateReqService.acceptReq(id);
         }
         return "redirect:schedule_upd_list";
     }
-
 }

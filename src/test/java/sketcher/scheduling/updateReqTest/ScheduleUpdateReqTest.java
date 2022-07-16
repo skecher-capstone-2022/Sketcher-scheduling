@@ -19,6 +19,7 @@ import sketcher.scheduling.service.UserService;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -88,6 +89,18 @@ public class ScheduleUpdateReqTest {
         Assertions.assertEquals(scheduleUpdateReq.getAssignSchedule().getScheduleDateTimeEnd(), LocalDateTime.of(2022, 6, 30, 11, 0));
     }
 
+    @Transactional
+    @Test
+    public void 체크값이_N인_경우만_조회(){
+        //given
+        Integer actual = 1;
+
+        //when
+        List<ManagerAssignSchedule> acceptReqCheckIsN = scheduleService.findAcceptReqCheckIsN();
+
+        //then
+        Assertions.assertEquals(acceptReqCheckIsN.size(), actual);
+    }
 
 
     public User setUpUser() {
@@ -125,9 +138,5 @@ public class ScheduleUpdateReqTest {
         return scheduleService.saveManagerAssignSchedule(assignScheduleDto);
     }
 }
-
-/* TO DO LIST */
-//TODO 관리자가 변경 요청을 수락하는 경우
-//TODO 관리자가 변경 요청을 거절하는 경우
 
 
