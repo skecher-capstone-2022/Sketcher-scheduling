@@ -17,6 +17,7 @@ import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.dto.UserSearchCondition;
 import sketcher.scheduling.service.ManagerAssignScheduleService;
+import sketcher.scheduling.service.ScheduleUpdateReqService;
 import sketcher.scheduling.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +34,7 @@ public class UserController {
 
     private final UserService userService;
     private final ManagerAssignScheduleService managerAssignScheduleService;
+    private final ScheduleUpdateReqService scheduleUpdateReqService;
 
 
 //
@@ -169,8 +171,15 @@ public class UserController {
         User userSession = (User) authentication.getPrincipal();
 
         User user = userService.findById(userSession.getId()).get();
-
+        long todayAssignManager = managerAssignScheduleService.countByTodayAssignManager();
+        long todayWorkManager = userService.countByTodayWorkManager();
+        long notAcceptUpdateReq = scheduleUpdateReqService.countByWeekNotAcceptUpdateReq();
+        long updateReq = scheduleUpdateReqService.countByWeekUpdateReq();
         model.addAttribute("user", user);
+        model.addAttribute("todayAssignManager", todayAssignManager);
+        model.addAttribute("todayWorkManager", todayWorkManager);
+        model.addAttribute("notAcceptUpdateReq", notAcceptUpdateReq);
+        model.addAttribute("updateReq", updateReq);
         return "mypage/admin_mypage";
     }
 
@@ -180,11 +189,22 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User userSession = (User) authentication.getPrincipal();
 
-        User user = userService.findById(userSession.getId()).get();
-        ArrayList<String> hope = userService.findHopeTimeById(userSession.getId());
+        String id = userSession.getId();
+
+        User user = userService.findById(id).get();
+        ArrayList<String> hope = userService.findHopeTimeById(id);
+
+//        long monthWork = managerAssignScheduleService.monthAssignWorkByUserId(id);
+        long weekWork = managerAssignScheduleService.weekWorkByUserId(id);
+//        long weekAssign = managerAssignScheduleService.weekAssignByUserId(id);
+        long weekRemain = managerAssignScheduleService.weekRemainByUserId(id);
 
         model.addAttribute("user", user);
         model.addAttribute("hope", hope);
+//        model.addAttribute("monthWork", monthWork);
+        model.addAttribute("weekWork", weekWork);
+//        model.addAttribute("weekAssign", weekAssign);
+        model.addAttribute("weekRemain", weekRemain);
         return "mypage/manager_mypage";
     }
 

@@ -95,4 +95,14 @@ public class ScheduleUpdateReqService {
                 new IllegalArgumentException("해당 스케줄이 없습니다." + id));
 //        scheduleUpdateReq.update(dto.getAssignSchedule(), dto.getChangeDate());
     }
+
+    @Transactional
+    public long countByWeekNotAcceptUpdateReq() {
+        return updateReqRepoCustom.countByWeekNotAcceptUpdateReq();
+    }
+
+    @Transactional
+    public long countByWeekUpdateReq() {
+        return updateReqRepoCustom.countByWeekUpdateReq();
+    }
 }

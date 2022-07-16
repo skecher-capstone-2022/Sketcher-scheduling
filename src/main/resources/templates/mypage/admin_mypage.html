@@ -93,8 +93,10 @@
                                         <canvas id="managerChart" width="100" height="100"></canvas>
                                     </div>
                                     <div class="info_manger">
-                                        <span class="bold_span">금일 근무 매니저  |</span> 30 명<br/>
-                                        <span class="bold_span">현재 근무 매니저  |</span> 15 명<br/>
+                                        <span class="bold_span">금일 근무 매니저  |</span> [[${todayWorkManager}]] 명<br/>
+                                        <span class="bold_span">현재 근무 매니저  |</span> [[${todayAssignManager}]] 명<br/>
+                                        <input type="hidden" id="todayWorkManager" th:value="${todayWorkManager}">
+                                        <input type="hidden" id="todayAssignManager" th:value="${todayAssignManager}">
                                     </div>
                                 </div>
                                 <div>
@@ -104,7 +106,11 @@
                                             <canvas id="responseChart" width="100" height="100"></canvas>
                                         </div>
                                         <div class="info_response">
-                                            <span class="bold_span">3건</span> / 총 12 건<br/>
+                                            <span class="bold_span">[[${notAcceptUpdateReq}]]건</span> / 총
+                                            [[${updateReq}]] 건<br/>
+                                            <input type="hidden" id="notAcceptUpdateReq"
+                                                   th:value="${notAcceptUpdateReq}">
+                                            <input type="hidden" id="updateReq" th:value="${updateReq}">
                                         </div>
                                     </div>
                                 </div>
@@ -179,8 +185,17 @@
     <script type="text/javascript"
             src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.0/Chart.bundle.min.js"></script>
     <script type="text/javascript">
-        var num = 0.14;
-        var num2 = 0.25;
+        var todayWork = parseInt(document.getElementById("todayWorkManager").value);
+        var todayAssign = parseInt(document.getElementById("todayAssignManager").value);
+
+        var num = Math.round((todayWork / todayAssign + Number.EPSILON) * 100) / 100;
+
+
+        var notAcceptUpdateReq = parseInt(document.getElementById("notAcceptUpdateReq").value);
+        var updateReq = parseInt(document.getElementById("updateReq").value);
+
+        var num2 = Math.round((notAcceptUpdateReq / updateReq + Number.EPSILON) * 100) / 100;
+
         window.onload = function () {
             Chart.pluginService.register({
                 beforeDraw: function (chart) {
