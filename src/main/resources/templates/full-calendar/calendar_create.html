@@ -6,6 +6,7 @@
     <title>근무 스케줄 배정</title>
     <link th:href="@{/css/modal-component.css}" rel="stylesheet"/>
     <link th:href="@{/css/create_schedule.css}" rel="stylesheet"/>
+    <link th:href="@{/css/loading.css}" rel="stylesheet"/>
     <style media="screen">
         .no-csstransforms3d .mp-pusher, .no-js .mp-pusher {
             padding-left: 0;
@@ -56,6 +57,7 @@
             background-color: #a1a1a1;
         }
     </style>
+
 </head>
 
 <th:block layout:fragment="ground-wrap">
@@ -129,9 +131,7 @@
             </div>
         </div>
         <div class="main">
-
             <div class="left_content">
-
                 <div>
                     <table id="mon">
                         <tbody>
@@ -3521,8 +3521,16 @@
             </div>
         </div>
     </div>
-
     <div class="md-overlay"></div>
+    <div class="loading-backgrdound" id="loading" style="display: none;">
+        <div class="loading-wrap">
+            <div class="loading-container">
+                <div class="loading"></div>
+                <div id="loading-text">loading</div>
+            </div>
+            <div id="link">스케줄을 생성 중입니다...</div>
+        </div>
+    </div>
 </th:block>
 </html>
 <script>
@@ -3558,25 +3566,24 @@
     // 5. 등록 버튼 누름(스케줄 저장) : save_schedule (ajax)
 
 
-
     function select_cell(id) {
         alert(id);
         $.ajax({
-            contentType : "application/json; charset=utf-8;",
-            type : "GET",
-            url : "/select_cell",
-            data : {
-                "cellId" : id
+            contentType: "application/json; charset=utf-8;",
+            type: "GET",
+            url: "/select_cell",
+            data: {
+                "cellId": id
             },
-            success : function(response) {
+            success: function (response) {
 
-                setTimeout(function(){
+                setTimeout(function () {
                     $(".text-danger").hide();
                     $("#directda_img").show();
-                    $("#indirect_msg3").text("해당 자산의 상세 유형은 "+response+"입니다.");
-                },2200);
+                    $("#indirect_msg3").text("해당 자산의 상세 유형은 " + response + "입니다.");
+                }, 2200);
             },
-            error : function(request, status, error) {
+            error: function (request, status, error) {
                 alert("code:" + request.status + "\n" + "message:"
                     + request.responseText + "\n" + "error:" + error);
             }
@@ -3584,6 +3591,20 @@
     }
 
 </script>
+
+<script type="text/javascript">
+    // 로딩창 키는 함수
+    function getShowLoading(){
+        document.getElementById("loading").style.display = "";
+
+    }
+
+    function getHideLoading(){
+        document.getElementById("loading").style.display = "none";
+
+    }
+</script>
+
 <footer>
 
 </footer>
