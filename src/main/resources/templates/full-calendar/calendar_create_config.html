@@ -27,11 +27,16 @@
             height: fit-content;
         }
 
-        .feat-title{
+        .feat-title {
             font-size: 18pt;
             font-weight: 600;
         }
 
+        .md-content {
+            color: #000;
+            background: #ffffff;
+
+        }
     </style>
 </head>
 
@@ -40,106 +45,146 @@
         <div class="title1">
             <h1>근무 스케줄 배정 준비</h1>
             <button class="btn btn-1 btn-1a md-close" style="margin: 0; padding: 15px;"
-                    onclick="">배정 취소
+                    onclick="window.history.back();">배정 취소
             </button>
             <button class="btn btn-1 btn-1a md-close" style="margin: 0; padding: 15px; margin-left: 10px;"
-                    onclick="">배정 시작
+                    onclick="location.href='/create_schedule'">배정 시작
             </button>
         </div>
 
         <div class="main">
 
-           <div style="width: 100%;">
-               <div>
-               <span class="feat-title">현재 설정한 예상 요청 건수</span>
-               <button class="btn btn-1 btn-1a md-close" style="margin: 0; padding: 15px; float: right;"
-                       onclick="">변경내용 저장
-               </button>
-               </div>
-               <br><hr><br>
-               <div id="myfirstchart" style="width: 100%;"></div>
+            <div style="width: 100%;">
+                <div>
+                    <span class="feat-title">현재 설정한 예상 요청 건수</span>
+                    <button class="btn btn-1 btn-1a md-trigger" style="margin: 0; padding: 15px; float: right;"
+                            data-modal="modal-1">수정하기
+                    </button>
+                </div>
+                <br>
+                <hr>
+                <br>
+                <div id="myfirstchart" style="width: 100%;"></div>
 
-               <br>
-               <p style="font-size: 15pt; font-weight: 600;">현재 설정된 요청카드건수 최대값 :  <span style="color: rgb(11, 98, 164);">300</span>건</p>
-               <br><br><br>
-               <div>
-               <span class="feat-title">매니저 가중치 설정</span>
-               <button class="btn btn-1 btn-1a md-close" style="margin: 0; padding: 15px; float: right;"
-                       onclick="">변경내용 저장
-               </button>
-               </div>
-               <br><hr><br>
-               <table>
-                   <thead>
-                   <tr>
-                       <th></th>
-                       <th>매니저 인당 평균 처리카드 수</th>
-                       <th>매니저 가중치</th>
-                   </tr>
-                   </thead>
-                   <tbody>
-                   <tr>
-                       <td>최대</td>
-                       <td><input type="text" value="40"></td>
-                       <td>3</td>
-                   </tr>
-                   <tr>
-                       <td>평균</td>
-                       <td><input type="text" value="30"></td>
-                       <td>2</td>
-                   </tr>
-                   <tr>
-                       <td>최소</td>
-                       <td><input type="text" value="20"></td>
-                       <td>1</td>
-                   </tr>
-                   </tbody>
-               </table>
-           </div>
-
+                <br>
+                <p style="font-size: 15pt; font-weight: 600;">현재 설정된 요청카드건수 최대값 : <span id="max_num_of_cards"
+                                                                                        style="color: rgb(11, 98, 164);">250</span>건
+                </p>
+                <br><br><br>
+                <div>
+                    <span class="feat-title">매니저 가중치 설정</span>
+                    <button class="btn btn-1 btn-1a md-close" style="margin: 0; padding: 15px; float: right;"
+                            onclick="">변경내용 저장
+                    </button>
+                </div>
+                <br>
+                <hr>
+                <br>
+                <table>
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>매니저 인당 평균 처리카드 수</th>
+                        <th>매니저 가중치</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>최대</td>
+                        <td><input type="text" value="40"></td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td>평균</td>
+                        <td><input type="text" value="30"></td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>최소</td>
+                        <td><input type="text" value="20"></td>
+                        <td>1</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+<br><br><br><br>
         </div>
     </div>
-
+    <!--회원탈퇴 요청 modal-->
+    <div class="md-modal md-effect-1" id="modal-1">
+        <div class="md-content" style="padding: 10px;">
+            <div style="display: flex;">
+                <h3 style="flex: auto;">시간당 요청카드건수 설정값 변경</h3>
+                <button type="" class="btn btn-1 btn-1a md-close" style="margin: 0; padding: 15px; float: right;">변경사항
+                    저장
+                </button>
+            </div>
+            <form id="dropoutForm" name="dropoutForm" autocomplete="off" method="post" action="/dropout"
+                  onsubmit="return dropoutCheck()">
+                <div id="updateEstNumTable"></div>
+            </form>
+        </div>
+    </div>
     <div class="md-overlay"></div>
 </th:block>
 </html>
 <script>
-    new Morris.Bar({
-        // ID of the element in which to draw the chart.
-        element: 'myfirstchart',
-        // Chart data records -- each entry in this array corresponds to a point on
-        // the chart.
-        data: [
-            { time: '00', value: 65 },
-            { time: '01', value: 60 },
-            { time: '06', value: 93 },
-            { time: '07', value: 130 },
-            { time: '08', value: 195 },
-            { time: '09', value: 265 },
-            { time: '10', value: 222 },
-            { time: '11', value: 183 },
-            { time: '12', value: 289 },
-            { time: '13', value: 300 },
-            { time: '14', value: 181 },
-            { time: '15', value: 136 },
-            { time: '16', value: 124 },
-            { time: '17', value: 200 },
-            { time: '18', value: 271 },
-            { time: '19', value: 294 },
-            { time: '20', value: 178 },
-            { time: '21', value: 155 },
-            { time: '22', value: 89 },
-            { time: '23', value: 62 }
+    const data_list = [];
+    let max_est_num_of_cards = 0;
+    var element_max_num = document.getElementById("max_num_of_cards");
+    var htmlStr = "<table style=\"padding: 20px;\">\n" +
+        "                    <thead>\n" +
+        "                    <tr>\n" +
+        "                        <th>시간</th>\n" +
+        "                        <th>예상카드건수</th>\n" +
+        "                    </tr>\n" +
+        "                    </thead>";
 
-        ],
-        // The name of the data record attribute that contains x-values.
-        xkey: 'time',
-        // A list of names of data record attributes that contain y-values.
-        ykeys: ['value'],
-        // Labels for the ykeys -- will be displayed when you hover over the
-        // chart.
-        labels: ['Value']
-    });
+    $(document).ready(function () {
+        show_chart();
+    })
+
+    function show_chart() {
+        $.ajax({
+            url: "/set_est_num_of_cards",
+            type: "get",
+            datatype: "json",
+            success: function (data) {
+                htmlStr += "<tbody>";
+                $.each(data, function (index, item) { // 데이터 =item
+                    data_list.push({time: item.time.toString(), value: item.numOfCards})
+                    htmlStr += "<tr>";
+                    htmlStr += "<td>" + item.time + "</td>";
+                    htmlStr += "<td><input type='text' style='width: 80%;' value='" + item.numOfCards + "'></td>";
+                    htmlStr += "</tr>";
+                    if (item.numOfCards > max_est_num_of_cards)
+                        max_est_num_of_cards = item.numOfCards;
+                });
+                element_max_num.innerText = max_est_num_of_cards;
+                new Morris.Bar({
+                    // ID of the element in which to draw the chart.
+                    element: 'myfirstchart',
+                    // Chart data records -- each entry in this array corresponds to a point on
+                    // the chart.
+                    data: data_list,
+                    // The name of the data record attribute that contains x-values.
+                    xkey: 'time',
+                    // A list of names of data record attributes that contain y-values.
+                    ykeys: ['value'],
+                    // Labels for the ykeys -- will be displayed when you hover over the
+                    // chart.
+                    labels: ['Value']
+                });
+                htmlStr += "</tbody> </table>";
+                $("#updateEstNumTable").html(htmlStr);
+            },
+            error: function () {
+                alert('error');
+            }
+        });
+
+    }
+
 
 </script>
 <footer>
