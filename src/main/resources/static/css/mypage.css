@@ -4,7 +4,7 @@
 .info {
     float: left;
     margin-left: 50px;
-/ / margin-bottom: 10 px;
+    margin-bottom: 10px;
     box-sizing: border-box;
     font-size: 1.2rem;
 }
@@ -57,7 +57,7 @@
 
 .info_manger {
     float: left;
-    margin-top: 50px;
+    margin-top: 30px;
     margin-left: 50px;
     margin-bottom: 50px;
     box-sizing: border-box;

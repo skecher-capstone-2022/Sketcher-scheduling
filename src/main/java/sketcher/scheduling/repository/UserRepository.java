@@ -19,6 +19,9 @@ public interface UserRepository extends JpaRepository<User , Integer> {
 
     List<User> findAll();
 
+    @Query("select u from User u where u.authRole = 'MANAGER'")
+    List<User> findAllManager();
+
 	@Query("select u from User u where u.id = :userid")
     List<User> idCheck(@Param("userid") String userid);
 

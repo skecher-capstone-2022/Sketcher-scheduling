@@ -4,12 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sketcher.scheduling.domain.ManagerAssignSchedule;
+import sketcher.scheduling.domain.ScheduleUpdateReq;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.ManagerAssignScheduleDto;
-import sketcher.scheduling.repository.ManagerAssignScheduleRepository;
-import sketcher.scheduling.repository.ManagerAssignScheduleRepositoryCustomImpl;
-import sketcher.scheduling.repository.ScheduleRepository;
-import sketcher.scheduling.repository.UserRepository;
+import sketcher.scheduling.repository.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -26,6 +24,7 @@ public class ManagerAssignScheduleService {
 
     private final ManagerAssignScheduleRepository managerAssignScheduleRepository;
     private final ManagerAssignScheduleRepositoryCustomImpl scheduleRepositoryCustom;
+    private final ScheduleUpdateReqRepository updateReqRepository;
     private final UserRepository userRepository;
     private final ScheduleRepository scheduleRepository;
 
@@ -38,7 +37,7 @@ public class ManagerAssignScheduleService {
 
     public List<ManagerAssignSchedule> AssignScheduleFindAll() {
         return em.createQuery("select s from ManagerAssignSchedule s"
-                      + " join fetch s.user u"
+                                + " join fetch s.user u"
                         , ManagerAssignSchedule.class)
                 .getResultList();
     }
@@ -75,11 +74,45 @@ public class ManagerAssignScheduleService {
     }
 
     @Transactional
+    public long monthAssignWorkByUserId(String id) {
+        return scheduleRepositoryCustom.monthAssignWorkByUserId(id);
+    }
+
+    @Transactional
+    public long weekWorkByUserId(String id) {
+        return scheduleRepositoryCustom.weekWorkByUserId(id);
+    }
+
+    @Transactional
+    public long weekRemainByUserId(String id) {
+        return scheduleRepositoryCustom.weekRemainByUserId(id);
+    }
+
+    @Transactional
+    public long countByTodayAssignManager() {
+        return scheduleRepositoryCustom.countByTodayAssignManager();
+    }
+
+    @Transactional
+    public long weekAssignByUserId(String id) {
+        return scheduleRepositoryCustom.weekAssignByUserId(id);
+    }
+
+    @Transactional
     public void update(Integer id, ManagerAssignScheduleDto dto) {
         ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("해당 스케줄이 없습니다." + id));
 
         managerAssignSchedule.update(dto.getScheduleDateTimeStart(), dto.getScheduleDateTimeEnd());
+    }
+
+    @Transactional
+    public List<ManagerAssignSchedule> findAcceptReqCheckIsN() {
+        return em.createQuery("select a from ManagerAssignSchedule a inner join ScheduleUpdateReq r " +
+                        "on a.updateReq.id = r.id where r.reqAcceptCheck= 'N'"
+                , ManagerAssignSchedule.class)
+                .getResultList();
+
     }
 
     @Transactional

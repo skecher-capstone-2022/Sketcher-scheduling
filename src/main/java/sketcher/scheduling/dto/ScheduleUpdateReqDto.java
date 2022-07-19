@@ -14,31 +14,34 @@ public class ScheduleUpdateReqDto {
     private Integer id;
     private ManagerAssignSchedule assignSchedule;
     private Character reqAcceptCheck;
-    private LocalDateTime changeDate;
+    private LocalDateTime changeStartDate;
+    private LocalDateTime changeEndDate;
     private LocalDateTime reqTime;
 
     @Builder
-    public ScheduleUpdateReqDto(Integer id, ManagerAssignSchedule assignSchedule, Character reqAcceptCheck, LocalDateTime changeDate,LocalDateTime reqTime) {
-        this.id = id;
+    public ScheduleUpdateReqDto(ManagerAssignSchedule assignSchedule, Character reqAcceptCheck, LocalDateTime changeStartDate,LocalDateTime changeEndDate, LocalDateTime reqTime) {
         this.assignSchedule = assignSchedule;
         this.reqAcceptCheck = reqAcceptCheck;
-        this.changeDate = changeDate;
+        this.changeStartDate = changeStartDate;
+        this.changeEndDate = changeEndDate;
         this.reqTime = reqTime;
     }
 
 
     public ScheduleUpdateReq toEntity(){
         return ScheduleUpdateReq.builder()
-                .id(id)
                 .assignSchedule(assignSchedule)
                 .reqAcceptCheck(reqAcceptCheck)
-                .changeDate(changeDate)
+                .changeStartDate(changeStartDate)
+                .changeEndDate(changeEndDate)
                 .reqTime(reqTime)
                 .build();
     }
-    public void update(ManagerAssignSchedule assignSchedule, LocalDateTime changeDate){
-        this.assignSchedule = assignSchedule;
-        this.changeDate = changeDate;
-    }
+    //TODO 재요청
+//    public void update(ManagerAssignSchedule assignSchedule, LocalDateTime changeDate){
+////        this.assignSchedule = assignSchedule;
+//        this.changeDate = changeDate;
+//
+//    }
 
 }

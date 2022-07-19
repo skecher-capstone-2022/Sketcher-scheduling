@@ -36,6 +36,10 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
+    public List<User> findAllManager() {
+        return userRepository.findAllManager();
+    }
+
     public Optional<User> findByCode(int code) {
         return userRepository.findByCode(code);
     }
@@ -66,6 +70,11 @@ public class UserService implements UserDetailsService {
     @Transactional(readOnly = true)
     public Page<UserDto> findWorkManager(UserSearchCondition condition, Pageable pageable) {
         return userRepositoryCustom.findWorkManager(condition, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public long countByTodayWorkManager() {
+        return userRepositoryCustom.countByTodayWorkManager();
     }
 
     /**

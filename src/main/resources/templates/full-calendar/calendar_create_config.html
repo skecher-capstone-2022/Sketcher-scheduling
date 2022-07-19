@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout/menu_layout}">
+<head>
+    <title>근무 스케줄 배정</title>
+    <link th:href="@{/css/modal-component.css}" rel="stylesheet"/>
+    <link th:href="@{/css/create_schedule.css}" rel="stylesheet"/>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+    <style media="screen">
+        .no-csstransforms3d .mp-pusher, .no-js .mp-pusher {
+            padding-left: 0;
+        }
+
+        .menu-trigger {
+            display: none;
+        }
+
+        .title1 {
+            align-items: center;
+        }
+
+        .title1 > button {
+            height: fit-content;
+        }
+
+        .feat-title{
+            font-size: 18pt;
+            font-weight: 600;
+        }
+
+    </style>
+</head>
+
+<th:block layout:fragment="ground-wrap">
+    <div class="ground">
+        <div class="title1">
+            <h1>근무 스케줄 배정 준비</h1>
+            <button class="btn btn-1 btn-1a md-close" style="margin: 0; padding: 15px;"
+                    onclick="">배정 취소
+            </button>
+            <button class="btn btn-1 btn-1a md-close" style="margin: 0; padding: 15px; margin-left: 10px;"
+                    onclick="">배정 시작
+            </button>
+        </div>
+
+        <div class="main">
+
+           <div style="width: 100%;">
+               <div>
+               <span class="feat-title">현재 설정한 예상 요청 건수</span>
+               <button class="btn btn-1 btn-1a md-close" style="margin: 0; padding: 15px; float: right;"
+                       onclick="">변경내용 저장
+               </button>
+               </div>
+               <br><hr><br>
+               <div id="myfirstchart" style="width: 100%;"></div>
+
+               <br>
+               <p style="font-size: 15pt; font-weight: 600;">현재 설정된 요청카드건수 최대값 :  <span style="color: rgb(11, 98, 164);">300</span>건</p>
+               <br><br><br>
+               <div>
+               <span class="feat-title">매니저 가중치 설정</span>
+               <button class="btn btn-1 btn-1a md-close" style="margin: 0; padding: 15px; float: right;"
+                       onclick="">변경내용 저장
+               </button>
+               </div>
+               <br><hr><br>
+               <table>
+                   <thead>
+                   <tr>
+                       <th></th>
+                       <th>매니저 인당 평균 처리카드 수</th>
+                       <th>매니저 가중치</th>
+                   </tr>
+                   </thead>
+                   <tbody>
+                   <tr>
+                       <td>최대</td>
+                       <td><input type="text" value="40"></td>
+                       <td>3</td>
+                   </tr>
+                   <tr>
+                       <td>평균</td>
+                       <td><input type="text" value="30"></td>
+                       <td>2</td>
+                   </tr>
+                   <tr>
+                       <td>최소</td>
+                       <td><input type="text" value="20"></td>
+                       <td>1</td>
+                   </tr>
+                   </tbody>
+               </table>
+           </div>
+
+        </div>
+    </div>
+
+    <div class="md-overlay"></div>
+</th:block>
+</html>
+<script>
+    new Morris.Bar({
+        // ID of the element in which to draw the chart.
+        element: 'myfirstchart',
+        // Chart data records -- each entry in this array corresponds to a point on
+        // the chart.
+        data: [
+            { time: '00', value: 65 },
+            { time: '01', value: 60 },
+            { time: '06', value: 93 },
+            { time: '07', value: 130 },
+            { time: '08', value: 195 },
+            { time: '09', value: 265 },
+            { time: '10', value: 222 },
+            { time: '11', value: 183 },
+            { time: '12', value: 289 },
+            { time: '13', value: 300 },
+            { time: '14', value: 181 },
+            { time: '15', value: 136 },
+            { time: '16', value: 124 },
+            { time: '17', value: 200 },
+            { time: '18', value: 271 },
+            { time: '19', value: 294 },
+            { time: '20', value: 178 },
+            { time: '21', value: 155 },
+            { time: '22', value: 89 },
+            { time: '23', value: 62 }
+
+        ],
+        // The name of the data record attribute that contains x-values.
+        xkey: 'time',
+        // A list of names of data record attributes that contain y-values.
+        ykeys: ['value'],
+        // Labels for the ykeys -- will be displayed when you hover over the
+        // chart.
+        labels: ['Value']
+    });
+
+</script>
+<footer>
+
+</footer>

@@ -105,31 +105,21 @@ public class CalendarController {
 //            User user = userService.findByUsername(eventName).get();
             User user = userService.findByUsername(eventName).orElseThrow(() -> new Exception("입력한 매니저가 존재하지 않습니다."));
 
-            ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.getBeforeSchedule(user, oldStart, oldEnd)
-                    .orElseThrow(()-> new Exception("해당 스케줄이 존재하지 않습니다."));
-            Integer updateCheck = updateReqService.findByAssignSchedule(managerAssignSchedule);
-//            Optional<ScheduleUpdateReq> updateCheck = updateReqService.findByAssignSchedule(managerAssignSchedule);
-//            Integer updateCheck2 = Optional.ofNullable(updateReqService.findByAssignSchedule(managerAssignSchedule))
-//                    .orElseGet();
+            ManagerAssignSchedule managerAssignSchedule =
+                    managerAssignScheduleService.findByUserAndScheduleDateTimeStartAndScheduleDateTimeEnd(user, oldStart, oldEnd).get();
 
-            if (updateCheck == null) {
-                ScheduleUpdateReqDto scheduleUpdateReqDto = ScheduleUpdateReqDto.builder()
-                        .assignSchedule(managerAssignSchedule)
-                        .changeDate(modifiedStartDate)
-                        .build();
-                updateReqService.saveScheduleUpdateReq(scheduleUpdateReqDto);
-
-            } else if (updateCheck != null) {
-                ScheduleUpdateReqDto scheduleUpdateReqDtoUpdate = ScheduleUpdateReqDto.builder()
-                        .assignSchedule(managerAssignSchedule)
-                        .changeDate(modifiedStartDate)
-                        .build();
-                updateReqService.duplicateUpdateRequest(updateCheck, scheduleUpdateReqDtoUpdate);
-//                        }
+            if (managerFirstRequestUpdateSchedule(managerAssignSchedule)) {
+                updateReqService.saveScheduleUpdateReq(managerAssignSchedule, modifiedStartDate, modifiedEndDate);
+            } else {
+                updateReqService.duplicateUpdateRequest(managerAssignSchedule, modifiedStartDate, modifiedEndDate);
             }
 
         }
         return "/full-calendar/calendar";
+    }
+
+    private boolean managerFirstRequestUpdateSchedule(ManagerAssignSchedule managerAssignSchedule) {
+        return managerAssignSchedule.getUpdateReq() == null;
     }
 
     /**

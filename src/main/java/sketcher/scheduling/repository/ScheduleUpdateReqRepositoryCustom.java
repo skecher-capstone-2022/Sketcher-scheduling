@@ -8,4 +8,7 @@ public interface ScheduleUpdateReqRepositoryCustom {
 
     List<ScheduleUpdateReq> sort(String sort);
     ArrayList<String> findDetailById(String id);
+
+    long countByWeekNotAcceptUpdateReq();
+    long countByWeekUpdateReq();
 }

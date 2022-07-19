@@ -39,8 +39,13 @@ public class HomeController {
         return "full-calendar/calendar-admin-update";
     }
 
-//    @GetMapping(value = "/create_schedule")
-//    public String createSchedule() {
-//        return "full-calendar/calendar_create";
-//    }
+    @GetMapping(value = "/create_schedule")
+    public String createSchedule() {
+        return "full-calendar/calendar_create";
+    }
+
+    @GetMapping(value = "/config_create_schedule")
+    public String configCreateSchedule() {
+        return "full-calendar/calendar_create_config";
+    }
 }

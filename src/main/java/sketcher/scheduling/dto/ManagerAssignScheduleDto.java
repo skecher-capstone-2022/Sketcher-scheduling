@@ -48,4 +48,9 @@ public class ManagerAssignScheduleDto {
         this.scheduleDateTimeStart = scheduleDateTimeStart;
         this.scheduleDateTimeEnd = scheduleDateTimeEnd;
     }
+
+
+//    public void updateReqId(ManagerAssignScheduleDto dto, ScheduleUpdateReqDto scheduleUpdateReqDto){
+//        //TODO dto.setUpdateReq();
+//    }
 }
