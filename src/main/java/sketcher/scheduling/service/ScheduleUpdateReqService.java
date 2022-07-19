@@ -21,6 +21,7 @@ public class ScheduleUpdateReqService {
     private final ManagerAssignScheduleRepository assignScheduleRepository;
     private final ManagerAssignScheduleService assignScheduleService;
     private final ScheduleUpdateReqRepository updateReqRepository;
+    private final ScheduleUpdateReqRepositoryCustom updateReqRepoCustom;
 
     @Transactional
     public Integer saveScheduleUpdateReq(ManagerAssignSchedule assignSchedule, LocalDateTime modifiedStartDate,LocalDateTime modifiedEndDate ) {
@@ -64,5 +65,14 @@ public class ScheduleUpdateReqService {
     }
 
 
+    @Transactional
+    public long countByWeekNotAcceptUpdateReq() {
+        return updateReqRepoCustom.countByWeekNotAcceptUpdateReq();
+    }
+
+    @Transactional
+    public long countByWeekUpdateReq() {
+        return updateReqRepoCustom.countByWeekUpdateReq();
+    }
 
 }

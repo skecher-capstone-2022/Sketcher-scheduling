@@ -3,19 +3,16 @@ package sketcher.scheduling.repository;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import sketcher.scheduling.domain.ManagerHopeTime;
-import sketcher.scheduling.dto.ManagerHopeTimeDto;
-import sketcher.scheduling.dto.UserDto;
+import sketcher.scheduling.object.HopeTime;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.util.StringUtils.hasText;
 import static sketcher.scheduling.domain.QManagerHopeTime.managerHopeTime;
@@ -29,11 +26,12 @@ public class ManagerHopeTimeRepositoryCustomImpl implements ManagerHopeTimeRepos
     private final UserRepository userRepository;
     private final JPAQueryFactory queryFactory;
 
+
     @Override
     public ArrayList<String> findHopeTimeById(String id) {
         Integer code = userRepository.findById(id).get().getCode();
-        List<Integer> content = queryFactory
-                .select(managerHopeTime.start_time)
+        List<Tuple> content = queryFactory
+                .select(managerHopeTime.start_time, managerHopeTime.finish_time)
                 .from(managerHopeTime)
                 .join(managerHopeTime.user, user)
                 .where(
@@ -44,27 +42,8 @@ public class ManagerHopeTimeRepositoryCustomImpl implements ManagerHopeTimeRepos
                 .fetch();
 
         ArrayList<String> hope = new ArrayList<>();
-        for (Integer start_time : content) {
-            switch (start_time) {
-                case 0:
-                    hope.add("새벽 0시 ~ 6시");
-                    break;
 
-                case 6:
-                    hope.add("오전 6시 ~ 12시");
-                    break;
-
-                case 12:
-                    hope.add("오후 12시 ~ 18시");
-                    break;
-
-                case 18:
-                    hope.add("저녁 18시 ~ 24시");
-                    break;
-            }
-        }
-
-        return hope;
+        return makeHopeStr(content, hope);
     }
 
     @Override
@@ -90,6 +69,28 @@ public class ManagerHopeTimeRepositoryCustomImpl implements ManagerHopeTimeRepos
             return new OrderSpecifier(Order.ASC, managerHopeTime.start_time);
         }
         return null;
+    }
+
+    private ArrayList<String> makeHopeStr(List<Tuple> content, ArrayList<String> hope) {
+        for (Tuple tuple : content) {
+            Integer start_time = tuple.get(managerHopeTime.start_time);
+            Integer finish_time = tuple.get(managerHopeTime.finish_time);
+
+            Optional<HopeTime> starHopeTime = HopeTime.valueOfStarTime(start_time);
+            Optional<HopeTime> finishHopeTime = HopeTime.valueOfFinishTime(finish_time);
+
+            if (isEqualHopeTime(starHopeTime, finishHopeTime))
+                hope.add(starHopeTime.get().getKor() + " " + start_time + "시 ~ " + finish_time + "시");
+        }
+
+        return hope;
+    }
+
+    private boolean isEqualHopeTime(Optional<HopeTime> starHopeTime, Optional<HopeTime> finishHopeTime) {
+        if (starHopeTime.equals(finishHopeTime))
+            return true;
+
+        return false;
     }
 
 }

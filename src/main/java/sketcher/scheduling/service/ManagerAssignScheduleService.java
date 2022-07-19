@@ -37,7 +37,7 @@ public class ManagerAssignScheduleService {
 
     public List<ManagerAssignSchedule> AssignScheduleFindAll() {
         return em.createQuery("select s from ManagerAssignSchedule s"
-                      + " join fetch s.user u"
+                                + " join fetch s.user u"
                         , ManagerAssignSchedule.class)
                 .getResultList();
     }
@@ -73,6 +73,31 @@ public class ManagerAssignScheduleService {
     }
 
     @Transactional
+    public long monthAssignWorkByUserId(String id) {
+        return scheduleRepositoryCustom.monthAssignWorkByUserId(id);
+    }
+
+    @Transactional
+    public long weekWorkByUserId(String id) {
+        return scheduleRepositoryCustom.weekWorkByUserId(id);
+    }
+
+    @Transactional
+    public long weekRemainByUserId(String id) {
+        return scheduleRepositoryCustom.weekRemainByUserId(id);
+    }
+
+    @Transactional
+    public long countByTodayAssignManager() {
+        return scheduleRepositoryCustom.countByTodayAssignManager();
+    }
+
+    @Transactional
+    public long weekAssignByUserId(String id) {
+        return scheduleRepositoryCustom.weekAssignByUserId(id);
+    }
+
+    @Transactional
     public void update(Integer id, ManagerAssignScheduleDto dto) {
         ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("해당 스케줄이 없습니다." + id));
@@ -88,7 +113,6 @@ public class ManagerAssignScheduleService {
                 .getResultList();
 
     }
-
 
     @Transactional
     public void deleteById(Integer id) {
