@@ -29,33 +29,12 @@
             display: flex;
         }
 
-        table#mon {
-            background-color: #ffbebe;
+        .wrapper_schedule_box {
+            margin-right: 300px;
+            display: flex;
+            justify-content: space-between;
         }
 
-        table#tue {
-            background-color: #ffddbe;
-        }
-
-        table#wed {
-            background-color: #fff2be;
-        }
-
-        table#thu {
-            background-color: #d0ffbe;
-        }
-
-        table#fri {
-            background-color: #bef7ff;
-        }
-
-        table#sat {
-            background-color: #cabeff;
-        }
-
-        table#sun {
-            background-color: #a1a1a1;
-        }
     </style>
 
 </head>
@@ -101,33 +80,43 @@
                 </div>
             </div>
         </div>
-        <div class="schedule_box">
-            <div class="days">
-                <button class="btn btn-1 btn-1a md-close"
-                        onclick="days_click('mon')">월
-                </button>
-                <button class="btn btn-1 btn-1a md-close"
-                        onclick="days_click('tue')">화
-                </button>
-                <button class="btn btn-1 btn-1a md-close"
-                        onclick="days_click('wed')">수
-                </button>
-                <button class="btn btn-1 btn-1a md-close"
-                        onclick="days_click('thu')">목
-                </button>
-                <button class="btn btn-1 btn-1a md-close"
-                        onclick="days_click('fri')">금
-                </button>
-                <button class="btn btn-1 btn-1a md-close"
-                        onclick="days_click('sat')">토
-                </button>
-                <button class="btn btn-1 btn-1a md-close"
-                        onclick="days_click('sun')">일
-                </button>
+        <div class="wrapper_schedule_box">
+            <div class="schedule_box">
+                <div class="days">
+                    <button class="btn btn-1 btn-1a md-close"
+                            onclick="days_click('mon')">월
+                    </button>
+                    <button class="btn btn-1 btn-1a md-close"
+                            onclick="days_click('tue')">화
+                    </button>
+                    <button class="btn btn-1 btn-1a md-close"
+                            onclick="days_click('wed')">수
+                    </button>
+                    <button class="btn btn-1 btn-1a md-close"
+                            onclick="days_click('thu')">목
+                    </button>
+                    <button class="btn btn-1 btn-1a md-close"
+                            onclick="days_click('fri')">금
+                    </button>
+                    <button class="btn btn-1 btn-1a md-close"
+                            onclick="days_click('sat')">토
+                    </button>
+                    <button class="btn btn-1 btn-1a md-close"
+                            onclick="days_click('sun')">일
+                    </button>
+                </div>
+
             </div>
-            <div style="display: flex; align-items: center; font-size: larger;">
-                <p>2022-05-01</p>
-                <h3 style="margin-left: 10px;">월요일</h3>
+            <div class="schedule_box">
+
+                <div style="display: flex; align-items: center; font-size: larger;">
+                    <p>2022-05-01</p>
+                    <h3 style="margin-left: 10px;">월요일</h3>
+                </div>
+                <button class="btn btn-1 btn-1a md-close"
+                        style="margin-left: 15px; padding: 15px; background: #ff6d6d; color: white;"
+                        onclick="getShowLoading()">하루 스케줄 임의배정
+                </button>
             </div>
         </div>
         <div class="main">
@@ -3534,18 +3523,59 @@
 </th:block>
 </html>
 <script>
+    let day_str = "";
+    let day_id = "";
+
     window.onload = function () {
-        days_click('mon')
+        days_click('mon');
+        setting_sell_selector();
+    }
+
+
+    // document.querySelector("#wed > tbody > tr:nth-child(행) > td:nth-child(열)")
+
+    function setting_sell_selector() {
+        var day_list = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+        for (let count = 0; count < day_list.length; count++) {
+            for (let i = 1; i <= 24; i++) {
+                for (let j = 1; j <= 16; j++) {
+                    document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")").onclick = function () {
+                        console.log(this)
+                    };
+                }
+            }
+        }
+
     }
 
     function days_click(day) {
+        day_id = day;
         var tb = document.getElementsByTagName("table");
         for (var i = 0; i < tb.length; i++) {
             console.log(tb)
             tb[i].style.display = "none";
         }
-        var d = document.getElementById(day);
-        d.style.display = "inline-table";
+        let table = document.getElementById(day);
+        table.style.display = "inline-table";
+        console.log(table);
+
+
+
+        if (day == 'mon') day_str = "월요일";
+        else if (day == 'tue') day_str = "화요일";
+        else if (day == 'wed') day_str = "수요일";
+        else if (day == 'thu') day_str = "목요일";
+        else if (day == 'fri') day_str = "금요일";
+        else if (day == 'sat') day_str = "토요일";
+        else if (day == 'sun') day_str = "일요일";
+        // document.querySelector("#mp-pusher > div > div.ground > div.wrapper_schedule_box > div:nth-child(2) > div > p").innerHTML =
+        document.querySelector("#mp-pusher > div > div.ground > div.wrapper_schedule_box > div:nth-child(2) > div > h3").innerHTML =day_str;
+        // var TableCOLS = table.cols.length;
+        // for (i = 0; i < table.rows.length; i++) {
+        //     var r = table.rows[i];
+        //     var r_id = r.id;
+        //     // alert(eval(i + 1) + "/" + TableLen + " 번째 행 : \n" + "행의 식별자(ID) : " + r_id);
+        // }
     }
 
 
@@ -3593,16 +3623,33 @@
 </script>
 
 <script type="text/javascript">
+    var colors = [
+        'rgb(255,177,177)',
+        'rgb(255,235,154)',
+        'rgb(198,255,129)',
+        'rgb(154,225,255)',
+        'rgb(196,173,255)'
+    ];
     // 로딩창 키는 함수
-    function getShowLoading(){
+    function getShowLoading() {
         document.getElementById("loading").style.display = "";
+        setTimeout(function () {
+            document.getElementById("loading").style.display = "none";
+            for (let i = 1; i <= 24; i++) {
+                for (let j = 2; j <= 17; j++) {
+                    if (i == 1 || i == 7 || i == 13 || i == 19) {
+                        document.querySelector("#"+day_id+" > tbody > tr:nth-child(" + i + ") > td:nth-child(" + (j + 1) + ")").innerHTML = day_str;
+                        document.querySelector("#"+day_id+" > tbody > tr:nth-child(" + i + ") > td:nth-child(" + (j + 1) + ")").style.backgroundColor = colors[j%colors.length-1];
+                    } else {
+                        document.querySelector("#"+day_id+" > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")").innerHTML = day_str;
+                        document.querySelector("#"+day_id+" > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")").style.backgroundColor = colors[j%colors.length-1];
+                    }
+                }
+            }
+        }, 3000);
 
     }
 
-    function getHideLoading(){
-        document.getElementById("loading").style.display = "none";
-
-    }
 </script>
 
 <footer>

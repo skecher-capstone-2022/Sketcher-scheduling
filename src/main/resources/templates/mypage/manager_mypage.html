@@ -129,8 +129,19 @@
                     </td>
                 </tr>
             </table>
+            <div
+                    id="kakao-talk-channel-chat-button"
+                    data-channel-public-id="_LBGRxj"
+                    data-title="question"
+                    data-size="large"
+                    data-color="yellow"
+                    data-shape="pc"
+                    data-support-multiple-densities="true">
+            </div>
+<!--            <img src="/img/question_large_yellow_pc.png"/>-->
         </div>
     </div>
+
     <!--회원탈퇴 요청 modal-->
     <div class="md-modal md-effect-1" id="modal-1">
         <div class="md-content">
@@ -206,7 +217,22 @@
     <!--    <script src="/js/modalEffects.js"></script>-->
     <!--    <script th:src="@{/js/classie5.js}" type="text/javascript"></script>-->
     <!--    <script th:src="@{/js/modalEffects.js}" type="text/javascript"></script>-->
+    <script>
+        window.kakaoAsyncInit = function () {
+            Kakao.Channel.createChatButton({
+                container: '#kakao-talk-channel-chat-button',
+            });
+        };
 
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = 'https://developers.kakao.com/sdk/js/kakao.channel.min.js';
+            fjs.parentNode.insertBefore(js, fjs);
+        })(document, 'script', 'kakao-js-sdk');
+    </script>
     <!-- /chart -->
     <script type="text/javascript"
             src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.0/Chart.bundle.min.js"></script>
