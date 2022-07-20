@@ -5,6 +5,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import sketcher.scheduling.algorithm.AutoSchedulingTwo;
 import sketcher.scheduling.domain.ManagerAssignSchedule;
 import sketcher.scheduling.domain.Schedule;
 import sketcher.scheduling.domain.User;
@@ -42,6 +43,9 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
         LocalDateTime date3 = LocalDateTime.of(2022,3,10,20,00);
         LocalDateTime date5 = LocalDateTime.of(2022,3,10,17,00);
         LocalDateTime date7 = LocalDateTime.of(2022,3,10,7,00);
+
+        AutoSchedulingTwo autoSchedulingTwo = new AutoSchedulingTwo(managerHopeTimeService, userService);
+        autoSchedulingTwo.runAlgorithm();
 
 
 //        UserDto userA = UserDto.builder()

@@ -130,49 +130,49 @@ public class CalendarControllerTest {
 
     }
 
-    @Test
-    @Transactional
-    public void updateEvent() throws Exception {
-        // given
-        LocalDateTime date1 = LocalDateTime.of(2022, 3, 10, 2, 00);
-        LocalDateTime date3 = LocalDateTime.of(2022, 3, 10, 10, 00);
-
-        LocalDateTime date2 = LocalDateTime.of(2022, 3, 11, 2, 00);
-        LocalDateTime date4 = LocalDateTime.of(2022, 3, 11, 10, 00);
-
-        UserDto userDto = UserDto.builder()
-                .id("testmin")
-                .authRole("user")
-                .password("1234")
-                .username("정민환")
-                .userTel("1234-5678")
-                .build();
-
-        String testmin = userService.saveUser(userDto);
-        User user = userService.findById(testmin).orElseThrow(() -> new Exception("해당 매니저가 없습니다."));
-        // when
-        ManagerAssignScheduleDto managerAssignScheduleDto = ManagerAssignScheduleDto.builder()
-                .user(user)
-                .scheduleDateTimeStart(date1)
-                .scheduleDateTimeEnd(date3)
-                .build();
-        Integer scheduleId = managerAssignScheduleService.saveManagerAssignSchedule(managerAssignScheduleDto);
-        ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.findById(scheduleId).orElseThrow(() -> new Exception("해당 스케줄이 존재하지 않습니다."));
-
-        // Update 신청 전 -> null
-        Integer updateCheck = scheduleUpdateReqService.findByAssignSchedule(managerAssignSchedule);
-        assertThat(updateCheck).isNull();
-
-        ScheduleUpdateReqDto scheduleUpdateReqDto = ScheduleUpdateReqDto.builder()
-                .assignSchedule(managerAssignSchedule)
-                .changeDate(date2)
-                .build();
-        // 업데이트 신청 후에는 null 되면 안됨.
-        Integer updateScheduleId = scheduleUpdateReqService.saveScheduleUpdateReq(scheduleUpdateReqDto);
-        Integer findReqSchedule = scheduleUpdateReqService.findByAssignSchedule(managerAssignSchedule);
-        // then
-
-        assertThat(updateScheduleId).isNotNull();
-        assertThat(findReqSchedule).isEqualTo(updateScheduleId);
-    }
+//    @Test
+//    @Transactional
+//    public void updateEvent() throws Exception {
+//        // given
+//        LocalDateTime date1 = LocalDateTime.of(2022, 3, 10, 2, 00);
+//        LocalDateTime date3 = LocalDateTime.of(2022, 3, 10, 10, 00);
+//
+//        LocalDateTime date2 = LocalDateTime.of(2022, 3, 11, 2, 00);
+//        LocalDateTime date4 = LocalDateTime.of(2022, 3, 11, 10, 00);
+//
+//        UserDto userDto = UserDto.builder()
+//                .id("testmin")
+//                .authRole("user")
+//                .password("1234")
+//                .username("정민환")
+//                .userTel("1234-5678")
+//                .build();
+//
+//        String testmin = userService.saveUser(userDto);
+//        User user = userService.findById(testmin).orElseThrow(() -> new Exception("해당 매니저가 없습니다."));
+//        // when
+//        ManagerAssignScheduleDto managerAssignScheduleDto = ManagerAssignScheduleDto.builder()
+//                .user(user)
+//                .scheduleDateTimeStart(date1)
+//                .scheduleDateTimeEnd(date3)
+//                .build();
+//        Integer scheduleId = managerAssignScheduleService.saveManagerAssignSchedule(managerAssignScheduleDto);
+//        ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.findById(scheduleId).orElseThrow(() -> new Exception("해당 스케줄이 존재하지 않습니다."));
+//
+//        // Update 신청 전 -> null
+//        Integer updateCheck = scheduleUpdateReqService.findByAssignSchedule(managerAssignSchedule);
+//        assertThat(updateCheck).isNull();
+//
+//        ScheduleUpdateReqDto scheduleUpdateReqDto = ScheduleUpdateReqDto.builder()
+//                .assignSchedule(managerAssignSchedule)
+//                .changeDate(date2)
+//                .build();
+//        // 업데이트 신청 후에는 null 되면 안됨.
+//        Integer updateScheduleId = scheduleUpdateReqService.saveScheduleUpdateReq(scheduleUpdateReqDto);
+//        Integer findReqSchedule = scheduleUpdateReqService.findByAssignSchedule(managerAssignSchedule);
+//        // then
+//
+//        assertThat(updateScheduleId).isNotNull();
+//        assertThat(findReqSchedule).isEqualTo(updateScheduleId);
+//    }
 }

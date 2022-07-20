@@ -106,7 +106,7 @@ public class CalendarController {
             User user = userService.findByUsername(eventName).orElseThrow(() -> new Exception("입력한 매니저가 존재하지 않습니다."));
 
             ManagerAssignSchedule managerAssignSchedule =
-                    managerAssignScheduleService.findByUserAndScheduleDateTimeStartAndScheduleDateTimeEnd(user, oldStart, oldEnd).get();
+                    managerAssignScheduleService.getBeforeSchedule(user, oldStart, oldEnd).get();
 
             if (managerFirstRequestUpdateSchedule(managerAssignSchedule)) {
                 updateReqService.saveScheduleUpdateReq(managerAssignSchedule, modifiedStartDate, modifiedEndDate);
