@@ -43,6 +43,7 @@
 
 table, td {
     border: 1px solid #8080803d;
+    background-color: rgb(255,255,255);
 }
 
 .remote_img {
