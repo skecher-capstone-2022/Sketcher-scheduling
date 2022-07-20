@@ -1,23 +1,43 @@
 package sketcher.scheduling;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import sketcher.scheduling.domain.EstimatedNumOfCardsPerHour;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.UserSearchCondition;
+import sketcher.scheduling.repository.EstimatedNumOfCardsPerHourRepository;
 import sketcher.scheduling.repository.UserRepositoryCustom;
 import sketcher.scheduling.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
+    @Autowired
+    EstimatedNumOfCardsPerHourRepository estimatedNumOfCardsRepository;
+
+    @GetMapping(value = "/config_create_schedule")
+    public String configCreateSchedule() {
+        return "full-calendar/calendar_create_config";
+    }
+
+    @GetMapping("/set_est_num_of_cards")
+    @ResponseBody
+    public List<EstimatedNumOfCardsPerHour> setEstNumOfCards() {
+        return estimatedNumOfCardsRepository.findAll();
+    }
+
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(HttpServletRequest request) {
         return "full-calendar/calendar";
@@ -44,8 +64,5 @@ public class HomeController {
         return "full-calendar/calendar_create";
     }
 
-    @GetMapping(value = "/config_create_schedule")
-    public String configCreateSchedule() {
-        return "full-calendar/calendar_create_config";
-    }
+
 }
