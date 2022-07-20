@@ -56,13 +56,14 @@ public class ManagerAssignScheduleService {
         return user.getManagerAssignScheduleList();
     }
 
-    public Optional<ManagerAssignSchedule> findByUserAndScheduleDateTimeStartAndScheduleDateTimeEnd(User user, LocalDateTime startDate, LocalDateTime endDate) {
-        return managerAssignScheduleRepository.findByUserAndScheduleDateTimeStartAndScheduleDateTimeEnd(user, startDate, endDate);
+    public Optional<ManagerAssignSchedule> getBeforeSchedule(User user, LocalDateTime startDate, LocalDateTime endDate) {
+        return managerAssignScheduleRepository.getBeforeSchedule(user, startDate, endDate);
     }
 
     @Transactional
-    public Integer deleteByUser(User user) {
-        User user1 = userRepository.findByUsername(user.getUsername()).get();
+    public Integer deleteByUser(User user) throws Exception{
+        User user1 = userRepository.findByUsername(user.getUsername())
+                .orElseThrow(() -> new Exception("로그인 한 정보가 없습니다."));
         managerAssignScheduleRepository.deleteByUser(user1);
         return user1.getCode();
     }

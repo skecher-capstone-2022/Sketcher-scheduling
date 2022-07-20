@@ -26,12 +26,6 @@ public class User implements UserDetails {
     @Column(name = "user_code")
     private Integer code;
 
-    /**
-     * NotEmpty 어노테이션은 우선 필요에 따라 설정하시거나 빼시면 될 것 같아요 !
-     * NotEmpty 가 들어가면 테스트시에도 무조건 들어가야 하는 값(NULL = X)이에요!
-     * Column 은 DB 에 들어가는 이름입니다. id 로 사용 -> DB 에는 user_id 로 저장.
-     */
-
     @Column(name = "user_id")
     @NotEmpty
 //    @Pattern(regexp = "^[a-zA-Z0-9]{3,12}$", message = "아이디를 3~12자로 입력해주세요. [특수문자 X]")

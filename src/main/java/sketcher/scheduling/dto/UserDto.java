@@ -22,6 +22,8 @@ public class UserDto {
     private Double managerScore;
     private Character dropoutReqCheck;
 
+
+
     @Builder
 	public UserDto(Integer code, String id, String authRole, String password, String username, String userTel, LocalDateTime user_joinDate, Double managerScore, Character dropoutReqCheck) {
         this.code = code;

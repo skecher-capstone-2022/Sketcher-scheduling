@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import sketcher.scheduling.algorithm.AutoSchedulingTwo;
 import sketcher.scheduling.dto.ManagerHopeTimeDto;
 import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.service.ManagerHopeTimeService;
@@ -21,6 +22,7 @@ public class SchedulingApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SchedulingApplication.class, args);
+
 	}
 
 //	@Bean
