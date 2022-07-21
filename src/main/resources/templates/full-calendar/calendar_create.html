@@ -3578,6 +3578,7 @@
                         var existedUserIndex = username_list.indexOf(existedUserName);
                         usertemptime_list[existedUserIndex] = usertemptime_list[existedUserIndex] - 1;
                         document.querySelector("#managers_box > div:nth-child(" + (existedUserIndex + 1) + ") > p.currentTempAssignTime > span").innerHTML = usertemptime_list[existedUserIndex];
+                        update_manager_status(existedUserIndex + 1);
                     }
                     //빈 셀에 새로 추가하는 경우
                     plus_count++;
@@ -3585,6 +3586,8 @@
                     document.querySelector(popped).style.backgroundColor = 'rgb(154,225,255)';
                     usertemptime_list[i - 1] = userCurrentTime + plus_count;
                     document.querySelector("#managers_box > div:nth-child(" + i + ") > p.currentTempAssignTime > span").innerHTML = usertemptime_list[i - 1];
+
+                    update_manager_status(i);
                 }
                 console.log(usertemptime_list);
 
@@ -3600,6 +3603,7 @@
                 var existedUserIndex = username_list.indexOf(existedUserName);
                 usertemptime_list[existedUserIndex] = usertemptime_list[existedUserIndex] - 1;
                 document.querySelector("#managers_box > div:nth-child(" + (existedUserIndex + 1 )+ ") > p.currentTempAssignTime > span").innerHTML = usertemptime_list[existedUserIndex];
+                update_manager_status(existedUserIndex + 1);
             }
             document.querySelector(popped).innerHTML = '';
             document.querySelector(popped).style.backgroundColor = 'rgb(255,255,255)';
@@ -3625,6 +3629,18 @@
         else if (day == 'sun') day_str = "일요일";
         // document.querySelector("#mp-pusher > div > div.ground > div.wrapper_schedule_box > div:nth-child(2) > div > p").innerHTML =
         document.querySelector("#mp-pusher > div > div.ground > div.wrapper_schedule_box > div:nth-child(2) > div > h3").innerHTML = day_str;
+
+    }
+
+    function update_manager_status(element){
+        let time = parseInt(document.querySelector("#managers_box > div:nth-child(" + element + ") > p.currentTempAssignTime > span").innerHTML,10);
+        if(time>=10){
+            document.querySelector("#managers_box > div:nth-child("+element+") > img").src = "/img/ok.svg";
+            document.querySelector("#managers_box > div:nth-child("+element+") > p.currentTempAssignTime").style.color = "red";
+        }else{
+            document.querySelector("#managers_box > div:nth-child("+element+") > img").src = "/img/no.svg";
+            document.querySelector("#managers_box > div:nth-child("+element+") > p.currentTempAssignTime").style.color = "blue";
+        }
 
     }
 
