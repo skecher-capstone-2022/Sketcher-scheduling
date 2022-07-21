@@ -89,7 +89,7 @@ public class AutoSchedulingTwo {
          *  이것 때문에 현재 0 ~ 6 시 시간대만 설정이 가능.
          */
         for (int i = 0; i < 24; i++) {
-            for (int j = 0; j < 3; j++) {
+            for (int j = 0; j < 2; j++) {
                 checkSchedule[i].add(j, 0);
                 schedule[i].add(j, 0);
             }
@@ -100,9 +100,12 @@ public class AutoSchedulingTwo {
          * managerHopeTime 테이블에 중간중간 매니저가 비어있어서 null 들어가는 오류 때문에 임시로 3번 매니저까지만 확인할 수 있도록 함.
          */
         int count = 0;
+//        boolean check4Hours = Arrays.stream(countAssignTime).allMatch(c -> c < 4); // -> 전부 4시간 이상이면 false 반환
+        while(check4Hours(countAssignTime) == true){
         for (int i = 1; i < managerSize+1; i++) {
-            if (dfs(i))
-                count++;
+                if (dfs(i))
+                    count++;
+            }
         }
 
         /**
@@ -110,19 +113,19 @@ public class AutoSchedulingTwo {
          */
         System.out.println(" =================================== ");
         System.out.println("count = " + count);
-        for (int i = 0; i < managerSize+1; i++) {
+        for (int i = 1; i < managerSize+1; i++) {
             System.out.println("countAssignTime = " + countAssignTime[i]);
         }
 
-//        Stream<ArrayList<Integer>> stream = Arrays.stream(schedule);
-////        stream.forEach(s -> System.out.println("s.get(i) = " + s.get(i)));
         for (int i = 0; i < 24; i++) {
-            for (int j = 0; j < 3; j++) {
+            for (int j = 0; j < 2; j++) {
                 System.out.print(" scheduleTime [" + i + "] userCode : " + schedule[i].get(j));
             }
             System.out.println(" ");
         }
     }
+
+
 
     private boolean dfs(int index) {
         int i;
@@ -140,8 +143,8 @@ public class AutoSchedulingTwo {
                  * 근무시간이 4시간 초과하면 break 하고 그냥 끝냄.
                  * 현재 오류 발생.. 수정 필요
                  */
-//                if (countAssignTime[index + 1] > 4)
-//                    break;
+                if (countAssignTime[index] > 4)
+                    break;
                 /**
                  * 희망시간이 0~6시, 6~12, 12~18, 18~24 중 어디에 해당하는지 check
                  * 각 희망타임 별 6시간 중 들어갈 수 있는 곳 check
@@ -150,118 +153,136 @@ public class AutoSchedulingTwo {
                  * 그렇지 않다면 (0 이라면) 배정돼 있지 않은 상태 -> dfs 알고리즘.
                  */
                 if (managerHopeTime == 0) {
-                    for (int j = 0; j < 24; j++) {
-                        for (int k = 0; k < 3; k++) {
-                            if (checkSchedule[j].get(k).equals(1))
-                                continue;
-                            /**
-                             * 배정되어 있지 않은 경우, 상태를 1 로 변경 (배정된 상태)
-                             * 스케줄의 0번째 시간의 0번째 노드에 UserCode 를 대입.
-                             * dfs 재귀 부분 정확히 모르겠음..
-                             * countAssignTime[i]++ -> 스케줄이 배정될 때마다 근무시간 +1
-                             */
-                            else
-                                checkSchedule[j].add(k, 1);
-
-                            if (schedule[j].get(k) == 0 || dfs(schedule[j].get(k))) {
-                                schedule[j].add(k, index);
-                                countAssignTime[index]++;
-//                                managerAssigned[index] = index;
-//                                System.out.println("managerAssigned = " + managerAssigned[index]);
-                                return true;
-                            }
-                        }
-                    }
+                    if (schedulingLogicDawn(index)) return true;
                 }
-
 
                 /**
                  * 6 ~ 12 알고리즘
                  */
                 if (managerHopeTime == 6) {
-                    for (int j = 6; j < 24; j++) {
-                        for (int k = 0; k < 3; k++) {
-                            if (checkSchedule[j].get(k).equals(1))
-                                continue;
-                            /**
-                             * 배정되있지 않은 경우, 상태를 1 로 변경 (배정된 상태)
-                             * 스케줄의 0번째 시간의 0번째 노드에 UserCode 를 대입.
-                             * dfs 재귀 부분 모르겠음.. 어떤 조건에 돌아가는건가?..
-                             * countAssignTime[i]++ -> 스케줄이 배정될 때마다 근무시간 +1
-                             */
-                            else
-                                checkSchedule[j].add(k, 1);
-
-                            if (schedule[j].get(k) == 0 || dfs(schedule[j].get(k))) {
-                                schedule[j].add(k, index);
-                                countAssignTime[index]++;
-//                                managerAssigned[index] = index;
-//                                System.out.println("managerAssigned = " + managerAssigned[index]);
-                                return true;
-                            }
-                        }
-                    }
+                    if (schedulingLogicMorning(index)) return true;
                 }
-
 
                 /**
                  * 12 ~ 18
                  */
                 if (managerHopeTime == 12) {
-                    for (int j = 12; j < 24; j++) {
-                        for (int k = 0; k < 3; k++) {
-                            if (checkSchedule[j].get(k).equals(1))
-                                continue;
-                            /**
-                             * 배정되있지 않은 경우, 상태를 1 로 변경 (배정된 상태)
-                             * 스케줄의 0번째 시간의 0번째 노드에 UserCode 를 대입.
-                             * dfs 재귀 부분 모르겠음.. 어떤 조건에 돌아가는건가?..
-                             * countAssignTime[i]++ -> 스케줄이 배정될 때마다 근무시간 +1
-                             */
-                            else
-                                checkSchedule[j].add(k, 1);
-
-                            if (schedule[j].get(k) == 0 || dfs(schedule[j].get(k))) {
-                                schedule[j].add(k, index);
-                                countAssignTime[index]++;
-//                                managerAssigned[index] = index;
-//                                System.out.println("managerAssigned = " + managerAssigned[index]);
-                                return true;
-                            }
-                        }
-                    }
+                    if (schedulingLogicAfternoon(index)) return true;
                 }
 
                 /**
                  * 18
                  */
                 if (managerHopeTime == 18) {
-                    for (int j = 18; j < 24; j++) {
-                        for (int k = 0; k < 10; k++) {
-                            if (checkSchedule[j].get(k).equals(1))
-                                continue;
-                            /**
-                             * 배정되있지 않은 경우, 상태를 1 로 변경 (배정된 상태)
-                             * 스케줄의 0번째 시간의 0번째 노드에 UserCode 를 대입.
-                             * dfs 재귀 부분 모르겠음.. 어떤 조건에 돌아가는건가?..
-                             * countAssignTime[i]++ -> 스케줄이 배정될 때마다 근무시간 +1
-                             */
-                            else
-                                checkSchedule[j].add(k, 1);
-
-                            if (schedule[j].get(k) == 0 || dfs(schedule[j].get(k))) {
-                                schedule[j].add(k, index);
-                                countAssignTime[index]++;
-//                                managerAssigned[index] = index;
-//                                System.out.println("managerAssigned = " + managerAssigned[index]);
-                                return true;
-                            }
-                        }
-                    }
+                    if (schedulingLogicEvening(index)) return true;
                 }
 
             }
         }
         return false;
     }
+    private boolean check4Hours(int[] countAssignTime) {
+        boolean present = Arrays.stream(countAssignTime).findAny().isPresent();
+        if(!present)
+            return false;
+
+        return Arrays.stream(countAssignTime).allMatch(c -> c < 4);
+    }
+    private boolean schedulingLogicEvening(int index) {
+        for (int j = 18; j < 24; j++) {
+            for (int k = 0; k < 2; k++) {
+                if (checkSchedule[j].get(k).equals(1))
+                    continue;
+                /**
+                 * 배정되있지 않은 경우, 상태를 1 로 변경 (배정된 상태)
+                 * 스케줄의 0번째 시간의 0번째 노드에 UserCode 를 대입.
+                 * dfs 재귀 부분 모르겠음.. 어떤 조건에 돌아가는건가?..
+                 * countAssignTime[i]++ -> 스케줄이 배정될 때마다 근무시간 +1
+                 */
+                else
+                    checkSchedule[j].add(k, 1);
+
+                if (schedule[j].get(k) == 0 || dfs(schedule[j].get(k))) {
+                    schedule[j].add(k, index);
+                    countAssignTime[index]++;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean schedulingLogicAfternoon(int index) {
+        for (int j = 12; j < 24; j++) {
+            for (int k = 0; k < 2; k++) {
+                if (checkSchedule[j].get(k).equals(1))
+                    continue;
+                /**
+                 * 배정되있지 않은 경우, 상태를 1 로 변경 (배정된 상태)
+                 * 스케줄의 0번째 시간의 0번째 노드에 UserCode 를 대입.
+                 * dfs 재귀 부분 모르겠음.. 어떤 조건에 돌아가는건가?..
+                 * countAssignTime[i]++ -> 스케줄이 배정될 때마다 근무시간 +1
+                 */
+                else
+                    checkSchedule[j].add(k, 1);
+
+                if (schedule[j].get(k) == 0 || dfs(schedule[j].get(k))) {
+                    schedule[j].add(k, index);
+                    countAssignTime[index]++;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean schedulingLogicMorning(int index) {
+        for (int j = 6; j < 24; j++) {
+            for (int k = 0; k < 2; k++) {
+                if (checkSchedule[j].get(k).equals(1))
+                    continue;
+                /**
+                 * 배정되있지 않은 경우, 상태를 1 로 변경 (배정된 상태)
+                 * 스케줄의 0번째 시간의 0번째 노드에 UserCode 를 대입.
+                 * dfs 재귀 부분 모르겠음.. 어떤 조건에 돌아가는건가?..
+                 * countAssignTime[i]++ -> 스케줄이 배정될 때마다 근무시간 +1
+                 */
+                else
+                    checkSchedule[j].add(k, 1);
+
+                if (schedule[j].get(k) == 0 || dfs(schedule[j].get(k))) {
+                    schedule[j].add(k, index);
+                    countAssignTime[index]++;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean schedulingLogicDawn(int index) {
+        for (int j = 0; j < 24; j++) {
+            for (int k = 0; k < 2; k++) {
+                if (checkSchedule[j].get(k).equals(1))
+                    continue;
+                /**
+                 * 배정되어 있지 않은 경우, 상태를 1 로 변경 (배정된 상태)
+                 * 스케줄의 0번째 시간의 0번째 노드에 UserCode 를 대입.
+                 * dfs 재귀 부분 정확히 모르겠음..
+                 * countAssignTime[i]++ -> 스케줄이 배정될 때마다 근무시간 +1
+                 */
+                else
+                    checkSchedule[j].add(k, 1);
+
+                if (schedule[j].get(k) == 0 || dfs(schedule[j].get(k))) {
+                    schedule[j].add(k, index);
+                    countAssignTime[index]++;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
 }
