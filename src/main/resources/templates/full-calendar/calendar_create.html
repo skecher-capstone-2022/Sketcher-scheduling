@@ -3538,11 +3538,14 @@
             var element = document.querySelector("#mp-pusher > div > div.ground > div.main > div.user_remote_controller > div.managers > div:nth-child(" + i + ")");
 
             element.onclick = function () {
-
                 var username = document.querySelector("#mp-pusher > div > div.ground > div.main > div.user_remote_controller > div.managers > div:nth-child(" + i + ") > p.tempManagerName > b").innerHTML;
                 var userCurrentTime = usertemptime_list[i - 1];
                 let plus_count = 0;
                 while (popped = checked_cells.pop()) {
+                    if(document.querySelector(popped).innerHTML == username){
+                        document.querySelector(popped).style.backgroundColor = 'rgb(154,225,255)';
+                        continue;
+                    }
                     if (document.querySelector(popped).innerHTML != '') {
                         var existedUserName = document.querySelector(popped).innerHTML;
                         var existedUserIndex = username_list.indexOf(existedUserName);
