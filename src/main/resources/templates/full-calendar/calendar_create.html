@@ -4,6 +4,7 @@
       layout:decorate="~{layout/menu_layout}">
 <head>
     <title>근무 스케줄 배정</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
     <link th:href="@{/css/modal-component.css}" rel="stylesheet"/>
     <link th:href="@{/css/create_schedule.css}" rel="stylesheet"/>
     <link th:href="@{/css/loading.css}" rel="stylesheet"/>
@@ -29,33 +30,12 @@
             display: flex;
         }
 
-        table#mon {
-            background-color: #ffbebe;
+        .wrapper_schedule_box {
+            margin-right: 300px;
+            display: flex;
+            justify-content: space-between;
         }
 
-        table#tue {
-            background-color: #ffddbe;
-        }
-
-        table#wed {
-            background-color: #fff2be;
-        }
-
-        table#thu {
-            background-color: #d0ffbe;
-        }
-
-        table#fri {
-            background-color: #bef7ff;
-        }
-
-        table#sat {
-            background-color: #cabeff;
-        }
-
-        table#sun {
-            background-color: #a1a1a1;
-        }
     </style>
 
 </head>
@@ -101,33 +81,47 @@
                 </div>
             </div>
         </div>
-        <div class="schedule_box">
-            <div class="days">
-                <button class="btn btn-1 btn-1a md-close"
-                        onclick="days_click('mon')">월
-                </button>
-                <button class="btn btn-1 btn-1a md-close"
-                        onclick="days_click('tue')">화
-                </button>
-                <button class="btn btn-1 btn-1a md-close"
-                        onclick="days_click('wed')">수
-                </button>
-                <button class="btn btn-1 btn-1a md-close"
-                        onclick="days_click('thu')">목
-                </button>
-                <button class="btn btn-1 btn-1a md-close"
-                        onclick="days_click('fri')">금
-                </button>
-                <button class="btn btn-1 btn-1a md-close"
-                        onclick="days_click('sat')">토
-                </button>
-                <button class="btn btn-1 btn-1a md-close"
-                        onclick="days_click('sun')">일
-                </button>
+        <div class="wrapper_schedule_box">
+            <div class="schedule_box">
+                <div class="days">
+                    <button class="btn btn-1 btn-1a md-close"
+                            onclick="days_click('mon')">월
+                    </button>
+                    <button class="btn btn-1 btn-1a md-close"
+                            onclick="days_click('tue')">화
+                    </button>
+                    <button class="btn btn-1 btn-1a md-close"
+                            onclick="days_click('wed')">수
+                    </button>
+                    <button class="btn btn-1 btn-1a md-close"
+                            onclick="days_click('thu')">목
+                    </button>
+                    <button class="btn btn-1 btn-1a md-close"
+                            onclick="days_click('fri')">금
+                    </button>
+                    <button class="btn btn-1 btn-1a md-close"
+                            onclick="days_click('sat')">토
+                    </button>
+                    <button class="btn btn-1 btn-1a md-close"
+                            onclick="days_click('sun')">일
+                    </button>
+                </div>
+
             </div>
-            <div style="display: flex; align-items: center; font-size: larger;">
-                <p>2022-05-01</p>
-                <h3 style="margin-left: 10px;">월요일</h3>
+            <div class="schedule_box">
+
+                <div style="display: flex; align-items: center; font-size: larger;">
+                    <p>2022-05-01</p>
+                    <h3 style="margin-left: 10px;">월요일</h3>
+                </div>
+                <button class="btn btn-1 btn-1a md-close"
+                        style="margin-left: 15px; padding: 15px; background: #ff6d6d; color: white;"
+                        onclick="getShowLoading()">하루 스케줄 임의배정
+                </button>
+                <button class="btn btn-1 btn-1a md-close"
+                        style="margin-left: 15px; padding: 15px;"
+                        onclick="setEmpty()">빈 스케줄
+                </button>
             </div>
         </div>
         <div class="main">
@@ -3420,104 +3414,7 @@
                     <option></option>
                     <option></option>
                 </select></div>
-                <div class="managers">
-                    <div class="manager">
-                        <img src="/img/ok.svg" height="35"/>&nbsp
-                        <p><b>박태영</b></p>&nbsp
-                        <p>user1</p>&nbsp
-                        <p style="color: blue;">(10시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/no.svg" height="35"/>&nbsp
-                        <p><b>이혜원</b></p>&nbsp
-                        <p>user2</p>&nbsp
-                        <p style="color: red;">(8시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/ok.svg" height="35"/>&nbsp
-                        <p><b>박태영</b></p>&nbsp
-                        <p>user1</p>&nbsp
-                        <p style="color: blue;">(10시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/ok.svg" height="35"/>&nbsp
-                        <p><b>박태영</b></p>&nbsp
-                        <p>user1</p>&nbsp
-                        <p style="color: blue;">(10시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/ok.svg" height="35"/>&nbsp
-                        <p><b>박태영</b></p>&nbsp
-                        <p>user1</p>&nbsp
-                        <p style="color: blue;">(10시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/no.svg" height="35"/>&nbsp
-                        <p><b>이혜원</b></p>&nbsp
-                        <p>user2</p>&nbsp
-                        <p style="color: red;">(8시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/no.svg" height="35"/>&nbsp
-                        <p><b>이혜원</b></p>&nbsp
-                        <p>user2</p>&nbsp
-                        <p style="color: red;">(8시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/no.svg" height="35"/>&nbsp
-                        <p><b>이혜원</b></p>&nbsp
-                        <p>user2</p>&nbsp
-                        <p style="color: red;">(8시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/ok.svg" height="35"/>&nbsp
-                        <p><b>박태영</b></p>&nbsp
-                        <p>user1</p>&nbsp
-                        <p style="color: blue;">(10시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/no.svg" height="35"/>&nbsp
-                        <p><b>이혜원</b></p>&nbsp
-                        <p>user2</p>&nbsp
-                        <p style="color: red;">(8시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/ok.svg" height="35"/>&nbsp
-                        <p><b>박태영</b></p>&nbsp
-                        <p>user1</p>&nbsp
-                        <p style="color: blue;">(10시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/ok.svg" height="35"/>&nbsp
-                        <p><b>박태영</b></p>&nbsp
-                        <p>user1</p>&nbsp
-                        <p style="color: blue;">(10시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/ok.svg" height="35"/>&nbsp
-                        <p><b>박태영</b></p>&nbsp
-                        <p>user1</p>&nbsp
-                        <p style="color: blue;">(10시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/no.svg" height="35"/>&nbsp
-                        <p><b>이혜원</b></p>&nbsp
-                        <p>user2</p>&nbsp
-                        <p style="color: red;">(8시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/no.svg" height="35"/>&nbsp
-                        <p><b>이혜원</b></p>&nbsp
-                        <p>user2</p>&nbsp
-                        <p style="color: red;">(8시간)</p>
-                    </div>
-                    <div class="manager">
-                        <img src="/img/no.svg" height="35"/>&nbsp
-                        <p><b>이혜원</b></p>&nbsp
-                        <p>user2</p>&nbsp
-                        <p style="color: red;">(8시간)</p>
-                    </div>
-                </div>
+                <div class="managers" id="managers_box"> </div>
             </div>
         </div>
     </div>
@@ -3534,75 +3431,136 @@
 </th:block>
 </html>
 <script>
+    let day_str = "";
+    let day_id = "";
+    let checked_cells = [];
+
+
     window.onload = function () {
-        days_click('mon')
+        days_click('mon');
+        setting_sell_selector();
+        setting_manager_selector();
+    }
+
+
+    // document.querySelector("#wed > tbody > tr:nth-child(행) > td:nth-child(열)")
+    function setting_sell_selector() {
+        var day_list = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+        for (let count = 0; count < day_list.length; count++) {
+            for (let i = 1; i <= 24; i++) {
+                for (let j = 1; j <= 16; j++) {
+                    var element = document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")");
+                    element.onclick = function () {
+                        var element_str = "#" + day_list[count] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")";
+                        var element_style = document.defaultView.getComputedStyle(document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")")).getPropertyValue("background-color")
+                        if (element_style != 'rgb(255, 233, 109)') {
+                            document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")").style.backgroundColor = 'rgb(255,233,109)';
+                            checked_cells.push(element_str);
+                            console.log(checked_cells);
+                        } else {
+                            document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")").style.backgroundColor = 'rgb(255,255,255)';
+                            checked_cells.pop(element_str);
+                            console.log(checked_cells);
+
+                        }
+                    };
+                }
+
+
+            }
+        }
+    }
+
+    var htmlStr = "";
+
+    function setting_manager_selector() {
+        var username_list = ['박태영', '이혜원', '정민환', '김희수', '홍길동', '테스트', '매니저']
+        var userid_list = ['user1', 'user2', 'user3', 'user4', 'user5', 'user6', 'user7']
+        var usertemptime_list = [0, 0, 0, 0, 0, 0, 0]
+
+        for (let i = 0; i < username_list.length; i++) {
+            htmlStr += "<div class=\"manager\">\n";
+            // htmlStr += "<img src=\"/img/ok.svg\" height=\"35\"/>&nbsp\n";
+            htmlStr += "<img src=\"/img/no.svg\" height=\"35\"/>&nbsp\n";
+            htmlStr += "<p class=\"tempManagerName\"><b>" + username_list[i] + "</b></p>&nbsp\n";
+            htmlStr += "<p class=\"tempManagerId\">" + userid_list[i] + "</p>&nbsp\n";
+            htmlStr += "<p style=\"color: blue;\" class=\"currentTempAssignTime\">(" + usertemptime_list[i] + "시간)</p>\n";
+            htmlStr += "</div>";
+        }
+        $("#managers_box").append(htmlStr);
+
+        for (let i = 1; i <= username_list.length; i++) {
+            var element = document.querySelector("#mp-pusher > div > div.ground > div.main > div.user_remote_controller > div.managers > div:nth-child(" + i + ")");
+
+            element.onclick = function () {
+                var username = document.querySelector("#mp-pusher > div > div.ground > div.main > div.user_remote_controller > div.managers > div:nth-child(" + i + ") > p.tempManagerName > b").innerHTML;
+                while (popped = checked_cells.pop()){
+                    document.querySelector(popped).innerHTML = username;
+                    document.querySelector(popped).style.backgroundColor = 'rgb(154,225,255)';
+                }
+
+            };
+        }
+
+    }
+
+    function setEmpty(){
+        while (popped = checked_cells.pop()){
+            document.querySelector(popped).innerHTML = '';
+            document.querySelector(popped).style.backgroundColor = 'rgb(255,255,255)';
+        }
     }
 
     function days_click(day) {
+        day_id = day;
         var tb = document.getElementsByTagName("table");
         for (var i = 0; i < tb.length; i++) {
             console.log(tb)
             tb[i].style.display = "none";
         }
-        var d = document.getElementById(day);
-        d.style.display = "inline-table";
+        let table = document.getElementById(day);
+        table.style.display = "inline-table";
+        console.log(table);
+
+
+        if (day == 'mon') day_str = "월요일";
+        else if (day == 'tue') day_str = "화요일";
+        else if (day == 'wed') day_str = "수요일";
+        else if (day == 'thu') day_str = "목요일";
+        else if (day == 'fri') day_str = "금요일";
+        else if (day == 'sat') day_str = "토요일";
+        else if (day == 'sun') day_str = "일요일";
+        // document.querySelector("#mp-pusher > div > div.ground > div.wrapper_schedule_box > div:nth-child(2) > div > p").innerHTML =
+        document.querySelector("#mp-pusher > div > div.ground > div.wrapper_schedule_box > div:nth-child(2) > div > h3").innerHTML = day_str;
+
     }
 
-
-    class Manager {
-        constructor(userid, name, age, city) {
-            console.log('construtor');
-            this.name = name;
-            this.age = age;
-            this.city = city;
-        }
-    }
-
-    // ---절차---
-    // 1. 셀 선택 : select_cell (ajax)
-    // 2. 매니저 리스트업 : update_manager_list (js)
-    // 3. 매니저 선택 : select_manager (ajax)
-    // 4. 스케줄표에 반영 : update_tmp_schedule (ajax)
-    // 5. 등록 버튼 누름(스케줄 저장) : save_schedule (ajax)
-
-
-    function select_cell(id) {
-        alert(id);
-        $.ajax({
-            contentType: "application/json; charset=utf-8;",
-            type: "GET",
-            url: "/select_cell",
-            data: {
-                "cellId": id
-            },
-            success: function (response) {
-
-                setTimeout(function () {
-                    $(".text-danger").hide();
-                    $("#directda_img").show();
-                    $("#indirect_msg3").text("해당 자산의 상세 유형은 " + response + "입니다.");
-                }, 2200);
-            },
-            error: function (request, status, error) {
-                alert("code:" + request.status + "\n" + "message:"
-                    + request.responseText + "\n" + "error:" + error);
-            }
-        })
-    }
 
 </script>
 
 <script type="text/javascript">
+
     // 로딩창 키는 함수
-    function getShowLoading(){
+    function getShowLoading() {
+        setEmpty();
         document.getElementById("loading").style.display = "";
+        setTimeout(function () {
+            document.getElementById("loading").style.display = "none";
+            for (let i = 1; i <= 24; i++) {
+                for (let j = 2; j <= 17; j++) {
+                    if (i == 1 || i == 7 || i == 13 || i == 19) {
+                        document.querySelector("#" + day_id + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + (j + 1) + ")").innerHTML = day_str;
+                        document.querySelector("#" + day_id + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + (j + 1) + ")").style.backgroundColor = 'rgb(154,225,255)';
+                    } else {
+                        document.querySelector("#" + day_id + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")").innerHTML = day_str;
+                        document.querySelector("#" + day_id + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")").style.backgroundColor = 'rgb(154,225,255)';
+                    }
+                }
+            }
+        }, 3000);
 
     }
 
-    function getHideLoading(){
-        document.getElementById("loading").style.display = "none";
-
-    }
 </script>
 
 <footer>
