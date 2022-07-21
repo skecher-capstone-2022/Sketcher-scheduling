@@ -17,10 +17,8 @@ import sketcher.scheduling.service.UserService;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
+import java.util.stream.Stream;
 
 @Component
 public class AutoSchedulingTwo {
@@ -46,20 +44,20 @@ public class AutoSchedulingTwo {
 
     public void runAlgorithm() throws Exception {
         List<User> allManager = userService.findAll();
-        int managerSize = allManager.size();    // 전체 매니저 수 만큼 배열을 생성하기 위함.
+        int managerSize = allManager.size()+5;    // 전체 매니저 수 만큼 배열을 생성하기 위함. 현재 매니저 값 들쭉 날쭉이라 임의로 +5
 
         hopeTime = new ArrayList[managerSize + 1]; // 매니저의 희망 시간을 담는 배열
         schedule = new ArrayList[time.length + 1]; // 스케줄표 배열. UserCode 를 담기 위함
         checkSchedule = new ArrayList[time.length + 1]; // 해당 스케줄 노드에 스케줄이 담겼는지 체크하기 위한 배열
-        countAssignTime = new int[managerSize]; // 스케줄 노드 중 어떤 배열이 담겼는지 확인 위함
-        managerAssigned = new int[managerSize]; // 몇번이 배정됐는지 확인 위함
+        countAssignTime = new int[managerSize+1]; // 스케줄 노드 중 어떤 배열이 담겼는지 확인 위함
+        managerAssigned = new int[managerSize+1]; // 몇번이 배정됐는지 확인 위함
         // countAssignTime 과 managerAssigned 는 아마 삭제 예정일듯?.. 겹치는 기능인듯함. 무시 요망.
 
-        for (int i = 1; i < 4; i++) {
-            hopeTime[i] = new ArrayList<>();        // 배열 안에 List 생성
+        for (int i = 1; i < managerSize+1; i++) {
+            hopeTime[i] = new ArrayList<>();        // 배열 안에 List 생성 , 매니저수만큼
         }
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 24; i++) {
             schedule[i] = new ArrayList<>();    // 배열 안에 List 생성
             checkSchedule[i] = new ArrayList<>();   // 배열 안에 List 생성
         }
@@ -69,7 +67,7 @@ public class AutoSchedulingTwo {
          * hopeTime[1].add(0, 0) , hopeTime[1].add(0, 6), hopeTime[1].add(0, 12) => userCode 1번인 사람 희망시작시간 0, 6, 12 저장
          */
         List<ManagerHopeTime> findAllHopeTime = managerHopeTimeService.findAll();
-        for (int i = 1; i < 4; i++) {
+        for (int i = 1; i < managerSize+1; i++) {
             List<ManagerHopeTime> hopeTimeByUserCode = managerHopeTimeService.getHopeTimeByUserCode(i);
             for (int j = 0; j < hopeTimeByUserCode.size(); j++) {
                 hopeTime[i].add(j, hopeTimeByUserCode.get(j).getStart_time());
@@ -90,8 +88,8 @@ public class AutoSchedulingTwo {
          *  가 돼야하는거같은데 i 를 25 로 바꾸면 null Exception 터짐..
          *  이것 때문에 현재 0 ~ 6 시 시간대만 설정이 가능.
          */
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
+        for (int i = 0; i < 24; i++) {
+            for (int j = 0; j < 3; j++) {
                 checkSchedule[i].add(j, 0);
                 schedule[i].add(j, 0);
             }
@@ -102,7 +100,7 @@ public class AutoSchedulingTwo {
          * managerHopeTime 테이블에 중간중간 매니저가 비어있어서 null 들어가는 오류 때문에 임시로 3번 매니저까지만 확인할 수 있도록 함.
          */
         int count = 0;
-        for (int i = 1; i < 4; i++) {
+        for (int i = 1; i < managerSize+1; i++) {
             if (dfs(i))
                 count++;
         }
@@ -112,8 +110,18 @@ public class AutoSchedulingTwo {
          */
         System.out.println(" =================================== ");
         System.out.println("count = " + count);
-        for (int i = 0; i < managerSize; i++)
+        for (int i = 0; i < managerSize+1; i++) {
             System.out.println("countAssignTime = " + countAssignTime[i]);
+        }
+
+//        Stream<ArrayList<Integer>> stream = Arrays.stream(schedule);
+////        stream.forEach(s -> System.out.println("s.get(i) = " + s.get(i)));
+        for (int i = 0; i < 24; i++) {
+            for (int j = 0; j < 3; j++) {
+                System.out.print(" scheduleTime [" + i + "] userCode : " + schedule[i].get(j));
+            }
+            System.out.println(" ");
+        }
     }
 
     private boolean dfs(int index) {
@@ -141,10 +149,9 @@ public class AutoSchedulingTwo {
                  * 1 이라면 이미 배정돼 있는 상태 continue
                  * 그렇지 않다면 (0 이라면) 배정돼 있지 않은 상태 -> dfs 알고리즘.
                  */
-//                if (managerHopeTime >= 0 && managerHopeTime < 6) {
                 if (managerHopeTime == 0) {
-                    for (int j = 0; j < 6; j++) {
-                        for (int k = 0; k < 10; k++) {
+                    for (int j = 0; j < 24; j++) {
+                        for (int k = 0; k < 3; k++) {
                             if (checkSchedule[j].get(k).equals(1))
                                 continue;
                             /**
@@ -159,8 +166,8 @@ public class AutoSchedulingTwo {
                             if (schedule[j].get(k) == 0 || dfs(schedule[j].get(k))) {
                                 schedule[j].add(k, index);
                                 countAssignTime[index]++;
-                                managerAssigned[index] = index;
-                                System.out.println("managerAssigned = " + managerAssigned[index]);
+//                                managerAssigned[index] = index;
+//                                System.out.println("managerAssigned = " + managerAssigned[index]);
                                 return true;
                             }
                         }
@@ -171,91 +178,90 @@ public class AutoSchedulingTwo {
                 /**
                  * 6 ~ 12 알고리즘
                  */
-//                if (managerHopeTime == 6) {
-//                    for (int j = 6; j < 12; j++) {
-//                        for (int k = 0; k < 10; k++) {
-//                            if (checkSchedule[j].get(k).equals(1))
-//                                continue;
-//                            /**
-//                             * 배정되있지 않은 경우, 상태를 1 로 변경 (배정된 상태)
-//                             * 스케줄의 0번째 시간의 0번째 노드에 UserCode 를 대입.
-//                             * dfs 재귀 부분 모르겠음.. 어떤 조건에 돌아가는건가?..
-//                             * countAssignTime[i]++ -> 스케줄이 배정될 때마다 근무시간 +1
-//                             */
-//                            else
-//                                checkSchedule[j].add(k, 1);
-//
-//                            if (schedule[j].get(k) == 0 || dfs(schedule[j].get(k))) {
-//                                schedule[j].add(k, index);
-//                                countAssignTime[index]++;
+                if (managerHopeTime == 6) {
+                    for (int j = 6; j < 24; j++) {
+                        for (int k = 0; k < 3; k++) {
+                            if (checkSchedule[j].get(k).equals(1))
+                                continue;
+                            /**
+                             * 배정되있지 않은 경우, 상태를 1 로 변경 (배정된 상태)
+                             * 스케줄의 0번째 시간의 0번째 노드에 UserCode 를 대입.
+                             * dfs 재귀 부분 모르겠음.. 어떤 조건에 돌아가는건가?..
+                             * countAssignTime[i]++ -> 스케줄이 배정될 때마다 근무시간 +1
+                             */
+                            else
+                                checkSchedule[j].add(k, 1);
+
+                            if (schedule[j].get(k) == 0 || dfs(schedule[j].get(k))) {
+                                schedule[j].add(k, index);
+                                countAssignTime[index]++;
 //                                managerAssigned[index] = index;
 //                                System.out.println("managerAssigned = " + managerAssigned[index]);
-//                                return true;
-//                            }
-//                        }
-//                    }
-//                }
-//
-//
-//                /**
-//                 * 12 ~ 18
-//                 */
-//                if (managerHopeTime == 12) {
-//                    for (int j = 12; j < 18; j++) {
-//                        for (int k = 0; k < 10; k++) {
-//                            if (checkSchedule[j].get(k).equals(1))
-//                                continue;
-//                            /**
-//                             * 배정되있지 않은 경우, 상태를 1 로 변경 (배정된 상태)
-//                             * 스케줄의 0번째 시간의 0번째 노드에 UserCode 를 대입.
-//                             * dfs 재귀 부분 모르겠음.. 어떤 조건에 돌아가는건가?..
-//                             * countAssignTime[i]++ -> 스케줄이 배정될 때마다 근무시간 +1
-//                             */
-//                            else
-//                                checkSchedule[j].add(k, 1);
-//
-//                            if (schedule[j].get(k) == 0 || dfs(schedule[j].get(k))) {
-//                                schedule[j].add(k, index);
-//                                countAssignTime[index]++;
+                                return true;
+                            }
+                        }
+                    }
+                }
+
+
+                /**
+                 * 12 ~ 18
+                 */
+                if (managerHopeTime == 12) {
+                    for (int j = 12; j < 24; j++) {
+                        for (int k = 0; k < 3; k++) {
+                            if (checkSchedule[j].get(k).equals(1))
+                                continue;
+                            /**
+                             * 배정되있지 않은 경우, 상태를 1 로 변경 (배정된 상태)
+                             * 스케줄의 0번째 시간의 0번째 노드에 UserCode 를 대입.
+                             * dfs 재귀 부분 모르겠음.. 어떤 조건에 돌아가는건가?..
+                             * countAssignTime[i]++ -> 스케줄이 배정될 때마다 근무시간 +1
+                             */
+                            else
+                                checkSchedule[j].add(k, 1);
+
+                            if (schedule[j].get(k) == 0 || dfs(schedule[j].get(k))) {
+                                schedule[j].add(k, index);
+                                countAssignTime[index]++;
 //                                managerAssigned[index] = index;
 //                                System.out.println("managerAssigned = " + managerAssigned[index]);
-//                                return true;
-//                            }
-//                        }
-//                    }
-//                }
-//
-//                /**
-//                 * 18
-//                 */
-//                if (managerHopeTime == 18) {
-//                    for (int j = 18; j < 24; j++) {
-//                        for (int k = 0; k < 10; k++) {
-//                            if (checkSchedule[j].get(k).equals(1))
-//                                continue;
-//                            /**
-//                             * 배정되있지 않은 경우, 상태를 1 로 변경 (배정된 상태)
-//                             * 스케줄의 0번째 시간의 0번째 노드에 UserCode 를 대입.
-//                             * dfs 재귀 부분 모르겠음.. 어떤 조건에 돌아가는건가?..
-//                             * countAssignTime[i]++ -> 스케줄이 배정될 때마다 근무시간 +1
-//                             */
-//                            else
-//                                checkSchedule[j].add(k, 1);
-//
-//                            if (schedule[j].get(k) == 0 || dfs(schedule[j].get(k))) {
-//                                schedule[j].add(k, index);
-//                                countAssignTime[index]++;
+                                return true;
+                            }
+                        }
+                    }
+                }
+
+                /**
+                 * 18
+                 */
+                if (managerHopeTime == 18) {
+                    for (int j = 18; j < 24; j++) {
+                        for (int k = 0; k < 10; k++) {
+                            if (checkSchedule[j].get(k).equals(1))
+                                continue;
+                            /**
+                             * 배정되있지 않은 경우, 상태를 1 로 변경 (배정된 상태)
+                             * 스케줄의 0번째 시간의 0번째 노드에 UserCode 를 대입.
+                             * dfs 재귀 부분 모르겠음.. 어떤 조건에 돌아가는건가?..
+                             * countAssignTime[i]++ -> 스케줄이 배정될 때마다 근무시간 +1
+                             */
+                            else
+                                checkSchedule[j].add(k, 1);
+
+                            if (schedule[j].get(k) == 0 || dfs(schedule[j].get(k))) {
+                                schedule[j].add(k, index);
+                                countAssignTime[index]++;
 //                                managerAssigned[index] = index;
 //                                System.out.println("managerAssigned = " + managerAssigned[index]);
-//                                return true;
-//                            }
-//                        }
-//                    }
-//                }
+                                return true;
+                            }
+                        }
+                    }
+                }
 
             }
         }
-
         return false;
     }
 }
