@@ -3439,12 +3439,41 @@
     let max_est_num_of_managers = 0;
     const MAX_NUM_OF_CELL = 16;
 
+    var username_list = []
+    var userid_list = []
+    var usertemptime_list = []
+
+
 
     window.onload = function () {
         days_click('mon');
+        select_All_Manager();
         fill_expected_needs();
         setting_sell_selector();
-        setting_manager_selector();
+
+    }
+
+
+
+    function select_All_Manager() {
+        $.ajax({
+            url: "/find_All_Manager",
+            type: "get",
+            datatype: "json",
+            success: function (data) {
+                $.each(data, function (index, item) { // 데이터 =item
+                    console.log(index + " : " + item.username);
+                     username_list.push(item.username);
+                     userid_list.push(item.id);
+                     usertemptime_list.push(0);
+                });
+                setting_manager_selector();
+            }
+            ,
+            error: function () {
+                alert('error');
+            }
+        });
     }
 
     function fill_expected_needs() {
@@ -3518,9 +3547,7 @@
 
     var htmlStr = "";
 
-    var username_list = ['박태영', '이혜원', '정민환', '김희수', '홍길동', '테스트', '매니저']
-    var userid_list = ['user1', 'user2', 'user3', 'user4', 'user5', 'user6', 'user7']
-    var usertemptime_list = [0, 0, 0, 0, 0, 0, 0]
+
 
     function setting_manager_selector() {
         for (let i = 0; i < username_list.length; i++) {
