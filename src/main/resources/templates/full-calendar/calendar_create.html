@@ -3458,23 +3458,23 @@
                     data_list[key] = Math.round(item.numOfCards / 30);
                     // data_list.push({time: item.time.toString(), value: Math.round(item.numOfCards / 30)})
                     // alert(data_list[index].time+"\n"+data_list[index].value);
-                    if (parseInt(data_list[key],10) > max_est_num_of_managers)
-                        max_est_num_of_managers = parseInt(data_list[key],10);
+                    if (parseInt(data_list[key], 10) > max_est_num_of_managers)
+                        max_est_num_of_managers = parseInt(data_list[key], 10);
                 });
                 for (let count = 0; count < day_list.length; count++) {
                     for (let i = 1; i <= 24; i++) {
-                        if (i-1 + '' in data_list) {
-                            for (let j = 0; j < parseInt(data_list[(i-1)+''],10); j++) {
+                        if (i - 1 + '' in data_list) {
+                            for (let j = 0; j < parseInt(data_list[(i - 1) + ''], 10); j++) {
                                 if (i == 1 || i == 7 || i == 13 || i == 19) {
-                                    document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child("+i+") > td:nth-child("+(j+3)+")").style.backgroundColor = 'rgb(255,223,223)';
-                                }else{
-                                    document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child("+i+") > td:nth-child("+(j+2)+")").style.backgroundColor = 'rgb(255,223,223)';
+                                    document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + (j + 3) + ")").style.backgroundColor = 'rgb(255,223,223)';
+                                } else {
+                                    document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + (j + 2) + ")").style.backgroundColor = 'rgb(255,223,223)';
                                 }
                             }
-                        }else{
+                        } else {
                             for (let j = 0; j < MAX_NUM_OF_CELL; j++) {
-                                document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child("+i+") > td:nth-child("+(j+2)+")").style.backgroundColor = 'rgb(196,196,196)';
-                                document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child("+i+") > td:nth-child("+(j+2)+")").style.pointerEvents = 'none';
+                                document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + (j + 2) + ")").style.backgroundColor = 'rgb(196,196,196)';
+                                document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + (j + 2) + ")").style.pointerEvents = 'none';
                             }
                         }
                     }
@@ -3518,18 +3518,18 @@
 
     var htmlStr = "";
 
-    function setting_manager_selector() {
-        var username_list = ['박태영', '이혜원', '정민환', '김희수', '홍길동', '테스트', '매니저']
-        var userid_list = ['user1', 'user2', 'user3', 'user4', 'user5', 'user6', 'user7']
-        var usertemptime_list = [0, 0, 0, 0, 0, 0, 0]
+    var username_list = ['박태영', '이혜원', '정민환', '김희수', '홍길동', '테스트', '매니저']
+    var userid_list = ['user1', 'user2', 'user3', 'user4', 'user5', 'user6', 'user7']
+    var usertemptime_list = [0, 0, 0, 0, 0, 0, 0]
 
+    function setting_manager_selector() {
         for (let i = 0; i < username_list.length; i++) {
             htmlStr += "<div class=\"manager\">\n";
             // htmlStr += "<img src=\"/img/ok.svg\" height=\"35\"/>&nbsp\n";
             htmlStr += "<img src=\"/img/no.svg\" height=\"35\"/>&nbsp\n";
             htmlStr += "<p class=\"tempManagerName\"><b>" + username_list[i] + "</b></p>&nbsp\n";
             htmlStr += "<p class=\"tempManagerId\">" + userid_list[i] + "</p>&nbsp\n";
-            htmlStr += "<p style=\"color: blue;\" class=\"currentTempAssignTime\">(" + usertemptime_list[i] + "시간)</p>\n";
+            htmlStr += "<p style=\"color: blue;\" class=\"currentTempAssignTime\">(<span class='currentTime'>" + usertemptime_list[i] + "</span>시간)</p>\n";
             htmlStr += "</div>";
         }
         $("#managers_box").append(htmlStr);
@@ -3538,11 +3538,25 @@
             var element = document.querySelector("#mp-pusher > div > div.ground > div.main > div.user_remote_controller > div.managers > div:nth-child(" + i + ")");
 
             element.onclick = function () {
+
                 var username = document.querySelector("#mp-pusher > div > div.ground > div.main > div.user_remote_controller > div.managers > div:nth-child(" + i + ") > p.tempManagerName > b").innerHTML;
+                var userCurrentTime = usertemptime_list[i - 1];
+                let plus_count = 0;
                 while (popped = checked_cells.pop()) {
+                    if (document.querySelector(popped).innerHTML != '') {
+                        var existedUserName = document.querySelector(popped).innerHTML;
+                        var existedUserIndex = username_list.indexOf(existedUserName);
+                        usertemptime_list[existedUserIndex] = usertemptime_list[existedUserIndex] - 1;
+                        document.querySelector("#managers_box > div:nth-child(" + (existedUserIndex + 1) + ") > p.currentTempAssignTime > span").innerHTML = usertemptime_list[existedUserIndex];
+                    }
+                    //빈 셀에 새로 추가하는 경우
+                    plus_count++;
                     document.querySelector(popped).innerHTML = username;
                     document.querySelector(popped).style.backgroundColor = 'rgb(154,225,255)';
+                    usertemptime_list[i - 1] = userCurrentTime + plus_count;
+                    document.querySelector("#managers_box > div:nth-child(" + i + ") > p.currentTempAssignTime > span").innerHTML = usertemptime_list[i - 1];
                 }
+                console.log(usertemptime_list);
 
             };
         }
@@ -3551,6 +3565,12 @@
 
     function setEmpty() {
         while (popped = checked_cells.pop()) {
+            if (document.querySelector(popped).innerHTML != '') {
+                var existedUserName = document.querySelector(popped).innerHTML;
+                var existedUserIndex = username_list.indexOf(existedUserName);
+                usertemptime_list[existedUserIndex] = usertemptime_list[existedUserIndex] - 1;
+                document.querySelector("#managers_box > div:nth-child(" + (existedUserIndex + 1 )+ ") > p.currentTempAssignTime > span").innerHTML = usertemptime_list[existedUserIndex];
+            }
             document.querySelector(popped).innerHTML = '';
             document.querySelector(popped).style.backgroundColor = 'rgb(255,255,255)';
         }
