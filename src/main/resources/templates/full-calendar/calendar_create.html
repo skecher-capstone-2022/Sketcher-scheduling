@@ -3414,7 +3414,7 @@
                     <option></option>
                     <option></option>
                 </select></div>
-                <div class="managers" id="managers_box"> </div>
+                <div class="managers" id="managers_box"></div>
             </div>
         </div>
     </div>
@@ -3431,21 +3431,68 @@
 </th:block>
 </html>
 <script>
+    var day_list = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
     let day_str = "";
     let day_id = "";
     let checked_cells = [];
+    let data_list = [];
+    let max_est_num_of_managers = 0;
+    const MAX_NUM_OF_CELL = 16;
 
 
     window.onload = function () {
         days_click('mon');
+        fill_expected_needs();
         setting_sell_selector();
         setting_manager_selector();
     }
 
+    function fill_expected_needs() {
+        $.ajax({
+            url: "/set_est_num_of_cards",
+            type: "get",
+            datatype: "json",
+            success: function (data) {
+                $.each(data, function (index, item) { // 데이터 =item
+                    let key = item.time.toString()
+                    data_list[key] = Math.round(item.numOfCards / 30);
+                    // data_list.push({time: item.time.toString(), value: Math.round(item.numOfCards / 30)})
+                    // alert(data_list[index].time+"\n"+data_list[index].value);
+                    if (parseInt(data_list[key],10) > max_est_num_of_managers)
+                        max_est_num_of_managers = parseInt(data_list[key],10);
+                });
+                for (let count = 0; count < day_list.length; count++) {
+                    for (let i = 1; i <= 24; i++) {
+                        if (i-1 + '' in data_list) {
+                            for (let j = 0; j < parseInt(data_list[(i-1)+''],10); j++) {
+                                if (i == 1 || i == 7 || i == 13 || i == 19) {
+                                    document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child("+i+") > td:nth-child("+(j+3)+")").style.backgroundColor = 'rgb(255,223,223)';
+                                }else{
+                                    document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child("+i+") > td:nth-child("+(j+2)+")").style.backgroundColor = 'rgb(255,223,223)';
+                                }
+                            }
+                        }else{
+                            for (let j = 0; j < MAX_NUM_OF_CELL; j++) {
+                                document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child("+i+") > td:nth-child("+(j+2)+")").style.backgroundColor = 'rgb(196,196,196)';
+                                document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child("+i+") > td:nth-child("+(j+2)+")").style.pointerEvents = 'none';
+                            }
+                        }
+                    }
+                }
+
+            }
+            ,
+            error: function () {
+                alert('error');
+            }
+        });
+
+
+    }
 
     // document.querySelector("#wed > tbody > tr:nth-child(행) > td:nth-child(열)")
     function setting_sell_selector() {
-        var day_list = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+
         for (let count = 0; count < day_list.length; count++) {
             for (let i = 1; i <= 24; i++) {
                 for (let j = 1; j <= 16; j++) {
@@ -3456,11 +3503,9 @@
                         if (element_style != 'rgb(255, 233, 109)') {
                             document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")").style.backgroundColor = 'rgb(255,233,109)';
                             checked_cells.push(element_str);
-                            console.log(checked_cells);
                         } else {
                             document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")").style.backgroundColor = 'rgb(255,255,255)';
                             checked_cells.pop(element_str);
-                            console.log(checked_cells);
 
                         }
                     };
@@ -3494,7 +3539,7 @@
 
             element.onclick = function () {
                 var username = document.querySelector("#mp-pusher > div > div.ground > div.main > div.user_remote_controller > div.managers > div:nth-child(" + i + ") > p.tempManagerName > b").innerHTML;
-                while (popped = checked_cells.pop()){
+                while (popped = checked_cells.pop()) {
                     document.querySelector(popped).innerHTML = username;
                     document.querySelector(popped).style.backgroundColor = 'rgb(154,225,255)';
                 }
@@ -3504,8 +3549,8 @@
 
     }
 
-    function setEmpty(){
-        while (popped = checked_cells.pop()){
+    function setEmpty() {
+        while (popped = checked_cells.pop()) {
             document.querySelector(popped).innerHTML = '';
             document.querySelector(popped).style.backgroundColor = 'rgb(255,255,255)';
         }
@@ -3515,12 +3560,10 @@
         day_id = day;
         var tb = document.getElementsByTagName("table");
         for (var i = 0; i < tb.length; i++) {
-            console.log(tb)
             tb[i].style.display = "none";
         }
         let table = document.getElementById(day);
         table.style.display = "inline-table";
-        console.log(table);
 
 
         if (day == 'mon') day_str = "월요일";
