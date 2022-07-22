@@ -2935,6 +2935,7 @@
     var usercode_list = []
     var userid_list = []
     var usertemptime_list = []
+    var userhopetime_list = {}; //{usercode:[hopetime values]}
 
 
     function setdate(value) {
@@ -2969,13 +2970,34 @@
             datatype: "json",
             success: function (data) {
                 $.each(data, function (index, item) { // 데이터 =item
-                    console.log(index + " : " + item.username);
                     username_list.push(item.username);
                     usercode_list.push(item.code);
                     userid_list.push(item.id);
                     usertemptime_list.push(0);
                 });
                 setting_manager_selector();
+            }
+            ,
+            error: function () {
+                alert('error');
+            }
+        });
+
+        $.ajax({
+            url: "/find_All_Manager_Hope_Time",
+            type: "get",
+            datatype: "json",
+            success: function (data) {
+                $.each(data, function (index, item) { // 데이터 =item
+                    if(item.user.code in userhopetime_list){   //이미 존재하는 key면
+                        var hope_times = userhopetime_list[item.user.code];
+                        hope_times.push(item.start_time);
+                        userhopetime_list[item.user.code]=hope_times;
+                    }else{
+                        userhopetime_list[item.user.code] = [item.start_time];
+                    }
+
+                });
             }
             ,
             error: function () {
@@ -2993,8 +3015,6 @@
                 $.each(data, function (index, item) { // 데이터 =item
                     let key = item.time.toString()
                     data_list[key] = Math.round(item.numOfCards / 30);
-                    // data_list.push({time: item.time.toString(), value: Math.round(item.numOfCards / 30)})
-                    // alert(data_list[index].time+"\n"+data_list[index].value);
                     if (parseInt(data_list[key], 10) > max_est_num_of_managers)
                         max_est_num_of_managers = parseInt(data_list[key], 10);
                 });
@@ -3200,6 +3220,7 @@
                 var user = new Object();
                 user.userCode = usercode_list[i];
                 user.userCurrentTime = usertemptime_list[i];
+                user.hopetime = userhopetime_list[usercode_list[i]];
                 jsonList.push(user);
             }
 
