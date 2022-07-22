@@ -45,7 +45,7 @@
         <div class="title1">
             <h1>근무 스케줄 배정</h1>
             <button class="btn btn-1 btn-1a md-close" style="margin: 0; padding: 15px;"
-                    onclick="">배정 취소
+                    onclick="location.href='/calendar_admin';">배정 취소
             </button>
             <button class="btn btn-1 btn-1a md-close" style="margin: 0; padding: 15px; margin-left: 10px;"
                     onclick="CreateAssignSchedule()">배정 완료
@@ -3458,23 +3458,30 @@
     }
 
     function setdate(value) {
-        for (let i = 0; i < date_list.length; i++) {
-            date_list.pop();
-            date_str_list.pop();
-        }
         let date = new Date(value);
-        date_list[0] = date.toString();
-        date_str_list[0] = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
-        for (let i = 1; i < 7; i++) {
-            date.setDate(date.getDate() + 1)
-            date_list[i] = date.toString();
-            date_str_list[i] = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+        if(date.getDay()!=1){
+            alert('선택한 날짜는 월요일이 아닙니다.\n월요일에 해당하는 다른 날짜를 선택해주세요.');
+        }else{
+            for (let i = 0; i < date_list.length; i++) {
+                date_list.pop();
+                date_str_list.pop();
+            }
+
+            date_list[0] = date.toString();
+            date_str_list[0] = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+            for (let i = 1; i < 7; i++) {
+                date.setDate(date.getDate() + 1)
+                date_list[i] = date.toString();
+                date_str_list[i] = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+            }
+            console.log(date_list)
+            console.log(date_str_list)
+            document.querySelector("#mp-pusher > div > div.ground > div.wrapper_schedule_box > div:nth-child(2) > div > p").innerHTML = date_str_list[0];
+            document.querySelector("#mp-pusher > div > div.ground > div.wrapper_schedule_box > div:nth-child(1) > span").innerHTML = "";
         }
-        console.log(date_list)
-        console.log(date_str_list)
-        document.querySelector("#mp-pusher > div > div.ground > div.wrapper_schedule_box > div:nth-child(2) > div > p").innerHTML = date_str_list[0];
-        document.querySelector("#mp-pusher > div > div.ground > div.wrapper_schedule_box > div:nth-child(1) > span").innerHTML = "";
-    }
+        }
+
+
 
 
     function select_All_Manager() {
@@ -3689,14 +3696,14 @@
 
 
     // 로딩창 키는 함수
-    function getShowLoading() {
-        setEmpty();
-        document.getElementById("loading").style.display = "";
-        // setTimeout(function () {
-        //     document.getElementById("loading").style.display = "none";
-        // }, 3000);
-
-    }
+    // function getShowLoading() {
+    //     setEmpty();
+    //     document.getElementById("loading").style.display = "";
+    //     // setTimeout(function () {
+    //     //     document.getElementById("loading").style.display = "none";
+    //     // }, 3000);
+    //
+    // }
 
 
     function fill_all_cells() {
@@ -3719,81 +3726,88 @@
     }
 
     function CreateAssignSchedule() {
-        document.getElementById("loading").style.display = "";
+       if(document.querySelector("#mp-pusher > div > div.ground > div.wrapper_schedule_box > div:nth-child(2) > div > p").innerHTML=="undefined"){
+           alert("날짜를 먼저 설정해주세요.");
+       }else{
+           document.getElementById("loading").style.display = "";
+           let count_json = 0;
+           var jsonList = new Array();
+           for (let day = 0; day < 7; day++) {
+               for (let i = 1; i <= 24; i++) {
+                   for (let j = 2; j <= 17; j++) {
+                       if (i == 1 || i == 7 || i == 13 || i == 19) {
+                           var element_style = document.defaultView.getComputedStyle(document.querySelector("#" + day_list[day] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + (j + 1) + ")")).getPropertyValue("background-color");
+                           if (element_style == 'rgb(154, 225, 255)') {
+                               count_json++;
+                               // 객체 생성
+                               var data = new Object();
+                               data.index = count_json;
 
-        setTimeout(function () {
-            let count_json = 0;
-            var jsonList = new Array();
-            for (let day = 0; day < 7; day++) {
-                for (let i = 1; i <= 24; i++) {
-                    for (let j = 2; j <= 17; j++) {
-                        if (i == 1 || i == 7 || i == 13 || i == 19) {
-                            var element_style = document.defaultView.getComputedStyle(document.querySelector("#" + day_list[day] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + (j + 1) + ")")).getPropertyValue("background-color");
-                            if (element_style == 'rgb(154, 225, 255)') {
-                                count_json++;
-                                // 객체 생성
-                                var data = new Object();
-                                data.index = count_json;
+                               var userName = document.querySelector("#" + day_list[day] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + (j + 1) + ")").innerHTML;
+                               var userIndex = username_list.indexOf(userName);
+                               data.usercode = usercode_list[userIndex];
 
-                                var userName = document.querySelector("#" + day_list[day] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + (j + 1) + ")").innerHTML;
-                                var userIndex = username_list.indexOf(userName);
-                                data.usercode = usercode_list[userIndex];
+                               var startDate = new Date(date_list[day]);
+                               startDate.setHours(i - 1);
+                               data.startTime = startDate;
+                               var endDate = new Date(date_list[day]);
+                               endDate.setHours(i);
+                               data.endTime = endDate;
 
-                                var startDate = new Date(date_list[day]);
-                                startDate.setHours(i - 1);
-                                data.startTime = startDate;
-                                var endDate = new Date(date_list[day]);
-                                endDate.setHours(i);
-                                data.endTime = endDate;
+                               // 리스트에 생성된 객체 삽입
+                               jsonList.push(data);
+                           }
+                       } else {
+                           var element_style = document.defaultView.getComputedStyle(document.querySelector("#" + day_list[day] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")")).getPropertyValue("background-color");
+                           if (element_style == 'rgb(154, 225, 255)') {
+                               count_json++;
+                               // 객체 생성
+                               var data = new Object();
+                               data.index = count_json;
 
-                                // 리스트에 생성된 객체 삽입
-                                jsonList.push(data);
-                            }
-                        } else {
-                            var element_style = document.defaultView.getComputedStyle(document.querySelector("#" + day_list[day] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")")).getPropertyValue("background-color");
-                            if (element_style == 'rgb(154, 225, 255)') {
-                                count_json++;
-                                // 객체 생성
-                                var data = new Object();
-                                data.index = count_json;
+                               var userName = document.querySelector("#" + day_list[day] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")").innerHTML;
+                               var userIndex = username_list.indexOf(userName);
+                               data.usercode = usercode_list[userIndex];
 
-                                var userName = document.querySelector("#" + day_list[day] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")").innerHTML;
-                                var userIndex = username_list.indexOf(userName);
-                                data.usercode = usercode_list[userIndex];
+                               var startDate = new Date(date_list[day]);
+                               startDate.setHours(i - 1);
+                               data.startTime = startDate;
+                               var endDate = new Date(date_list[day]);
+                               endDate.setHours(i);
+                               data.endTime = endDate;
 
-                                var startDate = new Date(date_list[day]);
-                                startDate.setHours(i - 1);
-                                data.startTime = startDate;
-                                var endDate = new Date(date_list[day]);
-                                endDate.setHours(i);
-                                data.endTime = endDate;
+                               // 리스트에 생성된 객체 삽입
+                               jsonList.push(data);
+                           }
+                       }
+                   }
+               }
 
-                                // 리스트에 생성된 객체 삽입
-                                jsonList.push(data);
-                            }
-                        }
-                    }
-                }
+           }
 
-            }
-            var jsondata = JSON.stringify(jsonList);
-            console.log(jsondata);
+           if (count_json != 0) {
+               var jsondata = JSON.stringify(jsonList);
+               console.log(jsondata);
 
-            $.ajax({
-                type: 'post'
-                , contentType: 'application/json'
-                , data: jsondata
-                , url: '/create_assign_schedule'
-                , success: function (data) {
-                    document.getElementById("loading").style.display = "none";
-                    if(confirm(data+"건의 근무스케줄이 생성되었습니다.")){
-                        location.href = "/calendar_admin";
-                    }
-                }, error: function (e) {
-                    alert("error: " + e);
-                }
-            });
-        });
+               $.ajax({
+                   type: 'post'
+                   , contentType: 'application/json'
+                   , data: jsondata
+                   , url: '/create_assign_schedule'
+                   , success: function (data) {
+                       document.getElementById("loading").style.display = "none";
+                       if (confirm(data + "건의 근무스케줄이 생성되었습니다.")) {
+                           location.href = "/calendar_admin";
+                       }
+                   }, error: function (e) {
+                       alert("error: " + e);
+                   }
+               });
+           } else {
+               document.getElementById("loading").style.display = "none";
+               alert("한 건 이상의 스케줄을 배정해주세요.");
+           }
+       }
     }
 
 </script>
