@@ -6,10 +6,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import sketcher.scheduling.algorithm.AutoSchedulingTwo;
+import sketcher.scheduling.algorithm.TempAssignManager;
 import sketcher.scheduling.domain.ManagerAssignSchedule;
+import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.domain.Schedule;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.*;
+import sketcher.scheduling.repository.ManagerHopeTimeRepository;
 import sketcher.scheduling.repository.UserRepository;
 import sketcher.scheduling.service.*;
 
@@ -35,6 +38,8 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
     ManagerAssignScheduleService managerAssignScheduleService;
     @Autowired
     ScheduleUpdateReqService updateReqService;
+    @Autowired
+    ManagerHopeTimeRepository managerHopeTimeRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -48,16 +53,30 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
         autoSchedulingTwo.runAlgorithm();
 
 
+//        for (int i =0; i<3; i++){
 //        UserDto userA = UserDto.builder()
-//                .id("user111111")
+//                .id("scheduleTest"+i)
 //                .authRole("MANAGER")
 //                .password(new BCryptPasswordEncoder().encode("1234"))
-//                .username("정민환")
+//                .username("스케줄 테스트"+i)
 //                .userTel("010-1234-5678")
 //                .user_joinDate(LocalDateTime.now())
 //                .managerScore(5.0)
 //                .build();
 //        String user1 = userService.saveUser(userA);
+//        User userT = userRepository.findById(user1).get();
+//
+//            ManagerHopeTimeDto hopeA = ManagerHopeTimeDto.builder()
+//                    .start_time(0)
+//                    .finish_time(6)
+//                    .start_time(12)
+//                    .finish_time(18)
+//                    .user(userT)
+//                    .build();
+//            managerHopeTimeService.saveManagerHopeTime(hopeA);
+//        }
+
+
 //        User userJ = userRepository.findById(user1).get();
 //
 //        UserDto userB = UserDto.builder()
