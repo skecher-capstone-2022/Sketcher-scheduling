@@ -59,4 +59,30 @@ public class RestController {
 
         return param.size();
     }
+
+    @RequestMapping(value = "/current_status_info", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
+    public int currentStatusInfo(@RequestBody List<Map<String, Object>> param) throws ParseException {
+        String date="";
+        String day="";
+        int usercode[] = new int[param.size()-1];
+        int userCurrentTime[] = new int[param.size()-1];
+        int flag = 0; int index=0;
+        for (Map<String, Object> stringObjectMap : param) {
+            if (flag == 1) {    //
+                usercode[index] = (int) stringObjectMap.get("userCode");
+                userCurrentTime[index] = (int) stringObjectMap.get("userCurrentTime");
+                 index++;
+            } else {
+                flag = 1;
+                date = (String) stringObjectMap.get("date");
+                day = (String) stringObjectMap.get("day");
+            }
+        }
+        System.out.println("date : "+date);
+        System.out.println("day : "+day);
+        System.out.println("date : "+usercode.length);
+        System.out.println("date : "+userCurrentTime.length);
+
+        return param.size();
+    }
 }

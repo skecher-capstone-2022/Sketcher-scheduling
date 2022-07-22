@@ -36,7 +36,7 @@
             justify-content: space-between;
         }
 
-        .currentTempAssignTime{
+        .currentTempAssignTime {
             font-weight: 600;
         }
 
@@ -3185,21 +3185,52 @@
 
 
     function fill_all_cells() {
-        document.getElementById("loading").style.display = "";
-        setTimeout(function () {
-            for (let i = 1; i <= 24; i++) {
-                for (let j = 2; j <= 17; j++) {
-                    if (i == 1 || i == 7 || i == 13 || i == 19) {
-                        document.querySelector("#" + day_id + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + (j + 1) + ")").innerHTML = day_str;
-                        document.querySelector("#" + day_id + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + (j + 1) + ")").style.backgroundColor = 'rgb(154,225,255)';
-                    } else {
-                        document.querySelector("#" + day_id + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")").innerHTML = day_str;
-                        document.querySelector("#" + day_id + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")").style.backgroundColor = 'rgb(154,225,255)';
-                    }
-                }
+        if (document.querySelector("#mp-pusher > div > div.ground > div.wrapper_schedule_box > div:nth-child(2) > div > p").innerHTML == "undefined") {
+            alert("날짜를 먼저 설정해주세요.");
+        } else {
+            document.getElementById("loading").style.display = "";  //로딩창 킴
+
+            var jsonList = new Array();
+            var data_date = new Object();
+            data_date.date = document.querySelector("#mp-pusher > div > div.ground > div.wrapper_schedule_box > div:nth-child(2) > div > p").innerHTML;
+            data_date.day = document.querySelector("#mp-pusher > div > div.ground > div.wrapper_schedule_box > div:nth-child(2) > div > h3").innerHTML;
+            jsonList.push(data_date);
+
+            for (let i = 0; i < usercode_list.length; i++) {
+                var user = new Object();
+                user.userCode = usercode_list[i];
+                user.userCurrentTime = usertemptime_list[i];
+                jsonList.push(user);
             }
-        }, 3000);
-        document.getElementById("loading").style.display = "none";
+
+            var jsondata = JSON.stringify(jsonList);
+            console.log(jsondata);
+
+            $.ajax({
+                type: 'post'
+                , contentType: 'application/json'
+                , data: jsondata
+                , url: '/current_status_info'
+                , success: function (data) {
+                    document.getElementById("loading").style.display = "none";
+                }, error: function (e) {
+                    alert("error: " + e);
+                }
+            });
+        }
+
+        // for (let i = 1; i <= 24; i++) {
+        //     for (let j = 2; j <= 17; j++) {
+        //         if (i == 1 || i == 7 || i == 13 || i == 19) {
+        //             document.querySelector("#" + day_id + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + (j + 1) + ")").innerHTML = day_str;
+        //             document.querySelector("#" + day_id + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + (j + 1) + ")").style.backgroundColor = 'rgb(154,225,255)';
+        //         } else {
+        //             document.querySelector("#" + day_id + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")").innerHTML = day_str;
+        //             document.querySelector("#" + day_id + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")").style.backgroundColor = 'rgb(154,225,255)';
+        //         }
+        //     }
+        // }
+
 
     }
 
