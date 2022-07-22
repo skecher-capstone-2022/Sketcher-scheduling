@@ -180,6 +180,13 @@
             font-size: 1.0rem;
         }
 
+        #kakao-talk-channel-chat-button{
+            line-height: 80px;
+        }
+
+        #kakao-talk-channel-chat-button > a > img{
+            vertical-align: middle;
+        }
     </style>
 
 </head>
@@ -188,6 +195,15 @@
     <div class="ground">
         <div class="title1">
             <h1>개인 스케줄 조회</h1>
+            <div
+                    id="kakao-talk-channel-chat-button"
+                    data-channel-public-id="_LBGRxj"
+                    data-title="question"
+                    data-size="large"
+                    data-color="yellow"
+                    data-shape="pc"
+                    data-support-multiple-densities="true">
+            </div>
             <img src="/img/logo1.png" height="80"/>
         </div>
         <div class="main">
@@ -206,3 +222,19 @@
     </script>
 </th:block>
 </html>
+<script>
+    window.kakaoAsyncInit = function () {
+        Kakao.Channel.createChatButton({
+            container: '#kakao-talk-channel-chat-button',
+        });
+    };
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = 'https://developers.kakao.com/sdk/js/kakao.channel.min.js';
+        fjs.parentNode.insertBefore(js, fjs);
+    })(document, 'script', 'kakao-js-sdk');
+</script>

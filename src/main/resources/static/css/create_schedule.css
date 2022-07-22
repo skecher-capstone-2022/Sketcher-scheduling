@@ -1,6 +1,6 @@
 .user_remote_controller {
     height: 800px;
-    width: 300px;
+    width: 500px;
 }
 
 .left_content {
@@ -71,6 +71,7 @@ button.btn.btn-1.btn-1a.md-close {
 }
 
 .managers {
+    max-height: -webkit-fill-available;
     overflow-y: scroll;
 }
 
