@@ -37,7 +37,6 @@ public class HomeController {
         return estimatedNumOfCardsRepository.findAll();
     }
 
-
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(HttpServletRequest request) {
         return "full-calendar/calendar";

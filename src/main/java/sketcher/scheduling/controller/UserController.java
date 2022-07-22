@@ -37,11 +37,6 @@ public class UserController {
     private final ScheduleUpdateReqService scheduleUpdateReqService;
 
 
-//
-//    @NonNull
-//    private final BCryptPasswordEncoder passwordEncoder;
-
-
     @GetMapping(value = "/login")
     public String loginView(Model model, @RequestParam(value = "error", required = false) String error, @RequestParam(value = "exception", required = false) String exception) {
         model.addAttribute("error", error);

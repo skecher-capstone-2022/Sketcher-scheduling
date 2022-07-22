@@ -1,5 +1,6 @@
 package sketcher.scheduling.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.Getter;
@@ -55,9 +56,11 @@ public class User implements UserDetails {
     @Column(name = "dropout_req_check")
     private Character dropoutReqCheck;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<ManagerHopeTime> managerHopeTimeList = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<ManagerAssignSchedule> managerAssignScheduleList = new ArrayList<>();
 
