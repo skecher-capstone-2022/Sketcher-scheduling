@@ -3,6 +3,7 @@ package sketcher.scheduling.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import sketcher.scheduling.algorithm.AutoSchedulingTwo;
+import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.ManagerAssignScheduleDto;
 import sketcher.scheduling.repository.UserRepository;
@@ -24,13 +25,16 @@ public class RestController {
     private final UserService userService;
     private final ManagerAssignScheduleService assignScheduleService;
 
-    private final ManagerHopeTimeService managerHopeTimeService;
+    private final ManagerHopeTimeService hopeTimeService;
 
     @GetMapping(value = "/find_All_Manager")
     public List<User> findAllManager() {
         return userRepository.findAllManager();
     }
-
+    @GetMapping(value = "/find_All_Manager_Hope_Time")
+    public List<ManagerHopeTime> findAllManagerHopeTime() {
+        return hopeTimeService.findAll();
+    }
     @RequestMapping(value = "/create_assign_schedule", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
     public int createAssignSchedule(@RequestBody List<Map<String, Object>> param) throws ParseException {
         for (Map<String, Object> stringObjectMap : param) {
@@ -73,7 +77,7 @@ public class RestController {
                 day = (String) stringObjectMap.get("day");
             }
         }
-        AutoSchedulingTwo autoSchedulingTwo = new AutoSchedulingTwo(managerHopeTimeService, userService);
+        AutoSchedulingTwo autoSchedulingTwo = new AutoSchedulingTwo(hopeTimeService, userService);
         autoSchedulingTwo.runAlgorithm(usercode, userCurrentTime);
 
 
@@ -84,4 +88,5 @@ public class RestController {
 
         return param.size();
     }
+
 }
