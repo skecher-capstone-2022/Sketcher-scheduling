@@ -1,24 +1,13 @@
 package sketcher.scheduling.algorithm;
 
-import io.swagger.annotations.Api;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 import sketcher.scheduling.domain.ManagerHopeTime;
-import sketcher.scheduling.domain.User;
-import sketcher.scheduling.dto.ManagerHopeTimeDto;
-import sketcher.scheduling.repository.EstimatedNumOfCardsPerHourRepository;
 import sketcher.scheduling.service.ManagerHopeTimeService;
 import sketcher.scheduling.service.UserService;
 
-import javax.annotation.PostConstruct;
-import java.lang.reflect.Array;
-import java.util.*;
-import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class AutoSchedulingTwo {
@@ -48,18 +37,16 @@ public class AutoSchedulingTwo {
     private static int weightCount2 [] = {0,-1,-1,-1,-1};
     private static int weightCount3 [] = {0,-1,-1,-1,-1};
 
-    public void runAlgorithm() throws Exception {
-        List<User> allManager = userService.findAll();
-        int managerSize = allManager.size() + 15;    // 전체 매니저 수 만큼 배열을 생성하기 위함. 현재 매니저 값 들쭉 날쭉이라 임의로 +5
-
-        hopeTime = new ArrayList[managerSize + 1]; // 매니저의 희망 시간을 담는 배열
+    public void runAlgorithm(int userCode[], int userCurrentTime[]) {
+        int managerSize = userCode.length;      // alreadyMatch 로직 돌릴 때 0 번 매니저랑 스케줄 값 0 이 똑같아서 1번부터 시작해야함.
+        hopeTime = new ArrayList[managerSize]; // 매니저의 희망 시간을 담는 배열
         schedule = new ArrayList[(time.length + 1) / 2]; // 스케줄표 배열. UserCode 를 담기 위함 -> 12시간만 담기 위해서.
         checkSchedule = new ArrayList[(time.length + 1) / 2]; // 해당 스케줄 노드에 스케줄이 담겼는지 체크하기 위한 배열
-        countAssignTime = new int[managerSize + 1]; // 스케줄 노드 중 어떤 배열이 담겼는지 확인 위함
+        countAssignTime = new int[managerSize]; // 스케줄 노드 중 어떤 배열이 담겼는지 확인 위함
         scheduleWeight = new int[value.length]; // 스케줄 가중치 계산 -> value 를 기준으로 가중치를 1 ~ 3 으로 적용.
         managerWeight = new int[managerSize + 1];
 
-        for (int i = 1; i < managerSize + 1; i++) {
+        for (int i = 1; i < managerSize; i++) {
             hopeTime[i] = new ArrayList<>();        // 배열 안에 List 생성 , 매니저수만큼
         }
 
@@ -67,18 +54,13 @@ public class AutoSchedulingTwo {
             schedule[i] = new ArrayList<>();    // 배열 안에 List 생성
             checkSchedule[i] = new ArrayList<>();   // 배열 안에 List 생성
         }
-        /**
-         * 매니저는 1번부터 시작 -> userCode 가 그렇기 때문.
-         * 1번 매니저의 hopeTime 개수를 체크하고, 체크한 개수만큼 schedule 배열에 가능한 시간대를 저장. 0, 6, 12, 18 이 저장됨.
-         * hopeTime[1].add(0, 0) , hopeTime[1].add(0, 6), hopeTime[1].add(0, 12) => userCode 1번인 사람 희망시작시간 0, 6, 12 저장
-         */
-        for (int i = 1; i < managerSize + 1; i++) {
-            List<ManagerHopeTime> hopeTimeByUserCode = managerHopeTimeService.getHopeTimeByUserCode(i);
+
+        for (int i = 1; i < userCode.length; i++) {
+            List<ManagerHopeTime> hopeTimeByUserCode = managerHopeTimeService.getHopeTimeByUserCode(userCode[i]);
             for (int j = 0; j < hopeTimeByUserCode.size(); j++) {
                 hopeTime[i].add(j, hopeTimeByUserCode.get(j).getStart_time());
             }
         }
-
         for (int i = 0; i < 12; i++) { // 시간
             for (int j = 0; j < 10; j++) { // 노드 수
                 checkSchedule[i].add(j, 0);
@@ -93,129 +75,96 @@ public class AutoSchedulingTwo {
         scheduleWeightLogic();
         managerWeightLogic(managerSize);
 
-        /**
-         * dfs 알고리즘 수행.
-         * managerHopeTime 테이블에 중간중간 매니저가 비어있어서 null 들어가는 오류 때문에 임시로 3번 매니저까지만 확인할 수 있도록 함.
-         */
         int count = 0;
 
         /**
          * 난수 생성
          */
-        int ran[] = new int[100];
-        Random r = new Random();
+//        int ran[] = new int[100];
+//        Random r = new Random();
 
-        for (int k = 0; k < 5; k++) {
-            for (int i = 1; i < managerSize + 1; i++) {
-                ran[i] = r.nextInt(managerSize) + 1; // 1 ~ 99까지의 난수
-                for(int j=0; j<i; j++){
-                    if(ran[i] == ran[j]){
-                        i--;
-                    }
-                }
-                i = ran[i];
+        for (int k = 0; k < 3; k++) {
+            for (int i = 1; i < managerSize; i++) {
+//                ran[i] = r.nextInt(managerSize) + 1; // 1 ~ 99까지의 난수
+//                for(int j=0; j<i; j++){
+//                    if(ran[i] == ran[j]){
+//                        i--;
+//                    }
+//                }
+//                i = ran[i];
                 if (check4Hours(countAssignTime, i)) {
                     if (dfs(i))
                         count++;
                 }
             }
         }
-        /**
-         * 난수 없이 생성
-         */
-//        for (int k = 0; k < 2; k++) {
-//            for (int i = 1; i < managerSize + 1; i++) {
-//
-//                if (check4Hours(countAssignTime, i)) {
-//                    if (dfs(i))
-//                        count++;
-//                }
-//            }
-//        }
-//        }
+
+        for (int i =1; i<countAssignTime.length; i++){
+            userCurrentTime[i] = countAssignTime[i];
+        }
 
         /**
          * 로그 찍기 위한 테스트 로그용.
          */
         System.out.println(" =================================== ");
         System.out.println("count = " + count);
-        int passCode [] = new int[managerSize+1];
-        for (int i =0; i<managerSize; i++) {
-            if (!userService.findByCode(i).isPresent())
-                passCode[i] = i;
-        }
-        for (int i = 1; i < managerSize + 1; i++) {
-            if(i == passCode[i])
-                continue;
-            System.out.println("매니저 아이디 : [" + i + "] " + " 배정된 스케줄 개수 : " + countAssignTime[i]);
+        for (int i = 1; i < managerSize; i++) {
+            System.out.println("매니저 아이디 : [" + userCode[i] + "] " + " 배정된 스케줄 개수 : " + userCurrentTime[i]);
         }
 
-        for (int i = 0; i < 24; i = i + 2) { // 시간기존 24
-            for (int j = 0; j < 10; j++) { // 노드 수
-                int startTime = i;
-                int EndTime = startTime + 2;
-                System.out.print(" scheduleTime [" + startTime + "~" + EndTime + "] userCode : " + schedule[i / 2].get(j));
-            }
-            System.out.println(" ");
-        }
     }
 
     private boolean dfs(int index) {
         int i;
-        /**
-         * index -> 현재 매니저 code
-         * managerHopeTime 테이블에 중간중간 매니저가 비어있어서 null 들어가는 오류 때문에 임시로 3번 매니저까지만 확인할 수 있도록 함.
-         * 매니저가 희망한 시간의 start_time 을 managerHopeTime 에 대입.
-         * 알고리즘 수행
-         */
-        for (i = 1; i <= index; i++) {
-            for (int m = 0; m < hopeTime[index].size(); m++) {
-                int managerHopeTime = hopeTime[index].get(m);
 
-                /**
-                 * 근무시간이 4시간 초과하면 break 하고 그냥 끝냄.
-                 * 현재 오류 발생.. 수정 필요
-                 */
-                if (countAssignTime[index] > 4)
-                    break;
-                /**
-                 * 희망시간이 0~6시, 6~12, 12~18, 18~24 중 어디에 해당하는지 check
-                 * 각 희망타임 별 6시간 중 들어갈 수 있는 곳 check
-                 * 각 희망타임에서 총 10개의 노드를 각각 체크
-                 * 1 이라면 이미 배정돼 있는 상태 continue
-                 * 그렇지 않다면 (0 이라면) 배정돼 있지 않은 상태 -> dfs 알고리즘.
-                 */
-                if (scheduleWeight[m] == 1)  // 스케줄 가중치가 1인 경우
-                {
-                    if (scheduleWeight1(index))
-                        continue;
-                }else if(scheduleWeight[m] == 2)
-                {
-                    if (scheduleWeight2(index))
-                        continue;
-                }else if(scheduleWeight[m] == 3)
-                {
-                    if (scheduleWeight3(index))
-                        continue;
-                }
+//        for (i = 1; i <= index; i++) {
+        for (int m = 0; m < hopeTime[index].size(); m++) {
+            int managerHopeTime = hopeTime[index].get(m);
 
-                if (managerHopeTime == 0) {
-                    if (schedulingLogicDawn(index)) return true;
-                }
+            /**
+             * 근무시간이 4시간 초과하면 break 하고 그냥 끝냄.
+             * 현재 오류 발생.. 수정 필요
+             */
+            if (countAssignTime[index] > 4)
+                break;
+            /**
+             * 희망시간이 0~6시, 6~12, 12~18, 18~24 중 어디에 해당하는지 check
+             * 각 희망타임 별 6시간 중 들어갈 수 있는 곳 check
+             * 각 희망타임에서 총 10개의 노드를 각각 체크
+             * 1 이라면 이미 배정돼 있는 상태 continue
+             * 그렇지 않다면 (0 이라면) 배정돼 있지 않은 상태 -> dfs 알고리즘.
+             */
+            if (scheduleWeight[m] == 1)  // 스케줄 가중치가 1인 경우
+            {
+                if (scheduleWeight1(index))
+                    continue;
+            }else if(scheduleWeight[m] == 2)
+            {
+                if (scheduleWeight2(index))
+                    continue;
+            }else if(scheduleWeight[m] == 3)
+            {
+                if (scheduleWeight3(index))
+                    continue;
+            }
 
-                if (managerHopeTime == 6) {
-                    if (schedulingLogicMorning(index)) return true;
-                }
+            if (managerHopeTime == 0) {
+                if (schedulingLogicDawn(index)) return true;
+            }
 
-                if (managerHopeTime == 12) {
-                    if (schedulingLogicAfternoon(index)) return true;
-                }
+            if (managerHopeTime == 6) {
+                if (schedulingLogicMorning(index)) return true;
+            }
 
-                if (managerHopeTime == 18) {
-                    if (schedulingLogicEvening(index)) return true;
-                }
+            if (managerHopeTime == 12) {
+                if (schedulingLogicAfternoon(index)) return true;
+            }
+
+            if (managerHopeTime == 18) {
+                if (schedulingLogicEvening(index)) return true;
             }
         }
+//        }
         return false;
     }
 
@@ -335,14 +284,11 @@ public class AutoSchedulingTwo {
             for (k = 0; k < scheduleNodeLogic(j, k); k++) { // 기존 3개 시간대 10 개 노드
                 if (checkSchedule[j].get(k).equals(1))
                     continue;
-
-
                 /**
                  * 배정되어 있지 않은 경우, 상태를 1 로 변경 (배정된 상태)
                  * 스케줄의 0번째 시간의 0번째 노드에 UserCode 를 대입.
                  * countAssignTime[i]++ -> 스케줄이 배정될 때마다 근무시간 +1
                  */
-
                 else
                     checkSchedule[j].add(k, 1);
 
@@ -470,9 +416,9 @@ public class AutoSchedulingTwo {
 
     private void managerWeightLogic(int managerSize) {
         for (int i = 1; i < managerSize; i++) {
-            if (i <= 20)
+            if (i <= 40)
                 managerWeight[i] = 3;
-            else if (i > 20 && i <= 40)
+            else if (i > 40 && i <= 60)
                 managerWeight[i] = 2;
             else
                 managerWeight[i] = 1;

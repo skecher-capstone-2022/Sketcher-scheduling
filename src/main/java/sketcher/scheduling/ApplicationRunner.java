@@ -49,9 +49,6 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
         LocalDateTime date5 = LocalDateTime.of(2022,3,10,17,00);
         LocalDateTime date7 = LocalDateTime.of(2022,3,10,7,00);
 
-        AutoSchedulingTwo autoSchedulingTwo = new AutoSchedulingTwo(managerHopeTimeService, userService);
-        autoSchedulingTwo.runAlgorithm();
-
 
 //        for (int i =0; i<3; i++){
 //        UserDto userA = UserDto.builder()
