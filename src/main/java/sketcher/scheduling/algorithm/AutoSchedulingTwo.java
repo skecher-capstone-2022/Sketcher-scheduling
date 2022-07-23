@@ -37,7 +37,7 @@ public class AutoSchedulingTwo {
     private static int weightCount2 [] = {0,-1,-1,-1,-1};
     private static int weightCount3 [] = {0,-1,-1,-1,-1};
 
-    public void runAlgorithm(int userCode[], int userCurrentTime[]) {
+    public ArrayList<ResultScheduling> runAlgorithm(int userCode[], int userCurrentTime[]) {
         int managerSize = userCode.length;      // alreadyMatch 로직 돌릴 때 0 번 매니저랑 스케줄 값 0 이 똑같아서 1번부터 시작해야함.
         hopeTime = new ArrayList[managerSize]; // 매니저의 희망 시간을 담는 배열
         schedule = new ArrayList[(time.length + 1) / 2]; // 스케줄표 배열. UserCode 를 담기 위함 -> 12시간만 담기 위해서.
@@ -100,18 +100,22 @@ public class AutoSchedulingTwo {
         }
 
         for (int i =1; i<countAssignTime.length; i++){
-            userCurrentTime[i] = countAssignTime[i];
+            userCurrentTime[i]+= countAssignTime[i];
         }
 
-        /**
-         * 로그 찍기 위한 테스트 로그용.
-         */
-        System.out.println(" =================================== ");
-        System.out.println("count = " + count);
-        for (int i = 1; i < managerSize; i++) {
-            System.out.println("매니저 아이디 : [" + userCode[i] + "] " + " 배정된 스케줄 개수 : " + userCurrentTime[i]);
-        }
 
+        ArrayList<ResultScheduling> schedulingsResults = new ArrayList<>(); // 타입 지정
+
+        for (int i = 0; i < 12; i++) {
+            for (int j = 0; j < 10; j++){
+                int startTime = i;
+                int userindex = schedule[i].get(j);
+                if(userindex!=0){
+                    schedulingsResults.add(new ResultScheduling(startTime*2,userCode[userindex],userCurrentTime[userindex]));
+                }
+            }
+        }
+        return schedulingsResults;
     }
 
     private boolean dfs(int index) {

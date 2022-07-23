@@ -4,10 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
-public class TempUser {
-    public int usercode;
+public class ResultScheduling {
+    public int startTime;
+    public int userCode;
     public int currentTime;
-    public int[] hopeTime;
 }

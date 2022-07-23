@@ -3,6 +3,7 @@ package sketcher.scheduling.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import sketcher.scheduling.algorithm.AutoSchedulingTwo;
+import sketcher.scheduling.algorithm.ResultScheduling;
 import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.ManagerAssignScheduleDto;
@@ -14,9 +15,7 @@ import sketcher.scheduling.service.UserService;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 @org.springframework.web.bind.annotation.RestController
 @RequiredArgsConstructor
@@ -78,13 +77,13 @@ public class RestController {
             }
         }
         AutoSchedulingTwo autoSchedulingTwo = new AutoSchedulingTwo(hopeTimeService, userService);
-        autoSchedulingTwo.runAlgorithm(usercode, userCurrentTime);
+        ArrayList<ResultScheduling> schedulings = autoSchedulingTwo.runAlgorithm(usercode, userCurrentTime);
 
+        for (ResultScheduling scheduling : schedulings) {
+            System.out.println(scheduling.startTime+" / "+scheduling.userCode+"번 매니저 / 현재 배정시간 : "+scheduling.currentTime);
+        }
 
-        System.out.println("date : "+date);
-        System.out.println("day : "+day);
-        System.out.println("date : "+usercode.length);
-        System.out.println("date : "+userCurrentTime.length);
+//        HashMap<Integer,Integer> userList = new HashMap<Integer,Integer>();
 
         return param.size();
     }
