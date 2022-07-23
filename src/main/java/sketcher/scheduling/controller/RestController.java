@@ -1,6 +1,8 @@
 package sketcher.scheduling.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.*;
 import sketcher.scheduling.algorithm.AutoSchedulingTwo;
 import sketcher.scheduling.algorithm.ResultScheduling;
@@ -59,7 +61,7 @@ public class RestController {
     }
 
     @RequestMapping(value = "/current_status_info", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
-    public int currentStatusInfo(@RequestBody List<Map<String, Object>> param) throws ParseException {
+    public JSONObject currentStatusInfo(@RequestBody List<Map<String, Object>> param) throws ParseException {
         String date="";
         String day="";
         int usercode[] = new int[param.size() - 1];
@@ -79,13 +81,44 @@ public class RestController {
         AutoSchedulingTwo autoSchedulingTwo = new AutoSchedulingTwo(hopeTimeService, userService);
         ArrayList<ResultScheduling> schedulings = autoSchedulingTwo.runAlgorithm(usercode, userCurrentTime);
 
+        JSONObject schedulingJsonObj = new JSONObject();
+
+        JSONArray selectedDate = new JSONArray();
+        JSONArray scheduleJsonList = new JSONArray();
+        JSONArray userJsonList = new JSONArray();
+
+        HashMap<Integer,Integer> userList = new HashMap<>();
+
+        JSONObject dateInfo = new JSONObject();
+        dateInfo.put("date", date);
+        dateInfo.put("day", day);
+        selectedDate.add(dateInfo);
+        schedulingJsonObj.put("date",selectedDate);
+
         for (ResultScheduling scheduling : schedulings) {
-            System.out.println(scheduling.startTime+" / "+scheduling.userCode+"번 매니저 / 현재 배정시간 : "+scheduling.currentTime);
+            JSONObject scheduleItem = new JSONObject();
+            scheduleItem.put("scheduleStartTime", scheduling.startTime);
+            scheduleItem.put("userCode", scheduling.userCode);
+            scheduleJsonList.add(scheduleItem);
+//            System.out.println(scheduling.startTime+" / "+scheduling.userCode+"번 매니저 / 현재 배정시간 : "+scheduling.currentTime);
+            if(!userList.containsKey(scheduling.userCode)){
+                userList.put(scheduling.userCode,scheduling.currentTime);
+            }
         }
 
-//        HashMap<Integer,Integer> userList = new HashMap<Integer,Integer>();
+        schedulingJsonObj.put("scheduleResults",scheduleJsonList);
 
-        return param.size();
+        for (Map.Entry<Integer, Integer> userStatus : userList.entrySet()) {
+            JSONObject scheduleItem = new JSONObject();
+            scheduleItem.put("userCode", userStatus.getKey());
+            scheduleItem.put("userCurrentTime", userStatus.getValue());
+            userJsonList.add(scheduleItem);
+        }
+
+
+        schedulingJsonObj.put("userResults",userJsonList);
+
+        return schedulingJsonObj;
     }
 
 }

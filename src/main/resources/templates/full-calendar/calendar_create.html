@@ -543,6 +543,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td>01</td>
@@ -627,6 +628,7 @@
                         <tr>
                             <td>06</td>
                             <td rowspan="6">오전</td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -735,6 +737,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td>13</td>
@@ -819,6 +822,7 @@
                         <tr>
                             <td>18</td>
                             <td rowspan="6">저녁</td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -932,6 +936,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td>01</td>
@@ -1016,6 +1021,7 @@
                         <tr>
                             <td>06</td>
                             <td rowspan="6">오전</td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -1124,6 +1130,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td>13</td>
@@ -1208,6 +1215,7 @@
                         <tr>
                             <td>18</td>
                             <td rowspan="6">저녁</td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -1320,6 +1328,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td>01</td>
@@ -1404,6 +1413,7 @@
                         <tr>
                             <td>06</td>
                             <td rowspan="6">오전</td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -1512,6 +1522,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td>13</td>
@@ -1596,6 +1607,7 @@
                         <tr>
                             <td>18</td>
                             <td rowspan="6">저녁</td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -1708,6 +1720,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td>01</td>
@@ -1792,6 +1805,7 @@
                         <tr>
                             <td>06</td>
                             <td rowspan="6">오전</td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -1900,6 +1914,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td>13</td>
@@ -1984,6 +1999,7 @@
                         <tr>
                             <td>18</td>
                             <td rowspan="6">저녁</td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -2096,6 +2112,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td>01</td>
@@ -2180,6 +2197,7 @@
                         <tr>
                             <td>06</td>
                             <td rowspan="6">오전</td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -2288,6 +2306,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td>13</td>
@@ -2372,6 +2391,7 @@
                         <tr>
                             <td>18</td>
                             <td rowspan="6">저녁</td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -2484,6 +2504,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td>01</td>
@@ -2568,6 +2589,7 @@
                         <tr>
                             <td>06</td>
                             <td rowspan="6">오전</td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -2676,6 +2698,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td>13</td>
@@ -2760,6 +2783,7 @@
                         <tr>
                             <td>18</td>
                             <td rowspan="6">저녁</td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -2989,11 +3013,11 @@
             datatype: "json",
             success: function (data) {
                 $.each(data, function (index, item) { // 데이터 =item
-                    if(item.user.code in userhopetime_list){   //이미 존재하는 key면
+                    if (item.user.code in userhopetime_list) {   //이미 존재하는 key면
                         var hope_times = userhopetime_list[item.user.code];
                         hope_times.push(item.start_time);
-                        userhopetime_list[item.user.code]=hope_times;
-                    }else{
+                        userhopetime_list[item.user.code] = hope_times;
+                    } else {
                         userhopetime_list[item.user.code] = [item.start_time];
                     }
 
@@ -3018,6 +3042,7 @@
                     if (parseInt(data_list[key], 10) > max_est_num_of_managers)
                         max_est_num_of_managers = parseInt(data_list[key], 10);
                 });
+
                 for (let count = 0; count < day_list.length; count++) {
                     for (let i = 1; i <= 24; i++) {
                         if (i - 1 + '' in data_list) {
@@ -3048,22 +3073,41 @@
     }
 
     // document.querySelector("#wed > tbody > tr:nth-child(행) > td:nth-child(열)")
-    function setting_sell_selector() {
+    function setting_sell_selector() {  //TODO 수정필요
 
         for (let count = 0; count < day_list.length; count++) {
             for (let i = 1; i <= 24; i++) {
-                for (let j = 1; j <= MAX_NUM_OF_CELL; j++) {
-                    var element = document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")");
+                for (let j = 1; j <= MAX_NUM_OF_CELL + 1; j++) {
+                    if (i == 1 || i == 7 || i == 13 || i == 19) {
+                        var element = document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + (j + 1) + ")");
+                    } else {
+                        var element = document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")");
+                    }
+                    document.querySelector("#tue > tbody > tr:nth-child(2) > td:nth-child(2)")
                     element.onclick = function () {
-                        var element_str = "#" + day_list[count] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")";
-                        var element_style = document.defaultView.getComputedStyle(document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")")).getPropertyValue("background-color")
+                        var element_str;
+                        var element_style;
+                        if (i == 1 || i == 7 || i == 13 || i == 19) {
+                            element_str = "#" + day_list[count] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + (j + 1) + ")";
+                            element_style = document.defaultView.getComputedStyle(document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + (j + 1) + ")")).getPropertyValue("background-color")
+                        } else {
+                            element_str = "#" + day_list[count] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")";
+                            element_style = document.defaultView.getComputedStyle(document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")")).getPropertyValue("background-color")
+                        }
                         if (element_style != 'rgb(255, 233, 109)') {
-                            document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")").style.backgroundColor = 'rgb(255,233,109)';
+                            if (i == 1 || i == 7 || i == 13 || i == 19) {
+                                document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + (j + 1) + ")").style.backgroundColor = 'rgb(255,233,109)';
+                            } else {
+                                document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")").style.backgroundColor = 'rgb(255,233,109)';
+                            }
                             checked_cells.push(element_str);
                         } else {
-                            document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")").style.backgroundColor = 'rgb(255,255,255)';
+                            if (i == 1 || i == 7 || i == 13 || i == 19) {
+                                document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + (j + 1) + ")").style.backgroundColor = 'rgb(255,255,255)';
+                            } else {
+                                document.querySelector("#" + day_list[count] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")").style.backgroundColor = 'rgb(255,255,255)';
+                            }
                             checked_cells.pop(element_str);
-
                         }
                     };
                 }
@@ -3225,7 +3269,7 @@
             }
 
             var jsondata = JSON.stringify(jsonList);
-            console.log(jsondata);
+
 
             $.ajax({
                 type: 'post'
@@ -3234,90 +3278,180 @@
                 , url: '/current_status_info'
                 , success: function (data) {
                     document.getElementById("loading").style.display = "none";
+                    var pointerList = [];
+                    for (let i = 0; i < 24; i++) {  //포인터 배열 초기화
+                        pointerList[i] = 3;
+                    }
+                    var selectedDay;
+                    $.each(data, function (index, item) { // 데이터 =item
+                        $.each(item, function (index, value) { // 데이터 =item
+                            // console.log(index);
+                            // console.log(value.day);
+                            if (index == 0) {
+                                if (value.day == '월요일') {
+                                    selectedDay = 'mon';
+                                } else if (value.day == '화요일') {
+                                    selectedDay = 'tue';
+                                } else if (value.day == '수요일') {
+                                    selectedDay = 'wed';
+                                } else if (value.day == '목요일') {
+                                    selectedDay = 'thu';
+                                } else if (value.day == '금요일') {
+                                    selectedDay = 'fri';
+                                } else if (value.day == '토요일') {
+                                    selectedDay = 'sat';
+                                } else if (value.day == '일요일') {
+                                    selectedDay = 'sun';
+                                }
+                            }
+
+                            if (value.scheduleStartTime == undefined) {
+                                var userindex = usercode_list.indexOf(value.userCode);
+                                usertemptime_list[userindex] = value.userCurrentTime;
+                                //화면에 업데이트시키기
+                                for (let i = 1; i <= usercode_list.length; i++) {
+                                    document.querySelector("#managers_box > div:nth-child(" + i + ") > p.currentTempAssignTime > span").innerHTML = usertemptime_list[i - 1];
+                                    update_manager_status(i);
+                                }
+                            } else {
+                                let userName;
+                                let time = parseInt(value.scheduleStartTime, 10) + 1;
+                                for (let i = 0; i < usercode_list.length; i++) {
+                                    if(usercode_list[i]==value.userCode){
+                                        userName = username_list[i];
+                                        break;
+                                    }
+                                }
+                                if (time == 1 || time == 7 || time == 13 || time == 19) {
+                                    document.querySelector("#"+selectedDay+" > tbody > tr:nth-child(" + time + ") > td:nth-child(" + pointerList[time-1] + ")").style.backgroundColor = 'rgb(154, 225, 255)';
+                                    document.querySelector("#"+selectedDay+" > tbody > tr:nth-child(" + (time + 1) + ") > td:nth-child(" + (pointerList[time]-1) + ")").style.backgroundColor = 'rgb(154, 225, 255)';
+                                    document.querySelector("#"+selectedDay+" > tbody > tr:nth-child(" + time + ") > td:nth-child(" + pointerList[time-1] + ")").innerHTML = userName;
+                                    document.querySelector("#"+selectedDay+" > tbody > tr:nth-child(" + (time + 1) + ") > td:nth-child(" + (pointerList[time]-1) + ")").innerHTML = userName;
+                                } else {
+                                    document.querySelector("#"+selectedDay+" > tbody > tr:nth-child(" + time + ") > td:nth-child(" + (pointerList[time-1] - 1) + ")").style.backgroundColor = 'rgb(154, 225, 255)';
+                                    document.querySelector("#"+selectedDay+" > tbody > tr:nth-child(" + (time + 1) + ") > td:nth-child(" + (pointerList[time] - 1) + ")").style.backgroundColor = 'rgb(154, 225, 255)';
+                                    document.querySelector("#"+selectedDay+" > tbody > tr:nth-child(" + time + ") > td:nth-child(" + (pointerList[time-1] - 1) + ")").innerHTML = userName;
+                                    document.querySelector("#"+selectedDay+" > tbody > tr:nth-child(" + (time + 1) + ") > td:nth-child(" + (pointerList[time] - 1) + ")").innerHTML = userName;
+                                }
+                                pointerList[time-1]++;
+                                pointerList[time]++;
+                            }
+                        });
+                    });
                 }, error: function (e) {
                     alert("error: " + e);
                 }
             });
         }
-
-        // for (let i = 1; i <= 24; i++) {
-        //     for (let j = 2; j <= 17; j++) {
-        //         if (i == 1 || i == 7 || i == 13 || i == 19) {
-        //             document.querySelector("#" + day_id + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + (j + 1) + ")").innerHTML = day_str;
-        //             document.querySelector("#" + day_id + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + (j + 1) + ")").style.backgroundColor = 'rgb(154,225,255)';
-        //         } else {
-        //             document.querySelector("#" + day_id + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")").innerHTML = day_str;
-        //             document.querySelector("#" + day_id + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")").style.backgroundColor = 'rgb(154,225,255)';
-        //         }
-        //     }
-        // }
-
-
     }
 
     function CreateAssignSchedule() {
         if (document.querySelector("#mp-pusher > div > div.ground > div.wrapper_schedule_box > div:nth-child(2) > div > p").innerHTML == "undefined") {
             alert("날짜를 먼저 설정해주세요.");
         } else {
+
             document.getElementById("loading").style.display = "";
             let count_json = 0;
             var jsonList = new Array();
             for (let day = 0; day < 7; day++) {
+                var assignDataListPerDay = new Array(24);
                 for (let i = 1; i <= 24; i++) {
-                    for (let j = 2; j <= 17; j++) {
+                    assignDataListPerDay[i] = new Array(MAX_NUM_OF_CELL);
+                    let pointer = 0;
+                    for (let j = 2; j <= MAX_NUM_OF_CELL-1; j++) {
                         if (i == 1 || i == 7 || i == 13 || i == 19) {
                             var element_style = document.defaultView.getComputedStyle(document.querySelector("#" + day_list[day] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + (j + 1) + ")")).getPropertyValue("background-color");
                             if (element_style == 'rgb(154, 225, 255)') {
-                                count_json++;
-                                // 객체 생성
-                                var data = new Object();
-                                data.index = count_json;
-
                                 var userName = document.querySelector("#" + day_list[day] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + (j + 1) + ")").innerHTML;
                                 var userIndex = username_list.indexOf(userName);
-                                data.usercode = usercode_list[userIndex];
+                                var usercode = usercode_list[userIndex];
 
-                                var startDate = new Date(date_list[day]);
-                                startDate.setHours(i - 1);
-                                data.startTime = startDate;
-                                var endDate = new Date(date_list[day]);
-                                endDate.setHours(i);
-                                data.endTime = endDate;
+                                var getDay = new Date(date_list[day]);
+                                getDay.setHours(i - 1);
+                                var startDate = getDay;
+                                var getDate = new Date(date_list[day]);
+                                getDate.setHours(i);
+                                var endDate = getDate;
 
-                                // 리스트에 생성된 객체 삽입
-                                jsonList.push(data);
+                                //[유저코드, 유저이름, 시작시간, 종료시간]
+
+                                if(i==1){   //1시는 무조건 저장
+                                    assignDataListPerDay[i][pointer] = [userName,usercode,startDate,endDate];
+                                }else{  //2~24시는 바로 직전 시간 리스트 값과 비교해서 노드 합치기
+                                    // console.log("assignDataListPerDay[i].length : "+assignDataListPerDay[i].length);    //MAX_NUM_OF_CELL = 13?
+                                    for (let k = 0; k < assignDataListPerDay[i].length; k++) {
+                                        if(assignDataListPerDay[i-1][k]!=null || assignDataListPerDay[i-1][k]!=undefined){
+                                            if(assignDataListPerDay[i-1][k][1]==usercode){
+                                                var startDate = assignDataListPerDay[i-1][k][2];
+                                                assignDataListPerDay[i-1][k] = null;
+                                                assignDataListPerDay[i][pointer] = [userName,usercode,startDate,endDate];
+
+                                            }
+                                        }else{
+                                            assignDataListPerDay[i][pointer] = [userName,usercode,startDate,endDate];
+                                        }
+
+                                    }
+                                }
+                                pointer++;
                             }
                         } else {
                             var element_style = document.defaultView.getComputedStyle(document.querySelector("#" + day_list[day] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")")).getPropertyValue("background-color");
                             if (element_style == 'rgb(154, 225, 255)') {
-                                count_json++;
+                                // count_json++;
                                 // 객체 생성
-                                var data = new Object();
-                                data.index = count_json;
 
                                 var userName = document.querySelector("#" + day_list[day] + " > tbody > tr:nth-child(" + i + ") > td:nth-child(" + j + ")").innerHTML;
                                 var userIndex = username_list.indexOf(userName);
-                                data.usercode = usercode_list[userIndex];
+                                var usercode = usercode_list[userIndex];
 
-                                var startDate = new Date(date_list[day]);
-                                startDate.setHours(i - 1);
-                                data.startTime = startDate;
-                                var endDate = new Date(date_list[day]);
-                                endDate.setHours(i);
-                                data.endTime = endDate;
+                                var getDay = new Date(date_list[day]);
+                                getDay.setHours(i - 1);
+                                var startDate = getDay;
+                                var getDate = new Date(date_list[day]);
+                                getDate.setHours(i);
+                                var endDate = getDate;
 
-                                // 리스트에 생성된 객체 삽입
-                                jsonList.push(data);
+                                //[유저코드, 유저이름, 시작시간, 종료시간]
+
+                                if(i==1){   //1시는 무조건 저장
+                                    assignDataListPerDay[i][pointer] = [userName,usercode,startDate,endDate];
+
+                                }else{  //2~24시는 바로 직전 시간 리스트 값과 비교해서 노드 합치기
+                                    for (let k = 0; k < assignDataListPerDay[i].length; k++) {
+                                        if(assignDataListPerDay[i-1][k]!=null || assignDataListPerDay[i-1][k]!=undefined){
+                                            if(assignDataListPerDay[i-1][k][1]==usercode){
+                                                var startDate = assignDataListPerDay[i-1][k][2];
+                                                assignDataListPerDay[i-1][k] = null;
+                                                assignDataListPerDay[i][pointer] = [userName,usercode,startDate,endDate];
+
+                                            }
+                                        }else{
+                                            assignDataListPerDay[i][pointer] = [userName,usercode,startDate,endDate];
+                                        }
+
+                                    }
+                                }
+                                pointer++;
                             }
                         }
                     }
                 }
-
+                for (let i = 1; i <= 24; i++) {
+                    for (let j = 1; j <= MAX_NUM_OF_CELL; j++) {
+                        if(assignDataListPerDay[i][j]!=null || assignDataListPerDay[i][j]!=undefined){
+                            count_json++;
+                            var data = new Object();
+                            data.usercode = assignDataListPerDay[i][j][1];
+                            data.startTime = assignDataListPerDay[i][j][2];
+                            data.endTime = assignDataListPerDay[i][j][3];
+                            jsonList.push(data);
+                        }
+                    }
+                }
             }
-
             if (count_json != 0) {
                 var jsondata = JSON.stringify(jsonList);
-                console.log(jsondata);
 
                 $.ajax({
                     type: 'post'
