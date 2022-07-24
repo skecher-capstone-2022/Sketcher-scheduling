@@ -31,7 +31,7 @@ public class AutoSchedulingTwo {
 
 
     private static int[] time = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23};
-    private static int[] value = {65, 0, 0, 130, 265, 222, 300, 181, 200, 294, 178, 62}; // 각각 0, 2 ,4, 6, 8, 10, 12, 14, 16, 18, 20, 22
+    private static int[] value = {65, 0, 0, 130, 265, 222, 300, 181, 200, 294, 180, 130}; // 각각 0, 2 ,4, 6, 8, 10, 12, 14, 16, 18, 20, 22
 
     private static int[] scheduleWeight;
 
@@ -114,7 +114,7 @@ public class AutoSchedulingTwo {
                 descIndex++;
             }
         }
-        for (int k = 0; k < 2; k++) {
+        for (int k = 0; k < 3; k++) {
             for (int i = 1; i < managerSize; i++) {
                 if (check4Hours(countAssignTime, descTime[i])) {
                     if (dfs(descTime[i]))
@@ -372,7 +372,7 @@ public class AutoSchedulingTwo {
             }
         } else if (managerWeight[index] == 3) {
             weightCount2[3]++;
-            if (weightCount2[3] == 2) {
+            if (weightCount2[3] == 4) {
                 weightCount2[3] = -1;
                 return true;
             }
@@ -448,12 +448,15 @@ public class AutoSchedulingTwo {
 
         private void managerWeightLogic ( int managerSize){
             for (int i = 1; i < managerSize; i++) {
-                if (i <= 20)
+                if(i < 40)
+                if (i % 2 == 0)
                     managerWeight[i] = 3;
-                else if (i > 20 && i <= 40)
+                else if(i % 2 == 1)
                     managerWeight[i] = 2;
-                else
+                else if(i>= 40 && i < 50)
                     managerWeight[i] = 1;
+                else
+                    managerWeight[i] = 2;
             }
         }
 
