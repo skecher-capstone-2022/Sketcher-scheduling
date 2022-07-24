@@ -41,8 +41,8 @@
         }
         .userhopetimes {
             margin-left: 10px;
-            color: coral;
-            font-size: 13pt;
+            color: darkgrey;
+            font-size: 12pt;
             font-weight: 600;
         }
         td{
@@ -2919,6 +2919,7 @@
         select_All_Manager();
         fill_expected_needs();
         setting_sell_selector();
+
     }
 
     const MAX_NUM_OF_CELL = 13;
@@ -2986,8 +2987,6 @@
                 date_list[i] = date.toString();
                 date_str_list[i] = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
             }
-            console.log(date_list)
-            console.log(date_str_list)
             document.querySelector("#mp-pusher > div > div.ground > div.wrapper_schedule_box > div:nth-child(2) > div > p").innerHTML = date_str_list[0];
             document.querySelector("#mp-pusher > div > div.ground > div.wrapper_schedule_box > div:nth-child(1) > span").innerHTML = "";
         }
@@ -2995,6 +2994,8 @@
 
 
     function select_All_Manager() {
+        var data1;
+        var data2;
         $.ajax({
             url: "/find_All_Manager",
             type: "get",
@@ -3006,7 +3007,7 @@
                     userid_list.push(item.id);
                     usertemptime_list.push(0);
                 });
-
+                setting_manager_selector();
             }
             ,
             error: function () {
@@ -3027,15 +3028,31 @@
                     } else {
                         userhopetime_list[item.user.code] = [item.start_time];
                     }
-
                 });
-                setting_manager_selector();
+                showhopetiems();
             }
             ,
             error: function () {
                 alert('error');
             }
         });
+    }
+    function showhopetiems() {
+        for (let i = 0; i < usercode_list.length; i++) {
+            var hopetimes = userhopetime_list[usercode_list[i]];
+            var element = document.querySelector("#managers_box > div:nth-child("+(i+1)+") > p.userhopetimes").innerHTML
+            for (let j = 0; j < hopetimes.length; j++) {
+                if(hopetimes[j]==0){
+                    document.querySelector("#managers_box > div:nth-child("+(i+1)+") > p.userhopetimes").innerHTML = element+' 새벽 ';
+                }else if(hopetimes[j]==6){
+                    document.querySelector("#managers_box > div:nth-child("+(i+1)+") > p.userhopetimes").innerHTML += element+'오전 ';
+                }else if(hopetimes[j]==12){
+                    document.querySelector("#managers_box > div:nth-child("+(i+1)+") > p.userhopetimes").innerHTML += element+'오후 ';
+                }else if(hopetimes[j]==18){
+                    document.querySelector("#managers_box > div:nth-child("+(i+1)+") > p.userhopetimes").innerHTML += element+'저녁 ';
+                }
+            }
+        }
     }
 
     function fill_expected_needs() {
@@ -3134,11 +3151,10 @@
             htmlStr += "<p class=\"tempManagerName\"><b>" + username_list[i] + "</b></p>&nbsp\n";
             htmlStr += "<p class=\"tempManagerId\">" + userid_list[i] + "</p>&nbsp\n";
             htmlStr += "<p style=\"color: blue;\" class=\"currentTempAssignTime\">(<span class='currentTime'>" + usertemptime_list[i] + "</span>시간)</p>\n";
-            htmlStr += "<p class=\"userhopetimes\">" + userhopetime_list[usercode_list[i]] + "</p>&nbsp\n";
+            htmlStr += "<p class=\"userhopetimes\"></p>&nbsp\n";
             htmlStr += "</div>";
         }
         $("#managers_box").append(htmlStr);
-        console.log(userhopetime_list);
 
         for (let i = 1; i <= username_list.length; i++) {
             var element = document.querySelector("#mp-pusher > div > div.ground > div.main > div.user_remote_controller > div.managers > div:nth-child(" + i + ")");
@@ -3169,10 +3185,10 @@
 
                     update_manager_status(i);
                 }
-                console.log(usertemptime_list);
 
             };
         }
+
 
     }
 
@@ -3363,7 +3379,7 @@
         if (document.querySelector("#mp-pusher > div > div.ground > div.wrapper_schedule_box > div:nth-child(2) > div > p").innerHTML == "undefined") {
             alert("날짜를 먼저 설정해주세요.");
         } else {
-            // document.getElementById("loading").style.display = "";
+            document.getElementById("loading").style.display = "";
             let count_json = 0;
             var jsonList = new Array();
             for (let day = 0; day < 7; day++) {
