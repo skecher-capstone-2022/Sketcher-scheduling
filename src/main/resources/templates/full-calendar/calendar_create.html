@@ -918,7 +918,6 @@
                         </tr>
                         </tbody>
                     </table>
-
                     <table id="wed">
                         <tbody>
                         <tr>
@@ -3061,7 +3060,6 @@
                         }
                     }
                 }
-
             }
             ,
             error: function () {
@@ -3463,6 +3461,7 @@
                     , success: function (data) {
                         document.getElementById("loading").style.display = "none";
                         if (confirm(data + "건의 근무스케줄이 생성되었습니다.")) {
+
                             location.href = "/calendar_admin";
                         }
                     }, error: function (e) {
@@ -3474,6 +3473,8 @@
                 alert("한 건 이상의 스케줄을 배정해주세요.");
             }
         }
+
+
     }
 
     var height = 0;
@@ -3487,6 +3488,12 @@
         // height =
         // document.querySelector("#managers_box").scrollTop = document.body.scrollHeight;
         document.querySelector("#managers_box").scrollTop = height;
+    }
+
+    function isNotice() {
+        var notice = document.getElementById('notice').value;
+        alert(notice);
+
     }
 </script>
 
