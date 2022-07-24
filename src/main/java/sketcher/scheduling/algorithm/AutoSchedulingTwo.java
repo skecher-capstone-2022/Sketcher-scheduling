@@ -87,45 +87,10 @@ public class AutoSchedulingTwo {
         int count = 0;
 
 //        if(Arrays.stream(countAssignTime).allMatch(c -> c==0)) {
-            for (int k = 0; k < 2; k++) {
-                for (int i = 1; i < managerSize; i++) {
-                    if (check4Hours(countAssignTime, i)) {
-                        if (dfs(i))
-                            count++;
-                    }
-                }
-            }
-            for (int i = 1; i < countAssignTime.length; i++) {
-                userCurrentTime[i] += countAssignTime[i];
-            }
-//        }
-
-        /**
-         * 배정시간 오름차순 로직.
-         */
-//        for (int i = 1; i < managerSize; i++) {
-//            if(userCurrentTime[i] == 0) {
-//                descTime[descIndex] = i;
-//                descIndex++;
-//            }
-//        }
-//        for (int i = 1; i < managerSize; i++) {
-//            if(userCurrentTime[i] == 1) {
-//                descTime[descIndex] = i;
-//                descIndex++;
-//            }
-//        }
-//        for (int i = 1; i < managerSize; i++) {
-//            if(userCurrentTime[i] == 2) {
-//                descTime[descIndex] = i;
-//                descIndex++;
-//            }
-//        }
-//        if(!Arrays.stream(countAssignTime).allMatch(c -> c==0)) {
 //            for (int k = 0; k < 2; k++) {
 //                for (int i = 1; i < managerSize; i++) {
-//                    if (check4Hours(countAssignTime, descTime[i])) {
-//                        if (dfs(descTime[i]))
+//                    if (check4Hours(countAssignTime, i)) {
+//                        if (dfs(i))
 //                            count++;
 //                    }
 //                }
@@ -134,6 +99,41 @@ public class AutoSchedulingTwo {
 //                userCurrentTime[i] += countAssignTime[i];
 //            }
 //        }
+
+        /**
+         * 배정시간 오름차순 로직.
+         */
+        descIndex = 1;
+        for (int i = 1; i < managerSize; i++) {
+            if(userCurrentTime[i] >=0 && userCurrentTime[i] < 3) {
+                descTime[descIndex] = i;
+                descIndex++;
+            }
+        }
+        for (int i = 1; i < managerSize; i++) {
+            if(userCurrentTime[i] >=3 && userCurrentTime[i] < 6) {
+                descTime[descIndex] = i;
+                descIndex++;
+            }
+        }
+        for (int i = 1; i < managerSize; i++) {
+            if(userCurrentTime[i] >= 6 ) {
+                descTime[descIndex] = i;
+                descIndex++;
+            }
+        }
+            for (int k = 0; k < 3; k++) {
+                for (int i = 1; i < managerSize; i++) {
+                    if (check4Hours(countAssignTime, descTime[i])) {
+                        if (dfs(descTime[i]))
+                            count++;
+                    }
+                }
+            }
+
+            for (int i = 1; i < countAssignTime.length; i++) {
+                userCurrentTime[i] += countAssignTime[i];
+            }
 
 
         ArrayList<ResultScheduling> schedulingsResults = new ArrayList<>(); // 타입 지정
@@ -343,6 +343,13 @@ public class AutoSchedulingTwo {
 
 
     private boolean scheduleWeight1(int index) {
+
+//        for(int i =0; i< weightCount1.length;i++){
+//            if(Arrays.stream(weightCount1).allMatch(w -> w == -1)){
+//
+//            }
+//        }
+
         if (managerWeight[index] == 1) {        // 매니저 가중치가 1인 사람
             weightCount1[1]++;
             if (weightCount1[1] == 3) {
@@ -456,9 +463,9 @@ public class AutoSchedulingTwo {
 
     private void managerWeightLogic(int managerSize) {
         for (int i = 1; i < managerSize; i++) {
-            if (i <= 40)
+            if (i <= 15)
                 managerWeight[i] = 3;
-            else if (i > 40 && i <= 60)
+            else if (i > 15 && i <= 40)
                 managerWeight[i] = 2;
             else
                 managerWeight[i] = 1;
