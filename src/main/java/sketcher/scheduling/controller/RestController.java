@@ -138,8 +138,8 @@ public class RestController {
         HashMap<String, Object> userInfo = kakaoService.getUserInfo(access_Token);
         boolean isSendMessage = kakaoService.isSendMessage(access_Token);
         HashMap<String, Object> friendsId = kakaoService.getFriendsList(access_Token);
-//        boolean isSendMessageToFriends = kakaoService.isSendMessageToFriends(access_Token, friendsId);
-//        친구에게 메시지 보내기는 월 전송 제한이 있음 -> 주석 처리
+        boolean isSendMessageToFriends = kakaoService.isSendMessageToFriends(access_Token, friendsId);
+        // 친구에게 메시지 보내기는 월 전송 제한이 있음 -> 주석 처리
 
 //        session.setAttribute("refresh_Token", refresh_Token);
 //        session.setAttribute("access_Token", access_Token);
