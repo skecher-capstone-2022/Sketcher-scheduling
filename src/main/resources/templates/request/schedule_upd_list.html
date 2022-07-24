@@ -96,6 +96,9 @@
                             <td class="line"><input name="chkList" type="checkbox" th:value="${row.updateReq.getId()}"/></td>
                         </tr>
                         </tbody>
+                        <tr th:if="${#lists.isEmpty(updateReqList)}">
+                            <td class="line" colspan="8">조회된 결과가 없습니다.</td>
+                        </tr>
                     </form>
                 </table>
             </div>

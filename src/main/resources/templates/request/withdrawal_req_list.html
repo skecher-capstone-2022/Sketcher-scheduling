@@ -84,6 +84,9 @@
                                         th:onclick="withdrawal_input(this.getAttribute('data-param'))">탈퇴</button>
                             </td>
                         </tr>
+                        <tr th:if="${#lists.isEmpty(users)}">
+                            <td class="line" colspan="6">조회된 결과가 없습니다.</td>
+                        </tr>
                     </table>
                 </div>
             </div>
