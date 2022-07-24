@@ -10,9 +10,11 @@
 
 
 .remocons {
-    margin: 0 50px;
-    display: flex;
-    height: 150px;
+    /*margin: 0 50px;*/
+    /*display: flex;*/
+    /*height: 150px;*/
+    display: none;
+
 }
 
 .remote {
