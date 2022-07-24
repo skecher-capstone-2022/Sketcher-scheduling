@@ -189,12 +189,15 @@
         var todayAssign = parseInt(document.getElementById("todayAssignManager").value);
 
         var num = Math.round((todayWork / todayAssign + Number.EPSILON) * 100) / 100;
-
+        if(isNaN(num))
+            num = 0
 
         var notAcceptUpdateReq = parseInt(document.getElementById("notAcceptUpdateReq").value);
         var updateReq = parseInt(document.getElementById("updateReq").value);
 
         var num2 = Math.round((notAcceptUpdateReq / updateReq + Number.EPSILON) * 100) / 100;
+        if(isNaN(num2))
+            num2 = 0
 
         window.onload = function () {
             Chart.pluginService.register({

@@ -218,6 +218,8 @@
         var weekAssign = weekWork + weekRemain;
 
         var num = Math.round((weekWork / weekAssign + Number.EPSILON) * 100) / 100;
+        if(isNaN(num))
+            num = 0;
         window.onload = function () {
             Chart.pluginService.register({
                 beforeDraw: function (chart) {
