@@ -332,8 +332,8 @@ public class KakaoService {
         json.addProperty("button_title", "근무스케줄 확인"); //button_title은 선택사항입니다.
         // 만약, button_title을 넣지 않으면 버튼명이 디폴트 값으로 "자세히 보기"로 나옵니다.
         JsonObject link = new JsonObject();
-        link.addProperty("web_url", "http://sketcher-scheduling-service.ap-northeast-2.elasticbeanstalk.com/"); // 카카오개발자사이트 앱>앱설정>플랫폼>Web>사이트도메인에 등록한 도메인 입력
-        link.addProperty("mobile_web_url", "http://sketcher-scheduling-service.ap-northeast-2.elasticbeanstalk.com/"); // 카카오개발자사이트 앱>앱설정>플랫폼>Web>사이트도메인에 등록한 도메인 입력
+        link.addProperty("web_url", "http://localhost:8080/calendar"); // 카카오개발자사이트 앱>앱설정>플랫폼>Web>사이트도메인에 등록한 도메인 입력
+        link.addProperty("mobile_web_url", "http://localhost:8080/calendar"); // 카카오개발자사이트 앱>앱설정>플랫폼>Web>사이트도메인에 등록한 도메인 입력
         //만약, 카카오개발자사이트에 도메인을 등록하지 않았다면 링크버튼 자체가 나오지 않습니다.
         json.add("link", link.getAsJsonObject());
 
