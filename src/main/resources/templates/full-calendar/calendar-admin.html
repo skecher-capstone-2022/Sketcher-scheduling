@@ -35,7 +35,7 @@
 
                     var calendar = new FullCalendar.Calendar(calendarEl, {
                         initialDate: year + "-" + month + "-" + date,
-                        initialView: 'timeGridWeek',
+                        initialView: 'timeGridDay',
                         headerToolbar: {
                             left: 'prev,next today',
                             center: 'title',
@@ -66,7 +66,15 @@
         table {
             text-align: left;
         }
-
+        .fc-timegrid-event .fc-event-time {
+            color: black;
+            font-size: 10pt;
+        }
+        .fc-v-event .fc-event-title {
+            font-size: 10pt;
+            color: black;
+            font-weight: 600;
+        }
         #calendar {
             max-width: 1599px;
             margin: 40px auto;

@@ -31,7 +31,7 @@ public class AutoSchedulingTwo {
 
 
     private static int[] time = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23};
-    private static int[] value = {65, 0, 0, 130, 265, 222, 300, 181, 200, 294, 178, 62}; // 각각 0, 2 ,4, 6, 8, 10, 12, 14, 16, 18, 20, 22
+    private static int[] value = {65, 0, 0, 130, 265, 222, 300, 181, 200, 294, 180, 130}; // 각각 0, 2 ,4, 6, 8, 10, 12, 14, 16, 18, 20, 22
 
     private static int[] scheduleWeight;
 
@@ -86,54 +86,46 @@ public class AutoSchedulingTwo {
 
         int count = 0;
 
-//        if(Arrays.stream(countAssignTime).allMatch(c -> c==0)) {
-//            for (int k = 0; k < 2; k++) {
-//                for (int i = 1; i < managerSize; i++) {
-//                    if (check4Hours(countAssignTime, i)) {
-//                        if (dfs(i))
-//                            count++;
-//                    }
-//                }
-//            }
-//            for (int i = 1; i < countAssignTime.length; i++) {
-//                userCurrentTime[i] += countAssignTime[i];
-//            }
-//        }
-
         /**
          * 배정시간 오름차순 로직.
          */
         descIndex = 1;
         for (int i = 1; i < managerSize; i++) {
-            if(userCurrentTime[i] >=0 && userCurrentTime[i] < 3) {
+            if (userCurrentTime[i] >= 0 && userCurrentTime[i] < 3) {
                 descTime[descIndex] = i;
                 descIndex++;
             }
         }
         for (int i = 1; i < managerSize; i++) {
-            if(userCurrentTime[i] >=3 && userCurrentTime[i] < 6) {
+            if (userCurrentTime[i] >= 3 && userCurrentTime[i] < 6) {
                 descTime[descIndex] = i;
                 descIndex++;
             }
         }
         for (int i = 1; i < managerSize; i++) {
-            if(userCurrentTime[i] >= 6 ) {
+            if (userCurrentTime[i] >= 6 && userCurrentTime[i] < 10) {
                 descTime[descIndex] = i;
                 descIndex++;
             }
         }
-            for (int k = 0; k < 3; k++) {
-                for (int i = 1; i < managerSize; i++) {
-                    if (check4Hours(countAssignTime, descTime[i])) {
-                        if (dfs(descTime[i]))
-                            count++;
-                    }
+        for (int i = 1; i < managerSize; i++) {
+            if (userCurrentTime[i] >= 10) {
+                descTime[descIndex] = i;
+                descIndex++;
+            }
+        }
+        for (int k = 0; k < 3; k++) {
+            for (int i = 1; i < managerSize; i++) {
+                if (check4Hours(countAssignTime, descTime[i])) {
+                    if (dfs(descTime[i]))
+                        count++;
                 }
             }
+        }
 
-            for (int i = 1; i < countAssignTime.length; i++) {
-                userCurrentTime[i] += countAssignTime[i];
-            }
+        for (int i = 1; i < countAssignTime.length; i++) {
+            userCurrentTime[i] += countAssignTime[i];
+        }
 
 
         ArrayList<ResultScheduling> schedulingsResults = new ArrayList<>(); // 타입 지정
@@ -146,7 +138,6 @@ public class AutoSchedulingTwo {
                 }
             }
         }
-
 
 
         return schedulingsResults;
@@ -165,8 +156,8 @@ public class AutoSchedulingTwo {
              * 근무시간이 4시간 초과하면 break 하고 그냥 끝냄.
              * 현재 오류 발생.. 수정 필요
              */
-            if (countAssignTime[index] > 4)
-                break;
+//            if (countAssignTime[index] > 4)
+//                break;
             /**
              * 희망시간이 0~6시, 6~12, 12~18, 18~24 중 어디에 해당하는지 check
              * 각 희망타임 별 6시간 중 들어갈 수 있는 곳 check
@@ -224,6 +215,7 @@ public class AutoSchedulingTwo {
          * 해당 시간대에 이미 매칭됐다면 false 반환하고 스케줄링 로직 종료.
          */
         for (int i = 9; i < 12; i++) {
+
             boolean alreadyMatch = schedule[i].stream().anyMatch(s -> s.equals(index));
             if (alreadyMatch) {
                 return false;
@@ -343,13 +335,6 @@ public class AutoSchedulingTwo {
 
 
     private boolean scheduleWeight1(int index) {
-
-//        for(int i =0; i< weightCount1.length;i++){
-//            if(Arrays.stream(weightCount1).allMatch(w -> w == -1)){
-//
-//            }
-//        }
-
         if (managerWeight[index] == 1) {        // 매니저 가중치가 1인 사람
             weightCount1[1]++;
             if (weightCount1[1] == 3) {
@@ -381,13 +366,13 @@ public class AutoSchedulingTwo {
             }
         } else if (managerWeight[index] == 2) {
             weightCount2[2]++;
-            if (weightCount2[2] == 3) {
+            if (weightCount2[2] == 4) {
                 weightCount2[2] = -1;
                 return true;
             }
         } else if (managerWeight[index] == 3) {
             weightCount2[3]++;
-            if (weightCount2[3] == 2) {
+            if (weightCount2[3] == 4) {
                 weightCount2[3] = -1;
                 return true;
             }
@@ -410,7 +395,7 @@ public class AutoSchedulingTwo {
             }
         } else if (managerWeight[index] == 3) {
             weightCount3[3]++;
-            if (weightCount3[3] == 3) {
+            if (weightCount3[3] == 4) {
                 weightCount3[3] = -1;
                 return true;
             }
@@ -419,57 +404,60 @@ public class AutoSchedulingTwo {
     }
 
 
-    private int scheduleNodeLogic(int j, int k) {
-        if (value[j] == 0)
-            k = 0;
-        else if (value[j] < 30)
-            k = 1;
-        else if (value[j] >= 30 && value[j] < 60)
-            k = 2;
-        else if (value[j] >= 60 && value[j] < 90)
-            k = 3;
-        else if (value[j] >= 90 && value[j] < 120)
-            k = 4;
-        else if (value[j] >= 120 && value[j] < 150)
-            k = 5;
-        else if (value[j] >= 150 && value[j] < 180)
-            k = 6;
-        else if (value[j] >= 180 && value[j] < 210)
-            k = 7;
-        else if (value[j] >= 210 && value[j] < 240)
-            k = 8;
-        else if (value[j] >= 240 && value[j] < 270)
-            k = 9;
-        else if (value[j] >= 270 && value[j] <= 300)
-            k = 10;
-        return k;
-    }
+        private int scheduleNodeLogic ( int j, int k){
+            if (value[j] == 0)
+                k = 0;
+            else if (value[j] < 30)
+                k = 1;
+            else if (value[j] >= 30 && value[j] < 60)
+                k = 2;
+            else if (value[j] >= 60 && value[j] < 90)
+                k = 3;
+            else if (value[j] >= 90 && value[j] < 120)
+                k = 4;
+            else if (value[j] >= 120 && value[j] < 150)
+                k = 5;
+            else if (value[j] >= 150 && value[j] < 180)
+                k = 6;
+            else if (value[j] >= 180 && value[j] < 210)
+                k = 7;
+            else if (value[j] >= 210 && value[j] < 240)
+                k = 8;
+            else if (value[j] >= 240 && value[j] < 270)
+                k = 9;
+            else if (value[j] >= 270 && value[j] <= 300)
+                k = 10;
+            return k;
+        }
 
-    private void scheduleWeightLogic() {
-        for (int i = 0; i < value.length; i++) {
-            int weight = 0;
-            if (value[i] <= 150) {
-                weight = 1;
-                scheduleWeight[i] = weight;
-            } else if (value[i] > 150 && value[i] <= 210) {
-                weight = 2;
-                scheduleWeight[i] = weight;
-            } else if (value[i] > 210 && value[i] <= 300) {
-                weight = 3;
-                scheduleWeight[i] = weight;
+        private void scheduleWeightLogic () {
+            for (int i = 0; i < value.length; i++) {
+                int weight = 0;
+                if (value[i] <= 150) {
+                    weight = 1;
+                    scheduleWeight[i] = weight;
+                } else if (value[i] > 150 && value[i] <= 210) {
+                    weight = 2;
+                    scheduleWeight[i] = weight;
+                } else if (value[i] > 210 && value[i] <= 300) {
+                    weight = 3;
+                    scheduleWeight[i] = weight;
+                }
             }
         }
-    }
 
-    private void managerWeightLogic(int managerSize) {
-        for (int i = 1; i < managerSize; i++) {
-            if (i <= 15)
-                managerWeight[i] = 3;
-            else if (i > 15 && i <= 40)
-                managerWeight[i] = 2;
-            else
-                managerWeight[i] = 1;
+        private void managerWeightLogic ( int managerSize){
+            for (int i = 1; i < managerSize; i++) {
+                if(i < 40)
+                if (i % 2 == 0)
+                    managerWeight[i] = 3;
+                else if(i % 2 == 1)
+                    managerWeight[i] = 2;
+                else if(i>= 40 && i < 50)
+                    managerWeight[i] = 1;
+                else
+                    managerWeight[i] = 2;
+            }
         }
-    }
 
-}
+    }
