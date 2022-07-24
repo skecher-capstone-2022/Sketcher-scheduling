@@ -65,8 +65,8 @@ public class CalendarController {
                     hash.put("end", managerAssignSchedule.getScheduleDateTimeEnd());
 
                     Integer code = managerAssignSchedule.getUser().getCode();
-                    if (code / 10 > 0)
-                        code = code % 10;
+                    if (code / color.size() > 0)
+                        code = code % color.size();
                     hash.put("backgroundColor", color.get(code));
 
                     jsonObj = new JSONObject(hash);
@@ -146,8 +146,8 @@ public class CalendarController {
             hash.put("end", managerAssignSchedule.getScheduleDateTimeEnd());
 
             Integer code = managerAssignSchedule.getUser().getCode();
-            if (code / 10 > 0)
-                code = code % 10;
+            if (code / color.size() > 0)
+                code = code % color.size();
             hash.put("backgroundColor", color.get(code));
 
             jsonObj = new JSONObject(hash);
@@ -179,8 +179,8 @@ public class CalendarController {
             hash.put("end", managerAssignSchedule.getScheduleDateTimeEnd());
 
             Integer code = managerAssignSchedule.getUser().getCode();
-            if (code / 10 > 0)
-                code = code % 10;
+            if (code / color.size() > 0)
+                code = code % color.size();
             hash.put("backgroundColor", color.get(code));
 
             jsonObj = new JSONObject(hash);
@@ -371,16 +371,19 @@ public class CalendarController {
 
     private List<String> getColor() {
         List<String> color = new ArrayList<>();
-        color.add("#FFEBCD");
-        color.add("#FA8072");
-        color.add("#FF7F50");
-        color.add("#FFD700");
-        color.add("#B0E0E6");
-        color.add("#48D1CC");
-        color.add("#9370DB");
-        color.add("#FF69B4");
-        color.add("#FFB6C1");
-        color.add("#00BFFF");
+        color.add("#FDAFAB");
+        color.add("#FAF1D6");
+        color.add("#FAD4AE");
+        color.add("#D9F1F1");
+        color.add("#FADEE1");
+        color.add("#B6E3E9");
+        color.add("#E5C1C5");
+        color.add("#F2EEE5");
+        color.add("#C3E2DD");
+        color.add("#C4F2CE");
+        color.add("#9FDEBD");
+        color.add("#7FD9D6");
+        color.add("#80CEBE");
         return color;
     }
 
