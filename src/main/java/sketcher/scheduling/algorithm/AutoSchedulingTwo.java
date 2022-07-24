@@ -8,6 +8,9 @@ import sketcher.scheduling.service.UserService;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.IntStream;
 
 @Component
 public class AutoSchedulingTwo {
@@ -26,6 +29,7 @@ public class AutoSchedulingTwo {
     private static ArrayList<Integer>[] schedule;
     private static ArrayList<Integer>[] checkSchedule;
 
+
     private static int[] time = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23};
     private static int[] value = {65, 0, 0, 130, 265, 222, 300, 181, 200, 294, 178, 62}; // 각각 0, 2 ,4, 6, 8, 10, 12, 14, 16, 18, 20, 22
 
@@ -33,9 +37,13 @@ public class AutoSchedulingTwo {
 
     private static int[] managerWeight;
     private static int[] countAssignTime;
-    private static int weightCount1 [] = {0,-1,-1,-1,-1};
-    private static int weightCount2 [] = {0,-1,-1,-1,-1};
-    private static int weightCount3 [] = {0,-1,-1,-1,-1};
+    private static int[] descTime;
+    private static int descIndex = 1;  // 배정시간 내림차순 정렬 인덱스
+
+
+    private static int weightCount1[] = {0, -1, -1, -1, -1};
+    private static int weightCount2[] = {0, -1, -1, -1, -1};
+    private static int weightCount3[] = {0, -1, -1, -1, -1};
 
     public ArrayList<ResultScheduling> runAlgorithm(int userCode[], int userCurrentTime[]) {
         int managerSize = userCode.length;      // alreadyMatch 로직 돌릴 때 0 번 매니저랑 스케줄 값 0 이 똑같아서 1번부터 시작해야함.
@@ -44,7 +52,8 @@ public class AutoSchedulingTwo {
         checkSchedule = new ArrayList[(time.length + 1) / 2]; // 해당 스케줄 노드에 스케줄이 담겼는지 체크하기 위한 배열
         countAssignTime = new int[managerSize]; // 스케줄 노드 중 어떤 배열이 담겼는지 확인 위함
         scheduleWeight = new int[value.length]; // 스케줄 가중치 계산 -> value 를 기준으로 가중치를 1 ~ 3 으로 적용.
-        managerWeight = new int[managerSize + 1];
+        managerWeight = new int[managerSize + 1]; // 매니저 가중치
+        descTime = new int[managerSize];  // 시간 내림차순 정렬 인덱스 계산
 
         for (int i = 1; i < managerSize; i++) {
             hopeTime[i] = new ArrayList<>();        // 배열 안에 List 생성 , 매니저수만큼
@@ -77,52 +86,79 @@ public class AutoSchedulingTwo {
 
         int count = 0;
 
-        /**
-         * 난수 생성
-         */
-//        int ran[] = new int[100];
-//        Random r = new Random();
-
-        for (int k = 0; k < 3; k++) {
-            for (int i = 1; i < managerSize; i++) {
-//                ran[i] = r.nextInt(managerSize) + 1; // 1 ~ 99까지의 난수
-//                for(int j=0; j<i; j++){
-//                    if(ran[i] == ran[j]){
-//                        i--;
-//                    }
-//                }
-//                i = ran[i];
-                if (check4Hours(countAssignTime, i)) {
-                    if (dfs(i))
-                        count++;
+//        if(Arrays.stream(countAssignTime).allMatch(c -> c==0)) {
+            for (int k = 0; k < 2; k++) {
+                for (int i = 1; i < managerSize; i++) {
+                    if (check4Hours(countAssignTime, i)) {
+                        if (dfs(i))
+                            count++;
+                    }
                 }
             }
-        }
+            for (int i = 1; i < countAssignTime.length; i++) {
+                userCurrentTime[i] += countAssignTime[i];
+            }
+//        }
 
-        for (int i =1; i<countAssignTime.length; i++){
-            userCurrentTime[i]+= countAssignTime[i];
-        }
+        /**
+         * 배정시간 오름차순 로직.
+         */
+//        for (int i = 1; i < managerSize; i++) {
+//            if(userCurrentTime[i] == 0) {
+//                descTime[descIndex] = i;
+//                descIndex++;
+//            }
+//        }
+//        for (int i = 1; i < managerSize; i++) {
+//            if(userCurrentTime[i] == 1) {
+//                descTime[descIndex] = i;
+//                descIndex++;
+//            }
+//        }
+//        for (int i = 1; i < managerSize; i++) {
+//            if(userCurrentTime[i] == 2) {
+//                descTime[descIndex] = i;
+//                descIndex++;
+//            }
+//        }
+//        if(!Arrays.stream(countAssignTime).allMatch(c -> c==0)) {
+//            for (int k = 0; k < 2; k++) {
+//                for (int i = 1; i < managerSize; i++) {
+//                    if (check4Hours(countAssignTime, descTime[i])) {
+//                        if (dfs(descTime[i]))
+//                            count++;
+//                    }
+//                }
+//            }
+//            for (int i = 1; i < countAssignTime.length; i++) {
+//                userCurrentTime[i] += countAssignTime[i];
+//            }
+//        }
 
 
         ArrayList<ResultScheduling> schedulingsResults = new ArrayList<>(); // 타입 지정
-
         for (int i = 0; i < 12; i++) {
-            for (int j = 0; j < 10; j++){
+            for (int j = 0; j < 10; j++) {
                 int startTime = i;
                 int userindex = schedule[i].get(j);
-                if(userindex!=0){
-                    schedulingsResults.add(new ResultScheduling(startTime*2,userCode[userindex],userCurrentTime[userindex]));
+                if (userindex != 0) {
+                    schedulingsResults.add(new ResultScheduling(startTime * 2, userCode[userindex], userCurrentTime[userindex]));
                 }
             }
         }
+
+
+
         return schedulingsResults;
     }
 
     private boolean dfs(int index) {
         int i;
 
-//        for (i = 1; i <= index; i++) {
+//        for (i = 1; i <= 5; i++) {
+
         for (int m = 0; m < hopeTime[index].size(); m++) {
+
             int managerHopeTime = hopeTime[index].get(m);
 
             /**
@@ -142,12 +178,10 @@ public class AutoSchedulingTwo {
             {
                 if (scheduleWeight1(index))
                     continue;
-            }else if(scheduleWeight[m] == 2)
-            {
+            } else if (scheduleWeight[m] == 2) {
                 if (scheduleWeight2(index))
                     continue;
-            }else if(scheduleWeight[m] == 3)
-            {
+            } else if (scheduleWeight[m] == 3) {
                 if (scheduleWeight3(index))
                     continue;
             }
@@ -179,6 +213,7 @@ public class AutoSchedulingTwo {
 
         if (countAssignTime[index] == 2)
             return false;
+
 
         return true;
     }
@@ -307,7 +342,6 @@ public class AutoSchedulingTwo {
     }
 
 
-
     private boolean scheduleWeight1(int index) {
         if (managerWeight[index] == 1) {        // 매니저 가중치가 1인 사람
             weightCount1[1]++;
@@ -330,6 +364,7 @@ public class AutoSchedulingTwo {
         }
         return false;
     }
+
     private boolean scheduleWeight2(int index) {
         if (managerWeight[index] == 1) {        // 매니저 가중치가 1인 사람
             weightCount2[1]++;
@@ -352,6 +387,7 @@ public class AutoSchedulingTwo {
         }
         return false;
     }
+
     private boolean scheduleWeight3(int index) {
         if (managerWeight[index] == 1) {        // 매니저 가중치가 1인 사람
             weightCount3[1]++;
