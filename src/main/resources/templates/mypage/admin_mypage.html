@@ -41,6 +41,10 @@
             height: 25px;
             margin-left: 10px;
         }
+
+        .ground {
+            min-height: 800px;
+        }
     </style>
 </head>
 
@@ -53,7 +57,7 @@
         <div class="main">
             <table width="100%" border="0" cellpadding="0" cellspacing="0">
                 <tr>
-                    <td width="49%" style="border-right:1px solid #E6E6E6; border-bottom: none;">
+                    <td width="30%" style="border-right:1px solid #E6E6E6; border-bottom: none;">
                         <div class="my_page_wrap">
                             <div>
                                 <h2 style="text-align:center">사용자 정보 조회</h2>
@@ -84,7 +88,7 @@
                             </div>
                         </div>
                     </td>
-                    <td width="85" height="85" style="border-bottom: none;">
+                    <td width="85" height="85" style="border-bottom: none; border-right: 1px solid #E6E6E6;">
                         <div class="work_record_wrap">
                             <div>
                                 <div class="info_wrap">
@@ -93,20 +97,21 @@
                                         <canvas id="managerChart" width="100" height="100"></canvas>
                                     </div>
                                     <div class="info_manger">
-										<span class="bold_span">금일 근무 매니저  |</span> [[${todayAssignManager}]] 명<br/>
+                                        <span class="bold_span">오늘 근무 매니저  |</span> [[${todayAssignManager}]] 명<br/>
                                         <span class="bold_span">현재 근무 매니저  |</span> [[${todayWorkManager}]] 명<br/>
                                         <input type="hidden" id="todayWorkManager" th:value="${todayWorkManager}">
                                         <input type="hidden" id="todayAssignManager" th:value="${todayAssignManager}">
                                     </div>
                                 </div>
                                 <div>
-                                    <h2 style="text-align:center">금주 수정요청 미응답 건수</h2>
+                                    <h2 style="text-align:center">이번 주 수정요청 미응답 건수</h2>
                                     <div class="info_wrap">
                                         <div style="float:left;">
                                             <canvas id="responseChart" width="100" height="100"></canvas>
                                         </div>
                                         <div class="info_response">
-                                            <span class="bold_span" style="font-size:25px; color: #336699;">[[${notAcceptUpdateReq}]]건</span> / 총
+                                            <span class="bold_span" style="font-size:25px; color: #336699;">[[${notAcceptUpdateReq}]]건</span>
+                                            / 총
                                             [[${updateReq}]] 건<br/>
                                             <input type="hidden" id="notAcceptUpdateReq"
                                                    th:value="${notAcceptUpdateReq}">
@@ -114,6 +119,20 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td width="85" height="85" style="border-bottom: none;">
+                        <div class="work_record_wrap">
+                            <div>
+                                <div class="info_wrap">
+                                    <h2 style="text-align:center">희망 근무대별 매니저 추이
+                                    </h2>
+                                    <div>
+                                        <img src="/img/bar_chart.png" height="100%" width="100%"/>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </td>
@@ -189,14 +208,14 @@
         var todayAssign = parseInt(document.getElementById("todayAssignManager").value);
 
         var num = Math.round((todayWork / todayAssign + Number.EPSILON) * 100) / 100;
-        if(isNaN(num))
+        if (isNaN(num))
             num = 0
 
         var notAcceptUpdateReq = parseInt(document.getElementById("notAcceptUpdateReq").value);
         var updateReq = parseInt(document.getElementById("updateReq").value);
 
         var num2 = Math.round((notAcceptUpdateReq / updateReq + Number.EPSILON) * 100) / 100;
-        if(isNaN(num2))
+        if (isNaN(num2))
             num2 = 0
 
         window.onload = function () {
