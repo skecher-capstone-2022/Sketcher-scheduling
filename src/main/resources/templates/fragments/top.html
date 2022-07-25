@@ -1,14 +1,14 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <div class="top-wrap">
     <div class="block block-40 clearfix">
         <p><a href="#" id="trigger" class="menu-trigger"><!--여기에 제목 들어감--></a></p>
     </div>
     <div class="access_user">
         <div class="access_user_hello">
-<!--            <span style="margin: 0;padding: 15px;">-->
-<!--                <span sec:authentication="authorities" style="color: #ff6d6d"></span>-->
-<!--                <span sec:authentication="name"></span>-->
-<!--            </span>-->
+            <!--            <span style="margin: 0;padding: 15px;">-->
+            <!--                <span sec:authentication="authorities" style="color: #ff6d6d"></span>-->
+            <!--                <span sec:authentication="name"></span>-->
+            <!--            </span>-->
             <button class="btn btn-1 btn-1a md-close" style="margin: 0; padding: 15px;"
                     onclick="">
                 <span sec:authentication="authorities" style="color: #ff6d6d"></span>
@@ -18,7 +18,12 @@
 
                 <button class="btn btn-1 btn-1a md-close" style="margin: 0; padding: 15px; margin-left: 10px;"
                         onclick="document.getElementById('logout').submit();">
-                    <a class="icon icon-cup">로그아웃</a>
+                    <div th:unless="${#authorization.expr('isAuthenticated()')}">
+                        <a class="icon icon-cup">로그인</a>
+                    </div>
+                    <div th:if="${#authorization.expr('isAuthenticated()')}">
+                        <a class="icon icon-cup">로그아웃</a>
+                    </div>
                 </button>
             </form>
         </div>

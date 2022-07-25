@@ -20,8 +20,7 @@ public class KakaoService {
     //2. 토큰 받기
     //3. 사용자 로그인 처리
 
-    public String getAccessToken(String authorize_code) {
-        String access_Token = "";
+    public String getRefreshToken(String authorize_code) {
         String refresh_Token = "";
         String reqURL = "https://kauth.kakao.com/oauth/token";
 
@@ -31,7 +30,6 @@ public class KakaoService {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
             StringBuilder sb = new StringBuilder();
             setAuthorizationCode(sb, authorize_code);
-
             bw.write(sb.toString());
             bw.flush();
             bw.close();
@@ -42,18 +40,51 @@ public class KakaoService {
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(result);
 
-            access_Token = element.getAsJsonObject().get("access_token").getAsString();
             refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
+            System.out.println("refresh_token : " + refresh_Token);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return refresh_Token;
+    }
+
+    public String refreshAccessToken(String refresh_Token) {
+        String access_Token = "";
+        String reqURL = "https://kauth.kakao.com/oauth/token";
+
+        try {
+            HttpURLConnection conn = getHttpURLConnection(reqURL, "POST");
+
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+            StringBuilder sb = new StringBuilder();
+            sb.append("grant_type=refresh_token");
+            sb.append("&client_id=e3dc4ec16faffa817d9ae7e059397b50"); // 본인이 발급받은 key
+            sb.append("&refresh_token=" + refresh_Token);
+
+            System.out.println(sb.toString());
+            bw.write(sb.toString());
+            bw.flush();
+            bw.close();
+
+            // 결과 코드가 200이라면 성공
+            int responseCode = getResponseCode(conn);
+            String result = getResponseBody(conn);
+
+            JsonParser parser = new JsonParser();
+            JsonElement element = parser.parse(result);
+
+            access_Token = element.getAsJsonObject().get("access_token").getAsString();
 
             System.out.println("access_token : " + access_Token);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        // 사용자토큰을 리턴합니다.
         return access_Token;
     }
+
 
     public HashMap<String, Object> getUserInfo(String access_Token) {
         // 요청하는 클라이언트마다 가진 정보가 다를 수 있기에 HashMap타입으로 선언
@@ -231,8 +262,8 @@ public class KakaoService {
             //json 형식으로 전송 데이터 셋팅
             Set uuid = friendsId.keySet();
             String json_uuids = new Gson().toJson(uuid);
-            sb.append("receiver_uuids=" + json_uuids + "&");
-            sb.append("template_object=" + addTemplateObjectJson());
+            sb.append("receiver_uuids=" + json_uuids);
+            sb.append("&template_object=" + addTemplateObjectJson());
             System.out.println(sb.toString());
 
             bw.write(sb.toString());
@@ -301,8 +332,8 @@ public class KakaoService {
         json.addProperty("button_title", "근무스케줄 확인"); //button_title은 선택사항입니다.
         // 만약, button_title을 넣지 않으면 버튼명이 디폴트 값으로 "자세히 보기"로 나옵니다.
         JsonObject link = new JsonObject();
-        link.addProperty("web_url", "http://sketcher-scheduling-service.ap-northeast-2.elasticbeanstalk.com/"); // 카카오개발자사이트 앱>앱설정>플랫폼>Web>사이트도메인에 등록한 도메인 입력
-        link.addProperty("mobile_web_url", "http://sketcher-scheduling-service.ap-northeast-2.elasticbeanstalk.com/"); // 카카오개발자사이트 앱>앱설정>플랫폼>Web>사이트도메인에 등록한 도메인 입력
+        link.addProperty("web_url", "http://localhost:8080/calendar"); // 카카오개발자사이트 앱>앱설정>플랫폼>Web>사이트도메인에 등록한 도메인 입력
+        link.addProperty("mobile_web_url", "http://localhost:8080/calendar"); // 카카오개발자사이트 앱>앱설정>플랫폼>Web>사이트도메인에 등록한 도메인 입력
         //만약, 카카오개발자사이트에 도메인을 등록하지 않았다면 링크버튼 자체가 나오지 않습니다.
         json.add("link", link.getAsJsonObject());
 
