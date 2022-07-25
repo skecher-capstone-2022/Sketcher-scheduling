@@ -90,31 +90,10 @@ public class AutoSchedulingTwo {
          * 배정시간 오름차순 로직.
          */
         descIndex = 1;
-        for (int i = 1; i < managerSize; i++) {
-            if (userCurrentTime[i] >= 0 && userCurrentTime[i] < 3) {
-                descTime[descIndex] = i;
-                descIndex++;
-            }
-        }
-        for (int i = 1; i < managerSize; i++) {
-            if (userCurrentTime[i] >= 3 && userCurrentTime[i] < 6) {
-                descTime[descIndex] = i;
-                descIndex++;
-            }
-        }
-        for (int i = 1; i < managerSize; i++) {
-            if (userCurrentTime[i] >= 6 && userCurrentTime[i] < 10) {
-                descTime[descIndex] = i;
-                descIndex++;
-            }
-        }
-        for (int i = 1; i < managerSize; i++) {
-            if (userCurrentTime[i] >= 10) {
-                descTime[descIndex] = i;
-                descIndex++;
-            }
-        }
-        for (int k = 0; k < 3; k++) {
+
+        sortDesc(userCurrentTime, managerSize);
+
+        for (int k = 0; k < 2; k++) {
             for (int i = 1; i < managerSize; i++) {
                 if (check4Hours(countAssignTime, descTime[i])) {
                     if (dfs(descTime[i]))
@@ -141,6 +120,33 @@ public class AutoSchedulingTwo {
 
 
         return schedulingsResults;
+    }
+
+    private void sortDesc(int[] userCurrentTime, int managerSize) {
+        for (int i = 1; i < managerSize; i++) {
+            if (userCurrentTime[i] >= 0 && userCurrentTime[i] < 3) {
+                descTime[descIndex] = i;
+                descIndex++;
+            }
+        }
+        for (int i = 1; i < managerSize; i++) {
+            if (userCurrentTime[i] >= 3 && userCurrentTime[i] < 6) {
+                descTime[descIndex] = i;
+                descIndex++;
+            }
+        }
+        for (int i = 1; i < managerSize; i++) {
+            if (userCurrentTime[i] >= 6 && userCurrentTime[i] < 10) {
+                descTime[descIndex] = i;
+                descIndex++;
+            }
+        }
+        for (int i = 1; i < managerSize; i++) {
+            if (userCurrentTime[i] >= 10) {
+                descTime[descIndex] = i;
+                descIndex++;
+            }
+        }
     }
 
     private boolean dfs(int index) {
@@ -239,7 +245,6 @@ public class AutoSchedulingTwo {
         }
         return false;
     }
-
     private boolean schedulingLogicAfternoon(int index) {
         int k = 0;
         for (int i = 6; i < 9; i++) {
@@ -267,7 +272,6 @@ public class AutoSchedulingTwo {
     }
 
     private boolean schedulingLogicMorning(int index) {
-
         int k = 0;
         for (int i = 3; i < 6; i++) {
             boolean alreadyMatch = schedule[i].stream().anyMatch(s -> s.equals(index));
@@ -299,27 +303,24 @@ public class AutoSchedulingTwo {
         }
         return false;
     }
-
+    /**
+     * 배정되어 있지 않은 경우, 상태를 1 로 변경 (배정된 상태)
+     * 스케줄의 0번째 시간의 0번째 노드에 UserCode 를 대입.
+     * countAssignTime[i]++ -> 스케줄이 배정될 때마다 근무시간 +1
+     */
     private boolean schedulingLogicDawn(int index) {
-
-
         int k = 0;
         for (int i = 0; i < 3; i++) {
-            boolean alreadyMatch = schedule[i].stream().anyMatch(s -> s.equals(index));  // 새벽시간대에 이미 배정돼있으면 false 로 패스
+            boolean alreadyMatch = schedule[i].stream().anyMatch(s -> s.equals(index));
             if (alreadyMatch) {
                 return false;
             }
         }
 
         for (int j = 0; j < 3; j++) { // 기존 3개 시간대 노드
-            for (k = 0; k < scheduleNodeLogic(j, k); k++) { // 기존 3개 시간대 10 개 노드
+            for (k = 0; k < scheduleNodeLogic(j, k); k++) {
                 if (checkSchedule[j].get(k).equals(1))
                     continue;
-                /**
-                 * 배정되어 있지 않은 경우, 상태를 1 로 변경 (배정된 상태)
-                 * 스케줄의 0번째 시간의 0번째 노드에 UserCode 를 대입.
-                 * countAssignTime[i]++ -> 스케줄이 배정될 때마다 근무시간 +1
-                 */
                 else
                     checkSchedule[j].add(k, 1);
 
