@@ -186,14 +186,14 @@ public class UserController {
         User user = userService.findById(id).get();
         ArrayList<String> hope = userService.findHopeTimeById(id);
 
-//        long monthWork = managerAssignScheduleService.monthAssignWorkByUserId(id);
+        HashMap<Integer, Long> monthWork = managerAssignScheduleService.monthAssignWorkByUserId(id);
         long weekWork = managerAssignScheduleService.weekWorkByUserId(id);
 //        long weekAssign = managerAssignScheduleService.weekAssignByUserId(id);
         long weekRemain = managerAssignScheduleService.weekRemainByUserId(id);
 
         model.addAttribute("user", user);
         model.addAttribute("hope", hope);
-//        model.addAttribute("monthWork", monthWork);
+        model.addAttribute("monthWork", monthWork);
         model.addAttribute("weekWork", weekWork);
 //        model.addAttribute("weekAssign", weekAssign);
         model.addAttribute("weekRemain", weekRemain);

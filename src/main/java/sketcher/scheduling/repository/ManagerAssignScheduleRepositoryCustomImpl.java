@@ -7,10 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import sketcher.scheduling.config.LocalDateTimeConfig;
-import sketcher.scheduling.object.OrderByNull;
 import sketcher.scheduling.domain.ManagerAssignSchedule;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.springframework.util.StringUtils.hasText;
@@ -87,9 +88,10 @@ public class ManagerAssignScheduleRepositoryCustomImpl implements ManagerAssignS
     }
 
     @Override
-    public long monthAssignWorkByUserId(String id) {
+    public HashMap<Integer, Long> monthAssignWorkByUserId(String id) {
         Integer code = getUserCode(id);
 
+/*
         List<Tuple> assignSchedule = queryFactory
                 .select(managerAssignSchedule.scheduleDateTimeStart,
                         managerAssignSchedule.scheduleDateTimeEnd)
@@ -97,9 +99,25 @@ public class ManagerAssignScheduleRepositoryCustomImpl implements ManagerAssignS
                 .where(userCodeEq(code),
                         month_assign())
                 .orderBy(OrderByNull.DEFAULT) // 인덱스가 없는 group by 쿼리는 filesort 때문에 성능 느림 -> order by null
+                .groupBy(managerAssignSchedule.scheduleDateTimeStart)
+                .having()
                 .fetch();
+*/
 
-        return schedule_hours(assignSchedule);
+        HashMap<Integer, Long> monthAssignWork = new HashMap<>();
+
+        for (int i = 1; i <= 3; i++) {
+            List<Tuple> assignSchedule = queryFactory
+                    .select(managerAssignSchedule.scheduleDateTimeStart,
+                            managerAssignSchedule.scheduleDateTimeEnd)
+                    .from(managerAssignSchedule)
+                    .where(userCodeEq(code),
+                            month_assign(i))
+                    .fetch();
+            monthAssignWork.put(i, schedule_hours(assignSchedule));
+        }
+
+        return monthAssignWork;
     }
 
     @Override
@@ -150,6 +168,7 @@ public class ManagerAssignScheduleRepositoryCustomImpl implements ManagerAssignS
                 .and(managerAssignSchedule.scheduleDateTimeEnd.between(dateTime, weekEnd));
     }
 
+/*
     public BooleanExpression month_assign() {
 //        LocalDateTime dateTime = LocalDateTime.now(); // 오늘 날짜 가져옴
         LocalDateTime date = ldt.getLocalTimeNooN();
@@ -161,6 +180,17 @@ public class ManagerAssignScheduleRepositoryCustomImpl implements ManagerAssignS
 
         LocalDateTime start = date.minusDays(dayOfWeekNumber + DAYOFMONTH);
         LocalDateTime end = date.plusDays(7 - dayOfWeekNumber);
+
+        return managerAssignSchedule.scheduleDateTimeStart.between(start, end)
+                .and(managerAssignSchedule.scheduleDateTimeEnd.between(start, end));
+    }
+*/
+
+    public BooleanExpression month_assign(int weekAgo) {
+        LocalDateTime date = ldt.getLocalTimeNooN();
+        int dayOfWeekNumber = ldt.getDayOfWeekNumber(date);
+        LocalDateTime start = date.minusDays(dayOfWeekNumber + 7 * weekAgo);
+        LocalDateTime end = date.minusDays(dayOfWeekNumber + 7 * (weekAgo - 1));
 
         return managerAssignSchedule.scheduleDateTimeStart.between(start, end)
                 .and(managerAssignSchedule.scheduleDateTimeEnd.between(start, end));
@@ -188,6 +218,20 @@ public class ManagerAssignScheduleRepositoryCustomImpl implements ManagerAssignS
             duration = Duration.between(from, to);
             sum += duration.toHours();
         }
+
+        return sum;
+    }
+
+    public long schedule_hours2(LocalDateTime from, LocalDateTime to) {
+        long sum = 0;
+        Duration duration;
+
+//        for (Tuple tuple : assignSchedule) {
+//            LocalDateTime from = tuple.get(managerAssignSchedule.scheduleDateTimeStart);
+//            LocalDateTime to = tuple.get(managerAssignSchedule.scheduleDateTimeEnd);
+        duration = Duration.between(from, to);
+        sum += duration.toHours();
+//        }
 
         return sum;
     }
