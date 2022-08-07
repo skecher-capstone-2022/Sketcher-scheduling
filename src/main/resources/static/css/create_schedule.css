@@ -1,6 +1,6 @@
 .user_remote_controller {
     height: 800px;
-    width: 300px;
+    width: 500px;
 }
 
 .left_content {
@@ -10,9 +10,11 @@
 
 
 .remocons {
-    margin: 0 50px;
-    display: flex;
-    height: 150px;
+    /*margin: 0 50px;*/
+    /*display: flex;*/
+    /*height: 150px;*/
+    display: none;
+
 }
 
 .remote {
@@ -36,7 +38,6 @@
     height: 50px;
     margin: 0 50px;
     margin-top: 10px;
-    padding-right: 300px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -44,6 +45,7 @@
 
 table, td {
     border: 1px solid #8080803d;
+    background-color: rgb(255,255,255);
 }
 
 .remote_img {
@@ -71,6 +73,7 @@ button.btn.btn-1.btn-1a.md-close {
 }
 
 .managers {
+    max-height: -webkit-fill-available;
     overflow-y: scroll;
 }
 

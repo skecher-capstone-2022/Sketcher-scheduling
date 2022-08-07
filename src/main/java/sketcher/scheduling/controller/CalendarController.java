@@ -5,42 +5,26 @@ package sketcher.scheduling.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.jni.Local;
-import org.hibernate.Session;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import sketcher.scheduling.domain.ManagerAssignSchedule;
-import sketcher.scheduling.domain.Schedule;
-import sketcher.scheduling.domain.ScheduleUpdateReq;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.ManagerAssignScheduleDto;
-import sketcher.scheduling.dto.ScheduleDto;
 import sketcher.scheduling.dto.ScheduleUpdateReqDto;
-import sketcher.scheduling.dto.UserDto;
-import sketcher.scheduling.repository.ScheduleRepository;
-import sketcher.scheduling.repository.UserRepository;
 import sketcher.scheduling.service.ManagerAssignScheduleService;
-import sketcher.scheduling.service.ScheduleService;
 import sketcher.scheduling.service.ScheduleUpdateReqService;
 import sketcher.scheduling.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.PrintWriter;
-import java.security.Principal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Api(tags = {"스케줄 로직 API "})
@@ -70,38 +54,42 @@ public class CalendarController {
 
         User principal = (User) authentication.getPrincipal();
         String username = principal.getUsername();
-        if (!username.isEmpty()) {
-            User user = userService.findByUsername(username).get();
-            List<ManagerAssignSchedule> byUser = managerAssignScheduleService.findByUser(user);
+        try{
+            if (!username.isEmpty()) {
+                User user = userService.findByUsername(username).get();
+                List<ManagerAssignSchedule> byUser = managerAssignScheduleService.findByUser(user);
 
-            for (ManagerAssignSchedule managerAssignSchedule : byUser) {
-                hash.put("title", managerAssignSchedule.getUser().getUsername());
-                hash.put("start", managerAssignSchedule.getScheduleDateTimeStart());
-                hash.put("end", managerAssignSchedule.getScheduleDateTimeEnd());
+                for (ManagerAssignSchedule managerAssignSchedule : byUser) {
+                    hash.put("title", managerAssignSchedule.getUser().getUsername());
+                    hash.put("start", managerAssignSchedule.getScheduleDateTimeStart());
+                    hash.put("end", managerAssignSchedule.getScheduleDateTimeEnd());
 
-                Integer code = managerAssignSchedule.getUser().getCode();
-                if (code / 10 > 0)
-                    code = code % 10;
-                hash.put("backgroundColor", color.get(code));
+                    Integer code = managerAssignSchedule.getUser().getCode();
+                    if (code / color.size() > 0)
+                        code = code % color.size();
+                    hash.put("backgroundColor", color.get(code));
 
-                jsonObj = new JSONObject(hash);
-                jsonArr.add(jsonObj);
+                    jsonObj = new JSONObject(hash);
+                    jsonArr.add(jsonObj);
+                }
             }
-
+        }catch (NoSuchElementException e){
+            throw new NoSuchElementException("로그인 정보가 존재하지 않습니다.");
         }
+
         return jsonArr;
     }
 
 
     @PostMapping("/calendar")
     @ResponseBody
-    public String sendModifyRequest(@RequestBody List<Map<String, Object>> param) {
+    public String sendModifyRequest(@RequestBody List<Map<String, Object>> param) throws Exception {
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
 
         for (Map<String, Object> list : param) {
 
-            String eventName = (String) list.get("title"); // 이름 받아오기
+            String eventName = (String) list.get("title");
             String startDateString = (String) list.get("start");
             String endDateString = (String) list.get("end");
 
@@ -114,26 +102,24 @@ public class CalendarController {
             LocalDateTime oldStart = LocalDateTime.parse(oldStartString, dateTimeFormatter);
             LocalDateTime oldEnd = LocalDateTime.parse(oldEndString, dateTimeFormatter);
 
-            User user = userService.findByUsername(eventName).get();
+//            User user = userService.findByUsername(eventName).get();
+            User user = userService.findByUsername(eventName).orElseThrow(() -> new Exception("입력한 매니저가 존재하지 않습니다."));
 
-            ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.findByUserAndScheduleDateTimeStartAndScheduleDateTimeEnd(user, oldStart, oldEnd).get();
-            Optional<ScheduleUpdateReq> updateCheck = updateReqService.findByAssignSchedule(managerAssignSchedule);
+            ManagerAssignSchedule managerAssignSchedule =
+                    managerAssignScheduleService.getBeforeSchedule(user, oldStart, oldEnd).get();
 
-
-            if (!updateCheck.isPresent()) {
-                updateReqService.saveScheduleUpdateReq(managerAssignSchedule,modifiedStartDate,modifiedEndDate);
-            } else if (updateCheck.isPresent()) {
-                //TODO 스케줄 수정 재요청
-//                ScheduleUpdateReqDto scheduleUpdateReqDtoUpdate = ScheduleUpdateReqDto.builder()
-//                        .assignSchedule(managerAssignSchedule)
-//                        .changeDate(modifiedStartDate)
-//                        .build();
-//                updateReqService.duplicateUpdateRequest(updateCheck.get().getId(), scheduleUpdateReqDtoUpdate);
-//                        }
+            if (managerFirstRequestUpdateSchedule(managerAssignSchedule)) {
+                updateReqService.saveScheduleUpdateReq(managerAssignSchedule, modifiedStartDate, modifiedEndDate);
+            } else {
+                updateReqService.duplicateUpdateRequest(managerAssignSchedule, modifiedStartDate, modifiedEndDate);
             }
 
         }
         return "/full-calendar/calendar";
+    }
+
+    private boolean managerFirstRequestUpdateSchedule(ManagerAssignSchedule managerAssignSchedule) {
+        return managerAssignSchedule.getUpdateReq() == null;
     }
 
     /**
@@ -160,18 +146,9 @@ public class CalendarController {
             hash.put("end", managerAssignSchedule.getScheduleDateTimeEnd());
 
             Integer code = managerAssignSchedule.getUser().getCode();
-            if (code / 10 > 0)
-                code = code % 10;
+            if (code / color.size() > 0)
+                code = code % color.size();
             hash.put("backgroundColor", color.get(code));
-
-
-//            User user = userService.findByUsername(hash.get("title").toString()).get();
-//            Integer code = user.getCode();
-//            if (code / 10 > 0)
-//                code = code % 10;
-//            if (user != null) {
-//                hash.put("backgroundColor", color.get(code));
-//            }
 
             jsonObj = new JSONObject(hash);
             jsonArr.add(jsonObj);
@@ -202,8 +179,8 @@ public class CalendarController {
             hash.put("end", managerAssignSchedule.getScheduleDateTimeEnd());
 
             Integer code = managerAssignSchedule.getUser().getCode();
-            if (code / 10 > 0)
-                code = code % 10;
+            if (code / color.size() > 0)
+                code = code % color.size();
             hash.put("backgroundColor", color.get(code));
 
             jsonObj = new JSONObject(hash);
@@ -218,7 +195,7 @@ public class CalendarController {
     @ApiOperation(value = "스케줄 생성")
     @PostMapping("/calendar-admin-update")
     @ResponseBody
-    public String addEvent(@RequestBody List<Map<String, Object>> param) throws RuntimeException {
+    public String addEvent(@RequestBody List<Map<String, Object>> param) throws Exception {
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
 
@@ -233,28 +210,24 @@ public class CalendarController {
 
             LocalDateTime startDate = startDateUTC.plusHours(9);
             LocalDateTime endDate = endDateUTC.plusHours(9);
-            try {
-
-
-                User user = userService.findByUsername(eventName).get();
+//            try {
+//                User user = userService.findByUsername(eventName).get();
+                User user = userService.findByUsername(eventName).orElseThrow(() -> new Exception("입력한 매니저가 존재하지 않습니다."));
                 String username = user.getUsername();
                 /**
                  * exception 처리를 통해 존재하지 않는 경우 alert 필요
                  */
-
                 if (eventName.equals(username)) {
-
                     ManagerAssignScheduleDto managerAssignScheduleDto = ManagerAssignScheduleDto.builder()
                             .user(user)
                             .scheduleDateTimeStart(startDate)
                             .scheduleDateTimeEnd(endDate)
                             .build();
-
                     managerAssignScheduleService.saveManagerAssignSchedule(managerAssignScheduleDto);
                 }
-            } catch (NoSuchElementException e) {
-                throw new NoSuchElementException("매니저가 존재하지 않습니다.");
-            }
+//            } catch (NoSuchElementException e) {
+//                throw new NoSuchElementException("매니저가 존재하지 않습니다.");
+//            }
         }
 
         return "/full-calendar/calendar-admin-update";
@@ -266,7 +239,7 @@ public class CalendarController {
     @ApiOperation(value = "스케줄 삭제")
     @DeleteMapping("/calendar-admin-update")
     @ResponseBody
-    public String deleteEvent(@RequestBody List<Map<String, Object>> param) {
+    public String deleteEvent(@RequestBody List<Map<String, Object>> param) throws Exception{
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
 
@@ -279,10 +252,10 @@ public class CalendarController {
             LocalDateTime startDate = LocalDateTime.parse(startDateString, dateTimeFormatter);
             LocalDateTime endDate = LocalDateTime.parse(endDateString, dateTimeFormatter);
 
-            User user = userService.findByUsername(eventName).get();
+            User user = userService.findByUsername(eventName).orElseThrow(() -> new Exception("입력한 매니저가 존재하지 않습니다."));
             String username = user.getUsername();
 
-            ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.findByUserAndScheduleDateTimeStartAndScheduleDateTimeEnd(user, startDate, endDate).get();
+            ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.getBeforeSchedule(user, startDate, endDate).get();
             Integer assignScheduleId = managerAssignSchedule.getId();
 
             if (eventName.equals(username)) {
@@ -301,7 +274,7 @@ public class CalendarController {
     @ApiOperation(value = "스케줄 수정")
     @PatchMapping("/calendar-admin-update")
     @ResponseBody
-    public String modifyEvent(@RequestBody List<Map<String, Object>> param) {
+    public String modifyEvent(@RequestBody List<Map<String, Object>> param) throws Exception {
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
 
@@ -322,37 +295,96 @@ public class CalendarController {
             LocalDateTime oldEnd = LocalDateTime.parse(oldEndString, dateTimeFormatter);
 
             User user = userService.findByUsername(eventName).get();
-            String username = user.getUsername();
 
-            ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.findByUserAndScheduleDateTimeStartAndScheduleDateTimeEnd(user, oldStart, oldEnd).get();
+            ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleService.getBeforeSchedule(user, oldStart, oldEnd)
+                    .orElseThrow(() -> new Exception("해당 스케줄이 존재하지 않습니다."));
             Integer assignScheduleId = managerAssignSchedule.getId();
 
             if (assignScheduleId != null) {
-
                 ManagerAssignScheduleDto managerAssignScheduleDto = ManagerAssignScheduleDto.builder()
                         .scheduleDateTimeStart(modifiedStartDate)
                         .scheduleDateTimeEnd(modifiedEndDate)
                         .build();
-
-
                 managerAssignScheduleService.update(assignScheduleId, managerAssignScheduleDto);
             }
         }
         return "/full-calendar/calendar-admin-update";
     }
 
+    //    @ApiOperation(value = "리모컨 조회")
+    @GetMapping("/create_schedule")
+    public String managerRemote(Model model) {
+
+        List<User> allUser = userService.findAll();
+        Long CalHours = 0L;
+        List<Long> betweenHours = new ArrayList<>();
+
+/**
+ * 매주마다 달라지는 근무 시간에 따른 몆 주차 계산하기
+ */
+
+//        LocalDateTime today = LocalDateTime.now();
+        Calendar c = Calendar.getInstance();
+//        String week = String.valueOf(c.get(Calendar.WEEK_OF_MONTH));
+        String year = String.valueOf(c.get(Calendar.WEEK_OF_YEAR));
+//        System.out.println("week = " + week);
+        System.out.println("year = " + year);
+//
+//        int monthValue = today.getMonthValue();
+//        System.out.println("monthValue = " + monthValue);
+
+        for (User user : allUser) {
+            List<ManagerAssignSchedule> managerAssignScheduleList = user.getManagerAssignScheduleList();
+            for (ManagerAssignSchedule managerAssignSchedule : managerAssignScheduleList) {
+                CalHours += ChronoUnit.HOURS.between(managerAssignSchedule.getScheduleDateTimeStart(), managerAssignSchedule.getScheduleDateTimeEnd());
+            }
+            betweenHours.add(CalHours);
+            CalHours = 0L;
+        }
+
+        model.addAttribute("users", allUser);
+        model.addAttribute("times", betweenHours);
+
+        return "/full-calendar/create_schedule";
+    }
+
+//
+    @PostMapping("/create_schedule")
+    @ResponseBody
+    public String getChecked(HttpServletRequest request , @RequestParam(value = "checkBoxArr[]") List<String> checkBoxArr){
+
+//        String value[] = new String[5];
+        System.out.println("checkBoxArr = " + checkBoxArr);
+        if(checkBoxArr.contains("allCondition"))
+            System.out.println("wow = " );
+        if(checkBoxArr.contains("weekendTwoHours"))
+            System.out.println("weekend = ");
+        if (checkBoxArr.contains("totalWorkHours"))
+            System.out.println("totalwork = ");
+//        for (int i = 0; i < checkBoxArr.size(); i++) {
+//            value[i] = checkBoxArr.get(i);
+//            System.out.println("value = " + value);
+//        }
+//        System.out.println("value = " + value);
+        return "/full-calendar/create_schedule";
+    }
+
     private List<String> getColor() {
         List<String> color = new ArrayList<>();
-        color.add("#FFEBCD");
-        color.add("#FA8072");
-        color.add("#FF7F50");
-        color.add("#FFD700");
-        color.add("#B0E0E6");
-        color.add("#48D1CC");
-        color.add("#9370DB");
-        color.add("#FF69B4");
-        color.add("#FFB6C1");
-        color.add("#00BFFF");
+        color.add("#FDAFAB");
+        color.add("#FAF1D6");
+        color.add("#FAD4AE");
+        color.add("#D9F1F1");
+        color.add("#FADEE1");
+        color.add("#B6E3E9");
+        color.add("#E5C1C5");
+        color.add("#F2EEE5");
+        color.add("#C3E2DD");
+        color.add("#C4F2CE");
+        color.add("#9FDEBD");
+        color.add("#7FD9D6");
+        color.add("#80CEBE");
         return color;
     }
+
 }

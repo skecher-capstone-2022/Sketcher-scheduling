@@ -6,9 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
 @Entity
@@ -25,18 +23,10 @@ public class ManagerAssignSchedule {
     @JoinColumn(name = "user_code")
     private User user;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "schedule_id")
-//    private Schedule schedule;
-
-
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "update_req_id")
     private ScheduleUpdateReq updateReq;
-
-
-//    근무시작시간, 근무종료시간 추가
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+9")
@@ -77,8 +67,9 @@ public class ManagerAssignSchedule {
         this.scheduleDateTimeEnd = scheduleDateTimeEnd;
     }
 
-    public void updateReqId(ScheduleUpdateReq updatReq){
+    public void addUpdateReq(ScheduleUpdateReq updatReq){
         this.updateReq = updatReq;
+        updateReq.setAssignSchedule(this);
     }
 
 

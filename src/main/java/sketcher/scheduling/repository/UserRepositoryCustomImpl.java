@@ -70,6 +70,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         return new PageImpl<>(content, pageable, total);
     }
 
+    @Override
     public Page<UserDto> findWorkManager(UserSearchCondition condition, Pageable pageable) {
         pageable = pageableSetting(condition, pageable);
 
@@ -113,6 +114,17 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                 .fetchCount();
 
         return new PageImpl<>(content, pageable, total);
+    }
+
+    @Override
+    public long countByTodayWorkManager() {
+        return queryFactory
+                .select(user.code)
+                .from(managerAssignSchedule)
+                .join(managerAssignSchedule.user, user)
+                .where(workTime())
+                .groupBy(user.code)
+                .fetchCount();
     }
 
     private Pageable pageableSetting(UserSearchCondition condition, Pageable pageable) {

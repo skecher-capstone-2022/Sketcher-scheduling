@@ -11,6 +11,7 @@
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.js'></script>
     <!-- fullcalendar 언어 CDN -->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
+
     <script>
 
         document.addEventListener('DOMContentLoaded', function () {
@@ -171,7 +172,15 @@
         table {
             text-align: left;
         }
-
+        .fc-timegrid-event .fc-event-time {
+            color: black;
+            font-size: 10pt;
+        }
+        .fc-v-event .fc-event-title {
+            font-size: 10pt;
+            color: black;
+            font-weight: 600;
+        }
         #calendar {
             max-width: 1599px;
             margin: 40px auto;
@@ -179,6 +188,13 @@
             font-size: 1.0rem;
         }
 
+        #kakao-talk-channel-chat-button{
+            line-height: 80px;
+        }
+
+        #kakao-talk-channel-chat-button > a > img{
+            vertical-align: middle;
+        }
     </style>
 
 </head>
@@ -187,17 +203,18 @@
     <div class="ground">
         <div class="title1">
             <h1>개인 스케줄 조회</h1>
+            <div
+                    id="kakao-talk-channel-chat-button"
+                    data-channel-public-id="_LBGRxj"
+                    data-title="question"
+                    data-size="large"
+                    data-color="yellow"
+                    data-shape="pc"
+                    data-support-multiple-densities="true">
+            </div>
             <img src="/img/logo1.png" height="80"/>
         </div>
         <div class="main">
-
-            <!--                <div id='top'>-->
-
-            <!--                    Locales:-->
-            <!--                    <select id='locale-selector'></select>-->
-
-            <!--                </div>-->
-
             <div id='calendar'></div>
         </div>
     </div>
@@ -213,3 +230,19 @@
     </script>
 </th:block>
 </html>
+<script>
+    window.kakaoAsyncInit = function () {
+        Kakao.Channel.createChatButton({
+            container: '#kakao-talk-channel-chat-button',
+        });
+    };
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = 'https://developers.kakao.com/sdk/js/kakao.channel.min.js';
+        fjs.parentNode.insertBefore(js, fjs);
+    })(document, 'script', 'kakao-js-sdk');
+</script>

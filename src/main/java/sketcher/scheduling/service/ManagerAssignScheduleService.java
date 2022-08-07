@@ -37,7 +37,7 @@ public class ManagerAssignScheduleService {
 
     public List<ManagerAssignSchedule> AssignScheduleFindAll() {
         return em.createQuery("select s from ManagerAssignSchedule s"
-                      + " join fetch s.user u"
+                                + " join fetch s.user u"
                         , ManagerAssignSchedule.class)
                 .getResultList();
     }
@@ -45,6 +45,7 @@ public class ManagerAssignScheduleService {
     public Optional<ManagerAssignSchedule> findById(Integer id) {
         return managerAssignScheduleRepository.findById(id);
     }
+
 
     @Transactional(rollbackFor = {NoSuchElementException.class})
     public Integer saveManagerAssignSchedule(ManagerAssignScheduleDto managerAssignScheduleDto) throws NoSuchElementException {
@@ -56,13 +57,14 @@ public class ManagerAssignScheduleService {
         return user.getManagerAssignScheduleList();
     }
 
-    public Optional<ManagerAssignSchedule> findByUserAndScheduleDateTimeStartAndScheduleDateTimeEnd(User user, LocalDateTime startDate, LocalDateTime endDate) {
-        return managerAssignScheduleRepository.findByUserAndScheduleDateTimeStartAndScheduleDateTimeEnd(user, startDate, endDate);
+    public Optional<ManagerAssignSchedule> getBeforeSchedule(User user, LocalDateTime startDate, LocalDateTime endDate) {
+        return managerAssignScheduleRepository.getBeforeSchedule(user, startDate, endDate);
     }
 
     @Transactional
-    public Integer deleteByUser(User user) {
-        User user1 = userRepository.findByUsername(user.getUsername()).get();
+    public Integer deleteByUser(User user) throws Exception{
+        User user1 = userRepository.findByUsername(user.getUsername())
+                .orElseThrow(() -> new Exception("로그인 한 정보가 없습니다."));
         managerAssignScheduleRepository.deleteByUser(user1);
         return user1.getCode();
     }
@@ -73,6 +75,31 @@ public class ManagerAssignScheduleService {
     }
 
     @Transactional
+    public long monthAssignWorkByUserId(String id) {
+        return scheduleRepositoryCustom.monthAssignWorkByUserId(id);
+    }
+
+    @Transactional
+    public long weekWorkByUserId(String id) {
+        return scheduleRepositoryCustom.weekWorkByUserId(id);
+    }
+
+    @Transactional
+    public long weekRemainByUserId(String id) {
+        return scheduleRepositoryCustom.weekRemainByUserId(id);
+    }
+
+    @Transactional
+    public long countByTodayAssignManager() {
+        return scheduleRepositoryCustom.countByTodayAssignManager();
+    }
+
+    @Transactional
+    public long weekAssignByUserId(String id) {
+        return scheduleRepositoryCustom.weekAssignByUserId(id);
+    }
+
+    @Transactional
     public void update(Integer id, ManagerAssignScheduleDto dto) {
         ManagerAssignSchedule managerAssignSchedule = managerAssignScheduleRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("해당 스케줄이 없습니다." + id));
@@ -80,11 +107,13 @@ public class ManagerAssignScheduleService {
         managerAssignSchedule.update(dto.getScheduleDateTimeStart(), dto.getScheduleDateTimeEnd());
     }
 
-    public List<ManagerAssignSchedule> findUpdateReqIdIsNotNull() {
-        return em.createQuery("select s from ManagerAssignSchedule s"
-                        + " where s.updateReq is not null"
+    @Transactional
+    public List<ManagerAssignSchedule> findAcceptReqCheckIsN() {
+        return em.createQuery("select a from ManagerAssignSchedule a inner join ScheduleUpdateReq r " +
+                        "on a.updateReq.id = r.id where r.reqAcceptCheck= 'N'"
                 , ManagerAssignSchedule.class)
                 .getResultList();
+
     }
 
 

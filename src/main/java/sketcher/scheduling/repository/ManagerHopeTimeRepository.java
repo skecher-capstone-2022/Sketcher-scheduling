@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.domain.User;
-import sketcher.scheduling.dto.ManagerHopeTimeDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,4 +19,8 @@ public interface ManagerHopeTimeRepository extends JpaRepository<ManagerHopeTime
 	@Modifying
     @Query("update ManagerHopeTime h set h.user=null where h.user=:user")
     int bulkUserSetNull(@Param("user") User user);
+
+    @Query(value = "select h from ManagerHopeTime h where "+
+            "h.user.code = :userCode")
+    List<ManagerHopeTime> getHopeTimeByUserCode(@Param("userCode") Integer userCode);
 }

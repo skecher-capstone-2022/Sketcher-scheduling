@@ -1,9 +1,9 @@
 package sketcher.scheduling.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -18,7 +18,7 @@ public class ScheduleUpdateReq {
     @Column(name = "update_req_id")
     private Integer id;
 
-
+    @Setter
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "updateReq")
     private ManagerAssignSchedule assignSchedule;
 
@@ -40,6 +40,7 @@ public class ScheduleUpdateReq {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+9")
     private LocalDateTime reqTime;
 
+
     @Builder
     public ScheduleUpdateReq(Integer id, ManagerAssignSchedule assignSchedule, Character reqAcceptCheck, LocalDateTime changeStartDate, LocalDateTime changeEndDate, LocalDateTime reqTime) {
         this.id = id;
@@ -60,4 +61,7 @@ public class ScheduleUpdateReq {
         this.changeEndDate = changeEndDate;
     }
 
+    public void updateReqAcceptCheckToY() {
+        this.reqAcceptCheck = 'Y';
+    }
 }

@@ -15,7 +15,11 @@ td {
 }
 
 th {
+<<<<<<< HEAD
+	padding : 10px 8px;
+=======
 	padding : 10px 10px 10px 10px;
+>>>>>>> 87a25ac9ac240ab6d080ca86ef62e7f20d5d973d
 	border-top:2.25px solid #D9D9D9;
 	border-bottom:2.25px solid #D9D9D9;
 }
