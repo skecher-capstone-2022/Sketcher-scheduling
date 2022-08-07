@@ -17,4 +17,5 @@ public interface UserRepositoryCustom {
 //    ArrayList<String> findDetailById(String id);
     List<User> withdrawalManagers(UserSearchCondition condition);
     long countByTodayWorkManager();
+
 }

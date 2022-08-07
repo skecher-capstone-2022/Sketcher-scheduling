@@ -116,6 +116,7 @@ public class ManagerAssignScheduleService {
 
     }
 
+
     @Transactional
     public void deleteById(Integer id) {
         managerAssignScheduleRepository.deleteById(id);

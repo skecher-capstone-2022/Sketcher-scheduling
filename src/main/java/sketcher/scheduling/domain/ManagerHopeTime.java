@@ -23,7 +23,6 @@ public class ManagerHopeTime {
     /**
      * 연관관계 매핑
      */
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_code")
     private User user;

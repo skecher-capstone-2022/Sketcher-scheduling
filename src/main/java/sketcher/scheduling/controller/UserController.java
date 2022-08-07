@@ -24,8 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDate;
-import java.time.temporal.WeekFields;
 import java.util.*;
 
 @Controller
@@ -183,7 +181,6 @@ public class UserController {
     public String manager_mypage(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User userSession = (User) authentication.getPrincipal();
-
         String id = userSession.getId();
 
         User user = userService.findById(id).get();
@@ -200,6 +197,7 @@ public class UserController {
         model.addAttribute("weekWork", weekWork);
 //        model.addAttribute("weekAssign", weekAssign);
         model.addAttribute("weekRemain", weekRemain);
+
         return "mypage/manager_mypage";
     }
 

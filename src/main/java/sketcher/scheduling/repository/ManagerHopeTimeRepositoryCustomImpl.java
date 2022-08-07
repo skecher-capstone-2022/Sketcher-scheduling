@@ -9,11 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import sketcher.scheduling.object.HopeTime;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import static org.springframework.util.StringUtils.hasText;
 import static sketcher.scheduling.domain.QManagerHopeTime.managerHopeTime;
 import static sketcher.scheduling.domain.QUser.user;
@@ -94,3 +92,4 @@ public class ManagerHopeTimeRepositoryCustomImpl implements ManagerHopeTimeRepos
     }
 
 }
+
