@@ -15,10 +15,7 @@ import sketcher.scheduling.service.ManagerAssignScheduleService;
 import sketcher.scheduling.service.ManagerHopeTimeService;
 import sketcher.scheduling.service.UserService;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -136,9 +133,9 @@ public class RestController {
         String refresh_Token = "uIYs7FKmV4Y-s5EAb8OjEpHvvLtZN3zDoD6p2i_HCilwUAAAAYIu4OjU";
         String access_Token = kakaoService.refreshAccessToken(refresh_Token);
         HashMap<String, Object> userInfo = kakaoService.getUserInfo(access_Token);
-        boolean isSendMessage = kakaoService.isSendMessage(access_Token);
+        boolean isSendMessageToMe = kakaoService.isSendMessageToMe(access_Token);
         HashMap<String, Object> friendsId = kakaoService.getFriendsList(access_Token);
-        boolean isSendMessageToFriends = kakaoService.isSendMessageToFriends(access_Token, friendsId);
+        boolean isSendScheduleMessageToFriends = kakaoService.isSendScheduleMessageToFriends(access_Token, friendsId);
         // 친구에게 메시지 보내기는 월 전송 제한이 있음 -> 주석 처리
 
 //        session.setAttribute("refresh_Token", refresh_Token);

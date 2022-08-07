@@ -172,7 +172,7 @@ public class KakaoService {
     }
 
     // 나에게 메시지 보내기
-    public boolean isSendMessage(String access_Token) {
+    public boolean isSendMessageToMe(String access_Token) {
         String reqURL = "https://kapi.kakao.com/v2/api/talk/memo/default/send";
         try {
             HttpURLConnection conn = getHttpURLConnection(reqURL, "POST");
@@ -181,7 +181,7 @@ public class KakaoService {
 
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
             StringBuilder sb = new StringBuilder();
-            sb.append("template_object=" + addTemplateObjectJson());
+            sb.append("template_object=" + addScheduleTemplateJson());
             System.out.println(sb.toString());
             bw.write(sb.toString());
             bw.flush();
@@ -248,7 +248,7 @@ public class KakaoService {
     }
 
     // 친구에게 메시지 보내기
-    public boolean isSendMessageToFriends(String access_Token, HashMap<String, Object> friendsId) {
+    public boolean isSendScheduleMessageToFriends(String access_Token, HashMap<String, Object> friendsId) {
         String reqURL = "https://kapi.kakao.com/v1/api/talk/friends/message/default/send"; // 친구 정보 요청
 
         try {
@@ -263,7 +263,7 @@ public class KakaoService {
             Set uuid = friendsId.keySet();
             String json_uuids = new Gson().toJson(uuid);
             sb.append("receiver_uuids=" + json_uuids);
-            sb.append("&template_object=" + addTemplateObjectJson());
+            sb.append("&template_object=" + addScheduleTemplateJson());
             System.out.println(sb.toString());
 
             bw.write(sb.toString());
@@ -325,7 +325,7 @@ public class KakaoService {
         return result;
     }
 
-    public JsonObject addTemplateObjectJson() {
+    public JsonObject addScheduleTemplateJson() {
         JsonObject json = new JsonObject();
         json.addProperty("object_type", "text");
         json.addProperty("text", "이번 주 근무스케줄이 배정되었어요!");
