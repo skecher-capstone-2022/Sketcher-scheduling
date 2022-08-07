@@ -6,9 +6,11 @@ import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.*;
 import sketcher.scheduling.algorithm.AutoSchedulingTwo;
 import sketcher.scheduling.algorithm.ResultScheduling;
+import sketcher.scheduling.domain.EstimatedNumOfCardsPerHour;
 import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.ManagerAssignScheduleDto;
+import sketcher.scheduling.repository.EstimatedNumOfCardsPerHourRepository;
 import sketcher.scheduling.repository.UserRepository;
 import sketcher.scheduling.service.KakaoService;
 import sketcher.scheduling.service.ManagerAssignScheduleService;
@@ -33,6 +35,8 @@ public class RestController {
     private final KakaoService kakaoService;
 
     private final ManagerHopeTimeService hopeTimeService;
+
+    private final EstimatedNumOfCardsPerHourRepository estimatedNumOfCardsPerHourRepository;
 
     @GetMapping(value = "/find_All_Manager")
     public List<User> findAllManager() {
@@ -89,7 +93,16 @@ public class RestController {
                 day = (String) stringObjectMap.get("day");
             }
         }
-        AutoSchedulingTwo autoSchedulingTwo = new AutoSchedulingTwo(hopeTimeService, userService);
+
+        int[] time = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23};
+        int[] value = {65, 0, 0, 93, 195, 222, 289, 181, 124, 271, 178, 89}; // 각각 0, 2 ,4, 6, 8, 10, 12, 14, 16, 18, 20, 22
+
+        for (int i = 0; i < value.length; i++) {
+            EstimatedNumOfCardsPerHour num = new EstimatedNumOfCardsPerHour(time[i],value[i]);
+            estimatedNumOfCardsPerHourRepository.save(num);
+        }
+
+        AutoSchedulingTwo autoSchedulingTwo = new AutoSchedulingTwo(hopeTimeService, userService, estimatedNumOfCardsPerHourRepository);
         ArrayList<ResultScheduling> schedulings = autoSchedulingTwo.runAlgorithm(usercode, userCurrentTime);
 
         JSONObject schedulingJsonObj = new JSONObject();

@@ -1,7 +1,10 @@
 package sketcher.scheduling.algorithm;
 
 import org.springframework.stereotype.Component;
+import sketcher.scheduling.domain.EstimatedNumOfCardsPerHour;
 import sketcher.scheduling.domain.ManagerHopeTime;
+import sketcher.scheduling.dto.EstimatedNumOfCardsPerHourDto;
+import sketcher.scheduling.repository.EstimatedNumOfCardsPerHourRepository;
 import sketcher.scheduling.service.ManagerHopeTimeService;
 import sketcher.scheduling.service.UserService;
 
@@ -18,20 +21,24 @@ public class AutoSchedulingTwo {
 
     private final ManagerHopeTimeService managerHopeTimeService;
     private final UserService userService;
+    private final EstimatedNumOfCardsPerHourRepository estimatedNumOfCardsPerHourRepository;
 
     // 생성자 직접 주입
-    public AutoSchedulingTwo(ManagerHopeTimeService managerHopeTimeService, UserService userService) {
+    public AutoSchedulingTwo(ManagerHopeTimeService managerHopeTimeService, UserService userService, EstimatedNumOfCardsPerHourRepository estimatedNumOfCardsPerHourRepository) {
         this.managerHopeTimeService = managerHopeTimeService;
         this.userService = userService;
+        this.estimatedNumOfCardsPerHourRepository = estimatedNumOfCardsPerHourRepository;
     }
-
+    private static int[] time = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23};
+//    private static int[] value = {65, 0, 0, 93, 195, 222, 289, 181, 124, 271, 178, 89}; // 각각 0, 2 ,4, 6, 8, 10, 12, 14, 16, 18, 20, 22
+    private static int[] value; // 각각 0, 2 ,4, 6, 8, 10, 12, 14, 16, 18, 20, 22
     private static ArrayList<Integer>[] hopeTime;
     private static ArrayList<Integer>[] schedule;
     private static ArrayList<Integer>[] checkSchedule;
 
 
-    private static int[] time = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23};
-    private static int[] value = {65, 0, 0, 93, 195, 222, 289, 181, 124, 271, 178, 89}; // 각각 0, 2 ,4, 6, 8, 10, 12, 14, 16, 18, 20, 22
+
+    // db 에서 가져와서 사용.
 
     private static int[] scheduleWeight;
 
@@ -41,19 +48,25 @@ public class AutoSchedulingTwo {
     private static int descIndex = 1;  // 배정시간 내림차순 정렬 인덱스
 
 
+    /**
+     * 문제점
+     */
     private static int weightCount1[] = {0, -1, -1, -1, -1};
     private static int weightCount2[] = {0, -1, -1, -1, -1};
     private static int weightCount3[] = {0, -1, -1, -1, -1};
 
+
     public ArrayList<ResultScheduling> runAlgorithm(int userCode[], int userCurrentTime[]) {
+        List<EstimatedNumOfCardsPerHour> Cards = estimatedNumOfCardsPerHourRepository.findAll();
         int managerSize = userCode.length;      // alreadyMatch 로직 돌릴 때 0 번 매니저랑 스케줄 값 0 이 똑같아서 1번부터 시작해야함.
         hopeTime = new ArrayList[managerSize]; // 매니저의 희망 시간을 담는 배열
         schedule = new ArrayList[(time.length + 1) / 2]; // 스케줄표 배열. UserCode 를 담기 위함 -> 12시간만 담기 위해서.
         checkSchedule = new ArrayList[(time.length + 1) / 2]; // 해당 스케줄 노드에 스케줄이 담겼는지 체크하기 위한 배열
         countAssignTime = new int[managerSize]; // 스케줄 노드 중 어떤 배열이 담겼는지 확인 위함
-        scheduleWeight = new int[value.length]; // 스케줄 가중치 계산 -> value 를 기준으로 가중치를 1 ~ 3 으로 적용.
+        scheduleWeight = new int[Cards.size()]; // 스케줄 가중치 계산 -> value 를 기준으로 가중치를 1 ~ 3 으로 적용.
         managerWeight = new int[managerSize + 1]; // 매니저 가중치
         descTime = new int[managerSize];  // 시간 내림차순 정렬 인덱스 계산
+        value = new int[Cards.size()];
 
         for (int i = 1; i < managerSize; i++) {
             hopeTime[i] = new ArrayList<>();        // 배열 안에 List 생성 , 매니저수만큼
@@ -76,6 +89,12 @@ public class AutoSchedulingTwo {
                 schedule[i].add(j, 0);
             }
         }
+        for (int i = 0; i < Cards.size(); i++) {
+             value[i] =  Cards.get(i).getNumOfCards();
+        }
+
+
+
 
         /**
          * 스케줄 가중치 계산을 위한 로직.
@@ -122,6 +141,10 @@ public class AutoSchedulingTwo {
         return schedulingsResults;
     }
 
+
+    /**
+     * 내림차순 문제
+     */
     private void sortDesc(int[] userCurrentTime, int managerSize) {
         for (int i = 1; i < managerSize; i++) {
             if (userCurrentTime[i] >= 0 && userCurrentTime[i] < 3) {
@@ -227,6 +250,7 @@ public class AutoSchedulingTwo {
                 return false;
             }
         }
+
         for (int j = 9; j < 12; j++) {
             for (k = 0; k < scheduleNodeLogic(j, k); k++) { // 기존 3개 시간대 10 개 노드
 
@@ -334,7 +358,14 @@ public class AutoSchedulingTwo {
         return false;
     }
 
-
+    /**
+     * 스케줄 가중치 3 -> 매니저 가중치 3 = 50% , 매니저 가중치 2 = 30% 매니저 가중치 1 = 20% -> 10 명
+     * 오전 6시 -> 스케줄 가중치 3 매니저 가중치 3 = 5명, 2 3명, 1 1명.
+     * 오전 7시 ->
+     * 오후 1시 ->
+     * 배정이 완료되는 순서 랜덤 -> 저 가중치 값이 막 어긋나는중..
+     *
+     */
     private boolean scheduleWeight1(int index) {
         if (managerWeight[index] == 1) {        // 매니저 가중치가 1인 사람
             weightCount1[1]++;
@@ -406,6 +437,7 @@ public class AutoSchedulingTwo {
 
 
         private int scheduleNodeLogic ( int j, int k){
+
             if (value[j] == 0)
                 k = 0;
             else if (value[j] < 30)

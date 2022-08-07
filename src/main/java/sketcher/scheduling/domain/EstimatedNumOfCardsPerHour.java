@@ -14,12 +14,12 @@ import javax.persistence.*;
 public class EstimatedNumOfCardsPerHour {
     @Id
     @JoinColumn(name = "time")
-    private int time;
+    private Integer time;
 
     @JoinColumn(name = "num_of_cards")
-    private int numOfCards;
+    private Integer numOfCards;
 
-    public EstimatedNumOfCardsPerHour(int time, int numOfCards) {
+    public EstimatedNumOfCardsPerHour(Integer time, Integer numOfCards) {
         this.time = time;
         this.numOfCards = numOfCards;
     }
