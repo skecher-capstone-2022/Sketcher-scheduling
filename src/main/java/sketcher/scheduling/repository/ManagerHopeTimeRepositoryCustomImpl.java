@@ -9,9 +9,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import sketcher.scheduling.object.HopeTime;
+import sketcher.scheduling.object.OrderByNull;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+
+import static com.querydsl.core.group.GroupBy.groupBy;
 import static org.springframework.util.StringUtils.hasText;
 import static sketcher.scheduling.domain.QManagerHopeTime.managerHopeTime;
 import static sketcher.scheduling.domain.QUser.user;
@@ -22,7 +27,11 @@ import static sketcher.scheduling.domain.QUser.user;
 public class ManagerHopeTimeRepositoryCustomImpl implements ManagerHopeTimeRepositoryCustom {
 
     private final UserRepository userRepository;
+
+    private final ManagerHopeTimeRepository hopeTimeRepository;
+
     private final JPAQueryFactory queryFactory;
+
 
 
     @Override
@@ -52,6 +61,29 @@ public class ManagerHopeTimeRepositoryCustomImpl implements ManagerHopeTimeRepos
                 .delete(managerHopeTime)
                 .where(userCodeEq(code))
                 .execute();
+    }
+
+    @Override
+    public HashMap<String, Long> CountByHopeTime() {
+        HashMap<String, Long> countHopeTime = new HashMap<>();
+
+        List<Tuple> content = queryFactory
+                .select(managerHopeTime.start_time, managerHopeTime.id.count())
+                .from(managerHopeTime)
+                .groupBy(managerHopeTime.start_time)
+                .orderBy(OrderByNull.DEFAULT) // 인덱스가 없는 group by 쿼리는 filesort 때문에 성능 느림 -> order by null
+                .fetch();
+
+        for (Tuple tuple : content) {
+            for (HopeTime hopeTime : HopeTime.values()) {
+                if(tuple.get(managerHopeTime.start_time) == hopeTime.getStart_time()) {
+                    countHopeTime.put(hopeTime.getKor(), tuple.get(managerHopeTime.id.count()));
+                    break;
+                }
+            }
+        }
+
+        return countHopeTime;
     }
 
     private BooleanExpression hopeJoinUser() {

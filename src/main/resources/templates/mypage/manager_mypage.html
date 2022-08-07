@@ -210,12 +210,14 @@
     <!-- /chart -->
     <script type="text/javascript"
             src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.0/Chart.bundle.min.js"></script>
-    <script th:inline="javascript">
+    <script type="text/javascript">
         let weekAssign = [[${weekWork+weekRemain}]]
+        let weekWork = [[${weekWork}]]
 
         var num = Math.round((weekWork / weekAssign + Number.EPSILON) * 100) / 100;
         if (isNaN(num))
             num = 0;
+
         window.onload = function () {
             Chart.pluginService.register({
                 beforeDraw: function (chart) {
@@ -307,10 +309,7 @@
             var ctx = document.getElementById("myChart").getContext("2d");
             var myChart = new Chart(ctx, config);
         }
-    </script>
 
-    <script th:inline="javascript">
-        let weekAssign = [[${weekWork+weekRemain}]]
         let weekAgo1 = [[${monthWork.get(1)}]]
         let weekAgo2 = [[${monthWork.get(2)}]]
         let weekAgo3 = [[${monthWork.get(3)}]]

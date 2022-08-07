@@ -16,7 +16,9 @@ import sketcher.scheduling.domain.ManagerAssignSchedule;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.dto.UserSearchCondition;
+import sketcher.scheduling.object.HopeTime;
 import sketcher.scheduling.service.ManagerAssignScheduleService;
+import sketcher.scheduling.service.ManagerHopeTimeService;
 import sketcher.scheduling.service.ScheduleUpdateReqService;
 import sketcher.scheduling.service.UserService;
 
@@ -33,6 +35,7 @@ public class UserController {
     private final UserService userService;
     private final ManagerAssignScheduleService managerAssignScheduleService;
     private final ScheduleUpdateReqService scheduleUpdateReqService;
+    private final ManagerHopeTimeService hopeTimeService;
 
 
     @GetMapping(value = "/login")
@@ -168,11 +171,14 @@ public class UserController {
         long todayWorkManager = userService.countByTodayWorkManager();
         long notAcceptUpdateReq = scheduleUpdateReqService.countByWeekNotAcceptUpdateReq();
         long updateReq = scheduleUpdateReqService.countByWeekUpdateReq();
+        HashMap<String, Long> countHopeTime = hopeTimeService.CountByHopeTime();
+
         model.addAttribute("user", user);
         model.addAttribute("todayAssignManager", todayAssignManager);
         model.addAttribute("todayWorkManager", todayWorkManager);
         model.addAttribute("notAcceptUpdateReq", notAcceptUpdateReq);
         model.addAttribute("updateReq", updateReq);
+        model.addAttribute("countHopeTime", countHopeTime);
         return "mypage/admin_mypage";
     }
 
