@@ -1,5 +1,7 @@
 package sketcher.scheduling.algorithm;
 
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import sketcher.scheduling.domain.EstimatedNumOfCardsPerHour;
 import sketcher.scheduling.domain.ManagerHopeTime;
@@ -16,6 +18,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 
 @Component
+@RequiredArgsConstructor
+@NoArgsConstructor
 public class AutoSchedulingTwo {
 
 
@@ -23,13 +27,8 @@ public class AutoSchedulingTwo {
     private final UserService userService;
     private final EstimatedNumOfCardsPerHourRepository estimatedNumOfCardsPerHourRepository;
 
-    // 생성자 직접 주입
-    public AutoSchedulingTwo(ManagerHopeTimeService managerHopeTimeService, UserService userService, EstimatedNumOfCardsPerHourRepository estimatedNumOfCardsPerHourRepository) {
-        this.managerHopeTimeService = managerHopeTimeService;
-        this.userService = userService;
-        this.estimatedNumOfCardsPerHourRepository = estimatedNumOfCardsPerHourRepository;
-    }
-    private static int[] time = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23};
+
+//    private static int[] time = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23};
 //    private static int[] value = {65, 0, 0, 93, 195, 222, 289, 181, 124, 271, 178, 89}; // 각각 0, 2 ,4, 6, 8, 10, 12, 14, 16, 18, 20, 22
     private static int[] value; // 각각 0, 2 ,4, 6, 8, 10, 12, 14, 16, 18, 20, 22
     private static ArrayList<Integer>[] hopeTime;
