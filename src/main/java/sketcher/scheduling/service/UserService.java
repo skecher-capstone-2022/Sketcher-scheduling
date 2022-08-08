@@ -1,6 +1,7 @@
 package sketcher.scheduling.service;
 
 
+import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.*;
@@ -20,6 +21,7 @@ import sketcher.scheduling.repository.UserRepositoryCustom;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +40,10 @@ public class UserService implements UserDetailsService {
 
     public List<User> findAllManager() {
         return userRepository.findAllManager();
+    }
+
+    public List<Tuple> findJoinDateByHopeTime() {
+        return userRepositoryCustom.findJoinDateByHopeTime();
     }
 
     public Optional<User> findByCode(int code) {
