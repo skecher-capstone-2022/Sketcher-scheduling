@@ -1,10 +1,11 @@
 package sketcher.scheduling.algorithm;
 
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import sketcher.scheduling.domain.EstimatedNumOfCardsPerHour;
 import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.dto.EstimatedNumOfCardsPerHourDto;
-import sketcher.scheduling.object.HopeTime;
 import sketcher.scheduling.repository.EstimatedNumOfCardsPerHourRepository;
 import sketcher.scheduling.service.ManagerHopeTimeService;
 import sketcher.scheduling.service.UserService;
@@ -17,26 +18,21 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 
 @Component
+@RequiredArgsConstructor
+@NoArgsConstructor
 public class AutoSchedulingTwo {
-
-
     private final ManagerHopeTimeService managerHopeTimeService;
     private final UserService userService;
     private final EstimatedNumOfCardsPerHourRepository estimatedNumOfCardsPerHourRepository;
 
-    // 생성자 직접 주입
-    public AutoSchedulingTwo(ManagerHopeTimeService managerHopeTimeService, UserService userService, EstimatedNumOfCardsPerHourRepository estimatedNumOfCardsPerHourRepository) {
-        this.managerHopeTimeService = managerHopeTimeService;
-        this.userService = userService;
-        this.estimatedNumOfCardsPerHourRepository = estimatedNumOfCardsPerHourRepository;
-    }
 
-    private static int[] time = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23};
-    //    private static int[] value = {65, 0, 0, 93, 195, 222, 289, 181, 124, 271, 178, 89}; // 각각 0, 2 ,4, 6, 8, 10, 12, 14, 16, 18, 20, 22
+    //    private static int[] time = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23};
+//    private static int[] value = {65, 0, 0, 93, 195, 222, 289, 181, 124, 271, 178, 89}; // 각각 0, 2 ,4, 6, 8, 10, 12, 14, 16, 18, 20, 22
     private static int[] value; // 각각 0, 2 ,4, 6, 8, 10, 12, 14, 16, 18, 20, 22
     private static ArrayList<Integer>[] hopeTime;
     private static ArrayList<Integer>[] schedule;
     private static ArrayList<Integer>[] checkSchedule;
+
 
 
     // db 에서 가져와서 사용.
@@ -91,15 +87,16 @@ public class AutoSchedulingTwo {
             }
         }
         for (int i = 0; i < Cards.size(); i++) {
-            value[i] = Cards.get(i).getNumOfCards();
+            value[i] =  Cards.get(i).getNumOfCards();
         }
+
+
 
 
         /**
          * 스케줄 가중치 계산을 위한 로직.
          * 매니저 가중치 계산을 위한 로직
          */
-
         scheduleWeightLogic();
         managerWeightLogic(managerSize);
 
@@ -194,7 +191,6 @@ public class AutoSchedulingTwo {
              * 1 이라면 이미 배정돼 있는 상태 continue
              * 그렇지 않다면 (0 이라면) 배정돼 있지 않은 상태 -> dfs 알고리즘.
              */
-
             if (scheduleWeight[m] == 1)  // 스케줄 가중치가 1인 경우
             {
                 if (scheduleWeight1(index))
@@ -270,7 +266,6 @@ public class AutoSchedulingTwo {
         }
         return false;
     }
-
     private boolean schedulingLogicAfternoon(int index) {
         int k = 0;
         for (int i = 6; i < 9; i++) {
@@ -329,7 +324,6 @@ public class AutoSchedulingTwo {
         }
         return false;
     }
-
     /**
      * 배정되어 있지 않은 경우, 상태를 1 로 변경 (배정된 상태)
      * 스케줄의 0번째 시간의 0번째 노드에 UserCode 를 대입.
@@ -367,6 +361,7 @@ public class AutoSchedulingTwo {
      * 오전 7시 ->
      * 오후 1시 ->
      * 배정이 완료되는 순서 랜덤 -> 저 가중치 값이 막 어긋나는중..
+     *
      */
     private boolean scheduleWeight1(int index) {
         if (managerWeight[index] == 1) {        // 매니저 가중치가 1인 사람
@@ -438,7 +433,7 @@ public class AutoSchedulingTwo {
     }
 
 
-    private int scheduleNodeLogic(int j, int k) {
+    private int scheduleNodeLogic ( int j, int k){
 
         if (value[j] == 0)
             k = 0;
@@ -465,7 +460,7 @@ public class AutoSchedulingTwo {
         return k;
     }
 
-    private void scheduleWeightLogic() {
+    private void scheduleWeightLogic () {
         for (int i = 0; i < value.length; i++) {
             int weight = 0;
             if (value[i] <= 150) {
@@ -481,14 +476,14 @@ public class AutoSchedulingTwo {
         }
     }
 
-    private void managerWeightLogic(int managerSize) {
+    private void managerWeightLogic ( int managerSize){
         for (int i = 1; i < managerSize; i++) {
-            if (i < 40)
+            if(i < 40)
                 if (i % 2 == 0)
                     managerWeight[i] = 3;
-                else if (i % 2 == 1)
+                else if(i % 2 == 1)
                     managerWeight[i] = 2;
-                else if (i >= 40 && i < 50)
+                else if(i>= 40 && i < 50)
                     managerWeight[i] = 1;
                 else
                     managerWeight[i] = 2;
