@@ -9,6 +9,8 @@ import sketcher.scheduling.algorithm.ResultScheduling;
 import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.ManagerAssignScheduleDto;
+import sketcher.scheduling.repository.EstimatedNumOfCardsPerHourRepository;
+import sketcher.scheduling.repository.PercentageOfManagerWeightsRepository;
 import sketcher.scheduling.repository.UserRepository;
 import sketcher.scheduling.service.KakaoService;
 import sketcher.scheduling.service.ManagerAssignScheduleService;
@@ -31,8 +33,9 @@ public class RestController {
     private final UserService userService;
     private final ManagerAssignScheduleService assignScheduleService;
     private final KakaoService kakaoService;
-
     private final ManagerHopeTimeService hopeTimeService;
+    private final EstimatedNumOfCardsPerHourRepository estimatedNumOfCardsPerHourRepository;
+    private final PercentageOfManagerWeightsRepository percentageOfManagerWeightsRepository;
 
     @GetMapping(value = "/find_All_Manager")
     public List<User> findAllManager() {
@@ -89,44 +92,44 @@ public class RestController {
                 day = (String) stringObjectMap.get("day");
             }
         }
-//        AutoScheduling autoSchedulingTwo = new AutoScheduling(hopeTimeService, userService);
-//        ArrayList<ResultScheduling> schedulings = autoSchedulingTwo.runAlgorithm(usercode, userCurrentTime);
+        AutoScheduling autoScheduling = new AutoScheduling(userService, estimatedNumOfCardsPerHourRepository, percentageOfManagerWeightsRepository);
+        ArrayList<ResultScheduling> schedulings = autoScheduling.runAlgorithm(usercode, userCurrentTime);
 
         JSONObject schedulingJsonObj = new JSONObject();
-//
-//        JSONArray selectedDate = new JSONArray();
-//        JSONArray scheduleJsonList = new JSONArray();
-//        JSONArray userJsonList = new JSONArray();
-//
-//        HashMap<Integer, Integer> userList = new HashMap<>();
-//
-//        JSONObject dateInfo = new JSONObject();
-//        dateInfo.put("date", date);
-//        dateInfo.put("day", day);
-//        selectedDate.add(dateInfo);
-//        schedulingJsonObj.put("date", selectedDate);
-//
-//        for (ResultScheduling scheduling : schedulings) {
-//            JSONObject scheduleItem = new JSONObject();
-//            scheduleItem.put("scheduleStartTime", scheduling.startTime);
-//            scheduleItem.put("userCode", scheduling.userCode);
-//            scheduleJsonList.add(scheduleItem);
-////            System.out.println(scheduling.startTime+" / "+scheduling.userCode+"번 매니저 / 현재 배정시간 : "+scheduling.currentTime);
-//            if (!userList.containsKey(scheduling.userCode)) {
-//                userList.put(scheduling.userCode, scheduling.currentTime);
-//            }
-//        }
-//
-//        schedulingJsonObj.put("scheduleResults", scheduleJsonList);
-//
-//        for (Map.Entry<Integer, Integer> userStatus : userList.entrySet()) {
-//            JSONObject scheduleItem = new JSONObject();
-//            scheduleItem.put("userCode", userStatus.getKey());
-//            scheduleItem.put("userCurrentTime", userStatus.getValue());
-//            userJsonList.add(scheduleItem);
-//        }
-//
-//        schedulingJsonObj.put("userResults", userJsonList);
+
+        JSONArray selectedDate = new JSONArray();
+        JSONArray scheduleJsonList = new JSONArray();
+        JSONArray userJsonList = new JSONArray();
+
+        HashMap<Integer, Integer> userList = new HashMap<>();
+
+        JSONObject dateInfo = new JSONObject();
+        dateInfo.put("date", date);
+        dateInfo.put("day", day);
+        selectedDate.add(dateInfo);
+        schedulingJsonObj.put("date", selectedDate);
+
+        for (ResultScheduling scheduling : schedulings) {
+            JSONObject scheduleItem = new JSONObject();
+            scheduleItem.put("scheduleStartTime", scheduling.startTime);
+            scheduleItem.put("userCode", scheduling.userCode);
+            scheduleJsonList.add(scheduleItem);
+//            System.out.println(scheduling.startTime+" / "+scheduling.userCode+"번 매니저 / 현재 배정시간 : "+scheduling.currentTime);
+            if (!userList.containsKey(scheduling.userCode)) {
+                userList.put(scheduling.userCode, scheduling.currentTime);
+            }
+        }
+
+        schedulingJsonObj.put("scheduleResults", scheduleJsonList);
+
+        for (Map.Entry<Integer, Integer> userStatus : userList.entrySet()) {
+            JSONObject scheduleItem = new JSONObject();
+            scheduleItem.put("userCode", userStatus.getKey());
+            scheduleItem.put("userCurrentTime", userStatus.getValue());
+            userJsonList.add(scheduleItem);
+        }
+
+        schedulingJsonObj.put("userResults", userJsonList);
 
         return schedulingJsonObj;
     }
