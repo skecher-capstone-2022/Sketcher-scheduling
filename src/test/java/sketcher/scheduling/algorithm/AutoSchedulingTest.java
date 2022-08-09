@@ -16,6 +16,7 @@ import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.ManagerHopeTimeDto;
 import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.object.HopeTime;
+import sketcher.scheduling.repository.EstimatedNumOfCardsPerHourRepository;
 import sketcher.scheduling.repository.PercentageOfManagerWeightsRepository;
 import sketcher.scheduling.repository.UserRepository;
 import sketcher.scheduling.service.ManagerHopeTimeService;
@@ -44,6 +45,8 @@ public class AutoSchedulingTest {
     UserService userService;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    EstimatedNumOfCardsPerHourRepository estimatedNumOfCardsPerHourRepository;
     @Autowired
     PercentageOfManagerWeightsRepository percentageOfManagerWeightsRepository;
 
@@ -394,4 +397,5 @@ public class AutoSchedulingTest {
         }
         return pointer;
     }
+
 }
