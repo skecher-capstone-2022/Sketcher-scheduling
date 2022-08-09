@@ -26,7 +26,9 @@ public class AutoScheduling {
     private final PercentageOfManagerWeightsRepository percentageOfManagerWeightsRepository;
 
     public static final int TIME_LENGTH = 24;
-    public static final double FIXED_M3_RATIO = 3.0;
+    public static final double FIXED_M3_RATIO = 0.3;
+    public static final int MANAGER_DONE_REQUEST_AVG_PER_HOUR = 50;
+
     List<Manager> managerList = new ArrayList<>();
     List<Schedule> scheduleListByDAWN = new ArrayList<>();
     List<Schedule> scheduleListByMORNING = new ArrayList<>();
@@ -40,7 +42,6 @@ public class AutoScheduling {
         List<PercentageOfManagerWeights> percentage = percentageOfManagerWeightsRepository.findAll();
 
         LinkedHashMap<Integer, Manager> managerNodes = makeManagerNode(userCode, userCurrentTime);
-        makeManagerWeight(managerNodes, HopeTime.EVENING, percentage);
 
         int totalCardValueSum = 0;
         for (EstimatedNumOfCardsPerHour card : cards) {
@@ -55,13 +56,13 @@ public class AutoScheduling {
 
 
         for (EstimatedNumOfCardsPerHour card : cards) {
-            if (card.getTime() >= 0 && card.getTime() > 6) {
+            if (0 <= card.getTime() && card.getTime() < 6) {
                 cardsByDAWN.add(card);
-            } else if (card.getTime() >= 6 && card.getTime() > 12) {
+            } else if (6 <= card.getTime() && card.getTime() < 12) {
                 cardsByMORNING.add(card);
-            } else if (card.getTime() >= 12 && card.getTime() > 18) {
+            } else if (12 <= card.getTime() && card.getTime() < 18) {
                 cardsByAFTERNOON.add(card);
-            } else if (card.getTime() >= 18 && card.getTime() > 24) {
+            } else if (18 <= card.getTime() && card.getTime() < 24) {
                 cardsByEVENING.add(card);
             }
         }
@@ -77,27 +78,64 @@ public class AutoScheduling {
 
 
         /* CYCLE START */
+        makeManagerWeight(managerNodes, HopeTime.MORNING, percentage);
         //3. B타임 - 시간대별 필요인원 계산 -> 스케줄 노드 생성
-        settingScheduleNodes(cardsByMORNING, scheduleListByDAWN);    // 스케줄 노드 값 설정(고정 매니저 포함 여부, 스케줄 가중치)
+        settingScheduleNodes(cardsByMORNING, scheduleListByMORNING);    // 스케줄 노드 값 설정(고정 매니저 포함 여부, 스케줄 가중치)
         //4. 이분매칭(dfs)
-        bipartiteMatching(scheduleListByDAWN);   // 스케줄 노드에 배정된 매니저 코드 저장
+        bipartiteMatching(scheduleListByMORNING);   // 스케줄 노드에 배정된 매니저 코드 저장
+
         /* CYCLE FINISH */
 
         //5. C타임 스케줄링 배정 사이클
+        makeManagerWeight(managerNodes, HopeTime.AFTERNOON, percentage);
         settingScheduleNodes(cardsByAFTERNOON, scheduleListByAFTERNOON);
         bipartiteMatching(scheduleListByAFTERNOON);
 
         //6. D타임 스케줄링 배정 사이클
+        makeManagerWeight(managerNodes, HopeTime.EVENING, percentage);
         settingScheduleNodes(cardsByEVENING, scheduleListByEVENING);
         bipartiteMatching(scheduleListByEVENING);
 
+
         //7. A타임 스케줄링 배정 사이클
-        settingScheduleNodes(cardsByMORNING, scheduleListByMORNING);
-        bipartiteMatching(scheduleListByMORNING);
+        makeManagerWeight(managerNodes, HopeTime.DAWN, percentage);
+        settingScheduleNodes(cardsByDAWN, scheduleListByDAWN);
+        bipartiteMatching(scheduleListByDAWN);
+        System.out.println(scheduleListByDAWN.size());
 
 
-
-
+        for (Schedule schedule : scheduleListByMORNING) {
+            System.out.print(schedule.getId() + " : " + schedule.getTime() + "시, S" + schedule.getWeight() + ", M3매니저 필수 여부 " + schedule.isManagerWeightFlag() + ", ");
+            if (schedule.getManager() != null) {
+                System.out.println("배정매니저번호 " + schedule.getManager().getCode());
+            } else {
+                System.out.println("배정매니저 없음");
+            }
+        }
+        for (Schedule schedule : scheduleListByAFTERNOON) {
+            System.out.print(schedule.getId() + " : " + schedule.getTime() + "시, S" + schedule.getWeight() + ", M3매니저 필수 여부 " + schedule.isManagerWeightFlag() + ", ");
+            if (schedule.getManager() != null) {
+                System.out.println("배정매니저번호 " + schedule.getManager().getCode());
+            } else {
+                System.out.println("배정매니저 없음");
+            }
+        }
+        for (Schedule schedule : scheduleListByEVENING) {
+            System.out.print(schedule.getId() + " : " + schedule.getTime() + "시, S" + schedule.getWeight() + ", M3매니저 필수 여부 " + schedule.isManagerWeightFlag() + ", ");
+            if (schedule.getManager() != null) {
+                System.out.println("배정매니저번호 " + schedule.getManager().getCode());
+            } else {
+                System.out.println("배정매니저 없음");
+            }
+        }
+        for (Schedule schedule : scheduleListByDAWN) {
+            System.out.print(schedule.getId() + " : " + schedule.getTime() + "시, S" + schedule.getWeight() + ", M3매니저 필수 여부 " + schedule.isManagerWeightFlag() + ", ");
+            if (schedule.getManager() != null) {
+                System.out.println("배정매니저번호 " + schedule.getManager().getCode());
+            } else {
+                System.out.println("배정매니저 없음");
+            }
+        }
 
         /*RETURN*/
 //        ArrayList<ResultScheduling> schedulingsResults = new ArrayList<>(); // 타입 지정
@@ -114,6 +152,7 @@ public class AutoScheduling {
 
     private void bipartiteMatching(List<Schedule> scheduleList) {
         int count = 0;
+        System.out.println("####scheduleListSize : " + scheduleList.size());
         for (int i = 0; i < scheduleList.size(); i++) {
             if (firstDFS(scheduleList.get(i))) count++;   //매칭 개수
         }
@@ -133,8 +172,6 @@ public class AutoScheduling {
             manager.setHopeTimeList(hopeTimeList);
             managerNode.put(userCode[i], manager);
             managerList.add(manager);
-
-            System.out.println("managerCode : " + manager.getCode());
         }
 
         return managerNode;
@@ -142,6 +179,8 @@ public class AutoScheduling {
 
     public LinkedHashMap<Integer, Manager> makeManagerWeight(LinkedHashMap<Integer, Manager> managerNodes,
                                                              HopeTime hopeTime, List<PercentageOfManagerWeights> percentage) {
+        managerList.clear();
+
         List<Tuple> joinDateByHopeTime = userService.findJoinDateByHopeTime(hopeTime.getStart_time());
         int count = joinDateByHopeTime.size();
 
@@ -152,19 +191,13 @@ public class AutoScheduling {
         long middleManager = Math.round(count * middle * 0.01) + highManager;
         long lowManager = count;
 
-        for (Map.Entry<Integer, Manager> integerManagerEntry : managerNodes.entrySet()) {
-            System.out.println(">>>>>>>"+integerManagerEntry.getKey() + " : "+integerManagerEntry.getValue());
-        }
-
         int i;
         for (i = 0; i < highManager; i++) {
             Tuple tuple = joinDateByHopeTime.get(i);
             Integer code = tuple.get(user.code);
-            System.out.println("@@@@@@@@@ code : "+code);
             Manager manager = managerNodes.get(code);
-            System.out.println("@@@@@@@@@ manager : "+manager);
-
             manager.setWeight(3);
+            managerList.add(manager);
         }
 
         for (; i < middleManager; i++) {
@@ -172,6 +205,8 @@ public class AutoScheduling {
             Integer code = tuple.get(user.code);
             Manager manager = managerNodes.get(code);
             manager.setWeight(2);
+            managerList.add(manager);
+
         }
 
         for (; i < lowManager; i++) {
@@ -179,6 +214,14 @@ public class AutoScheduling {
             Integer code = tuple.get(user.code);
             Manager manager = managerNodes.get(code);
             manager.setWeight(1);
+            managerList.add(manager);
+
+            for (Manager manager1 : managerList) {
+                System.out.print(">>>> manager"+manager.getCode()+" ");
+                for (HopeTime time : manager1.getHopeTimeList()) {
+                    System.out.println("hopetime>>>>>>>>"+time);
+                }
+            }
         }
 
         return managerNodes;
@@ -191,16 +234,12 @@ public class AutoScheduling {
 //            totalScheduleNodeSize += card.getNumOfCards();
 //        }
 
-        boolean managerWeightFlag = false;
-        int pointer = 0;    //scheduleSectionSize, weightType를 가리키는 포인터
+
         int weight = 0;
 
-
         for (EstimatedNumOfCardsPerHour card : cards) {
-            double numOfFixedManager = cards.get(pointer).getNumOfCards() * FIXED_M3_RATIO;
-            for (int i = 0; i < Math.round(numOfFixedManager); i++) {
-                managerWeightFlag = true;
-            }
+            int numberOfManagers = Math.round(card.getNumOfCards() / MANAGER_DONE_REQUEST_AVG_PER_HOUR);
+            int numOfFixedManager = (int) Math.round(numberOfManagers * FIXED_M3_RATIO);
             if (card.getNumOfCards() < totalCardValueAvg / 2) {
                 weight = 1;
             } else if (card.getNumOfCards() < totalCardValueAvg * 2) {
@@ -208,9 +247,17 @@ public class AutoScheduling {
             } else {
                 weight = 3;
             }
-            numOfCreatedScheduleNode++;
-            scheduleList.add(new Schedule(numOfCreatedScheduleNode, card.getTime(), weight, managerWeightFlag));
-            managerWeightFlag = false;
+
+            int countOfFixedManager = 0;
+            for (int i = 0; i < numberOfManagers; i++) {
+                boolean managerWeightFlag = false;
+                numOfCreatedScheduleNode++;
+                if (countOfFixedManager < numOfFixedManager) {
+                    managerWeightFlag = true;
+                    countOfFixedManager++;
+                }
+                scheduleList.add(new Schedule(numOfCreatedScheduleNode, card.getTime(), weight, managerWeightFlag));
+            }
         }
     }
 
@@ -228,10 +275,11 @@ public class AutoScheduling {
             if (alreadyExistingScheduleNode != null) {            // 조건3. 이미 해당 매니저가 동시간대에 배정되어 있음
                 // 이미 배정된 매니저가 managerWeightFlag=false이고, 현재 스케줄이 managerWeightFlag=true인 경우
                 if (checkSwapping(alreadyExistingScheduleNode, scheduleNode)) {
+                    System.out.println(alreadyExistingScheduleNode.getId()+"<->"+scheduleNode.getTime()+"스와핑됨!");
                     alreadyExistingScheduleNode.setManager(null);
                     manager.updateAssignScheduleList(alreadyExistingScheduleNode, scheduleNode);
                     scheduleNode.setManager(manager);
-                    return true;    //s1, s2에 M3가 배정되는 경우 -->
+                    return true;
                 }
                 continue;
             }

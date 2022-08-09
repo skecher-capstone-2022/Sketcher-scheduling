@@ -27,6 +27,7 @@ public class Manager implements Comparable<Manager> {
     }
 
     public Manager() {
+        dayAssignTime = 0;
         this.hopeTimeList = new ArrayList<>();
         this.assignScheduleList = new ArrayList<>();
     }
