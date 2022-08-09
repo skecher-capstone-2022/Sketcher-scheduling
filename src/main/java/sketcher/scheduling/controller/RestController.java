@@ -1,7 +1,6 @@
 package sketcher.scheduling.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.*;
 import sketcher.scheduling.algorithm.AutoScheduling;
@@ -17,10 +16,7 @@ import sketcher.scheduling.service.ManagerAssignScheduleService;
 import sketcher.scheduling.service.ManagerHopeTimeService;
 import sketcher.scheduling.service.UserService;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -79,12 +75,16 @@ public class RestController {
         String day = "";
         int usercode[] = new int[param.size() - 1];
         int userCurrentTime[] = new int[param.size() - 1];
+        List<List<Integer>> hopeTimeList = new ArrayList<>();
         int flag = 0;
         int index = 0;
         for (Map<String, Object> stringObjectMap : param) {
+            System.out.println(stringObjectMap.toString());
             if (flag == 1) {    //
                 usercode[index] = (int) stringObjectMap.get("userCode");
                 userCurrentTime[index] = (int) stringObjectMap.get("userCurrentTime");
+                String hopetimeStr = stringObjectMap.get("hopetime").toString();
+                settingHopeTimeList(hopeTimeList, hopetimeStr);
                 index++;
             } else {
                 flag = 1;
@@ -92,9 +92,9 @@ public class RestController {
                 day = (String) stringObjectMap.get("day");
             }
         }
+
         AutoScheduling autoScheduling = new AutoScheduling(userService, estimatedNumOfCardsPerHourRepository, percentageOfManagerWeightsRepository);
-//        ArrayList<ResultScheduling> schedulings = autoScheduling.runAlgorithm(usercode, userCurrentTime);
-        autoScheduling.runAlgorithm(usercode, userCurrentTime);
+        autoScheduling.runAlgorithm(usercode, userCurrentTime, hopeTimeList);
 
         JSONObject schedulingJsonObj = new JSONObject();
 
@@ -133,6 +133,15 @@ public class RestController {
 //        schedulingJsonObj.put("userResults", userJsonList);
 
         return schedulingJsonObj;
+    }
+
+    private void settingHopeTimeList(List<List<Integer>> hopeTimeList, String hopetimeStr) {
+        String[] split = hopetimeStr.replace("[", "").replace("]", "").split(", ");
+        List<Integer> hopetimes = new ArrayList<>();
+        for (String hopetime : split) {
+            hopetimes.add(Integer.parseInt(hopetime));
+        }
+        hopeTimeList.add(hopetimes);
     }
 
     public void sendKakaoMessage() throws IOException {

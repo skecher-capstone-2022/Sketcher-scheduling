@@ -1,9 +1,7 @@
 package sketcher.scheduling.algorithm;
 
 import com.querydsl.core.Tuple;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import sketcher.scheduling.domain.EstimatedNumOfCardsPerHour;
 import sketcher.scheduling.domain.PercentageOfManagerWeights;
 import sketcher.scheduling.object.HopeTime;
@@ -37,7 +35,7 @@ public class AutoScheduling {
     double totalCardValueAvg;
     int numOfCreatedScheduleNode = 0;
 
-    public ArrayList<ResultScheduling> runAlgorithm(int userCode[], int userCurrentTime[]) {
+    public ArrayList<ResultScheduling> runAlgorithm(int[] userCode, int[] userCurrentTime, List<List<Integer>> hopeTimeList) {
         List<EstimatedNumOfCardsPerHour> cards = estimatedNumOfCardsPerHourRepository.findAll();
         List<PercentageOfManagerWeights> percentage = percentageOfManagerWeightsRepository.findAll();
 
