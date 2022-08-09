@@ -1,6 +1,5 @@
 package sketcher.scheduling.algorithm;
 
-
 import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
 import sketcher.scheduling.domain.EstimatedNumOfCardsPerHour;
@@ -13,11 +12,11 @@ import sketcher.scheduling.service.ManagerHopeTimeService;
 import sketcher.scheduling.service.UserService;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import static sketcher.scheduling.domain.QUser.user;
+
 
 @Component
 @RequiredArgsConstructor
@@ -29,12 +28,11 @@ public class AutoScheduling {
 
     public static final int TIME_LENGTH = 24;
 
-    public ArrayList<ResultScheduling> runAlgorithm(int userCode[], int userCurrentTime[], int userHopeTime[]) {
-
+    public ArrayList<ResultScheduling> runAlgorithm(int userCode[], int userCurrentTime[]) {
         List<EstimatedNumOfCardsPerHour> cards = estimatedNumOfCardsPerHourRepository.findAll();
         List<PercentageOfManagerWeights> percentage = percentageOfManagerWeightsRepository.findAll();
 
-        LinkedHashMap<Integer, Manager> managerNodes = makeManagerNode(userCode, userCurrentTime, userHopeTime);
+        LinkedHashMap<Integer, Manager> managerNodes = makeManagerNode(userCode, userCurrentTime);
         makeManagerWeight(managerNodes, HopeTime.DAWN, percentage);
 
         //1. SETUP  변수값 저장
@@ -80,7 +78,7 @@ public class AutoScheduling {
 
     }
 
-    public LinkedHashMap<Integer, Manager> makeManagerNode(int[] userCode, int[] userCurrentTime, int[] userHopeTime) {
+    public LinkedHashMap<Integer, Manager> makeManagerNode(int[] userCode, int[] userCurrentTime) {
         LinkedHashMap<Integer, Manager> managerNode = new LinkedHashMap<>();
 
         for (int i = 0; i < userCode.length; i++) {
@@ -129,3 +127,4 @@ public class AutoScheduling {
         return managerNodes;
     }
 }
+

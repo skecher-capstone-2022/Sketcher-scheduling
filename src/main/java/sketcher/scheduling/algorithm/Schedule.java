@@ -14,7 +14,18 @@ public class Schedule {
     private boolean managerWeightFlag;
     private Manager manager;
 
+    public boolean isManagerWeightFlag() {
+        return managerWeightFlag;
+    }
+
     public void makeWeight() {
 
+    }
+
+    public Schedule(Integer id, Integer time, Integer weight, boolean managerWeightFlag) {
+        this.id = id;
+        this.time = time;
+        this.weight = weight;
+        this.managerWeightFlag = managerWeightFlag;
     }
 }
