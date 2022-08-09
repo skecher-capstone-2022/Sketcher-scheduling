@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Manager {
+public class Manager implements Comparable<Manager> {
     private Integer code;
     private List<HopeTime> hopeTimeList = new ArrayList<>();
     private Integer hopeTimeCount;
@@ -21,6 +21,7 @@ public class Manager {
     private Integer weight;
     private boolean previousAssignFlag;
     private List<Schedule> assignScheduleList;
+    private Integer priorityScore;
 
     public void makePriority() {
 
@@ -46,10 +47,35 @@ public class Manager {
         return null;
     }
 
-    public void updateAssignScheduleList(Schedule currentNode,Schedule newNode) {
+    public void updateAssignScheduleList(Schedule currentNode, Schedule newNode) {
         if (currentNode != null) {
             assignScheduleList.remove(currentNode);
+        } else {
+            totalAssignTime++;
+            dayAssignTime++;
         }
         assignScheduleList.add(newNode);
+    }
+
+    public boolean isContrainHopeTimes(int time) {
+        for (HopeTime hopeTime : hopeTimeList) {
+            if (matchingHopeTimeType(time, hopeTime, HopeTime.DAWN)) return true;
+            if (matchingHopeTimeType(time, hopeTime, HopeTime.MORNING)) return true;
+            if (matchingHopeTimeType(time, hopeTime, HopeTime.AFTERNOON)) return true;
+            if (matchingHopeTimeType(time, hopeTime, HopeTime.EVENING)) return true;
+        }
+        return false;
+    }
+
+    private boolean matchingHopeTimeType(int time, HopeTime hopeTime, HopeTime dawn) {
+        if (time >= hopeTime.getStart_time() && time < hopeTime.getFinish_time() && hopeTime == dawn) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int compareTo(Manager manager) {
+        return this.totalAssignTime - manager.totalAssignTime;
     }
 }
