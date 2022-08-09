@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.annotation.Nullable;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,7 +19,6 @@ public class Schedule {
     public boolean isManagerWeightFlag() {
         return managerWeightFlag;
     }
-
     public void makeWeight() {
 
     }

@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Manager {
+public class Manager implements Comparable<Manager> {
     private Integer code;
     private List<ManagerHopeTime> hopeTimeList = new ArrayList<>();
     private Integer hopeTimeCount;
@@ -49,6 +49,9 @@ public class Manager {
     public void updateAssignScheduleList(Schedule currentNode, Schedule newNode) {
         if (currentNode != null) {
             assignScheduleList.remove(currentNode);
+        } else {
+            totalAssignTime++;
+            dayAssignTime++;
         }
         assignScheduleList.add(newNode);
     }
@@ -71,4 +74,8 @@ public class Manager {
         return false;
     }
 
+    @Override
+    public int compareTo(Manager manager) {
+        return this.totalAssignTime - manager.totalAssignTime;
+    }
 }
