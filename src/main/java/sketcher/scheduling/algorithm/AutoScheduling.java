@@ -94,58 +94,30 @@ public class AutoScheduling {
         makeManagerWeight(managerNodes, HopeTime.DAWN, percentage);
         settingScheduleNodes(cardsByDAWN, scheduleListByDAWN);
         bipartiteMatching(scheduleListByDAWN);
-        System.out.println(scheduleListByDAWN.size());
 
 
-        for (Schedule schedule : scheduleListByMORNING) {
-            System.out.print(schedule.getId() + " : " + schedule.getTime() + "시, S" + schedule.getWeight() + ", M3매니저 필수 여부 " + schedule.isManagerWeightFlag() + ", ");
-            if (schedule.getManager() != null) {
-                System.out.println("배정매니저번호 " + schedule.getManager().getCode());
-            } else {
-                System.out.println("배정매니저 없음");
-            }
-        }
-        for (Schedule schedule : scheduleListByAFTERNOON) {
-            System.out.print(schedule.getId() + " : " + schedule.getTime() + "시, S" + schedule.getWeight() + ", M3매니저 필수 여부 " + schedule.isManagerWeightFlag() + ", ");
-            if (schedule.getManager() != null) {
-                System.out.println("배정매니저번호 " + schedule.getManager().getCode());
-            } else {
-                System.out.println("배정매니저 없음");
-            }
-        }
-        for (Schedule schedule : scheduleListByEVENING) {
-            System.out.print(schedule.getId() + " : " + schedule.getTime() + "시, S" + schedule.getWeight() + ", M3매니저 필수 여부 " + schedule.isManagerWeightFlag() + ", ");
-            if (schedule.getManager() != null) {
-                System.out.println("배정매니저번호 " + schedule.getManager().getCode());
-            } else {
-                System.out.println("배정매니저 없음");
-            }
-        }
-        for (Schedule schedule : scheduleListByDAWN) {
-            System.out.print(schedule.getId() + " : " + schedule.getTime() + "시, S" + schedule.getWeight() + ", M3매니저 필수 여부 " + schedule.isManagerWeightFlag() + ", ");
-            if (schedule.getManager() != null) {
-                System.out.println("배정매니저번호 " + schedule.getManager().getCode());
-            } else {
-                System.out.println("배정매니저 없음");
-            }
-        }
+
 
         /*RETURN*/
-//        ArrayList<ResultScheduling> schedulingsResults = new ArrayList<>(); // 타입 지정
-//        for (int i = 0; i < TIME_LENGTH; i++) {
-//            for (int j = 0; j < /*같은 시간대에 배정되는 매니저 수*/; j++) {
-//                schedulingsResults.add(new ResultScheduling(/*startTime*/,/*userCode*/, /*currentTime*/);
-//            }
-//        }
+        ArrayList<ResultScheduling> schedulingsResults = new ArrayList<>(); // 타입 지정
+        createResultSchedulingList(schedulingsResults, scheduleListByMORNING);
+        createResultSchedulingList(schedulingsResults, scheduleListByAFTERNOON);
+        createResultSchedulingList(schedulingsResults, scheduleListByEVENING);
+        createResultSchedulingList(schedulingsResults, scheduleListByDAWN);
 
-        return null;
-//        return schedulingsResults;
+        return schedulingsResults;
+    }
 
+    private void createResultSchedulingList(ArrayList<ResultScheduling> schedulingsResults, List<Schedule> scheduleListByMORNING) {
+        for (Schedule schedule : scheduleListByMORNING) {
+            if (schedule.getManager() != null) {
+                schedulingsResults.add(new ResultScheduling(schedule.getTime(), schedule.getManager().getCode(), schedule.getManager().getTotalAssignTime()));
+            }
+        }
     }
 
     private void bipartiteMatching(List<Schedule> scheduleList) {
         int count = 0;
-        System.out.println("####scheduleListSize : " + scheduleList.size());
         for (int i = 0; i < scheduleList.size(); i++) {
             if (firstDFS(scheduleList.get(i))) count++;   //매칭 개수
         }
@@ -219,9 +191,7 @@ public class AutoScheduling {
             managerList.add(manager);
 
             for (Manager manager1 : managerList) {
-                System.out.print(">>>> manager" + manager.getCode() + " ");
                 for (HopeTime time : manager1.getHopeTimeList()) {
-                    System.out.println("hopetime>>>>>>>>" + time);
                 }
             }
         }
@@ -230,6 +200,7 @@ public class AutoScheduling {
     }
 
     private void settingScheduleNodes(List<EstimatedNumOfCardsPerHour> cards, List<Schedule> scheduleList) {
+
 //        Integer totalScheduleNodeSize = 0;
 
 //        for (EstimatedNumOfCardsPerHour card : cards) {
@@ -243,7 +214,7 @@ public class AutoScheduling {
             if (numberOfManagers == 0) numberOfManagers = 1;
 
             int numOfFixedManager = (int) Math.round(numberOfManagers * FIXED_M3_RATIO);
-
+            
             if (card.getNumOfCards() < totalCardValueAvg / 2) {
                 weight = 1;
             } else if (card.getNumOfCards() < totalCardValueAvg * 2) {
@@ -283,7 +254,6 @@ public class AutoScheduling {
             if (alreadyExistingScheduleNode != null) {            // 조건2. 이미 해당 매니저가 동시간대에 배정되어 있음
                 // 이미 배정된 매니저가 managerWeightFlag=false이고, 현재 스케줄이 managerWeightFlag=true인 경우
                 if (checkSwapping(alreadyExistingScheduleNode, scheduleNode)) {
-                    System.out.println(alreadyExistingScheduleNode.getId() + "<->" + scheduleNode.getTime() + "스와핑됨!");
                     alreadyExistingScheduleNode.setManager(null);
                     manager.updateAssignScheduleList(alreadyExistingScheduleNode, scheduleNode);
                     scheduleNode.setManager(manager);
