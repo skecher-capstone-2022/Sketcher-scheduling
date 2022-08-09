@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import sketcher.scheduling.domain.ManagerHopeTime;
+import sketcher.scheduling.object.HopeTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Manager implements Comparable<Manager> {
     private Integer code;
-    private List<ManagerHopeTime> hopeTimeList = new ArrayList<>();
+    private List<HopeTime> hopeTimeList = new ArrayList<>();
     private Integer hopeTimeCount;
     private Integer totalAssignTime;
     private Integer dayAssignTime;
@@ -27,7 +28,7 @@ public class Manager implements Comparable<Manager> {
     }
 
 
-    public Manager(Integer code, List<ManagerHopeTime> hopeTimeList, Integer hopeTimeCount, Integer totalAssignTime, Integer dayAssignTime, Integer weight) {
+    public Manager(Integer code, List<HopeTime> hopeTimeList, Integer hopeTimeCount, Integer totalAssignTime, Integer dayAssignTime, Integer weight) {
         this.code = code;
         this.hopeTimeList = hopeTimeList;
         this.hopeTimeCount = hopeTimeCount;
@@ -57,19 +58,18 @@ public class Manager implements Comparable<Manager> {
     }
 
     public boolean isContrainHopeTimes(int time) {
-        for (ManagerHopeTime hopeTime : hopeTimeList) {
-            if (time >= 0 && time < 6 && hopeTime.getStart_time() == 0) {
-                return true;
-            }
-            if (time >= 6 && time < 12 && hopeTime.getStart_time() == 6) {
-                return true;
-            }
-            if (time >= 12 && time < 18 && hopeTime.getStart_time() == 12) {
-                return true;
-            }
-            if (time >= 18 && time < 24 && hopeTime.getStart_time() == 18) {
-                return true;
-            }
+        for (HopeTime hopeTime : hopeTimeList) {
+            if (matchingHopeTimeType(time, hopeTime, HopeTime.DAWN)) return true;
+            if (matchingHopeTimeType(time, hopeTime, HopeTime.MORNING)) return true;
+            if (matchingHopeTimeType(time, hopeTime, HopeTime.AFTERNOON)) return true;
+            if (matchingHopeTimeType(time, hopeTime, HopeTime.EVENING)) return true;
+        }
+        return false;
+    }
+
+    private boolean matchingHopeTimeType(int time, HopeTime hopeTime, HopeTime dawn) {
+        if (time >= hopeTime.getStart_time() && time < hopeTime.getFinish_time() && hopeTime == dawn) {
+            return true;
         }
         return false;
     }
