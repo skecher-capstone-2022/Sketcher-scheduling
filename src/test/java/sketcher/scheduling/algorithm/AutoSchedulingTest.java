@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.domain.PercentageOfManagerWeights;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.ManagerHopeTimeDto;
@@ -108,7 +109,7 @@ public class AutoSchedulingTest {
         List<PercentageOfManagerWeights> percentage = percentageOfManagerWeightsRepository.findAll();
         LinkedHashMap<Integer, Manager> managerNode = makeManagerNode(userCode, userCurrent);
 
-        makeManagerWeight(managerNode, HopeTime.DAWN, percentage);
+        makeManagerWeightAndHopeTime(managerNode, HopeTime.DAWN, percentage);
     }
 
     public LinkedHashMap<Integer, Manager> makeManagerNode(int[] userCode, int[] userCurrentTime) {
@@ -125,8 +126,8 @@ public class AutoSchedulingTest {
         return managerNode;
     }
 
-    public LinkedHashMap<Integer, Manager> makeManagerWeight(LinkedHashMap<Integer, Manager> managerNodes,
-                                                             HopeTime hopeTime, List<PercentageOfManagerWeights> percentage) {
+    public LinkedHashMap<Integer, Manager> makeManagerWeightAndHopeTime(LinkedHashMap<Integer, Manager> managerNodes,
+                                                                        HopeTime hopeTime, List<PercentageOfManagerWeights> percentage) {
         List<Tuple> joinDateByHopeTime = userService.findJoinDateByHopeTime(hopeTime.getStart_time());
 
         int count = joinDateByHopeTime.size();
@@ -141,6 +142,11 @@ public class AutoSchedulingTest {
             Tuple tuple = joinDateByHopeTime.get(i);
             Integer code = tuple.get(user.code);
             Manager manager = managerNodes.get(code);
+
+            List<HopeTime> hopeTimeList = manager.getHopeTimeList();
+            hopeTimeList.add(hopeTime);
+
+            manager.setHopeTimeList(hopeTimeList);
             manager.setWeight(3);
         }
 
@@ -148,6 +154,11 @@ public class AutoSchedulingTest {
             Tuple tuple = joinDateByHopeTime.get(i);
             Integer code = tuple.get(user.code);
             Manager manager = managerNodes.get(code);
+
+            List<HopeTime> hopeTimeList = manager.getHopeTimeList();
+            hopeTimeList.add(hopeTime);
+
+            manager.setHopeTimeList(hopeTimeList);
             manager.setWeight(2);
         }
 
@@ -155,6 +166,11 @@ public class AutoSchedulingTest {
             Tuple tuple = joinDateByHopeTime.get(i);
             Integer code = tuple.get(user.code);
             Manager manager = managerNodes.get(code);
+
+            List<HopeTime> hopeTimeList = manager.getHopeTimeList();
+            hopeTimeList.add(hopeTime);
+
+            manager.setHopeTimeList(hopeTimeList);
             manager.setWeight(1);
         }
 

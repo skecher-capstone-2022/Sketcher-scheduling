@@ -33,7 +33,7 @@ public class AutoScheduling {
         List<PercentageOfManagerWeights> percentage = percentageOfManagerWeightsRepository.findAll();
 
         LinkedHashMap<Integer, Manager> managerNodes = makeManagerNode(userCode, userCurrentTime);
-        makeManagerWeight(managerNodes, HopeTime.DAWN, percentage);
+        makeManagerWeightAndHopeTime(managerNodes, HopeTime.DAWN, percentage);
 
         //1. SETUP  변수값 저장
         // - 가중치 설정
@@ -92,13 +92,13 @@ public class AutoScheduling {
         return managerNode;
     }
 
-    public LinkedHashMap<Integer, Manager> makeManagerWeight(LinkedHashMap<Integer, Manager> managerNodes,
-                                                             HopeTime hopeTime, List<PercentageOfManagerWeights> percentage) {
+    public LinkedHashMap<Integer, Manager> makeManagerWeightAndHopeTime(LinkedHashMap<Integer, Manager> managerNodes,
+                                                                        HopeTime hopeTime, List<PercentageOfManagerWeights> percentage) {
         List<Tuple> joinDateByHopeTime = userService.findJoinDateByHopeTime(hopeTime.getStart_time());
 
         int count = joinDateByHopeTime.size();
-        Integer high = percentage.get(0).getId().getHigh();
-        Integer middle = percentage.get(0).getId().getMiddle();
+        Integer high = 50/*percentage.get(0).getId().getHigh()*/;
+        Integer middle = 25/*percentage.get(0).getId().getMiddle()*/;
 
         long highManager = Math.round(count * high * 0.01);
         long middleManager = Math.round(count * middle * 0.01) + highManager;
@@ -108,6 +108,11 @@ public class AutoScheduling {
             Tuple tuple = joinDateByHopeTime.get(i);
             Integer code = tuple.get(user.code);
             Manager manager = managerNodes.get(code);
+
+            List<HopeTime> hopeTimeList = manager.getHopeTimeList();
+            hopeTimeList.add(hopeTime);
+
+            manager.setHopeTimeList(hopeTimeList);
             manager.setWeight(3);
         }
 
@@ -115,6 +120,11 @@ public class AutoScheduling {
             Tuple tuple = joinDateByHopeTime.get(i);
             Integer code = tuple.get(user.code);
             Manager manager = managerNodes.get(code);
+
+            List<HopeTime> hopeTimeList = manager.getHopeTimeList();
+            hopeTimeList.add(hopeTime);
+
+            manager.setHopeTimeList(hopeTimeList);
             manager.setWeight(2);
         }
 
@@ -122,10 +132,16 @@ public class AutoScheduling {
             Tuple tuple = joinDateByHopeTime.get(i);
             Integer code = tuple.get(user.code);
             Manager manager = managerNodes.get(code);
+
+            List<HopeTime> hopeTimeList = manager.getHopeTimeList();
+            hopeTimeList.add(hopeTime);
+
+            manager.setHopeTimeList(hopeTimeList);
             manager.setWeight(1);
         }
 
         return managerNodes;
     }
+
 }
 

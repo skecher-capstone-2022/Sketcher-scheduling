@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import sketcher.scheduling.domain.ManagerHopeTime;
+import sketcher.scheduling.object.HopeTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Manager {
     private Integer code;
-    private List<ManagerHopeTime> hopeTimeList = new ArrayList<>();
+    private List<HopeTime> hopeTimeList = new ArrayList<>();
     private Integer hopeTimeCount;
     private Integer totalAssignTime;
     private Integer dayAssignTime;
@@ -26,7 +27,7 @@ public class Manager {
     }
 
 
-    public Manager(Integer code, List<ManagerHopeTime> hopeTimeList, Integer hopeTimeCount, Integer totalAssignTime, Integer dayAssignTime, Integer weight) {
+    public Manager(Integer code, List<HopeTime> hopeTimeList, Integer hopeTimeCount, Integer totalAssignTime, Integer dayAssignTime, Integer weight) {
         this.code = code;
         this.hopeTimeList = hopeTimeList;
         this.hopeTimeCount = hopeTimeCount;
