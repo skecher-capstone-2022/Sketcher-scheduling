@@ -39,7 +39,7 @@ public class AutoScheduling {
         List<EstimatedNumOfCardsPerHour> cards = estimatedNumOfCardsPerHourRepository.findAll();
         List<PercentageOfManagerWeights> percentage = percentageOfManagerWeightsRepository.findAll();
 
-        LinkedHashMap<Integer, Manager> managerNodes = makeManagerNode(userCode, userCurrentTime);
+        LinkedHashMap<Integer, Manager> managerNodes = makeManagerNode(userCode, userCurrentTime, hopeTimeList);
 
         int totalCardValueSum = 0;
         for (EstimatedNumOfCardsPerHour card : cards) {
@@ -156,7 +156,7 @@ public class AutoScheduling {
         }
     }
 
-    public LinkedHashMap<Integer, Manager> makeManagerNode(int[] userCode, int[] userCurrentTime) {
+    public LinkedHashMap<Integer, Manager> makeManagerNode(int[] userCode, int[] userCurrentTime, List<List<Integer>> userHopeTimeList) {
         LinkedHashMap<Integer, Manager> managerNode = new LinkedHashMap<>();
 
         for (int i = 0; i < userCode.length; i++) {
@@ -164,8 +164,17 @@ public class AutoScheduling {
             manager.setCode(userCode[i]);
             manager.setTotalAssignTime(userCurrentTime[i]);
 
+            List<Integer> startTimeList = userHopeTimeList.get(i);
             List<HopeTime> hopeTimeList = manager.getHopeTimeList();
-            hopeTimeList.add(HopeTime.EVENING);
+
+            for (Integer startTime : startTimeList) {
+                for (HopeTime hopeTime : HopeTime.values()) {
+                    if (startTime == hopeTime.getStart_time()) {
+                        hopeTimeList.add(hopeTime);
+                        break;
+                    }
+                }
+            }
 
             manager.setHopeTimeList(hopeTimeList);
             managerNode.put(userCode[i], manager);
@@ -215,9 +224,9 @@ public class AutoScheduling {
             managerList.add(manager);
 
             for (Manager manager1 : managerList) {
-                System.out.print(">>>> manager"+manager.getCode()+" ");
+                System.out.print(">>>> manager" + manager.getCode() + " ");
                 for (HopeTime time : manager1.getHopeTimeList()) {
-                    System.out.println("hopetime>>>>>>>>"+time);
+                    System.out.println("hopetime>>>>>>>>" + time);
                 }
             }
         }
@@ -273,7 +282,7 @@ public class AutoScheduling {
             if (alreadyExistingScheduleNode != null) {            // 조건3. 이미 해당 매니저가 동시간대에 배정되어 있음
                 // 이미 배정된 매니저가 managerWeightFlag=false이고, 현재 스케줄이 managerWeightFlag=true인 경우
                 if (checkSwapping(alreadyExistingScheduleNode, scheduleNode)) {
-                    System.out.println(alreadyExistingScheduleNode.getId()+"<->"+scheduleNode.getTime()+"스와핑됨!");
+                    System.out.println(alreadyExistingScheduleNode.getId() + "<->" + scheduleNode.getTime() + "스와핑됨!");
                     alreadyExistingScheduleNode.setManager(null);
                     manager.updateAssignScheduleList(alreadyExistingScheduleNode, scheduleNode);
                     scheduleNode.setManager(manager);
