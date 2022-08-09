@@ -21,14 +21,12 @@ import java.util.stream.IntStream;
 @RequiredArgsConstructor
 @NoArgsConstructor
 public class AutoSchedulingTwo {
-
-
     private final ManagerHopeTimeService managerHopeTimeService;
     private final UserService userService;
     private final EstimatedNumOfCardsPerHourRepository estimatedNumOfCardsPerHourRepository;
 
 
-//    private static int[] time = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23};
+    //    private static int[] time = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23};
 //    private static int[] value = {65, 0, 0, 93, 195, 222, 289, 181, 124, 271, 178, 89}; // 각각 0, 2 ,4, 6, 8, 10, 12, 14, 16, 18, 20, 22
     private static int[] value; // 각각 0, 2 ,4, 6, 8, 10, 12, 14, 16, 18, 20, 22
     private static ArrayList<Integer>[] hopeTime;
@@ -89,7 +87,7 @@ public class AutoSchedulingTwo {
             }
         }
         for (int i = 0; i < Cards.size(); i++) {
-             value[i] =  Cards.get(i).getNumOfCards();
+            value[i] =  Cards.get(i).getNumOfCards();
         }
 
 
@@ -435,52 +433,52 @@ public class AutoSchedulingTwo {
     }
 
 
-        private int scheduleNodeLogic ( int j, int k){
+    private int scheduleNodeLogic ( int j, int k){
 
-            if (value[j] == 0)
-                k = 0;
-            else if (value[j] < 30)
-                k = 1;
-            else if (value[j] >= 30 && value[j] < 60)
-                k = 2;
-            else if (value[j] >= 60 && value[j] < 90)
-                k = 3;
-            else if (value[j] >= 90 && value[j] < 120)
-                k = 4;
-            else if (value[j] >= 120 && value[j] < 150)
-                k = 5;
-            else if (value[j] >= 150 && value[j] < 180)
-                k = 6;
-            else if (value[j] >= 180 && value[j] < 210)
-                k = 7;
-            else if (value[j] >= 210 && value[j] < 240)
-                k = 8;
-            else if (value[j] >= 240 && value[j] < 270)
-                k = 9;
-            else if (value[j] >= 270 && value[j] <= 300)
-                k = 10;
-            return k;
-        }
+        if (value[j] == 0)
+            k = 0;
+        else if (value[j] < 30)
+            k = 1;
+        else if (value[j] >= 30 && value[j] < 60)
+            k = 2;
+        else if (value[j] >= 60 && value[j] < 90)
+            k = 3;
+        else if (value[j] >= 90 && value[j] < 120)
+            k = 4;
+        else if (value[j] >= 120 && value[j] < 150)
+            k = 5;
+        else if (value[j] >= 150 && value[j] < 180)
+            k = 6;
+        else if (value[j] >= 180 && value[j] < 210)
+            k = 7;
+        else if (value[j] >= 210 && value[j] < 240)
+            k = 8;
+        else if (value[j] >= 240 && value[j] < 270)
+            k = 9;
+        else if (value[j] >= 270 && value[j] <= 300)
+            k = 10;
+        return k;
+    }
 
-        private void scheduleWeightLogic () {
-            for (int i = 0; i < value.length; i++) {
-                int weight = 0;
-                if (value[i] <= 150) {
-                    weight = 1;
-                    scheduleWeight[i] = weight;
-                } else if (value[i] > 150 && value[i] <= 210) {
-                    weight = 2;
-                    scheduleWeight[i] = weight;
-                } else if (value[i] > 210 && value[i] <= 300) {
-                    weight = 3;
-                    scheduleWeight[i] = weight;
-                }
+    private void scheduleWeightLogic () {
+        for (int i = 0; i < value.length; i++) {
+            int weight = 0;
+            if (value[i] <= 150) {
+                weight = 1;
+                scheduleWeight[i] = weight;
+            } else if (value[i] > 150 && value[i] <= 210) {
+                weight = 2;
+                scheduleWeight[i] = weight;
+            } else if (value[i] > 210 && value[i] <= 300) {
+                weight = 3;
+                scheduleWeight[i] = weight;
             }
         }
+    }
 
-        private void managerWeightLogic ( int managerSize){
-            for (int i = 1; i < managerSize; i++) {
-                if(i < 40)
+    private void managerWeightLogic ( int managerSize){
+        for (int i = 1; i < managerSize; i++) {
+            if(i < 40)
                 if (i % 2 == 0)
                     managerWeight[i] = 3;
                 else if(i % 2 == 1)
@@ -489,7 +487,7 @@ public class AutoSchedulingTwo {
                     managerWeight[i] = 1;
                 else
                     managerWeight[i] = 2;
-            }
         }
-
     }
+
+}

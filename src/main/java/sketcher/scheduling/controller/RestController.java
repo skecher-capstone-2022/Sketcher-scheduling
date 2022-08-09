@@ -6,11 +6,9 @@ import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.*;
 import sketcher.scheduling.algorithm.AutoSchedulingTwo;
 import sketcher.scheduling.algorithm.ResultScheduling;
-import sketcher.scheduling.domain.EstimatedNumOfCardsPerHour;
 import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.ManagerAssignScheduleDto;
-import sketcher.scheduling.repository.EstimatedNumOfCardsPerHourRepository;
 import sketcher.scheduling.repository.UserRepository;
 import sketcher.scheduling.service.KakaoService;
 import sketcher.scheduling.service.ManagerAssignScheduleService;
@@ -35,8 +33,6 @@ public class RestController {
     private final KakaoService kakaoService;
 
     private final ManagerHopeTimeService hopeTimeService;
-
-    private final EstimatedNumOfCardsPerHourRepository estimatedNumOfCardsPerHourRepository;
 
     @GetMapping(value = "/find_All_Manager")
     public List<User> findAllManager() {
@@ -74,7 +70,6 @@ public class RestController {
         return param.size();
     }
 
-    //TODO JSON으로 희망시간 넘기기
     @RequestMapping(value = "/current_status_info", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
     public JSONObject currentStatusInfo(@RequestBody List<Map<String, Object>> param) throws ParseException {
         String date = "";
@@ -94,9 +89,7 @@ public class RestController {
                 day = (String) stringObjectMap.get("day");
             }
         }
-
-
-        AutoSchedulingTwo autoSchedulingTwo = new AutoSchedulingTwo();
+        AutoSchedulingTwo autoSchedulingTwo = new AutoSchedulingTwo(hopeTimeService, userService);
         ArrayList<ResultScheduling> schedulings = autoSchedulingTwo.runAlgorithm(usercode, userCurrentTime);
 
         JSONObject schedulingJsonObj = new JSONObject();
@@ -145,7 +138,7 @@ public class RestController {
         HashMap<String, Object> userInfo = kakaoService.getUserInfo(access_Token);
         boolean isSendMessage = kakaoService.isSendMessage(access_Token);
         HashMap<String, Object> friendsId = kakaoService.getFriendsList(access_Token);
-//        boolean isSendMessageToFriends = kakaoService.isSendMessageToFriends(access_Token, friendsId);
+        boolean isSendMessageToFriends = kakaoService.isSendMessageToFriends(access_Token, friendsId);
         // 친구에게 메시지 보내기는 월 전송 제한이 있음 -> 주석 처리
 
 //        session.setAttribute("refresh_Token", refresh_Token);

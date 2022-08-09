@@ -1,26 +1,32 @@
 package sketcher.scheduling.algorithm;
 
-import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
+import sketcher.scheduling.domain.EstimatedNumOfCardsPerHour;
+import sketcher.scheduling.domain.PercentageOfManagerWeights;
 import sketcher.scheduling.repository.EstimatedNumOfCardsPerHourRepository;
+import sketcher.scheduling.repository.PercentageOfManagerWeightsRepository;
+import org.springframework.stereotype.Component;
 import sketcher.scheduling.service.ManagerHopeTimeService;
 import sketcher.scheduling.service.UserService;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class AutoScheduling {
-    public static final int TIME_LENGTH = 24;
-
+    private final UserService userService;
     private final ManagerHopeTimeService managerHopeTimeService;
     private final EstimatedNumOfCardsPerHourRepository estimatedNumOfCardsPerHourRepository;
+    private final PercentageOfManagerWeightsRepository percentageOfManagerWeightsRepository;
 
-    // 생성자 직접 주입
-    public AutoScheduling(ManagerHopeTimeService managerHopeTimeService, EstimatedNumOfCardsPerHourRepository estimatedNumOfCardsPerHourRepository) {
-        this.managerHopeTimeService = managerHopeTimeService;
-        this.estimatedNumOfCardsPerHourRepository = estimatedNumOfCardsPerHourRepository;
-    }
+    public static final int TIME_LENGTH = 24;
 
-    public ArrayList<ResultScheduling> runAlgorithm(int userCode[], int userCurrentTime[]) {
+    public ArrayList<ResultScheduling> runAlgorithm(int userCode[], int userCurrentTime[], int userHopeTime[]) {
+
+        List<EstimatedNumOfCardsPerHour> Cards = estimatedNumOfCardsPerHourRepository.findAll();
+        List<PercentageOfManagerWeights> managerWeights = percentageOfManagerWeightsRepository.findAll();
 
         //1. SETUP  변수값 저장
         // - 가중치 설정
@@ -60,7 +66,19 @@ public class AutoScheduling {
 //            }
 //        }
 
-        return schedulingsResults;
+        return null;
+//        return schedulingsResults;
+
+    }
+
+    public void makeManagerNode(Integer code, Integer hopeStartTime, Integer managerWeight) {
+        Manager manager = new Manager();
+        manager.setCode(code);
+
+    }
+
+    public void makeManagerWeight(List<PercentageOfManagerWeights> managerWeights) {
+
     }
 
 }

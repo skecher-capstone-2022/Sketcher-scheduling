@@ -1,6 +1,7 @@
 package sketcher.scheduling.repository;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -11,12 +12,15 @@ import org.springframework.transaction.annotation.Transactional;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.dto.UserSearchCondition;
+import sketcher.scheduling.object.HopeTime;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.springframework.util.StringUtils.hasText;
 import static sketcher.scheduling.domain.QManagerAssignSchedule.managerAssignSchedule;
+import static sketcher.scheduling.domain.QManagerHopeTime.managerHopeTime;
 import static sketcher.scheduling.domain.QUser.user;
 
 @Repository
@@ -127,6 +131,19 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                 .fetchCount();
     }
 
+    @Override
+    public List<Tuple> findJoinDateByHopeTime() {
+        List<Tuple> content = queryFactory
+                .select(user.code, user.user_joinDate)
+                .from(user)
+                .join(user.managerHopeTimeList, managerHopeTime)
+                .orderBy(user.user_joinDate.desc())
+                .fetch();
+
+
+        return content;
+    }
+
     private Pageable pageableSetting(UserSearchCondition condition, Pageable pageable) {
         String align = condition.getAlign();
         Sort sort = Sort.by(align).descending();
@@ -148,6 +165,10 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1); // page는 index 처럼 0부터 시작 -> 페이지에서 -1 처리
 
         return PageRequest.of(page, 10, sort);
+    }
+
+    private BooleanExpression startTimeEq(Integer startTime) {
+        return hasText(String.valueOf(startTime)) ? managerHopeTime.start_time.eq(startTime) : null;
     }
 
     private BooleanExpression authRoleEq(String authRole) {
