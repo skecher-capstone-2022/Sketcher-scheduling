@@ -51,14 +51,6 @@ public class Manager implements Comparable<Manager> {
         assignScheduleList.add(newNode);
     }
 
-    public boolean isContrainHopeTimes(int time) {
-        for (HopeTime hopeTime : hopeTimeList) {
-            if (time >= hopeTime.getStart_time() && time < hopeTime.getFinish_time())
-                return true;
-        }
-        return false;
-    }
-
     @Override
     public int compareTo(Manager manager) {
         return this.totalAssignTime - manager.totalAssignTime;
