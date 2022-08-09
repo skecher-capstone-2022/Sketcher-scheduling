@@ -214,7 +214,7 @@ public class AutoScheduling {
             if (numberOfManagers == 0) numberOfManagers = 1;
 
             int numOfFixedManager = (int) Math.round(numberOfManagers * FIXED_M3_RATIO);
-            
+
             if (card.getNumOfCards() < totalCardValueAvg / 2) {
                 weight = 1;
             } else if (card.getNumOfCards() < totalCardValueAvg * 2) {
@@ -232,10 +232,6 @@ public class AutoScheduling {
                     countOfFixedManager++;
                 }
                 scheduleList.add(new Schedule(numOfCreatedScheduleNode, card.getTime(), weight, managerWeightFlag));
-            }
-
-            for (Schedule schedule : scheduleList) {
-                System.out.println("time : " + schedule.getTime() + "&&");
             }
 
         }
