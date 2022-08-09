@@ -91,6 +91,7 @@ public class RestController {
         }
 //        AutoScheduling autoSchedulingTwo = new AutoScheduling(hopeTimeService, userService);
 //        ArrayList<ResultScheduling> schedulings = autoSchedulingTwo.runAlgorithm(usercode, userCurrentTime);
+
         JSONObject schedulingJsonObj = new JSONObject();
 //
 //        JSONArray selectedDate = new JSONArray();

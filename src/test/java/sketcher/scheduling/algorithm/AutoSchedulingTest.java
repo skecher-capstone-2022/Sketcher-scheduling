@@ -1,5 +1,6 @@
 package sketcher.scheduling.algorithm;
 
+import com.querydsl.core.Tuple;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,23 +10,27 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-import sketcher.scheduling.domain.ManagerHopeTime;
+import sketcher.scheduling.domain.PercentageOfManagerWeights;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.ManagerHopeTimeDto;
 import sketcher.scheduling.dto.UserDto;
+import sketcher.scheduling.object.HopeTime;
+import sketcher.scheduling.repository.PercentageOfManagerWeightsRepository;
 import sketcher.scheduling.repository.UserRepository;
 import sketcher.scheduling.service.ManagerHopeTimeService;
 import sketcher.scheduling.service.UserService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static sketcher.scheduling.domain.QUser.user;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-@Rollback(value = false)
+//@Rollback(value = false)
+@Transactional
 public class AutoSchedulingTest {
 
     @Autowired
@@ -34,7 +39,8 @@ public class AutoSchedulingTest {
     UserService userService;
     @Autowired
     UserRepository userRepository;
-
+    @Autowired
+    PercentageOfManagerWeightsRepository percentageOfManagerWeightsRepository;
 
     int scheduleNodeSize = 21;
     int managerNodeSize = 0;   //근무가능 매니저 수
@@ -64,14 +70,14 @@ public class AutoSchedulingTest {
 
 //        settingUsers();
 
-        List<User> allManager = userService.findAllManager();
-        managerNodeSize = allManager.size();
+//        List<User> allManager = userService.findAllManager();
+//        managerNodeSize = allManager.size();
 
 
         settingScheduleNodes();
-
+//        settingUsers();
         //case1. totalAssignTime을 고려x
-        for (int i = 0; i < managerNodeSize; i++) {
+/*        for (int i = 0; i < managerNodeSize; i++) {
             User user = allManager.get(i);
             int weight = 0;
             int monthValue = user.getUser_joinDate().getMonthValue();
@@ -82,6 +88,7 @@ public class AutoSchedulingTest {
             } else {
                 weight = 3;
             }
+
             List<ManagerHopeTime> managerHopeTimeList = managerHopeTimeService.findManagerHopeTimeByUser(user);
             managerList.add(new Manager(user.getCode(), managerHopeTimeList, managerHopeTimeList.size(),
                     0, 0, weight));
@@ -90,8 +97,70 @@ public class AutoSchedulingTest {
 
         for (Manager manager : managerList) {
             System.out.println(manager.getCode() + " : M" + manager.getWeight() + ", 희망시간 개수 " + manager.getHopeTimeCount());
-        }
+        }*/
     }
+
+    @Test
+    public void makeManagerWeightTest() {
+        int[] userCode = makeUserCodeArray();
+        int[] userCurrent = new int[managerNodeSize];
+
+        List<PercentageOfManagerWeights> percentage = percentageOfManagerWeightsRepository.findAll();
+        LinkedHashMap<Integer, Manager> managerNode = makeManagerNode(userCode, userCurrent);
+
+        makeManagerWeight(managerNode, HopeTime.DAWN, percentage);
+    }
+
+    public LinkedHashMap<Integer, Manager> makeManagerNode(int[] userCode, int[] userCurrentTime) {
+        LinkedHashMap<Integer, Manager> managerNode = new LinkedHashMap<>();
+
+        for (int i = 0; i < userCode.length; i++) {
+            Manager manager = new Manager();
+            manager.setCode(userCode[i]);
+            manager.setTotalAssignTime(0);
+
+            managerNode.put(userCode[i], manager);
+        }
+
+        return managerNode;
+    }
+
+    public LinkedHashMap<Integer, Manager> makeManagerWeight(LinkedHashMap<Integer, Manager> managerNodes,
+                                                             HopeTime hopeTime, List<PercentageOfManagerWeights> percentage) {
+        List<Tuple> joinDateByHopeTime = userService.findJoinDateByHopeTime(hopeTime.getStart_time());
+
+        int count = joinDateByHopeTime.size();
+        Integer high = 50/*percentage.get(0).getId().getHigh()*/;
+        Integer middle = 25/*percentage.get(0).getId().getMiddle()*/;
+
+        long highManager = Math.round(count * high * 0.01);
+        long middleManager = Math.round(count * middle * 0.01) + highManager;
+
+        int i;
+        for (i = 0; i < highManager; i++) {
+            Tuple tuple = joinDateByHopeTime.get(i);
+            Integer code = tuple.get(user.code);
+            Manager manager = managerNodes.get(code);
+            manager.setWeight(3);
+        }
+
+        for (; i < middleManager; i++) {
+            Tuple tuple = joinDateByHopeTime.get(i);
+            Integer code = tuple.get(user.code);
+            Manager manager = managerNodes.get(code);
+            manager.setWeight(2);
+        }
+
+        for (; i < count; i++) {
+            Tuple tuple = joinDateByHopeTime.get(i);
+            Integer code = tuple.get(user.code);
+            Manager manager = managerNodes.get(code);
+            manager.setWeight(1);
+        }
+
+        return managerNodes;
+    }
+
 
     private void settingScheduleNodes() {
         Integer tempTime = 13;
@@ -117,6 +186,7 @@ public class AutoSchedulingTest {
             managerWeightFlag = false;
         }
     }
+
 
     private void settingUsers() {
         LocalDateTime date1 = LocalDateTime.of(2022, 3, 10, 1, 00);
@@ -144,7 +214,8 @@ public class AutoSchedulingTest {
                     .managerScore(5.0)
                     .build();
             String user1 = userService.saveUser(userA);
-            User userT = userRepository.findById(user1).get();
+//            User userT = userA.toEntity();
+            User userT = userRepository.findById("user" + (i + 1)).get();
 
             if (i < 5) {
                 setHopeTime(userT, 0, 6);
@@ -168,6 +239,19 @@ public class AutoSchedulingTest {
             }
         }
 
+    }
+
+
+    int[] makeUserCodeArray() {
+        List<User> allManager = userService.findAllManager();
+        int[] userCode = new int[allManager.size()];
+
+        for (int i = 0; i < allManager.size(); i++) {
+            User user = allManager.get(i);
+            userCode[i] = user.getCode();
+        }
+
+        return userCode;
     }
 
     void setHopeTime(User userT, int i2, int i3) {
@@ -206,7 +290,7 @@ public class AutoSchedulingTest {
                 }
             }
             if (alreadyExistingScheduleNode == null || dfs(alreadyExistingScheduleNode)) {
-                manager.updateAssignScheduleList(alreadyExistingScheduleNode,scheduleNode);
+                manager.updateAssignScheduleList(alreadyExistingScheduleNode, scheduleNode);
                 scheduleNode.setManager(manager);
                 return true;
             }

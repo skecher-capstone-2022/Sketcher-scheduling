@@ -1,6 +1,7 @@
 package sketcher.scheduling.algorithm;
 
 import com.querydsl.core.Tuple;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import sketcher.scheduling.domain.EstimatedNumOfCardsPerHour;
 import sketcher.scheduling.domain.PercentageOfManagerWeights;
@@ -22,7 +23,6 @@ import static sketcher.scheduling.domain.QUser.user;
 @RequiredArgsConstructor
 public class AutoScheduling {
     private final UserService userService;
-    private final ManagerHopeTimeService managerHopeTimeService;
     private final EstimatedNumOfCardsPerHourRepository estimatedNumOfCardsPerHourRepository;
     private final PercentageOfManagerWeightsRepository percentageOfManagerWeightsRepository;
 
@@ -92,7 +92,8 @@ public class AutoScheduling {
         return managerNode;
     }
 
-    public LinkedHashMap<Integer, Manager> makeManagerWeight(LinkedHashMap<Integer, Manager> managerNodes, HopeTime hopeTime, List<PercentageOfManagerWeights> percentage) {
+    public LinkedHashMap<Integer, Manager> makeManagerWeight(LinkedHashMap<Integer, Manager> managerNodes,
+                                                             HopeTime hopeTime, List<PercentageOfManagerWeights> percentage) {
         List<Tuple> joinDateByHopeTime = userService.findJoinDateByHopeTime(hopeTime.getStart_time());
 
         int count = joinDateByHopeTime.size();
@@ -100,7 +101,7 @@ public class AutoScheduling {
         Integer middle = percentage.get(0).getId().getMiddle();
 
         long highManager = Math.round(count * high * 0.01);
-        long middleManager = Math.round(count * middle * 0.01);
+        long middleManager = Math.round(count * middle * 0.01) + highManager;
 
         int i;
         for (i = 0; i < highManager; i++) {
