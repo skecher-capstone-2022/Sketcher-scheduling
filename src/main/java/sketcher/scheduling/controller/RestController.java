@@ -11,6 +11,7 @@ import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.ManagerAssignScheduleDto;
 import sketcher.scheduling.repository.EstimatedNumOfCardsPerHourRepository;
+import sketcher.scheduling.repository.ManagerHopeTimeRepository;
 import sketcher.scheduling.repository.UserRepository;
 import sketcher.scheduling.service.KakaoService;
 import sketcher.scheduling.service.ManagerAssignScheduleService;
@@ -36,16 +37,28 @@ public class RestController {
 
     private final ManagerHopeTimeService hopeTimeService;
 
+    private final ManagerHopeTimeRepository managerHopeTimeRepository;
+
     private final EstimatedNumOfCardsPerHourRepository estimatedNumOfCardsPerHourRepository;
 
-    @GetMapping(value = "/find_All_Manager")
-    public List<User> findAllManager() {
-        return userRepository.findAllManager();
+//    @GetMapping(value = "/find_All_Manager")
+//    public List<User> findAllManager() {
+//        return userRepository.findAllManager();
+//    }
+
+    @GetMapping(value = "/find_authRole_Manager")
+    public List<User> findAuthRoleManager(){
+        return userRepository.findAuthRoleManager();
     }
 
-    @GetMapping(value = "/find_All_Manager_Hope_Time")
-    public List<ManagerHopeTime> findAllManagerHopeTime() {
-        return hopeTimeService.findAll();
+//    @GetMapping(value = "/find_All_Manager_Hope_Time")
+//    public List<ManagerHopeTime> findAllManagerHopeTime() {
+//        return hopeTimeService.findAll();
+//    }
+
+    @GetMapping(value = "/find_authRole_Manager_Hope_Time")
+    public List<ManagerHopeTime> findAuthRoleManagerHopeTime(){
+        return managerHopeTimeRepository.findAuthRoleManagerHopeTime();
     }
 
     @RequestMapping(value = "/create_assign_schedule", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)

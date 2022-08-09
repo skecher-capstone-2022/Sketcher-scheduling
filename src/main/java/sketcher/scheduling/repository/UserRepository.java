@@ -29,4 +29,7 @@ public interface UserRepository extends JpaRepository<User , Integer> {
 
 	@Query("select u from User u where u.dropoutReqCheck='Y'")
     List<User> dropoutUserList();
+
+    @Query("select u from User u where u.authRole='MANAGER'")
+    List<User> findAuthRoleManager();
 }
