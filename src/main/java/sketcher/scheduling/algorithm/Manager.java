@@ -20,6 +20,7 @@ public class Manager {
     private Integer weight;
     private boolean previousAssignFlag;
     private List<Schedule> assignScheduleList;
+    private Integer priorityScore;
 
     public void makePriority() {
 
@@ -45,10 +46,29 @@ public class Manager {
         return null;
     }
 
-    public void updateAssignScheduleList(Schedule currentNode,Schedule newNode) {
+    public void updateAssignScheduleList(Schedule currentNode, Schedule newNode) {
         if (currentNode != null) {
             assignScheduleList.remove(currentNode);
         }
         assignScheduleList.add(newNode);
     }
+
+    public boolean isContrainHopeTimes(int time) {
+        for (ManagerHopeTime hopeTime : hopeTimeList) {
+            if (time >= 0 && time < 6 && hopeTime.getStart_time() == 0) {
+                return true;
+            }
+            if (time >= 6 && time < 12 && hopeTime.getStart_time() == 6) {
+                return true;
+            }
+            if (time >= 12 && time < 18 && hopeTime.getStart_time() == 12) {
+                return true;
+            }
+            if (time >= 18 && time < 24 && hopeTime.getStart_time() == 18) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -46,17 +45,9 @@ public class AutoSchedulingTest {
     * S2 - 4
     * S1 - 1
     * */
-    int scheduleSectionSize[] = {16, 4, 1};
+    int scheduleSectionSize[] = {1, 4, 16};
 
     List<Manager> managerList = new ArrayList<>();
-    //Integer code, List<ManagerHopeTime> hopeTimeList, Integer hopeTimeCount, Integer totalAssignTime, Integer dayAssignTime, Integer weight
-    /*
-     * C타임 / ManagerHopeTime(0,)
-     * C,D타임
-     * B,C,D타임
-     * A,B,C,D타임
-     * */
-
 
     @Before
     @Transactional
@@ -96,7 +87,7 @@ public class AutoSchedulingTest {
     private void settingScheduleNodes() {
         Integer tempTime = 13;
 
-        Integer weightType[] = {3, 2, 1};
+        Integer weightType[] = {1, 2, 3};
         boolean managerWeightFlag = false;
 
         int count = 0;      //변수값 세팅시에 scheduleSectionSize만큼 배정했는지 확인하기 위한 카운팅 변수
@@ -104,7 +95,7 @@ public class AutoSchedulingTest {
 
 
         for (int i = 1; i <= scheduleNodeSize; i++) {
-            if (weightType[pointer] == 3) {
+            if (weightType[pointer] == 3 && i % 2 == 0) {
                 managerWeightFlag = true;
             }
             scheduleList.add(new Schedule(i, tempTime, weightType[pointer], managerWeightFlag));
@@ -186,6 +177,7 @@ public class AutoSchedulingTest {
         for (int i = 0; i < scheduleNodeSize; i++) {
             if (dfs(scheduleList.get(i))) count++;   //매칭 개수
         }
+
         System.out.println("matching count :" + count);
         for (Schedule schedule : scheduleList) {
             System.out.println(schedule.getId() + " : " + schedule.getTime() + "시, S" + schedule.getWeight() + ", M3매니저 필수 여부 " + schedule.isManagerWeightFlag() + ", 배정매니저번호 " + schedule.getManager().getCode());
@@ -197,19 +189,22 @@ public class AutoSchedulingTest {
 //        for (int i = 0; i < scheduleSectionSize[pointer]; i++) {
         for (Manager manager : managerList) {
             Schedule alreadyExistingScheduleNode = manager.findScheduleByTime(scheduleNode.getTime());
-            if (alreadyExistingScheduleNode != null)
+            if (!manager.isContrainHopeTimes(scheduleNode.getTime())) { //조건1. 희망시간 포함 여부
                 continue;
-            //alreadyExistingScheduleNode == null인 경우
-            if (scheduleNode.isManagerWeightFlag()) {    //무조건 매니저는 M3여야 함
-                if (manager.getWeight() != 3) {
-                    continue;
-                }
+            }
+            if (alreadyExistingScheduleNode != null) {            // 조건2. 이미 해당 매니저가 동시간대에 배정되어 있음
+                continue;
+            }
+            //매니저가 해당 시간대에 아직 배정되지 않은 경우 (alreadyExistingScheduleNode == null인 경우)
+            if (scheduleNode.isManagerWeightFlag() && manager.getWeight() != 3) {
+                continue;                                   //조건3. managerWeightFlag가 true라면 매니저는 반드시 M3여야 함
             }
             if (alreadyExistingScheduleNode == null || dfs(alreadyExistingScheduleNode)) {
-                manager.updateAssignScheduleList(alreadyExistingScheduleNode,scheduleNode);
+                manager.updateAssignScheduleList(alreadyExistingScheduleNode, scheduleNode);
                 scheduleNode.setManager(manager);
                 return true;
             }
+//isPriorityScoreHigherThanExistingeManager
         }
         return false;
     }
@@ -227,24 +222,3 @@ public class AutoSchedulingTest {
         return pointer;
     }
 }
-
-//    /*
-//#define MAX 1001
-//
-//vector<int> a[MAX];
-//int d[MAX];
-//bool c[MAX];
-//int n, m;
-//
-//bool dfs(int x) {
-//	for(int i = 0; i < a[x].size(); i++) {
-//		int t = a[x][i];
-//		if(c[t]) continue;
-//		c[t] = true;
-//		if(d[t] == 0 || dfs(d[t])) {
-//			d[t] = x;
-//			return true;
-//		}
-//	}
-//	return false;
-//}
