@@ -12,10 +12,7 @@ import sketcher.scheduling.repository.PercentageOfManagerWeightsRepository;
 import org.springframework.stereotype.Component;
 import sketcher.scheduling.service.UserService;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 import static sketcher.scheduling.domain.QUser.user;
 
@@ -155,12 +152,18 @@ public class AutoScheduling {
         long middleManager = Math.round(count * middle * 0.01) + highManager;
         long lowManager = count;
 
+        for (Map.Entry<Integer, Manager> integerManagerEntry : managerNodes.entrySet()) {
+            System.out.println(">>>>>>>"+integerManagerEntry.getKey() + " : "+integerManagerEntry.getValue());
+        }
 
         int i;
         for (i = 0; i < highManager; i++) {
             Tuple tuple = joinDateByHopeTime.get(i);
             Integer code = tuple.get(user.code);
+            System.out.println("@@@@@@@@@ code : "+code);
             Manager manager = managerNodes.get(code);
+            System.out.println("@@@@@@@@@ manager : "+manager);
+
             manager.setWeight(3);
         }
 
