@@ -7,10 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import sketcher.scheduling.domain.ManagerAssignSchedule;
 import sketcher.scheduling.domain.ManagerHopeTime;
-import sketcher.scheduling.domain.Schedule;
-import sketcher.scheduling.domain.User;
+import sketcher.scheduling.domain.Schedule;import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.*;
-import sketcher.scheduling.repository.ManagerHopeTimeRepository;
 import sketcher.scheduling.repository.UserRepository;
 import sketcher.scheduling.service.*;
 
@@ -36,8 +34,6 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
     ManagerAssignScheduleService managerAssignScheduleService;
     @Autowired
     ScheduleUpdateReqService updateReqService;
-    @Autowired
-    ManagerHopeTimeRepository managerHopeTimeRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -204,6 +200,7 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
 //
     }
 
+
     private void setHopeTime(User userT, int i2, int i3) {
         ManagerHopeTimeDto hopeC = ManagerHopeTimeDto.builder()
                 .start_time(i2)
@@ -212,5 +209,7 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
                 .build();
         managerHopeTimeService.saveManagerHopeTime(hopeC);
     }
+
+
 
 }

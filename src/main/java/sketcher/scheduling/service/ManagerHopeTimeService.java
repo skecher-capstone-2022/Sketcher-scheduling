@@ -16,6 +16,7 @@ import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.repository.ManagerHopeTimeRepository;
 import sketcher.scheduling.repository.ManagerHopeTimeRepositoryCustomImpl;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +35,10 @@ public class ManagerHopeTimeService {
 
     public List<ManagerHopeTime> findManagerHopeTimeByUser(User user){
         return user.getManagerHopeTimeList();
+    }
+
+    public HashMap<String, Long> CountByHopeTime() {
+        return managerHopeTimeRepositoryCustom.CountByHopeTime();
     }
 
 

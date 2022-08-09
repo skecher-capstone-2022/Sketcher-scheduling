@@ -25,7 +25,6 @@ public class ScheduleUpdateReqRepositoryCustomImpl implements ScheduleUpdateReqR
 
     private final ScheduleUpdateReqRepository updateReqRepository;
     private final JPAQueryFactory queryFactory;
-
     LocalDateTimeConfig ldt = new LocalDateTimeConfig();
 
     @Override

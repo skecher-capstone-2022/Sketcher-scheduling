@@ -111,8 +111,7 @@
                                         </div>
                                         <div class="info_response">
                                             <span class="bold_span" style="font-size:25px; color: #336699;">[[${notAcceptUpdateReq}]]건</span>
-                                            / 총
-                                            [[${updateReq}]] 건<br/>
+                                            / 총 [[${updateReq}]] 건<br/>
                                             <input type="hidden" id="notAcceptUpdateReq"
                                                    th:value="${notAcceptUpdateReq}">
                                             <input type="hidden" id="updateReq" th:value="${updateReq}">
@@ -129,7 +128,7 @@
                                     <h2 style="text-align:center">희망 근무대별 매니저 추이
                                     </h2>
                                     <div>
-                                        <img src="/img/bar_chart.png" height="100%" width="100%"/>
+                                        <canvas id="hopeTimeChart" width="350" height="300"></canvas>
                                     </div>
                                 </div>
 
@@ -364,6 +363,48 @@
             var ctx = document.getElementById("responseChart").getContext("2d");
             var responseChart = new Chart(ctx, config2);
         }
+    </script>
+    <script type="text/javascript">
+        let dawn = [[${countHopeTime.get("새벽")}]]
+        let morning = [[${countHopeTime.get("오전")}]]
+        let afternoon = [[${countHopeTime.get("오후")}]]
+        let evening = [[${countHopeTime.get("저녁")}]]
+
+        var ctx = document.getElementById('hopeTimeChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            options: {
+                legend: {
+                    display: false
+                },
+                scales: { //x,y축 설정
+                    yAxes: [{
+                        ticks: {
+                            stepSize: 10, //y축 간격
+                            suggestedMin: 10,//y축 최소 값
+                            suggestedMax: 40,//y축 최대값
+                        },
+                        gridLines: {//y축 라인 스타일 설정
+                            borderDash: [2, 2],
+                            borderDashOffset: 0.2
+                        }
+                    }],
+                    xAxes: [{//x축 설정
+                        ticks: {
+
+                        }
+                    }]
+                }
+            },
+            data: {
+                labels: ['새벽', '오전', '오후', '저녁'],
+                datasets: [{
+                    backgroundColor: '#FF5757',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: [dawn, morning, afternoon, evening]
+                }]
+            },
+        });
     </script>
 
     <script type="text/JavaScript">
