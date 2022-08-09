@@ -93,7 +93,7 @@ public class UserService implements UserDetailsService {
         //패스워드 인코딩
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
-        user.setUser_joinDate(LocalDateTime.now());
+//        user.setUser_joinDate(LocalDateTime.now());
         user.setManagerScore(0.0);
         user.setDropoutReqCheck('N');
         return userRepository.save(user.toEntity()).getId();

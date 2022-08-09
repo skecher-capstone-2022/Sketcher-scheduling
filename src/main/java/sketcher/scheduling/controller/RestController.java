@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.*;
-import sketcher.scheduling.algorithm.AutoSchedulingTwo;
+import sketcher.scheduling.algorithm.AutoScheduling;
 import sketcher.scheduling.algorithm.ResultScheduling;
 import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.domain.User;
@@ -89,44 +89,44 @@ public class RestController {
                 day = (String) stringObjectMap.get("day");
             }
         }
-        AutoSchedulingTwo autoSchedulingTwo = new AutoSchedulingTwo(hopeTimeService, userService);
-        ArrayList<ResultScheduling> schedulings = autoSchedulingTwo.runAlgorithm(usercode, userCurrentTime);
-
+//        AutoScheduling autoSchedulingTwo = new AutoScheduling(hopeTimeService, userService);
+//        ArrayList<ResultScheduling> schedulings = autoSchedulingTwo.runAlgorithm(usercode, userCurrentTime);
+//
         JSONObject schedulingJsonObj = new JSONObject();
-
-        JSONArray selectedDate = new JSONArray();
-        JSONArray scheduleJsonList = new JSONArray();
-        JSONArray userJsonList = new JSONArray();
-
-        HashMap<Integer, Integer> userList = new HashMap<>();
-
-        JSONObject dateInfo = new JSONObject();
-        dateInfo.put("date", date);
-        dateInfo.put("day", day);
-        selectedDate.add(dateInfo);
-        schedulingJsonObj.put("date", selectedDate);
-
-        for (ResultScheduling scheduling : schedulings) {
-            JSONObject scheduleItem = new JSONObject();
-            scheduleItem.put("scheduleStartTime", scheduling.startTime);
-            scheduleItem.put("userCode", scheduling.userCode);
-            scheduleJsonList.add(scheduleItem);
-//            System.out.println(scheduling.startTime+" / "+scheduling.userCode+"번 매니저 / 현재 배정시간 : "+scheduling.currentTime);
-            if (!userList.containsKey(scheduling.userCode)) {
-                userList.put(scheduling.userCode, scheduling.currentTime);
-            }
-        }
-
-        schedulingJsonObj.put("scheduleResults", scheduleJsonList);
-
-        for (Map.Entry<Integer, Integer> userStatus : userList.entrySet()) {
-            JSONObject scheduleItem = new JSONObject();
-            scheduleItem.put("userCode", userStatus.getKey());
-            scheduleItem.put("userCurrentTime", userStatus.getValue());
-            userJsonList.add(scheduleItem);
-        }
-
-        schedulingJsonObj.put("userResults", userJsonList);
+//
+//        JSONArray selectedDate = new JSONArray();
+//        JSONArray scheduleJsonList = new JSONArray();
+//        JSONArray userJsonList = new JSONArray();
+//
+//        HashMap<Integer, Integer> userList = new HashMap<>();
+//
+//        JSONObject dateInfo = new JSONObject();
+//        dateInfo.put("date", date);
+//        dateInfo.put("day", day);
+//        selectedDate.add(dateInfo);
+//        schedulingJsonObj.put("date", selectedDate);
+//
+//        for (ResultScheduling scheduling : schedulings) {
+//            JSONObject scheduleItem = new JSONObject();
+//            scheduleItem.put("scheduleStartTime", scheduling.startTime);
+//            scheduleItem.put("userCode", scheduling.userCode);
+//            scheduleJsonList.add(scheduleItem);
+////            System.out.println(scheduling.startTime+" / "+scheduling.userCode+"번 매니저 / 현재 배정시간 : "+scheduling.currentTime);
+//            if (!userList.containsKey(scheduling.userCode)) {
+//                userList.put(scheduling.userCode, scheduling.currentTime);
+//            }
+//        }
+//
+//        schedulingJsonObj.put("scheduleResults", scheduleJsonList);
+//
+//        for (Map.Entry<Integer, Integer> userStatus : userList.entrySet()) {
+//            JSONObject scheduleItem = new JSONObject();
+//            scheduleItem.put("userCode", userStatus.getKey());
+//            scheduleItem.put("userCurrentTime", userStatus.getValue());
+//            userJsonList.add(scheduleItem);
+//        }
+//
+//        schedulingJsonObj.put("userResults", userJsonList);
 
         return schedulingJsonObj;
     }

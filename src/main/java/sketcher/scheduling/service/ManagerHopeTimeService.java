@@ -37,7 +37,7 @@ public class ManagerHopeTimeService {
     }
 
 
-    @Transactional(readOnly = false)
+    @Transactional
     public Integer saveManagerHopeTime(ManagerHopeTimeDto managerHopeTimeDto){
         return managerHopeTimeRepository.save(managerHopeTimeDto.toEntity()).getId();
     }
