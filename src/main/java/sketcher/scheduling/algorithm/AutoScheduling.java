@@ -102,50 +102,24 @@ public class AutoScheduling {
         System.out.println(scheduleListByDAWN.size());
 
 
-        for (Schedule schedule : scheduleListByMORNING) {
-            System.out.print(schedule.getId() + " : " + schedule.getTime() + "시, S" + schedule.getWeight() + ", M3매니저 필수 여부 " + schedule.isManagerWeightFlag() + ", ");
-            if (schedule.getManager() != null) {
-                System.out.println("배정매니저번호 " + schedule.getManager().getCode());
-            } else {
-                System.out.println("배정매니저 없음");
-            }
-        }
-        for (Schedule schedule : scheduleListByAFTERNOON) {
-            System.out.print(schedule.getId() + " : " + schedule.getTime() + "시, S" + schedule.getWeight() + ", M3매니저 필수 여부 " + schedule.isManagerWeightFlag() + ", ");
-            if (schedule.getManager() != null) {
-                System.out.println("배정매니저번호 " + schedule.getManager().getCode());
-            } else {
-                System.out.println("배정매니저 없음");
-            }
-        }
-        for (Schedule schedule : scheduleListByEVENING) {
-            System.out.print(schedule.getId() + " : " + schedule.getTime() + "시, S" + schedule.getWeight() + ", M3매니저 필수 여부 " + schedule.isManagerWeightFlag() + ", ");
-            if (schedule.getManager() != null) {
-                System.out.println("배정매니저번호 " + schedule.getManager().getCode());
-            } else {
-                System.out.println("배정매니저 없음");
-            }
-        }
-        for (Schedule schedule : scheduleListByDAWN) {
-            System.out.print(schedule.getId() + " : " + schedule.getTime() + "시, S" + schedule.getWeight() + ", M3매니저 필수 여부 " + schedule.isManagerWeightFlag() + ", ");
-            if (schedule.getManager() != null) {
-                System.out.println("배정매니저번호 " + schedule.getManager().getCode());
-            } else {
-                System.out.println("배정매니저 없음");
-            }
-        }
+
 
         /*RETURN*/
-//        ArrayList<ResultScheduling> schedulingsResults = new ArrayList<>(); // 타입 지정
-//        for (int i = 0; i < TIME_LENGTH; i++) {
-//            for (int j = 0; j < /*같은 시간대에 배정되는 매니저 수*/; j++) {
-//                schedulingsResults.add(new ResultScheduling(/*startTime*/,/*userCode*/, /*currentTime*/);
-//            }
-//        }
+        ArrayList<ResultScheduling> schedulingsResults = new ArrayList<>(); // 타입 지정
+        createResultSchedulingList(schedulingsResults, scheduleListByMORNING);
+        createResultSchedulingList(schedulingsResults, scheduleListByAFTERNOON);
+        createResultSchedulingList(schedulingsResults, scheduleListByEVENING);
+        createResultSchedulingList(schedulingsResults, scheduleListByDAWN);
 
-        return null;
-//        return schedulingsResults;
+        return schedulingsResults;
+    }
 
+    private void createResultSchedulingList(ArrayList<ResultScheduling> schedulingsResults, List<Schedule> scheduleListByMORNING) {
+        for (Schedule schedule : scheduleListByMORNING) {
+            if (schedule.getManager() != null) {
+                schedulingsResults.add(new ResultScheduling(schedule.getTime(), schedule.getManager().getCode(), schedule.getManager().getTotalAssignTime());
+            }
+        }
     }
 
     private void bipartiteMatching(List<Schedule> scheduleList) {
