@@ -105,7 +105,7 @@ public class AutoSchedulingTest {
         List<PercentageOfManagerWeights> percentage = percentageOfManagerWeightsRepository.findAll();
         LinkedHashMap<Integer, Manager> managerNode = makeManagerNode(userCode, userCurrent);
 
-        makeManagerWeightAndHopeTime(managerNode, HopeTime.DAWN, percentage);
+        makeManagerWeightAndHopeTime(managerNode, HopeTime.AFTERNOON, percentage);
     }
 
     public LinkedHashMap<Integer, Manager> makeManagerNode(int[] userCode, int[] userCurrentTime) {
@@ -115,6 +115,7 @@ public class AutoSchedulingTest {
             Manager manager = new Manager();
             manager.setCode(userCode[i]);
             manager.setTotalAssignTime(0);
+            manager.setDayAssignTime(0);
 
             managerNode.put(userCode[i], manager);
             managerList.add(manager);
@@ -316,12 +317,15 @@ public class AutoSchedulingTest {
 //        for (int i = 0; i < scheduleSectionSize[pointer]; i++) {
         /* 매니저리스트 currentTime 오름차순 정렬 */
         Collections.sort(managerList);
-//        for (Manager manager : managerList) {
-//            System.out.println("매니저번호" + manager.getCode() + " : 현재 배정 시간 : " + manager.getTotalAssignTime());
-//        }
+        for (Manager manager : managerList) {
+            System.out.println("매니저번호" + manager.getCode() + " : 현재 배정 시간 : " + manager.getTotalAssignTime()+" 매니저 가중치 "+manager.getWeight());
+        }
         for (Manager manager : managerList) {
             Schedule alreadyExistingScheduleNode = manager.findScheduleByTime(scheduleNode.getTime());
             if (!manager.isContrainHopeTimes(scheduleNode.getTime())) { //조건1. 희망시간 포함 여부
+                for (HopeTime hopeTime : manager.getHopeTimeList()) {
+                    System.out.println(hopeTime.getStart_time());
+                }
                 continue;
             }
             if (manager.getDayAssignTime() > 3) {   // 조건2. 하루 배정 시간이 3시간이 넘으면 제외

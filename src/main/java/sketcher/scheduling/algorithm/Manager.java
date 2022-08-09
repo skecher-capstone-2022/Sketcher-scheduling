@@ -11,7 +11,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
 public class Manager implements Comparable<Manager> {
     private Integer code;
     private List<HopeTime> hopeTimeList = new ArrayList<>();
@@ -27,14 +26,7 @@ public class Manager implements Comparable<Manager> {
 
     }
 
-
-    public Manager(Integer code, List<HopeTime> hopeTimeList, Integer hopeTimeCount, Integer totalAssignTime, Integer dayAssignTime, Integer weight) {
-        this.code = code;
-        this.hopeTimeList = hopeTimeList;
-        this.hopeTimeCount = hopeTimeCount;
-        this.totalAssignTime = totalAssignTime;
-        this.dayAssignTime = dayAssignTime;
-        this.weight = weight;
+    public Manager() {
         this.assignScheduleList = new ArrayList<>();
     }
 
