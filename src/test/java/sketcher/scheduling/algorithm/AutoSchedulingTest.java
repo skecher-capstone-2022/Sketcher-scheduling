@@ -101,11 +101,12 @@ public class AutoSchedulingTest {
     public void makeManagerWeightTest() {
         int[] userCode = makeUserCodeArray();
         int[] userCurrent = new int[managerNodeSize];
+        Arrays.fill(userCurrent, 0);
 
         List<PercentageOfManagerWeights> percentage = percentageOfManagerWeightsRepository.findAll();
         LinkedHashMap<Integer, Manager> managerNode = makeManagerNode(userCode, userCurrent);
 
-        makeManagerWeightAndHopeTime(managerNode, HopeTime.AFTERNOON, percentage);
+        makeManagerWeight(managerNode, HopeTime.AFTERNOON, percentage);
     }
 
     public LinkedHashMap<Integer, Manager> makeManagerNode(int[] userCode, int[] userCurrentTime) {
@@ -114,37 +115,35 @@ public class AutoSchedulingTest {
         for (int i = 0; i < userCode.length; i++) {
             Manager manager = new Manager();
             manager.setCode(userCode[i]);
-            manager.setTotalAssignTime(0);
-            manager.setDayAssignTime(0);
+            manager.setTotalAssignTime(userCurrentTime[i]);
 
+            List<HopeTime> hopeTimeList = manager.getHopeTimeList();
+            hopeTimeList.add(HopeTime.AFTERNOON);
+
+            manager.setHopeTimeList(hopeTimeList);
             managerNode.put(userCode[i], manager);
-            managerList.add(manager);
         }
 
         return managerNode;
     }
 
-    public LinkedHashMap<Integer, Manager> makeManagerWeightAndHopeTime(LinkedHashMap<Integer, Manager> managerNodes,
-                                                                        HopeTime hopeTime, List<PercentageOfManagerWeights> percentage) {
+    public LinkedHashMap<Integer, Manager> makeManagerWeight(LinkedHashMap<Integer, Manager> managerNodes,
+                                                             HopeTime hopeTime, List<PercentageOfManagerWeights> percentage) {
         List<Tuple> joinDateByHopeTime = userService.findJoinDateByHopeTime(hopeTime.getStart_time());
 
         int count = joinDateByHopeTime.size();
-        Integer high = 50/*percentage.get(0).getId().getHigh()*/;
-        Integer middle = 25/*percentage.get(0).getId().getMiddle()*/;
+        Integer high = percentage.get(0).getId().getHigh();
+        Integer middle = percentage.get(0).getId().getMiddle();
 
         long highManager = Math.round(count * high * 0.01);
         long middleManager = Math.round(count * middle * 0.01) + highManager;
+        long lowManager = count;
 
         int i;
         for (i = 0; i < highManager; i++) {
             Tuple tuple = joinDateByHopeTime.get(i);
             Integer code = tuple.get(user.code);
             Manager manager = managerNodes.get(code);
-
-            List<HopeTime> hopeTimeList = manager.getHopeTimeList();
-            hopeTimeList.add(hopeTime);
-
-            manager.setHopeTimeList(hopeTimeList);
             manager.setWeight(3);
         }
 
@@ -152,23 +151,13 @@ public class AutoSchedulingTest {
             Tuple tuple = joinDateByHopeTime.get(i);
             Integer code = tuple.get(user.code);
             Manager manager = managerNodes.get(code);
-
-            List<HopeTime> hopeTimeList = manager.getHopeTimeList();
-            hopeTimeList.add(hopeTime);
-
-            manager.setHopeTimeList(hopeTimeList);
             manager.setWeight(2);
         }
 
-        for (; i < count; i++) {
+        for (; i < lowManager; i++) {
             Tuple tuple = joinDateByHopeTime.get(i);
             Integer code = tuple.get(user.code);
             Manager manager = managerNodes.get(code);
-
-            List<HopeTime> hopeTimeList = manager.getHopeTimeList();
-            hopeTimeList.add(hopeTime);
-
-            manager.setHopeTimeList(hopeTimeList);
             manager.setWeight(1);
         }
 
@@ -318,7 +307,7 @@ public class AutoSchedulingTest {
         /* 매니저리스트 currentTime 오름차순 정렬 */
         Collections.sort(managerList);
         for (Manager manager : managerList) {
-            System.out.println("매니저번호" + manager.getCode() + " : 현재 배정 시간 : " + manager.getTotalAssignTime()+" 매니저 가중치 "+manager.getWeight());
+            System.out.println("매니저번호" + manager.getCode() + " : 현재 배정 시간 : " + manager.getTotalAssignTime() + " 매니저 가중치 " + manager.getWeight());
         }
         for (Manager manager : managerList) {
             Schedule alreadyExistingScheduleNode = manager.findScheduleByTime(scheduleNode.getTime());

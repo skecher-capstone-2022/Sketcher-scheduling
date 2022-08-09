@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 public class Manager implements Comparable<Manager> {
     private Integer code;
-    private List<HopeTime> hopeTimeList = new ArrayList<>();
+    private List<HopeTime> hopeTimeList;
     private Integer hopeTimeCount;
     private Integer totalAssignTime;
     private Integer dayAssignTime;
@@ -27,6 +27,7 @@ public class Manager implements Comparable<Manager> {
     }
 
     public Manager() {
+        this.hopeTimeList = new ArrayList<>();
         this.assignScheduleList = new ArrayList<>();
     }
 
@@ -51,17 +52,8 @@ public class Manager implements Comparable<Manager> {
 
     public boolean isContrainHopeTimes(int time) {
         for (HopeTime hopeTime : hopeTimeList) {
-            if (matchingHopeTimeType(time, hopeTime, HopeTime.DAWN)) return true;
-            if (matchingHopeTimeType(time, hopeTime, HopeTime.MORNING)) return true;
-            if (matchingHopeTimeType(time, hopeTime, HopeTime.AFTERNOON)) return true;
-            if (matchingHopeTimeType(time, hopeTime, HopeTime.EVENING)) return true;
-        }
-        return false;
-    }
-
-    private boolean matchingHopeTimeType(int time, HopeTime hopeTime, HopeTime dawn) {
-        if (time >= hopeTime.getStart_time() && time < hopeTime.getFinish_time() && hopeTime == dawn) {
-            return true;
+            if (time >= hopeTime.getStart_time() && time < hopeTime.getFinish_time())
+                return true;
         }
         return false;
     }
