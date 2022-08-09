@@ -99,7 +99,6 @@ public class AutoScheduling {
         makeManagerWeight(managerNodes, HopeTime.DAWN, percentage);
         settingScheduleNodes(cardsByDAWN, scheduleListByDAWN);
         bipartiteMatching(scheduleListByDAWN);
-        System.out.println(scheduleListByDAWN.size());
 
 
 
@@ -117,14 +116,13 @@ public class AutoScheduling {
     private void createResultSchedulingList(ArrayList<ResultScheduling> schedulingsResults, List<Schedule> scheduleListByMORNING) {
         for (Schedule schedule : scheduleListByMORNING) {
             if (schedule.getManager() != null) {
-                schedulingsResults.add(new ResultScheduling(schedule.getTime(), schedule.getManager().getCode(), schedule.getManager().getTotalAssignTime());
+                schedulingsResults.add(new ResultScheduling(schedule.getTime(), schedule.getManager().getCode(), schedule.getManager().getTotalAssignTime()));
             }
         }
     }
 
     private void bipartiteMatching(List<Schedule> scheduleList) {
         int count = 0;
-        System.out.println("####scheduleListSize : " + scheduleList.size());
         for (int i = 0; i < scheduleList.size(); i++) {
             if (firstDFS(scheduleList.get(i))) count++;   //매칭 개수
         }
@@ -198,9 +196,7 @@ public class AutoScheduling {
             managerList.add(manager);
 
             for (Manager manager1 : managerList) {
-                System.out.print(">>>> manager" + manager.getCode() + " ");
                 for (HopeTime time : manager1.getHopeTimeList()) {
-                    System.out.println("hopetime>>>>>>>>" + time);
                 }
             }
         }
@@ -209,18 +205,12 @@ public class AutoScheduling {
     }
 
     private void settingScheduleNodes(List<EstimatedNumOfCardsPerHour> cards, List<Schedule> scheduleList) {
-//        Integer totalScheduleNodeSize = 0;
-
-//        for (EstimatedNumOfCardsPerHour card : cards) {
-//            totalScheduleNodeSize += card.getNumOfCards();
-//        }
-
 
         int weight = 0;
 
         for (EstimatedNumOfCardsPerHour card : cards) {
-            int numberOfManagers = Math.round(card.getNumOfCards() / MANAGER_DONE_REQUEST_AVG_PER_HOUR);
-            int numOfFixedManager = (int) Math.round(numberOfManagers * FIXED_M3_RATIO);
+            int numberOfManagers = (int) Math.ceil(card.getNumOfCards() / MANAGER_DONE_REQUEST_AVG_PER_HOUR);
+            int numOfFixedManager = (int) Math.ceil(numberOfManagers * FIXED_M3_RATIO);
             if (card.getNumOfCards() < totalCardValueAvg / 2) {
                 weight = 1;
             } else if (card.getNumOfCards() < totalCardValueAvg * 2) {
@@ -256,7 +246,6 @@ public class AutoScheduling {
             if (alreadyExistingScheduleNode != null) {            // 조건3. 이미 해당 매니저가 동시간대에 배정되어 있음
                 // 이미 배정된 매니저가 managerWeightFlag=false이고, 현재 스케줄이 managerWeightFlag=true인 경우
                 if (checkSwapping(alreadyExistingScheduleNode, scheduleNode)) {
-                    System.out.println(alreadyExistingScheduleNode.getId() + "<->" + scheduleNode.getTime() + "스와핑됨!");
                     alreadyExistingScheduleNode.setManager(null);
                     manager.updateAssignScheduleList(alreadyExistingScheduleNode, scheduleNode);
                     scheduleNode.setManager(manager);
