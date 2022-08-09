@@ -41,6 +41,11 @@
             background: #ffffff;
 
         }
+
+        .manager_weight {
+            text-align: right;
+            border-right: hidden;
+        }
     </style>
 </head>
 
@@ -74,44 +79,52 @@
                 <p style="font-size: 15pt; font-weight: 600;">현재 설정된 요청카드건수 최대값 : <span id="max_num_of_cards"
                                                                                         style="color: rgb(11, 98, 164);">250</span>건
                 </p>
-                <!--                <br><br><br>-->
-                <!--                <div>-->
-                <!--                    <span class="feat-title">매니저 가중치 설정</span>-->
-                <!--                    <button class="btn btn-1 btn-1a md-close" style="margin: 0; padding: 15px; float: right;"-->
-                <!--                            onclick="">변경내용 저장-->
-                <!--                    </button>-->
-                <!--                </div>-->
-                <!--                <br>-->
-                <!--                <hr>-->
-                <!--                <br>-->
-                <!--                <table>-->
-                <!--                    <thead>-->
-                <!--                    <tr>-->
-                <!--                        <th></th>-->
-                <!--                        <th>매니저 인당 평균 처리카드 수</th>-->
-                <!--                        <th>매니저 가중치</th>-->
-                <!--                    </tr>-->
-                <!--                    </thead>-->
-                <!--                    <tbody>-->
-                <!--                    <tr>-->
-                <!--                        <td>최대</td>-->
-                <!--                        <td><input type="text" value="40"></td>-->
-                <!--                        <td>3</td>-->
-                <!--                    </tr>-->
-                <!--                    <tr>-->
-                <!--                        <td>평균</td>-->
-                <!--                        <td><input type="text" value="30"></td>-->
-                <!--                        <td>2</td>-->
-                <!--                    </tr>-->
-                <!--                    <tr>-->
-                <!--                        <td>최소</td>-->
-                <!--                        <td><input type="text" value="20"></td>-->
-                <!--                        <td>1</td>-->
-                <!--                    </tr>-->
-                <!--                    </tbody>-->
-                <!--                </table>-->
+                <br><br><br>
+
+                <form id="percentForm" name="percentForm" autocomplete="off" method="post" action="/updatePercent">
+                    <input type="hidden" th:value="${percent.id}" name="id">
+                    <div>
+                        <span class="feat-title">매니저 가중치 설정</span>
+                        <button class="btn btn-1 btn-1a md-close" style="margin: 0; padding: 15px; float: right;"
+                                onclick="return updatePercent()">변경사항 저장
+                        </button>
+                    </div>
+                    <br>
+                    <hr>
+                    <br>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th colspan="2">매니저 가중치</th>
+                            <th style="width: 50%">매니저 가중치 비율</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="manager_weight">3</td>
+                            <td style="text-align:left">(High)</td>
+                            <td><input style="text-align:right" type="number" th:value="${percent.high}" name="high"> %
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="manager_weight">2</td>
+                            <td style="text-align:left">(Middle)</td>
+                            <td><input style="text-align:right" type="number" th:value="${percent.middle}"
+                                       name="middle">
+                                %
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="manager_weight">1</td>
+                            <td style="text-align:left">(Low)</td>
+                            <td><input style="text-align:right" type="number" th:value="${percent.low}" name="low"> %
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
             </div>
-<!--            <br><br><br><br>-->
+            <br><br><br><br>
         </div>
     </div>
     <!--회원탈퇴 요청 modal-->
@@ -132,6 +145,32 @@
     <div class="md-overlay"></div>
 </th:block>
 </html>
+<script type="text/JavaScript">
+    function updatePercent() {
+        var high = document.percentForm.high.value.trim();
+        var middle = document.percentForm.middle.value.trim();
+        var low = document.percentForm.low.value.trim();
+
+
+        if (high == "" || middle == "" || low == "") {
+            alert("값을 모두 입력해주세요.");
+            return false
+        } else if (Number(high) < 0 || Number(middle) < 0 || Number(low) < 0) {
+            alert("양수를 입력해주세요.");
+            return false;
+        } else if (Number(high) + Number(middle) + Number(low) != 100) {
+            alert("값의 합이 100이 되도록 입력해주세요.");
+            return false;
+        } else {
+            let answer = confirm("변경 사항을 저장하시겠습니까?");
+            if (answer == true) {
+                $("#percentForm").attr("action", "/updatePercent");
+                $("#percentForm").submit();
+            }
+        }
+    }
+</script>
+
 <script>
     const data_list = [];
     let max_est_num_of_cards = 0;
