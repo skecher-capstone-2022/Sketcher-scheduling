@@ -1,6 +1,6 @@
 .user_remote_controller {
     height: 800px;
-    width: 500px;
+    width: 300px;
 }
 
 .left_content {
@@ -44,6 +44,7 @@
 }
 
 table, td {
+    font-size:10pt;
     border: 1px solid #8080803d;
     background-color: rgb(255,255,255);
 }
@@ -81,5 +82,6 @@ button.btn.btn-1.btn-1a.md-close {
     display: flex;
     align-items: center;
     margin-left: 10px;
+    font-size: 11pt;
     border-bottom: 1px solid #80808082;
 }
