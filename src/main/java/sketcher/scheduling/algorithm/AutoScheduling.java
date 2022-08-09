@@ -136,8 +136,7 @@ public class AutoScheduling {
             manager.setHopeTimeList(hopeTimeList);
             managerNode.put(userCode[i], manager);
             managerList.add(manager);
-
-            System.out.println("managerCode : " + manager.getCode());
+            System.out.println("code : "+manager.getCode());
         }
 
         return managerNode;
@@ -160,7 +159,10 @@ public class AutoScheduling {
         for (i = 0; i < highManager; i++) {
             Tuple tuple = joinDateByHopeTime.get(i);
             Integer code = tuple.get(user.code);
+
+            System.out.println("code : "+code);
             Manager manager = managerNodes.get(code);
+
             manager.setWeight(3);
         }
 

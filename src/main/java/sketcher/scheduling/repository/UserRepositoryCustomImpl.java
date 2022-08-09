@@ -135,7 +135,8 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                 .select(user.code, user.user_joinDate)
                 .from(user)
                 .join(user.managerHopeTimeList, managerHopeTime)
-                .where(startTimeEq(startTime))
+                .where(startTimeEq(startTime),
+                        authRoleEq("MANAGER"))
                 .orderBy(user.user_joinDate.desc())
                 .fetch();
 
