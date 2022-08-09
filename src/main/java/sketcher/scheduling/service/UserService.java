@@ -73,6 +73,11 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional(readOnly = true)
+    public Page<UserDto> findLeaveManager(UserSearchCondition condition, Pageable pageable) {
+        return userRepositoryCustom.findLeaveManager(condition, pageable);
+    }
+
+    @Transactional(readOnly = true)
     public long countByTodayWorkManager() {
         return userRepositoryCustom.countByTodayWorkManager();
     }
@@ -184,6 +189,39 @@ public class UserService implements UserDetailsService {
                 .code(user.getCode())
                 .id(user.getId())
                 .authRole("ADMIN")
+                .password(user.getPassword())
+                .username(user.getUsername())
+                .userTel(user.getUserTel())
+                .user_joinDate(user.getUser_joinDate())
+                .managerScore(user.getManagerScore())
+                .dropoutReqCheck(user.getDropoutReqCheck())
+                .build();
+
+        updateUser(userDto);
+    }
+
+    @Transactional
+    public void updateWorkingStatusToLeave(User user) {
+        UserDto userDto = UserDto.builder()
+                .code(user.getCode())
+                .id(user.getId())
+                .authRole("LEAVE")
+                .password(user.getPassword())
+                .username(user.getUsername())
+                .userTel(user.getUserTel())
+                .user_joinDate(user.getUser_joinDate())
+                .managerScore(user.getManagerScore())
+                .dropoutReqCheck(user.getDropoutReqCheck())
+                .build();
+
+        updateUser(userDto);
+    }
+    @Transactional
+    public void updateWorkingStatusToManager(User user) {
+        UserDto userDto = UserDto.builder()
+                .code(user.getCode())
+                .id(user.getId())
+                .authRole("MANAGER")
                 .password(user.getPassword())
                 .username(user.getUsername())
                 .userTel(user.getUserTel())

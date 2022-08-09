@@ -109,6 +109,11 @@
                                 </button>
                             </div>
                             <div style="display: inline-block">
+                                <button class="btn btn-6 btn-6b update-user-btn md-trigger" data-modal="modal-7">
+                                    사용자 휴가 관리
+                                </button>
+                            </div>
+                            <div style="display: inline-block">
                                 <button class="btn btn-6 btn-6b dropout-user-btn md-trigger" data-modal="modal-6">
                                     탈퇴 처리
                                 </button>
@@ -130,6 +135,24 @@
                 <div class="md-close-wrap">
                     <button type="submit" th:data-param="${users.get().id}" class="btn btn-1 btn-1a md-close"
                             th:onclick="auth_update(this.getAttribute('data-param'))">권한 수정
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="md-modal md-effect-1" id="modal-7">
+        <div class="md-content">
+            <h3>사용자 휴가 관리</h3>
+            <div>
+                <p>해당 매니저의 휴가 상태를 관리합니다.</p><br>
+<!--                <p style="font-weight: 600">기존 상태 | <span th:text="${users.get().authRole}">근무중</span> → 변경 후 상태 | <span>휴가중</span></p>-->
+                <p style="font-weight: 600" th:if="${users.get().authRole.equals('MANAGER')}">기존 상태 | <span>근무중</span> → 변경 후 상태 | <span>휴가중</span></p>
+                <p style="font-weight: 600" th:if="${users.get().authRole.equals('LEAVE')}">기존 상태 | <span>휴가중</span> → 변경 후 상태 | <span>근무중</span></p>
+
+                <div class="md-close-wrap">
+                    <button type="submit" th:data-param="${users.get().id}" class="btn btn-1 btn-1a md-close"
+                            th:onclick="vacation_update(this.getAttribute('data-param'))">권한 수정
                     </button>
                 </div>
             </div>
@@ -159,6 +182,9 @@
     <script>
         function auth_update(userid) {
             location.href = "/authUpdateUserDetail?userid=" + userid;
+        }
+        function vacation_update(userid){
+            location.href = "/vacationUpdateUserDetail?userid=" + userid;
         }
 
         function withdrawal_accept(userid) {
