@@ -1,9 +1,11 @@
 package sketcher.scheduling.algorithm;
 
 
+import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
 import sketcher.scheduling.domain.EstimatedNumOfCardsPerHour;
 import sketcher.scheduling.domain.PercentageOfManagerWeights;
+import sketcher.scheduling.object.HopeTime;
 import sketcher.scheduling.repository.EstimatedNumOfCardsPerHourRepository;
 import sketcher.scheduling.repository.PercentageOfManagerWeightsRepository;
 import org.springframework.stereotype.Component;
@@ -11,7 +13,11 @@ import sketcher.scheduling.service.ManagerHopeTimeService;
 import sketcher.scheduling.service.UserService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+
+import static sketcher.scheduling.domain.QUser.user;
 
 @Component
 @RequiredArgsConstructor
@@ -25,8 +31,11 @@ public class AutoScheduling {
 
     public ArrayList<ResultScheduling> runAlgorithm(int userCode[], int userCurrentTime[], int userHopeTime[]) {
 
-        List<EstimatedNumOfCardsPerHour> Cards = estimatedNumOfCardsPerHourRepository.findAll();
-        List<PercentageOfManagerWeights> managerWeights = percentageOfManagerWeightsRepository.findAll();
+        List<EstimatedNumOfCardsPerHour> cards = estimatedNumOfCardsPerHourRepository.findAll();
+        List<PercentageOfManagerWeights> percentage = percentageOfManagerWeightsRepository.findAll();
+
+        LinkedHashMap<Integer, Manager> managerNodes = makeManagerNode(userCode, userCurrentTime, userHopeTime);
+        makeManagerWeight(managerNodes, HopeTime.DAWN, percentage);
 
         //1. SETUP  변수값 저장
         // - 가중치 설정
@@ -71,14 +80,52 @@ public class AutoScheduling {
 
     }
 
-    public void makeManagerNode(Integer code, Integer hopeStartTime, Integer managerWeight) {
-        Manager manager = new Manager();
-        manager.setCode(code);
+    public LinkedHashMap<Integer, Manager> makeManagerNode(int[] userCode, int[] userCurrentTime, int[] userHopeTime) {
+        LinkedHashMap<Integer, Manager> managerNode = new LinkedHashMap<>();
 
+        for (int i = 0; i < userCode.length; i++) {
+            Manager manager = new Manager();
+            manager.setCode(userCode[i]);
+            manager.setTotalAssignTime(userCurrentTime[i]);
+
+            managerNode.put(userCode[i], manager);
+        }
+
+        return managerNode;
     }
 
-    public void makeManagerWeight(List<PercentageOfManagerWeights> managerWeights) {
+    public LinkedHashMap<Integer, Manager> makeManagerWeight(LinkedHashMap<Integer, Manager> managerNodes, HopeTime hopeTime, List<PercentageOfManagerWeights> percentage) {
+        List<Tuple> joinDateByHopeTime = userService.findJoinDateByHopeTime(hopeTime.getStart_time());
 
+        int count = joinDateByHopeTime.size();
+        Integer high = percentage.get(0).getId().getHigh();
+        Integer middle = percentage.get(0).getId().getMiddle();
+
+        long highManager = Math.round(count * high * 0.01);
+        long middleManager = Math.round(count * middle * 0.01);
+
+        int i;
+        for (i = 0; i < highManager; i++) {
+            Tuple tuple = joinDateByHopeTime.get(i);
+            Integer code = tuple.get(user.code);
+            Manager manager = managerNodes.get(code);
+            manager.setWeight(3);
+        }
+
+        for (; i < middleManager; i++) {
+            Tuple tuple = joinDateByHopeTime.get(i);
+            Integer code = tuple.get(user.code);
+            Manager manager = managerNodes.get(code);
+            manager.setWeight(2);
+        }
+
+        for (; i < count; i++) {
+            Tuple tuple = joinDateByHopeTime.get(i);
+            Integer code = tuple.get(user.code);
+            Manager manager = managerNodes.get(code);
+            manager.setWeight(1);
+        }
+
+        return managerNodes;
     }
-
 }

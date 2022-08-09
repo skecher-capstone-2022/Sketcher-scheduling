@@ -5,11 +5,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
 @Entity
@@ -57,6 +54,12 @@ public class ManagerAssignSchedule {
         }
         this.user = user;
         user.getManagerAssignScheduleList().add(this);
+
+//        if (this.schedule != null) {
+//            schedule.getManagerAssignScheduleList().remove(this);
+//        }
+//        this.schedule = schedule;
+//        schedule.getManagerAssignScheduleList().add(this);
     }
 
     public void update(LocalDateTime scheduleDateTimeStart, LocalDateTime scheduleDateTimeEnd){
@@ -72,7 +75,4 @@ public class ManagerAssignSchedule {
 
     protected ManagerAssignSchedule() {
     }
-
-
-
 }

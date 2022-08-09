@@ -12,10 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.UserDto;
 import sketcher.scheduling.dto.UserSearchCondition;
-import sketcher.scheduling.object.HopeTime;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
 
 import static org.springframework.util.StringUtils.hasText;
@@ -132,11 +130,12 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
     }
 
     @Override
-    public List<Tuple> findJoinDateByHopeTime() {
+    public List<Tuple> findJoinDateByHopeTime(Integer startTime) {
         List<Tuple> content = queryFactory
                 .select(user.code, user.user_joinDate)
                 .from(user)
                 .join(user.managerHopeTimeList, managerHopeTime)
+                .where(startTimeEq(startTime))
                 .orderBy(user.user_joinDate.desc())
                 .fetch();
 

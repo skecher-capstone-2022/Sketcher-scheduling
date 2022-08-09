@@ -4,15 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sketcher.scheduling.domain.ManagerAssignSchedule;
-import sketcher.scheduling.domain.ScheduleUpdateReq;
 import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.ManagerAssignScheduleDto;
 import sketcher.scheduling.repository.*;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -75,7 +74,7 @@ public class ManagerAssignScheduleService {
     }
 
     @Transactional
-    public long monthAssignWorkByUserId(String id) {
+    public HashMap<Integer, Long> monthAssignWorkByUserId(String id) {
         return scheduleRepositoryCustom.monthAssignWorkByUserId(id);
     }
 
@@ -115,6 +114,7 @@ public class ManagerAssignScheduleService {
                 .getResultList();
 
     }
+
 
     @Transactional
     public void deleteById(Integer id) {

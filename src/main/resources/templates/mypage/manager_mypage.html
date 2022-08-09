@@ -116,8 +116,6 @@
                                             <span class="bold_span">이번 주 근무 시간  |</span> [[${weekWork}]] 시간<br/>
                                             <span class="bold_span">잔업 시간  |</span> [[${weekRemain}]] 시간<br/>
                                             <span class="bold_span">주말 충족 여부  |</span> N<br/>
-                                            <input type="hidden" id="weekWork" th:value="${weekWork}">
-                                            <input type="hidden" id="weekRemain" th:value="${weekRemain}">
                                         </div>
                                     </div>
                                 </div>
@@ -129,7 +127,7 @@
                     </td>
                 </tr>
             </table>
-<!--            <img src="/img/question_large_yellow_pc.png"/>-->
+            <!--            <img src="/img/question_large_yellow_pc.png"/>-->
         </div>
     </div>
 
@@ -213,13 +211,13 @@
     <script type="text/javascript"
             src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.0/Chart.bundle.min.js"></script>
     <script type="text/javascript">
-        var weekWork = parseInt(document.getElementById("weekWork").value);
-        var weekRemain = parseInt(document.getElementById("weekRemain").value);
-        var weekAssign = weekWork + weekRemain;
+        let weekAssign = [[${weekWork+weekRemain}]]
+        let weekWork = [[${weekWork}]]
 
         var num = Math.round((weekWork / weekAssign + Number.EPSILON) * 100) / 100;
-        if(isNaN(num))
+        if (isNaN(num))
             num = 0;
+
         window.onload = function () {
             Chart.pluginService.register({
                 beforeDraw: function (chart) {
@@ -311,9 +309,11 @@
             var ctx = document.getElementById("myChart").getContext("2d");
             var myChart = new Chart(ctx, config);
         }
-    </script>
 
-    <script>
+        let weekAgo1 = [[${monthWork.get(1)}]]
+        let weekAgo2 = [[${monthWork.get(2)}]]
+        let weekAgo3 = [[${monthWork.get(3)}]]
+
         var ctx = document.getElementById('myLineChart').getContext('2d');
         var myLineChart = new Chart(ctx, {
             type: 'line',
@@ -321,7 +321,7 @@
                 labels: ['3주전', '2주전', '1주전', '금주'],
                 datasets: [{
                     fill: false,
-                    data: [12, 19, 20, 14],
+                    data: [weekAgo3, weekAgo2, weekAgo1, weekAssign],
                     pointBorderColor: "#336699",
                     pointBackgroundColor: "#336699",
                     borderColor: "#336699",

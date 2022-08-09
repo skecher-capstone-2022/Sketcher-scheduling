@@ -15,9 +15,10 @@ public interface UserRepositoryCustom {
     Page<UserDto> findAllManager(UserSearchCondition condition, Pageable pageable);
     Page<UserDto> findWorkManager(UserSearchCondition condition, Pageable pageable);
 
-    List<Tuple> findJoinDateByHopeTime();
+    List<Tuple> findJoinDateByHopeTime(Integer startTime);
 
     //    ArrayList<String> findDetailById(String id);
     List<User> withdrawalManagers(UserSearchCondition condition);
     long countByTodayWorkManager();
+
 }

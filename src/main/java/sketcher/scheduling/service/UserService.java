@@ -42,8 +42,8 @@ public class UserService implements UserDetailsService {
         return userRepository.findAllManager();
     }
 
-    public List<Tuple> findJoinDateByHopeTime() {
-        return userRepositoryCustom.findJoinDateByHopeTime();
+    public List<Tuple> findJoinDateByHopeTime(Integer startTime) {
+        return userRepositoryCustom.findJoinDateByHopeTime(startTime);
     }
 
     public Optional<User> findByCode(int code) {
