@@ -1,6 +1,7 @@
 package sketcher.scheduling.service;
 
 
+import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.*;
@@ -20,6 +21,7 @@ import sketcher.scheduling.repository.UserRepositoryCustom;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,8 +38,13 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
+    @Transactional
     public List<User> findAllManager() {
         return userRepository.findAllManager();
+    }
+
+    public List<Tuple> findJoinDateByHopeTime(Integer startTime) {
+        return userRepositoryCustom.findJoinDateByHopeTime(startTime);
     }
 
     public Optional<User> findByCode(int code) {
@@ -87,7 +94,7 @@ public class UserService implements UserDetailsService {
         //패스워드 인코딩
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
-        user.setUser_joinDate(LocalDateTime.now());
+//        user.setUser_joinDate(LocalDateTime.now());
         user.setManagerScore(0.0);
         user.setDropoutReqCheck('N');
         return userRepository.save(user.toEntity()).getId();

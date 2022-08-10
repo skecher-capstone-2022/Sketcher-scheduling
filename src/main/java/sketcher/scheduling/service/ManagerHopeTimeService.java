@@ -41,7 +41,6 @@ public class ManagerHopeTimeService {
         return managerHopeTimeRepositoryCustom.CountByHopeTime();
     }
 
-
     @Transactional(readOnly = false)
     public Integer saveManagerHopeTime(ManagerHopeTimeDto managerHopeTimeDto){
         return managerHopeTimeRepository.save(managerHopeTimeDto.toEntity()).getId();

@@ -39,7 +39,20 @@
         .md-content {
             color: #000;
             background: #ffffff;
+        }
 
+        #dropoutForm {
+            height: 600px;
+            overflow-y: scroll;
+        }
+
+        .manager_weight {
+            text-align: right;
+            border-right: hidden;
+        }
+
+        .md-modal {
+            top: 38%;
         }
     </style>
 </head>
@@ -74,52 +87,61 @@
                 <p style="font-size: 15pt; font-weight: 600;">현재 설정된 요청카드건수 최대값 : <span id="max_num_of_cards"
                                                                                         style="color: rgb(11, 98, 164);">250</span>건
                 </p>
-                <!--                <br><br><br>-->
-                <!--                <div>-->
-                <!--                    <span class="feat-title">매니저 가중치 설정</span>-->
-                <!--                    <button class="btn btn-1 btn-1a md-close" style="margin: 0; padding: 15px; float: right;"-->
-                <!--                            onclick="">변경내용 저장-->
-                <!--                    </button>-->
-                <!--                </div>-->
-                <!--                <br>-->
-                <!--                <hr>-->
-                <!--                <br>-->
-                <!--                <table>-->
-                <!--                    <thead>-->
-                <!--                    <tr>-->
-                <!--                        <th></th>-->
-                <!--                        <th>매니저 인당 평균 처리카드 수</th>-->
-                <!--                        <th>매니저 가중치</th>-->
-                <!--                    </tr>-->
-                <!--                    </thead>-->
-                <!--                    <tbody>-->
-                <!--                    <tr>-->
-                <!--                        <td>최대</td>-->
-                <!--                        <td><input type="text" value="40"></td>-->
-                <!--                        <td>3</td>-->
-                <!--                    </tr>-->
-                <!--                    <tr>-->
-                <!--                        <td>평균</td>-->
-                <!--                        <td><input type="text" value="30"></td>-->
-                <!--                        <td>2</td>-->
-                <!--                    </tr>-->
-                <!--                    <tr>-->
-                <!--                        <td>최소</td>-->
-                <!--                        <td><input type="text" value="20"></td>-->
-                <!--                        <td>1</td>-->
-                <!--                    </tr>-->
-                <!--                    </tbody>-->
-                <!--                </table>-->
+                <br><br><br>
+
+                <form id="percentForm" name="percentForm" autocomplete="off" method="post" action="/updatePercent">
+                    <input type="hidden" th:value="${percent.id}" name="id">
+                    <div>
+                        <span class="feat-title">매니저 가중치 설정</span>
+                        <button class="btn btn-1 btn-1a md-close" style="margin: 0; padding: 15px; float: right;"
+                                onclick="return updatePercent()">변경사항 저장
+                        </button>
+                    </div>
+                    <br>
+                    <hr>
+                    <br>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th colspan="2">매니저 가중치</th>
+                            <th style="width: 50%">매니저 가중치 비율</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="manager_weight">3</td>
+                            <td style="text-align:left">(High)</td>
+                            <td><input style="text-align:right" type="number" th:value="${percent.high}" name="high"> %
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="manager_weight">2</td>
+                            <td style="text-align:left">(Middle)</td>
+                            <td><input style="text-align:right" type="number" th:value="${percent.middle}"
+                                       name="middle">
+                                %
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="manager_weight">1</td>
+                            <td style="text-align:left">(Low)</td>
+                            <td><input style="text-align:right" type="number" th:value="${percent.low}" name="low"> %
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
             </div>
-<!--            <br><br><br><br>-->
+            <br><br><br><br>
         </div>
     </div>
     <!--회원탈퇴 요청 modal-->
     <div class="md-modal md-effect-1" id="modal-1">
-        <div class="md-content" style="padding: 10px;">
+        <div class="md-content" style="padding: 10px;height: 700px;">
             <div style="display: flex; padding: 0">
                 <h3 style="flex: auto;">시간당 요청카드건수 설정값 변경</h3>
-                <button type="" class="btn btn-1 btn-1a md-close" style="margin: 0; padding: 15px; float: right;">변경사항
+                <button type="button" class="btn btn-1 btn-1a md-close" onclick="updateEstCardsNum()"
+                        style="margin: 0; padding: 15px; float: right;">변경사항
                     저장
                 </button>
             </div>
@@ -132,8 +154,43 @@
     <div class="md-overlay"></div>
 </th:block>
 </html>
+<script type="text/JavaScript">
+    function updatePercent() {
+        var high = document.percentForm.high.value.trim();
+        var middle = document.percentForm.middle.value.trim();
+        var low = document.percentForm.low.value.trim();
+
+
+        if (high == "" || middle == "" || low == "") {
+            alert("값을 모두 입력해주세요.");
+            return false
+        } else if (Number(high) < 0 || Number(middle) < 0 || Number(low) < 0) {
+            alert("양수를 입력해주세요.");
+            return false;
+        } else if (Number(high) + Number(middle) + Number(low) != 100) {
+            alert("값의 합이 100이 되도록 입력해주세요.");
+            return false;
+        } else if (Number(high) < Number(middle) || Number(high) < Number(low)) {
+            let answer = confirm("가중치 3의 비율이 낮으면 스케줄 배정이 적을 수 있습니다.");
+            if (answer == true) {
+                $("#percentForm").attr("action", "/updatePercent");
+                $("#percentForm").submit();
+            }
+        } else {
+            let answer = confirm("변경 사항을 저장하시겠습니까?");
+            if (answer == true) {
+                $("#percentForm").attr("action", "/updatePercent");
+                $("#percentForm").submit();
+            }
+        }
+    }
+</script>
+
 <script>
     const data_list = [];
+    const original_value_list = [];
+    const update_value_list = [];
+
     let max_est_num_of_cards = 0;
     var element_max_num = document.getElementById("max_num_of_cards");
     var htmlStr = "<table style=\"padding: 20px;\">\n" +
@@ -148,6 +205,40 @@
         show_chart();
     })
 
+    function updateEstCardsNum() {
+        var classList = document.getElementsByClassName('estCardNum')
+        for (var i = 0; i < classList.length; i++) {
+            update_value_list.push(Number(classList[i].value));
+        }
+        var jsonList = new Array();
+
+        for (let i = 0; i < original_value_list.length; i++) {
+            if (original_value_list[i] != update_value_list[i]) {
+                var update_data = new Object();
+
+                update_data.time = i;
+                update_data.value = update_value_list[i];
+                jsonList.push(update_data);
+            }
+        }
+
+        if (jsonList.length > 0) {
+            var jsondata = JSON.stringify(jsonList);
+            console.log(jsondata)
+            $.ajax({
+                type: 'post'
+                , contentType: 'application/json'
+                , data: jsondata
+                , url: '/update_est_cards'
+                , success: function (data) {
+                    alert(data + "건의 데이터가 변경되었습니다.");
+                }, error: function (e) {
+                    alert("error: " + e);
+                }
+            });
+        }
+    }
+
     function show_chart() {
         $.ajax({
             url: "/set_est_num_of_cards",
@@ -157,9 +248,10 @@
                 htmlStr += "<tbody>";
                 $.each(data, function (index, item) { // 데이터 =item
                     data_list.push({time: item.time.toString(), value: item.numOfCards})
+                    original_value_list.push(item.numOfCards)
                     htmlStr += "<tr>";
                     htmlStr += "<td>" + item.time + "</td>";
-                    htmlStr += "<td><input type='text' style='width: 80%;' value='" + item.numOfCards + "'></td>";
+                    htmlStr += "<td><input type='text' class='estCardNum' style='width: 80%;' value='" + item.numOfCards + "'></td>";
                     htmlStr += "</tr>";
                     if (item.numOfCards > max_est_num_of_cards)
                         max_est_num_of_cards = item.numOfCards;

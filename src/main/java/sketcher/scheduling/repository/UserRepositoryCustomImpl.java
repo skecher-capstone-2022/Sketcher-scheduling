@@ -1,6 +1,7 @@
 package sketcher.scheduling.repository;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import static org.springframework.util.StringUtils.hasText;
 import static sketcher.scheduling.domain.QManagerAssignSchedule.managerAssignSchedule;
+import static sketcher.scheduling.domain.QManagerHopeTime.managerHopeTime;
 import static sketcher.scheduling.domain.QUser.user;
 
 @Repository
@@ -127,9 +129,24 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                 .fetchCount();
     }
 
+    @Override
+    public List<Tuple> findJoinDateByHopeTime(Integer startTime) {
+        List<Tuple> content = queryFactory
+                .select(user.code, user.user_joinDate)
+                .from(user)
+                .join(user.managerHopeTimeList, managerHopeTime)
+                .where(startTimeEq(startTime),
+                        authRoleEq("MANAGER"))
+                .orderBy(user.user_joinDate.desc())
+                .fetch();
+
+
+        return content;
+    }
+
     private Pageable pageableSetting(UserSearchCondition condition, Pageable pageable) {
         String align = condition.getAlign();
-        Sort sort = Sort.by(align).descending();
+        Sort sort = Sort.by(align).ascending();
 
         switch (align) {
             case "username":
@@ -148,6 +165,10 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1); // page는 index 처럼 0부터 시작 -> 페이지에서 -1 처리
 
         return PageRequest.of(page, 10, sort);
+    }
+
+    private BooleanExpression startTimeEq(Integer startTime) {
+        return hasText(String.valueOf(startTime)) ? managerHopeTime.start_time.eq(startTime) : null;
     }
 
     private BooleanExpression authRoleEq(String authRole) {
@@ -205,8 +226,8 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
 
     private OrderSpecifier<?> listSort(String list_align) {
         switch (list_align) {
-            case "managerScore":
-                return new OrderSpecifier(Order.DESC, user.managerScore);
+            case "id":
+                return new OrderSpecifier(Order.ASC, user.id);
 
             case "username":
                 return new OrderSpecifier(Order.ASC, user.username);

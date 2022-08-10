@@ -5,7 +5,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import sketcher.scheduling.domain.User;
+
 import sketcher.scheduling.dto.*;
 import sketcher.scheduling.repository.UserRepository;
 import sketcher.scheduling.service.*;
