@@ -202,7 +202,7 @@ public class AutoScheduling {
             int numberOfManagers = (int) Math.ceil(card.getNumOfCards() / MANAGER_DONE_REQUEST_AVG_PER_HOUR);
             if (numberOfManagers == 0 && card.getNumOfCards() != 0) numberOfManagers = 1;
 
-            int numOfFixedManager = (int) Math.round(numberOfManagers * FIXED_M3_RATIO);
+            int numOfFixedManager = 0;
 
             if (card.getNumOfCards() < totalCardValueAvg / 2) {
                 weight = 1;
@@ -210,6 +210,7 @@ public class AutoScheduling {
                 weight = 2;
             } else {
                 weight = 3;
+                numOfFixedManager = (int) Math.round(numberOfManagers * FIXED_M3_RATIO);
             }
 
             int countOfFixedManager = 0;
