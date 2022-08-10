@@ -8,6 +8,7 @@ import sketcher.scheduling.algorithm.AutoScheduling;
 import sketcher.scheduling.algorithm.ResultScheduling;
 import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.domain.User;
+import sketcher.scheduling.dto.EstimatedNumOfCardsPerHourDto;
 import sketcher.scheduling.dto.ManagerAssignScheduleDto;
 import sketcher.scheduling.repository.EstimatedNumOfCardsPerHourRepository;
 import sketcher.scheduling.repository.PercentageOfManagerWeightsRepository;
@@ -167,4 +168,18 @@ public class RestController {
 
     }
 
+    @RequestMapping(value = "/update_est_cards", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
+    public int updateEstCards(@RequestBody List<Map<String, Object>> param) throws ParseException, IOException {
+        for (Map<String, Object> stringObjectMap : param) {
+            Integer time = Integer.parseInt(stringObjectMap.get("time").toString());
+            Integer value = Integer.parseInt(stringObjectMap.get("value").toString());
+            EstimatedNumOfCardsPerHourDto dto = EstimatedNumOfCardsPerHourDto.builder()
+                    .time(time)
+                    .numOfCards(value)
+                    .build();
+
+            estimatedNumOfCardsPerHourRepository.save(dto.toEntity());
+        }
+        return param.size();
+    }
 }

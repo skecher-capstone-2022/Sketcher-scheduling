@@ -1,9 +1,6 @@
 package sketcher.scheduling.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -19,8 +16,11 @@ public class EstimatedNumOfCardsPerHour {
     @JoinColumn(name = "num_of_cards")
     private Integer numOfCards;
 
+    @Builder
     public EstimatedNumOfCardsPerHour(Integer time, Integer numOfCards) {
         this.time = time;
         this.numOfCards = numOfCards;
     }
+
+
 }

@@ -50,6 +50,10 @@
             text-align: right;
             border-right: hidden;
         }
+
+        .md-modal {
+            top: 38%;
+        }
     </style>
 </head>
 
@@ -136,7 +140,8 @@
         <div class="md-content" style="padding: 10px;height: 700px;">
             <div style="display: flex; padding: 0">
                 <h3 style="flex: auto;">시간당 요청카드건수 설정값 변경</h3>
-                <button type="button" class="btn btn-1 btn-1a md-close" onclick="updateEstCardsNum()" style="margin: 0; padding: 15px; float: right;">변경사항
+                <button type="button" class="btn btn-1 btn-1a md-close" onclick="updateEstCardsNum()"
+                        style="margin: 0; padding: 15px; float: right;">변경사항
                     저장
                 </button>
             </div>
@@ -177,6 +182,9 @@
 
 <script>
     const data_list = [];
+    const original_value_list = [];
+    const update_value_list = [];
+
     let max_est_num_of_cards = 0;
     var element_max_num = document.getElementById("max_num_of_cards");
     var htmlStr = "<table style=\"padding: 20px;\">\n" +
@@ -192,7 +200,37 @@
     })
 
     function updateEstCardsNum() {
+        var classList = document.getElementsByClassName('estCardNum')
+        for (var i = 0; i < classList.length; i++) {
+            update_value_list.push(Number(classList[i].value));
+        }
+        var jsonList = new Array();
 
+        for (let i = 0; i < original_value_list.length; i++) {
+            if (original_value_list[i] != update_value_list[i]) {
+                var update_data = new Object();
+
+                update_data.time = i;
+                update_data.value = update_value_list[i];
+                jsonList.push(update_data);
+            }
+        }
+
+        if (jsonList.length > 0) {
+            var jsondata = JSON.stringify(jsonList);
+            console.log(jsondata)
+            $.ajax({
+                type: 'post'
+                , contentType: 'application/json'
+                , data: jsondata
+                , url: '/update_est_cards'
+                , success: function (data) {
+                    alert(data + "건의 데이터가 변경되었습니다.");
+                }, error: function (e) {
+                    alert("error: " + e);
+                }
+            });
+        }
     }
 
     function show_chart() {
@@ -204,9 +242,10 @@
                 htmlStr += "<tbody>";
                 $.each(data, function (index, item) { // 데이터 =item
                     data_list.push({time: item.time.toString(), value: item.numOfCards})
+                    original_value_list.push(item.numOfCards)
                     htmlStr += "<tr>";
                     htmlStr += "<td>" + item.time + "</td>";
-                    htmlStr += "<td><input type='text' style='width: 80%;' value='" + item.numOfCards + "'></td>";
+                    htmlStr += "<td><input type='text' class='estCardNum' style='width: 80%;' value='" + item.numOfCards + "'></td>";
                     htmlStr += "</tr>";
                     if (item.numOfCards > max_est_num_of_cards)
                         max_est_num_of_cards = item.numOfCards;
