@@ -46,9 +46,6 @@ public class Manager implements Comparable<Manager> {
         } else {
             totalAssignTime++;
             dayAssignTime++;
-
-            System.out.println("totalAssignTime" + totalAssignTime);
-            System.out.println("dayAssignTime" + dayAssignTime);
         }
         assignScheduleList.add(newNode);
     }
