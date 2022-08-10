@@ -17,5 +17,8 @@ public interface UserRepositoryCustom {
     Page<UserDto> findLeaveManager(UserSearchCondition condition, Pageable pageable);
 //    ArrayList<String> findDetailById(String id);
     List<User> withdrawalManagers(UserSearchCondition condition);
+    Page<UserDto> findVacationManagers(UserSearchCondition condition, Pageable pageable);
     long countByTodayWorkManager();
+
+
 }

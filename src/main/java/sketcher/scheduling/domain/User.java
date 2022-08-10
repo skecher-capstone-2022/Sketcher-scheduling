@@ -56,6 +56,9 @@ public class User implements UserDetails {
     @Column(name = "dropout_req_check")
     private Character dropoutReqCheck;
 
+    @Column(name = "vacation_req_check")
+    private Character vacationReqCheck;
+
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<ManagerHopeTime> managerHopeTimeList = new ArrayList<>();
@@ -69,7 +72,7 @@ public class User implements UserDetails {
 
     @Builder
     public User(Integer code, String id, String authRole, String password, String username, String userTel,
-                LocalDateTime user_joinDate, Double managerScore, Character dropoutReqCheck) {
+                LocalDateTime user_joinDate, Double managerScore, Character dropoutReqCheck, Character vacationReqCheck) {
         this.code = code;
         this.id = id;
         this.authRole = authRole;
@@ -79,6 +82,7 @@ public class User implements UserDetails {
         this.user_joinDate = user_joinDate;
         this.managerScore = managerScore;
         this.dropoutReqCheck = dropoutReqCheck;
+        this.vacationReqCheck = vacationReqCheck;
     }
 
     // 사용자의 권한을 콜렉션 형태로 반환

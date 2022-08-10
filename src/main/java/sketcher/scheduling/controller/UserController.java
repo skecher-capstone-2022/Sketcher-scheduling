@@ -127,6 +127,18 @@ public class UserController {
         return "manager/leave_manager_list";
     }
 
+    @RequestMapping(value = "/vacation_req_list", method = RequestMethod.GET)
+    public String vacation_req_list(Model model,
+                                    @RequestParam(required = false, defaultValue = "managerScore") String align,
+                                    @RequestParam(required = false, defaultValue = "") String type,
+                                    @RequestParam(required = false, defaultValue = "") String keyword,
+                                    @PageableDefault Pageable pageable) {
+        UserSearchCondition condition = new UserSearchCondition(align, type, keyword);
+        Page<UserDto> users = userService.findVacationManagers(condition,pageable);
+        model.addAttribute("condition", condition);
+        model.addAttribute("users", users);
+        return "request/vacation_req_list";
+    }
 
     @RequestMapping(value = "/manager_detail/{userId}", method = RequestMethod.GET)
     public String manager_detail(Model model, @PathVariable(value = "userId") String id) {
@@ -179,12 +191,7 @@ public class UserController {
                                      @RequestParam String userid) throws IOException {
         if (userid != null) {
             User user = userService.loadUserByUsername(userid);
-
-            if(user.getAuthRole().equals("MANAGER")) {
-                userService.updateWorkingStatusToLeave(user);
-            }else if(user.getAuthRole().equals("LEAVE")){
-                userService.updateWorkingStatusToManager(user);
-            }
+            userService.updateAuthRole(user);
         }
 
         response.setContentType("text/html; charset=euc-kr");
@@ -296,4 +303,18 @@ public class UserController {
         }
         return "redirect:/admin_mypage";
     }
+    
+
+
+    @RequestMapping(value = "/updateVacation", method = RequestMethod.POST)
+    public String updateVacationReq(@RequestParam String userid) {
+        if (userid != null) {
+            User user = userService.loadUserByUsername(userid);
+            userService.updateVacationReq(user);
+        }
+        return "redirect:/login";
+    }
+
+
+
 }

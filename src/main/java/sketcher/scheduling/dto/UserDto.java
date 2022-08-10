@@ -22,11 +22,13 @@ public class UserDto {
     private Double managerScore;
     private Character dropoutReqCheck;
 
+    private Character vacationReqCheck;
+
 
 
     @Builder
 	public UserDto(Integer code, String id, String authRole, String password, String username, String userTel,
-                   LocalDateTime user_joinDate, Double managerScore, Character dropoutReqCheck) {
+                   LocalDateTime user_joinDate, Double managerScore, Character dropoutReqCheck, Character vacationReqCheck) {
         this.code = code;
         this.id = id;
         this.authRole = authRole;
@@ -36,6 +38,7 @@ public class UserDto {
         this.user_joinDate = user_joinDate;
         this.managerScore = managerScore;
         this.dropoutReqCheck = dropoutReqCheck;
+        this.vacationReqCheck = vacationReqCheck;
     }
 
     public User toEntity() {
@@ -49,6 +52,7 @@ public class UserDto {
                 .user_joinDate(user_joinDate)
                 .managerScore(managerScore)
                 .dropoutReqCheck(dropoutReqCheck)
+                .vacationReqCheck(vacationReqCheck)
                 .build();
     }
 }

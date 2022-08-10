@@ -68,6 +68,10 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional(readOnly = true)
+    public Page<UserDto> findVacationManagers(UserSearchCondition condition, Pageable pageable) {
+        return userRepositoryCustom.findVacationManagers(condition, pageable);
+    }
+    @Transactional(readOnly = true)
     public Page<UserDto> findWorkManager(UserSearchCondition condition, Pageable pageable) {
         return userRepositoryCustom.findWorkManager(condition, pageable);
     }
@@ -95,6 +99,7 @@ public class UserService implements UserDetailsService {
         user.setUser_joinDate(LocalDateTime.now());
         user.setManagerScore(0.0);
         user.setDropoutReqCheck('N');
+        user.setVacationReqCheck('N');
         return userRepository.save(user.toEntity()).getId();
     }
 
@@ -159,6 +164,7 @@ public class UserService implements UserDetailsService {
                 .user_joinDate(user.getUser_joinDate())
                 .managerScore(user.getManagerScore())
                 .dropoutReqCheck(user.getDropoutReqCheck())
+                .vacationReqCheck(user.getVacationReqCheck())
                 .build();
 
         updateUser(userDto);
@@ -178,6 +184,7 @@ public class UserService implements UserDetailsService {
                 .user_joinDate(user.getUser_joinDate())
                 .managerScore(user.getManagerScore())
                 .dropoutReqCheck('Y')
+                .vacationReqCheck(user.getVacationReqCheck())
                 .build();
 
         updateUser(userDto);
@@ -195,6 +202,7 @@ public class UserService implements UserDetailsService {
                 .user_joinDate(user.getUser_joinDate())
                 .managerScore(user.getManagerScore())
                 .dropoutReqCheck(user.getDropoutReqCheck())
+                .vacationReqCheck(user.getVacationReqCheck())
                 .build();
 
         updateUser(userDto);
@@ -212,6 +220,7 @@ public class UserService implements UserDetailsService {
                 .user_joinDate(user.getUser_joinDate())
                 .managerScore(user.getManagerScore())
                 .dropoutReqCheck(user.getDropoutReqCheck())
+                .vacationReqCheck('N')
                 .build();
 
         updateUser(userDto);
@@ -228,6 +237,24 @@ public class UserService implements UserDetailsService {
                 .user_joinDate(user.getUser_joinDate())
                 .managerScore(user.getManagerScore())
                 .dropoutReqCheck(user.getDropoutReqCheck())
+                .vacationReqCheck(user.getVacationReqCheck())
+                .build();
+
+        updateUser(userDto);
+    }
+    @Transactional
+    public void updateVacationReq(User user) {
+        UserDto userDto = UserDto.builder()
+                .code(user.getCode())
+                .id(user.getId())
+                .authRole(user.getAuthRole())
+                .password(user.getPassword())
+                .username(user.getUsername())
+                .userTel(user.getUserTel())
+                .user_joinDate(user.getUser_joinDate())
+                .managerScore(user.getManagerScore())
+                .dropoutReqCheck(user.getDropoutReqCheck())
+                .vacationReqCheck('Y')
                 .build();
 
         updateUser(userDto);
