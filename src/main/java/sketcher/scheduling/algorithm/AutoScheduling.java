@@ -23,7 +23,6 @@ public class AutoScheduling {
     private final EstimatedNumOfCardsPerHourRepository estimatedNumOfCardsPerHourRepository;
     private final PercentageOfManagerWeightsRepository percentageOfManagerWeightsRepository;
 
-    public static final int TIME_LENGTH = 24;
     public static final double FIXED_M3_RATIO = 0.3;
     public static final int MANAGER_DONE_REQUEST_AVG_PER_HOUR = 50;
 
@@ -62,8 +61,6 @@ public class AutoScheduling {
         }
 
         //1. SETUP  변수값 저장 makeManagerWeightAndHopeTime(managerNodes, HopeTime.DAWN, percentage);
-
-
         //2. 4가지 조건 고려 (가중치 점수 합산하는 함수를 작성)
         //(1) 매니저 가중치 (M1, M2, M3) - MANAGER클래스 내부에 함수 작성
         //(2) 매니저 현재 배정시간 - MANAGER클래스 내부에 함수 작성
@@ -142,7 +139,6 @@ public class AutoScheduling {
                     }
                 }
             }
-
             manager.setHopeTimeList(hopeTimeList);
             managerNode.put(userCode[i], manager);
             managerList.add(manager);
@@ -200,15 +196,7 @@ public class AutoScheduling {
     }
 
     private void settingScheduleNodes(List<EstimatedNumOfCardsPerHour> cards, List<Schedule> scheduleList) {
-
-//        Integer totalScheduleNodeSize = 0;
-
-//        for (EstimatedNumOfCardsPerHour card : cards) {
-//            totalScheduleNodeSize += card.getNumOfCards();
-//        }
-
         int weight = 0;
-
         for (EstimatedNumOfCardsPerHour card : cards) {
             int numberOfManagers = (int) Math.ceil(card.getNumOfCards() / MANAGER_DONE_REQUEST_AVG_PER_HOUR);
             if (numberOfManagers == 0) numberOfManagers = 1;
@@ -247,14 +235,7 @@ public class AutoScheduling {
                 continue;
             }
 
-            if (alreadyExistingScheduleNode != null) {            // 조건2. 이미 해당 매니저가 동시간대에 배정되어 있음
-                // 이미 배정된 매니저가 managerWeightFlag=false이고, 현재 스케줄이 managerWeightFlag=true인 경우
-                if (checkSwapping(alreadyExistingScheduleNode, scheduleNode)) {
-                    alreadyExistingScheduleNode.setManager(null);
-                    manager.updateAssignScheduleList(alreadyExistingScheduleNode, scheduleNode);
-                    scheduleNode.setManager(manager);
-                    return true;
-                }
+            if (alreadyExistingScheduleNode != null) {            // 조건2. 이미 해당 매니저가 동시간대에 배정되어 있으면 제외
                 continue;
             }
             //매니저가 해당 시간대에 아직 배정되지 않은 경우 (alreadyExistingScheduleNode == null인 경우)
@@ -266,16 +247,9 @@ public class AutoScheduling {
                 scheduleNode.setManager(manager);
                 return true;
             }
-            //isPriorityScoreHigherThanExistingeManager
         }
         return false;
     }
 
-    private boolean checkSwapping(Schedule alreadyExistingScheduleNode, Schedule scheduleNode) {
-        if (alreadyExistingScheduleNode.isManagerWeightFlag() == false && scheduleNode.isManagerWeightFlag() == true)
-            return true;
-
-        return false;
-    }
 }
 

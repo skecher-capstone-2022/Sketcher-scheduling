@@ -39,7 +39,11 @@
         .md-content {
             color: #000;
             background: #ffffff;
+        }
 
+        #dropoutForm {
+            height: 600px;
+            overflow-y: scroll;
         }
     </style>
 </head>
@@ -116,10 +120,10 @@
     </div>
     <!--회원탈퇴 요청 modal-->
     <div class="md-modal md-effect-1" id="modal-1">
-        <div class="md-content" style="padding: 10px;">
+        <div class="md-content" style="padding: 10px;height: 700px;">
             <div style="display: flex; padding: 0">
                 <h3 style="flex: auto;">시간당 요청카드건수 설정값 변경</h3>
-                <button type="" class="btn btn-1 btn-1a md-close" style="margin: 0; padding: 15px; float: right;">변경사항
+                <button type="button" class="btn btn-1 btn-1a md-close" onclick="updateEstCardsNum()" style="margin: 0; padding: 15px; float: right;">변경사항
                     저장
                 </button>
             </div>
@@ -147,6 +151,10 @@
     $(document).ready(function () {
         show_chart();
     })
+
+    function updateEstCardsNum() {
+
+    }
 
     function show_chart() {
         $.ajax({
