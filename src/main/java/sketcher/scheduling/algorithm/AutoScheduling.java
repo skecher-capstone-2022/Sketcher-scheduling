@@ -154,8 +154,8 @@ public class AutoScheduling {
         List<Tuple> joinDateByHopeTime = userService.findJoinDateByHopeTime(hopeTime.getStart_time());
         int count = joinDateByHopeTime.size();
 
-        Integer high = percentage.get(0).getId().getHigh();
-        Integer middle = percentage.get(0).getId().getMiddle();
+        Integer high = percentage.get(0).getHigh();
+        Integer middle = percentage.get(0).getMiddle();
 
         long highManager = Math.round(count * high * 0.01);
         long middleManager = Math.round(count * middle * 0.01) + highManager;

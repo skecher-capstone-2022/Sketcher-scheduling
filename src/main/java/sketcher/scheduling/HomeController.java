@@ -2,21 +2,17 @@ package sketcher.scheduling;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import sketcher.scheduling.domain.EstimatedNumOfCardsPerHour;
-import sketcher.scheduling.domain.User;
-import sketcher.scheduling.dto.UserSearchCondition;
+import sketcher.scheduling.domain.PercentageOfManagerWeights;
+import sketcher.scheduling.dto.PercentageOfManagerWeightsDto;
 import sketcher.scheduling.repository.EstimatedNumOfCardsPerHourRepository;
-import sketcher.scheduling.repository.UserRepositoryCustom;
-import sketcher.scheduling.service.UserService;
+import sketcher.scheduling.repository.PercentageOfManagerWeightsRepository;
+import sketcher.scheduling.service.PercentageOfManagerWeightsService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,10 +22,47 @@ public class HomeController {
     @Autowired
     EstimatedNumOfCardsPerHourRepository estimatedNumOfCardsRepository;
 
-    @GetMapping(value = "/config_create_schedule")
-    public String configCreateSchedule() {
+    @Autowired
+    PercentageOfManagerWeightsRepository percentageOfManagerWeightsRepository;
+
+    @Autowired
+    PercentageOfManagerWeightsService percentageOfManagerWeightsService;
+
+    @RequestMapping(value = "/config_create_schedule")
+    public String configCreateSchedule(Model model) {
+
+        PercentageOfManagerWeights percentageOfManagerWeights = percentageOfManagerWeightsRepository.findAll().get(0);
+
+        PercentageOfManagerWeightsDto percentageOfManagerWeightsDto = PercentageOfManagerWeightsDto.builder()
+                .id(percentageOfManagerWeights.getId())
+                .high(percentageOfManagerWeights.getHigh())
+                .middle(percentageOfManagerWeights.getMiddle())
+                .low(percentageOfManagerWeights.getLow())
+                .build();
+
+        model.addAttribute("percent", percentageOfManagerWeightsDto);
+
         return "full-calendar/calendar_create_config";
     }
+
+    @RequestMapping(value = "/updatePercent", method = RequestMethod.POST)
+    public String updatePercent(@RequestParam String id,
+                                @RequestParam String high,
+                                @RequestParam String middle,
+                                @RequestParam String low) {
+
+        PercentageOfManagerWeightsDto percentageOfManagerWeightsDto = PercentageOfManagerWeightsDto.builder()
+                .id(Integer.parseInt(id))
+                .high(Integer.parseInt(high))
+                .middle(Integer.parseInt(middle))
+                .low(Integer.parseInt(low))
+                .build();
+
+        percentageOfManagerWeightsService.updatePercentageOfManagerWeights(percentageOfManagerWeightsDto);
+
+        return "redirect:/config_create_schedule";
+    }
+
 
     @GetMapping("/set_est_num_of_cards")
     @ResponseBody

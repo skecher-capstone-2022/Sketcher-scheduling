@@ -8,12 +8,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class EstimatedNumOfCardsPerHourDto {
 
     private Integer time;
-
 
     private Integer numOfCards;
 
