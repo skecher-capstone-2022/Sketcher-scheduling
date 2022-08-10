@@ -120,7 +120,7 @@ public class AutoScheduling {
         }
     }
 
-    public LinkedHashMap<Integer, Manager> makeManagerNode(int[] userCode, int[] userCurrentTime, List<List<Integer>> userHopeTimeList) {
+    private LinkedHashMap<Integer, Manager> makeManagerNode(int[] userCode, int[] userCurrentTime, List<List<Integer>> userHopeTimeList) {
         LinkedHashMap<Integer, Manager> managerNode = new LinkedHashMap<>();
 
         for (int i = 0; i < userCode.length; i++) {
@@ -147,8 +147,8 @@ public class AutoScheduling {
         return managerNode;
     }
 
-    public LinkedHashMap<Integer, Manager> makeManagerWeight(LinkedHashMap<Integer, Manager> managerNodes,
-                                                             HopeTime hopeTime, List<PercentageOfManagerWeights> percentage) {
+    private LinkedHashMap<Integer, Manager> makeManagerWeight(LinkedHashMap<Integer, Manager> managerNodes,
+                                                              HopeTime hopeTime, List<PercentageOfManagerWeights> percentage) {
         managerList.clear();
 
         List<Tuple> joinDateByHopeTime = userService.findJoinDateByHopeTime(hopeTime.getStart_time());
@@ -225,16 +225,37 @@ public class AutoScheduling {
         }
     }
 
+    public List<Manager> sortToPriority(List<Manager> managerList, Integer scheduleWeight) {
+        Comparator<Manager> comparingTotalAssignTime = Comparator.comparing(Manager::getTotalAssignTime);
+        Comparator<Manager> comparingWeight = Comparator.comparing(Manager::getWeight);
+
+        switch (scheduleWeight) {
+            case 1:
+            case 3:
+                managerList.sort(comparingTotalAssignTime);
+                break;
+            case 2:
+                managerList.sort(comparingWeight.reversed());
+                break;
+        }
+        return managerList;
+    }
+
     public boolean firstDFS(Schedule scheduleNode) {
         /* 매니저리스트 currentTime 오름차순 정렬 */
-        Collections.sort(managerList);
+//        Collections.sort(managerList);
+
+        managerList = sortToPriority(managerList, scheduleNode.getWeight());
+
         for (Manager manager : managerList) {
             Schedule alreadyExistingScheduleNode = manager.findScheduleByTime(scheduleNode.getTime());
 
-            if (manager.getDayAssignTime() > 3) {                 // 조건1. 하루 배정 시간이 3시간이 넘으면 제외
+            if (manager.getDayAssignTime() >= 3) {                 // 조건1. 하루 배정 시간이 3시간이 넘으면 제외
                 continue;
             }
-
+            if (manager.getTotalAssignTime() >= 12) {                 // 조건2. 현재 배정 시간이 12시간이 넘으면 제외
+                continue;
+            }
             if (alreadyExistingScheduleNode != null) {            // 조건2. 이미 해당 매니저가 동시간대에 배정되어 있으면 제외
                 continue;
             }

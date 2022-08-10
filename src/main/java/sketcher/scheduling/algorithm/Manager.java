@@ -1,12 +1,11 @@
 package sketcher.scheduling.algorithm;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.object.HopeTime;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Getter
@@ -47,6 +46,9 @@ public class Manager implements Comparable<Manager> {
         } else {
             totalAssignTime++;
             dayAssignTime++;
+
+            System.out.println("totalAssignTime" + totalAssignTime);
+            System.out.println("dayAssignTime" + dayAssignTime);
         }
         assignScheduleList.add(newNode);
     }
