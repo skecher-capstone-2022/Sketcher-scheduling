@@ -1,7 +1,6 @@
 package sketcher.scheduling.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.Manager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
@@ -10,20 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import sketcher.scheduling.domain.ManagerAssignSchedule;
-import sketcher.scheduling.domain.ScheduleUpdateReq;
-import sketcher.scheduling.dto.ScheduleUpdateReqDto;
 import sketcher.scheduling.service.ManagerAssignScheduleService;
 import sketcher.scheduling.service.ScheduleUpdateReqService;
-
-import javax.servlet.http.HttpServletRequest;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
 public class UpdateReqController {
-
     private final ScheduleUpdateReqService updateReqService;
     private final ManagerAssignScheduleService assignScheduleService;
 
@@ -41,4 +33,5 @@ public class UpdateReqController {
         }
         return "redirect:schedule_upd_list";
     }
+
 }

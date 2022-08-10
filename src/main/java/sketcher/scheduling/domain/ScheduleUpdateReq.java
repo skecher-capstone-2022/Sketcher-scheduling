@@ -1,7 +1,6 @@
 package sketcher.scheduling.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -55,7 +54,6 @@ public class ScheduleUpdateReq {
     public ScheduleUpdateReq() {
 
     }
-
 
     public void update(ManagerAssignSchedule assignSchedule, LocalDateTime changeStartDate, LocalDateTime changeEndDate) {
         this.assignSchedule = assignSchedule;

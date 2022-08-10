@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import sketcher.scheduling.config.LocalDateTimeConfig;
 import sketcher.scheduling.object.OrderByNull;
 import sketcher.scheduling.domain.ManagerAssignSchedule;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,6 +24,7 @@ public class ManagerAssignScheduleRepositoryCustomImpl implements ManagerAssignS
 
     private final UserRepository userRepository;
     private final JPAQueryFactory queryFactory;
+
     final int DAYOFMONTH = 21;
 
     LocalDateTimeConfig ldt = new LocalDateTimeConfig();
@@ -120,7 +120,6 @@ public class ManagerAssignScheduleRepositoryCustomImpl implements ManagerAssignS
     public BooleanExpression week_assign() {
         LocalDateTime date = ldt.getLocalTimeNooN();
         int dayOfWeekNumber = ldt.getDayOfWeekNumber(date);
-
         LocalDateTime start = date.minusDays(dayOfWeekNumber);
         LocalDateTime end = date.plusDays(7 - dayOfWeekNumber);
 

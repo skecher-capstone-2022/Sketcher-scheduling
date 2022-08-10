@@ -77,15 +77,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return customAuthenticationFilter;
     }
 
-//    @Bean
-//    public CustomLoginSuccessHandler customLoginSuccessHandler() {
-//        return new CustomLoginSuccessHandler();
-//    }
-//
-//    @Bean
-//    public CustomLoginFailureHandler customLoginFailureHandler() {
-//        return new CustomLoginFailureHandler();
-//    }
+    @Bean
+    public CustomLoginSuccessHandler customLoginSuccessHandler() {
+        return new CustomLoginSuccessHandler();
+    }
+
+    @Bean
+    public CustomLoginFailureHandler customLoginFailureHandler() {
+        return new CustomLoginFailureHandler();
+    }
 
     @Bean//CustomAuthenticationProvider : 인증 처리 핵심 로직
     public CustomAuthenticationProvider customAuthenticationProvider() {
