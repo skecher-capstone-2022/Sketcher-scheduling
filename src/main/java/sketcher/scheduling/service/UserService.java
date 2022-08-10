@@ -237,7 +237,7 @@ public class UserService implements UserDetailsService {
                 .user_joinDate(user.getUser_joinDate())
                 .managerScore(user.getManagerScore())
                 .dropoutReqCheck(user.getDropoutReqCheck())
-                .vacationReqCheck(user.getVacationReqCheck())
+                .vacationReqCheck('N')
                 .build();
 
         updateUser(userDto);

@@ -317,7 +317,7 @@ public class UserController {
             User user = userService.loadUserByUsername(userid);
             userService.updateVacationReq(user);
         }
-        return "redirect:/login";
+        return "redirect:/manager_mypage";
     }
 
 
