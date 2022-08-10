@@ -26,9 +26,10 @@
                     <form name="manager_list_form" class="manager_list_form" method="get"> <!--form으로 정렬과 검색 부분 묶음-->
                         <select th:name="align" id="align" class="list_align" onchange="this.form.submit()">
                             <!--select 부분은 변경할 때마다 submit이 되도록 이벤트 걸어놓음-->
-                            <option th:value="managerScore" th:selected="${condition.align == 'managerScore'}">평점순
-                            </option>
+<!--                            <option th:value="managerScore" th:selected="${condition.align == 'managerScore'}">평점순-->
+<!--                            </option>-->
                             <!--controller에서 넘어온 값에 따라 옵션 선택-->
+                            <option th:value="id" th:selected="${condition.align == 'id'}">아이디</option>
                             <option th:value="username" th:selected="${condition.align == 'username'}">매니저명</option>
                             <option th:value="joindate_desc" th:selected="${condition.align == 'joindate_desc'}">
                                 가입일자(최신순)

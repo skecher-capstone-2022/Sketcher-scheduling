@@ -146,7 +146,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
 
     private Pageable pageableSetting(UserSearchCondition condition, Pageable pageable) {
         String align = condition.getAlign();
-        Sort sort = Sort.by(align).descending();
+        Sort sort = Sort.by(align).ascending();
 
         switch (align) {
             case "username":
@@ -226,8 +226,8 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
 
     private OrderSpecifier<?> listSort(String list_align) {
         switch (list_align) {
-            case "managerScore":
-                return new OrderSpecifier(Order.DESC, user.managerScore);
+            case "id":
+                return new OrderSpecifier(Order.ASC, user.id);
 
             case "username":
                 return new OrderSpecifier(Order.ASC, user.username);
