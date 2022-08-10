@@ -191,7 +191,12 @@ public class UserController {
                                      @RequestParam String userid) throws IOException {
         if (userid != null) {
             User user = userService.loadUserByUsername(userid);
-            userService.updateAuthRole(user);
+
+            if(user.getAuthRole().equals("MANAGER")) {
+                userService.updateWorkingStatusToLeave(user);
+            }else if(user.getAuthRole().equals("LEAVE")){
+                userService.updateWorkingStatusToManager(user);
+            }
         }
 
         response.setContentType("text/html; charset=euc-kr");
