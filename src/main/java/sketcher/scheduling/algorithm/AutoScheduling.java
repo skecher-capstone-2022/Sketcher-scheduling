@@ -120,7 +120,7 @@ public class AutoScheduling {
         }
     }
 
-    public LinkedHashMap<Integer, Manager> makeManagerNode(int[] userCode, int[] userCurrentTime, List<List<Integer>> userHopeTimeList) {
+    private LinkedHashMap<Integer, Manager> makeManagerNode(int[] userCode, int[] userCurrentTime, List<List<Integer>> userHopeTimeList) {
         LinkedHashMap<Integer, Manager> managerNode = new LinkedHashMap<>();
 
         for (int i = 0; i < userCode.length; i++) {
@@ -140,6 +140,7 @@ public class AutoScheduling {
                 }
             }
             manager.setHopeTimeList(hopeTimeList);
+            manager.setHopeTimeCount(hopeTimeList.size());
             managerNode.put(userCode[i], manager);
             managerList.add(manager);
         }
@@ -147,8 +148,8 @@ public class AutoScheduling {
         return managerNode;
     }
 
-    public LinkedHashMap<Integer, Manager> makeManagerWeight(LinkedHashMap<Integer, Manager> managerNodes,
-                                                             HopeTime hopeTime, List<PercentageOfManagerWeights> percentage) {
+    private LinkedHashMap<Integer, Manager> makeManagerWeight(LinkedHashMap<Integer, Manager> managerNodes,
+                                                              HopeTime hopeTime, List<PercentageOfManagerWeights> percentage) {
         managerList.clear();
 
         List<Tuple> joinDateByHopeTime = userService.findJoinDateByHopeTime(hopeTime.getStart_time());
@@ -199,9 +200,9 @@ public class AutoScheduling {
         int weight = 0;
         for (EstimatedNumOfCardsPerHour card : cards) {
             int numberOfManagers = (int) Math.ceil(card.getNumOfCards() / MANAGER_DONE_REQUEST_AVG_PER_HOUR);
-            if (numberOfManagers == 0) numberOfManagers = 1;
+            if (numberOfManagers == 0 && card.getNumOfCards() != 0) numberOfManagers = 1;
 
-            int numOfFixedManager = (int) Math.round(numberOfManagers * FIXED_M3_RATIO);
+            int numOfFixedManager = 0;
 
             if (card.getNumOfCards() < totalCardValueAvg / 2) {
                 weight = 1;
@@ -209,6 +210,7 @@ public class AutoScheduling {
                 weight = 2;
             } else {
                 weight = 3;
+                numOfFixedManager = (int) Math.round(numberOfManagers * FIXED_M3_RATIO);
             }
 
             int countOfFixedManager = 0;
@@ -225,16 +227,42 @@ public class AutoScheduling {
         }
     }
 
+    public List<Manager> sortToPriority(List<Manager> managerList, Integer scheduleWeight) {
+        Comparator<Manager> comparingTotalAssignTime = Comparator.comparing(Manager::getTotalAssignTime);
+        Comparator<Manager> comparingWeight = Comparator.comparing(Manager::getWeight);
+        Comparator<Manager> comparingHopeTimeCount = Comparator.comparing(Manager::getHopeTimeCount);
+
+        switch (scheduleWeight) {
+            case 1:
+                managerList.sort(comparingHopeTimeCount.thenComparing(comparingTotalAssignTime).thenComparing(comparingWeight));
+                break;
+
+            case 2:
+                managerList.sort(comparingTotalAssignTime.thenComparing(comparingHopeTimeCount).thenComparing(comparingWeight.reversed()));
+                break;
+
+            case 3:
+                managerList.sort(comparingWeight.reversed().thenComparing(comparingHopeTimeCount).thenComparing(comparingTotalAssignTime).thenComparing(comparingHopeTimeCount));
+                break;
+        }
+        return managerList;
+    }
+
     public boolean firstDFS(Schedule scheduleNode) {
         /* 매니저리스트 currentTime 오름차순 정렬 */
-        Collections.sort(managerList);
+//        Collections.sort(managerList);
+
+        managerList = sortToPriority(managerList, scheduleNode.getWeight());
+
         for (Manager manager : managerList) {
             Schedule alreadyExistingScheduleNode = manager.findScheduleByTime(scheduleNode.getTime());
 
-            if (manager.getDayAssignTime() > 3) {                 // 조건1. 하루 배정 시간이 3시간이 넘으면 제외
+            if (manager.getDayAssignTime() >= 3) {                 // 조건1. 하루 배정 시간이 3시간이 넘으면 제외
                 continue;
             }
-
+            if (manager.getTotalAssignTime() >= 10) {                 // 조건2. 현재 배정 시간이 12시간이 넘으면 제외
+                continue;
+            }
             if (alreadyExistingScheduleNode != null) {            // 조건2. 이미 해당 매니저가 동시간대에 배정되어 있으면 제외
                 continue;
             }

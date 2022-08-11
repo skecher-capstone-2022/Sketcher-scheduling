@@ -1,17 +1,16 @@
 package sketcher.scheduling.algorithm;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import sketcher.scheduling.domain.ManagerHopeTime;
 import sketcher.scheduling.object.HopeTime;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Getter
 @Setter
-public class Manager implements Comparable<Manager> {
+public class Manager {
     private Integer code;
     private List<HopeTime> hopeTimeList;
     private Integer hopeTimeCount;
@@ -49,10 +48,5 @@ public class Manager implements Comparable<Manager> {
             dayAssignTime++;
         }
         assignScheduleList.add(newNode);
-    }
-
-    @Override
-    public int compareTo(Manager manager) {
-        return this.totalAssignTime - manager.totalAssignTime;
     }
 }
