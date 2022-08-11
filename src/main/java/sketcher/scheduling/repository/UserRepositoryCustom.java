@@ -14,11 +14,12 @@ import java.util.List;
 public interface UserRepositoryCustom {
     Page<UserDto> findAllManager(UserSearchCondition condition, Pageable pageable);
     Page<UserDto> findWorkManager(UserSearchCondition condition, Pageable pageable);
-
-    List<Tuple> findJoinDateByHopeTime(Integer startTime);
-
-    //    ArrayList<String> findDetailById(String id);
+    Page<UserDto> findLeaveManager(UserSearchCondition condition, Pageable pageable);
+	List<Tuple> findJoinDateByHopeTime(Integer startTime);
+//    ArrayList<String> findDetailById(String id);
     List<User> withdrawalManagers(UserSearchCondition condition);
+    Page<UserDto> findVacationManagers(UserSearchCondition condition, Pageable pageable);
     long countByTodayWorkManager();
+
 
 }
