@@ -23,4 +23,7 @@ public interface ManagerHopeTimeRepository extends JpaRepository<ManagerHopeTime
     @Query(value = "select h from ManagerHopeTime h where "+
             "h.user.code = :userCode")
     List<ManagerHopeTime> getHopeTimeByUserCode(@Param("userCode") Integer userCode);
+
+    @Query(value = "select h from ManagerHopeTime h where h.user.authRole ='MANAGER'")
+    List<ManagerHopeTime> findAuthRoleManagerHopeTime();
 }
