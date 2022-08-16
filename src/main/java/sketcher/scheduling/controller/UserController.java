@@ -113,6 +113,33 @@ public class UserController {
         model.addAttribute("users", users);
         return "manager/work_manager_list";
     }
+    @RequestMapping(value = "/leave_manager_list", method = RequestMethod.GET)
+    public String leave_manager_list(Model model,
+//            @RequestParam(required = false, defaultValue = "") UserSearchCondition condition,
+                                    @RequestParam(required = false, defaultValue = "managerScore") String align,
+                                    @RequestParam(required = false, defaultValue = "") String type,
+                                    @RequestParam(required = false, defaultValue = "") String keyword,
+                                    @PageableDefault Pageable pageable) {
+
+        UserSearchCondition condition = new UserSearchCondition(align, type, keyword);
+        Page<UserDto> users = userService.findLeaveManager(condition, pageable);
+        model.addAttribute("condition", condition);
+        model.addAttribute("users", users);
+        return "manager/leave_manager_list";
+    }
+
+    @RequestMapping(value = "/vacation_req_list", method = RequestMethod.GET)
+    public String vacation_req_list(Model model,
+                                    @RequestParam(required = false, defaultValue = "managerScore") String align,
+                                    @RequestParam(required = false, defaultValue = "") String type,
+                                    @RequestParam(required = false, defaultValue = "") String keyword,
+                                    @PageableDefault Pageable pageable) {
+        UserSearchCondition condition = new UserSearchCondition(align, type, keyword);
+        Page<UserDto> users = userService.findVacationManagers(condition,pageable);
+        model.addAttribute("condition", condition);
+        model.addAttribute("users", users);
+        return "request/vacation_req_list";
+    }
 
     @RequestMapping(value = "/manager_detail/{userId}", method = RequestMethod.GET)
     public String manager_detail(Model model, @PathVariable(value = "userId") String id) {
@@ -160,6 +187,30 @@ public class UserController {
 
         out.flush();
     }
+    @RequestMapping(value = "/vacationUpdateUserDetail", method = RequestMethod.GET)
+    public void vacationUpdateUserDetail(HttpServletResponse response,
+                                     @RequestParam String userid) throws IOException {
+        if (userid != null) {
+            User user = userService.loadUserByUsername(userid);
+
+            if(user.getAuthRole().equals("MANAGER")) {
+                userService.updateWorkingStatusToLeave(user);
+            }else if(user.getAuthRole().equals("LEAVE")){
+                userService.updateWorkingStatusToManager(user);
+            }
+        }
+
+        response.setContentType("text/html; charset=euc-kr");
+        PrintWriter out = response.getWriter();
+
+        out.println("<script>");
+        out.println("history.go(-2)");
+        out.println("</script>");
+
+        out.flush();
+    }
+
+
 
     @RequestMapping(value = "/admin_mypage", method = RequestMethod.GET)
     public String admin_mypage(Model model) {
@@ -261,4 +312,18 @@ public class UserController {
         }
         return "redirect:/admin_mypage";
     }
+    
+
+
+    @RequestMapping(value = "/updateVacation", method = RequestMethod.POST)
+    public String updateVacationReq(@RequestParam String userid) {
+        if (userid != null) {
+            User user = userService.loadUserByUsername(userid);
+            userService.updateVacationReq(user);
+        }
+        return "redirect:/manager_mypage";
+    }
+
+
+
 }

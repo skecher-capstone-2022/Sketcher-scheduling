@@ -113,6 +113,89 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                         workTime()
                 )
                 .groupBy(user.code)
+
+                .fetchCount();
+
+        return new PageImpl<>(content, pageable, total);
+    }
+    @Override
+    public Page<UserDto> findLeaveManager(UserSearchCondition condition, Pageable pageable) {
+        pageable = pageableSetting(condition, pageable);
+
+        // 데이터 조회 쿼리와 전체 카운트 쿼리 분리 (최적화)
+        // content 쿼리는 복잡하지만, count쿼리는 깔끔하게 나올 수 있을 때 활용
+        List<UserDto> content = queryFactory
+                .select(Projections.bean(UserDto.class, // 조회할 데이터만 가져옴
+                        user.id,
+                        user.authRole,
+                        user.username,
+                        user.userTel,
+                        user.user_joinDate,
+                        user.managerScore
+                ))
+                .from(user)
+                .where(
+                        leaveManagerList(condition.getType(), condition.getKeyword())
+                )
+                .orderBy(userSort(condition.getAlign(), pageable))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch(); // count 쿼리 제외하고 content 쿼리만 날림
+
+        long total = queryFactory
+                .select(Projections.bean(UserDto.class,
+                        user.id,
+                        user.username,
+                        user.userTel,
+                        user.user_joinDate,
+                        user.managerScore
+                ))
+                .from(user)
+                .where(
+                        leaveManagerList(condition.getType(), condition.getKeyword())
+                )
+                .fetchCount();
+
+        return new PageImpl<>(content, pageable, total);
+    }
+    @Override
+    public Page<UserDto> findVacationManagers(UserSearchCondition condition, Pageable pageable) {
+        pageable = pageableSetting(condition, pageable);
+
+        // 데이터 조회 쿼리와 전체 카운트 쿼리 분리 (최적화)
+        // content 쿼리는 복잡하지만, count쿼리는 깔끔하게 나올 수 있을 때 활용
+        List<UserDto> content = queryFactory
+                .select(Projections.bean(UserDto.class, // 조회할 데이터만 가져옴
+                        user.id,
+                        user.authRole,
+                        user.username,
+                        user.userTel,
+                        user.user_joinDate,
+                        user.managerScore,
+                        user.vacationReqCheck
+                ))
+                .from(user)
+                .where(
+                        vacationManagerList(condition.getType(), condition.getKeyword())
+                )
+                .orderBy(userSort(condition.getAlign(), pageable))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch(); // count 쿼리 제외하고 content 쿼리만 날림
+
+        long total = queryFactory
+                .select(Projections.bean(UserDto.class,
+                        user.id,
+                        user.username,
+                        user.userTel,
+                        user.user_joinDate,
+                        user.managerScore,
+                        user.vacationReqCheck
+                ))
+                .from(user)
+                .where(
+                        vacationManagerList(condition.getType(), condition.getKeyword())
+                )
                 .fetchCount();
 
         return new PageImpl<>(content, pageable, total);
@@ -175,6 +258,10 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         return hasText(authRole) ? user.authRole.eq(authRole) : null;
     }
 
+    private BooleanExpression vacationEq(Character vacation_req_check) {
+        return hasText(String.valueOf(vacation_req_check)) ? user.vacationReqCheck.eq(vacation_req_check) : null;
+    }
+
     private BooleanExpression keywordContains(String type, String keyword) {
         switch (type) {
             case "username":
@@ -190,6 +277,22 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         BooleanBuilder builder = new BooleanBuilder();
 
         builder.and(authRoleEq("MANAGER"));
+        builder.and(keywordContains(type, keyword));
+
+        return builder;
+    }
+    private BooleanBuilder leaveManagerList(String type, String keyword) {
+        BooleanBuilder builder = new BooleanBuilder();
+
+        builder.and(authRoleEq("LEAVE"));
+        builder.and(keywordContains(type, keyword));
+
+        return builder;
+    }
+    private BooleanBuilder vacationManagerList(String type, String keyword) {
+        BooleanBuilder builder = new BooleanBuilder();
+
+        builder.and(vacationEq('Y'));
         builder.and(keywordContains(type, keyword));
 
         return builder;
@@ -223,6 +326,8 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
 
         return content;
     }
+
+
 
     private OrderSpecifier<?> listSort(String list_align) {
         switch (list_align) {

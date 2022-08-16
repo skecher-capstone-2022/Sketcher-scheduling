@@ -36,10 +36,10 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        LocalDateTime date1 = LocalDateTime.of(2022,3,10,1,00);
-        LocalDateTime date3 = LocalDateTime.of(2022,3,10,20,00);
-        LocalDateTime date5 = LocalDateTime.of(2022,3,10,17,00);
-        LocalDateTime date7 = LocalDateTime.of(2022,3,10,7,00);
+//        LocalDateTime date1 = LocalDateTime.of(2022,3,10,1,00);
+//        LocalDateTime date3 = LocalDateTime.of(2022,3,10,20,00);
+//        LocalDateTime date5 = LocalDateTime.of(2022,3,10,17,00);
+//        LocalDateTime date7 = LocalDateTime.of(2022,3,10,7,00);
 
 //        String names[] = {"박태영","정민환","이혜원","김희수","김민준","박서준","임도윤","정예준","박시우","정하준","서주원","유지호","성지훈","김준우","박건우","박서연","이서윤","이지우","김서현","박하은","김하은","김민서","유민서","박지민","김희철","김채원","이도현","김연우","유다은","김지원","서지원","이수빈","김예린",
 //        "이준영","박시후","김진우","정승우","박채은","채유나","김가은","박서영","윤민지","최예나","최수민","강수현","이동현","최한결","김재원","서민우","김연서","강다연","정나윤","김성현","김우빈","정지한","최예성","한나은","홍예지"};
@@ -199,14 +199,14 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
     }
 
 
-    private void setHopeTime(User userT, int i2, int i3) {
-        ManagerHopeTimeDto hopeC = ManagerHopeTimeDto.builder()
-                .start_time(i2)
-                .finish_time(i3)
-                .user(userT)
-                .build();
-        managerHopeTimeService.saveManagerHopeTime(hopeC);
-    }
+//    private void setHopeTime(User userT, int i2, int i3) {
+//        ManagerHopeTimeDto hopeC = ManagerHopeTimeDto.builder()
+//                .start_time(i2)
+//                .finish_time(i3)
+//                .user(userT)
+//                .build();
+//        managerHopeTimeService.saveManagerHopeTime(hopeC);
+//    }
 
 
 
