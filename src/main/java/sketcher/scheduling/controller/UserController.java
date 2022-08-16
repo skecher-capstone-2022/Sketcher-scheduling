@@ -116,7 +116,7 @@ public class UserController {
     @RequestMapping(value = "/leave_manager_list", method = RequestMethod.GET)
     public String leave_manager_list(Model model,
 //            @RequestParam(required = false, defaultValue = "") UserSearchCondition condition,
-                                    @RequestParam(required = false, defaultValue = "managerScore") String align,
+                                    @RequestParam(required = false, defaultValue = "id") String align,
                                     @RequestParam(required = false, defaultValue = "") String type,
                                     @RequestParam(required = false, defaultValue = "") String keyword,
                                     @PageableDefault Pageable pageable) {
@@ -130,7 +130,7 @@ public class UserController {
 
     @RequestMapping(value = "/vacation_req_list", method = RequestMethod.GET)
     public String vacation_req_list(Model model,
-                                    @RequestParam(required = false, defaultValue = "managerScore") String align,
+                                    @RequestParam(required = false, defaultValue = "id") String align,
                                     @RequestParam(required = false, defaultValue = "") String type,
                                     @RequestParam(required = false, defaultValue = "") String keyword,
                                     @PageableDefault Pageable pageable) {
