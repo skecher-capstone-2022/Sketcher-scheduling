@@ -1,3 +1,4 @@
+/*
 package sketcher.scheduling.algorithm;
 
 import com.querydsl.core.Tuple;
@@ -23,12 +24,8 @@ import sketcher.scheduling.service.ManagerHopeTimeService;
 import sketcher.scheduling.service.UserService;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import static sketcher.scheduling.domain.QUser.user;
@@ -54,12 +51,14 @@ public class AutoSchedulingTest {
     int managerNodeSize = 0;   //근무가능 매니저 수
 
     List<Schedule> scheduleList = new ArrayList<>();//Integer id, Integer time, Integer weight, boolean managerWeightFlag
-    /*
+    */
+/*
     필요 스케줄 노드 수
     * S1 - 1
     * S2 - 4
     * S3 - 16
-    * */
+    * *//*
+
     int scheduleSectionSize[] = {1, 4, 16};
 
     List<Manager> managerList = new ArrayList<>();
@@ -77,6 +76,7 @@ public class AutoSchedulingTest {
         settingScheduleNodes();
 //        settingUsers();
         //case1. totalAssignTime을 고려x
+*/
 /*        for (int i = 0; i < managerNodeSize; i++) {
             User user = allManager.get(i);
             int weight = 0;
@@ -97,7 +97,8 @@ public class AutoSchedulingTest {
 
         for (Manager manager : managerList) {
             System.out.println(manager.getCode() + " : M" + manager.getWeight() + ", 희망시간 개수 " + manager.getHopeTimeCount());
-        }*/
+        }*//*
+
     }
 
     @Before
@@ -304,57 +305,64 @@ public class AutoSchedulingTest {
         }
     }
 
-    public boolean firstDFS(Schedule scheduleNode) {
-//        int pointer = settingScheduleNodeTotalSize(scheduleNode);
-//        for (int i = 0; i < scheduleSectionSize[pointer]; i++) {
-        /* 매니저리스트 currentTime 오름차순 정렬 */
-        Collections.sort(managerList);
-        for (Manager manager : managerList) {
-            System.out.println("매니저번호" + manager.getCode() + " : 현재 배정 시간 : " + manager.getTotalAssignTime() + " 매니저 가중치 " + manager.getWeight());
+    public List<Manager> sortToPriority(List<Manager> managerList, Integer scheduleWeight) {
+        Comparator<Manager> comparingTotalAssignTime = Comparator.comparing(Manager::getTotalAssignTime);
+        Comparator<Manager> comparingWeight = Comparator.comparing(Manager::getWeight);
+        Comparator<Manager> comparingHopeTimeCount = Comparator.comparing(Manager::getHopeTimeCount);
+
+        switch (scheduleWeight) {
+            case 1:
+                managerList.sort(comparingHopeTimeCount.thenComparing(comparingTotalAssignTime).thenComparing(comparingWeight));
+                break;
+
+            case 2:
+                managerList.sort(comparingTotalAssignTime.thenComparing(comparingHopeTimeCount).thenComparing(comparingWeight.reversed()));
+                break;
+
+            case 3:
+                managerList.sort(comparingWeight.reversed().thenComparing(comparingHopeTimeCount).thenComparing(comparingTotalAssignTime).thenComparing(comparingHopeTimeCount));
+                break;
         }
+        return managerList;
+    }
+
+    public boolean firstDFS(Schedule scheduleNode) {
+        */
+/* 매니저리스트 정렬 *//*
+
+        managerList = sortToPriority(managerList, scheduleNode.getWeight());
+
         for (Manager manager : managerList) {
             Schedule alreadyExistingScheduleNode = manager.findScheduleByTime(scheduleNode.getTime());
-            if (!manager.isContrainHopeTimes(scheduleNode.getTime())) { //조건1. 희망시간 포함 여부
-                for (HopeTime hopeTime : manager.getHopeTimeList()) {
-                    System.out.println(hopeTime.getStart_time());
-                }
+
+            if (manager.getDayAssignTime() >= 3) {                 // 조건1. 하루 배정 시간이 3시간이 넘으면 제외
                 continue;
             }
-            if (manager.getDayAssignTime() > 3) {   // 조건2. 하루 배정 시간이 3시간이 넘으면 제외
+            if (manager.getTotalAssignTime() >= 10) {                 // 조건2. 현재 배정 시간이 12시간이 넘으면 제외
                 continue;
             }
-            if (alreadyExistingScheduleNode != null) {            // 조건3. 이미 해당 매니저가 동시간대에 배정되어 있음
-                // 이미 배정된 매니저가 managerWeightFlag=false이고, 현재 스케줄이 managerWeightFlag=true인 경우
-                if (checkSwapping(alreadyExistingScheduleNode, scheduleNode)) {
-                    alreadyExistingScheduleNode.setManager(null);
-                    manager.updateAssignScheduleList(alreadyExistingScheduleNode, scheduleNode);
-                    scheduleNode.setManager(manager);
-                    return true;    //s1, s2에 M3가 배정되는 경우 -->
-                }
+            if (alreadyExistingScheduleNode != null) {            // 조건2. 이미 해당 매니저가 동시간대에 배정되어 있으면 제외
                 continue;
             }
             //매니저가 해당 시간대에 아직 배정되지 않은 경우 (alreadyExistingScheduleNode == null인 경우)
             if (scheduleNode.isManagerWeightFlag() && manager.getWeight() != 3) {
-                continue;                                   //조건4. managerWeightFlag가 true라면 매니저는 반드시 M3여야 함
+                continue;                                   //조건3. managerWeightFlag가 true라면 매니저는 반드시 M3여야 함
             }
             if (alreadyExistingScheduleNode == null || firstDFS(alreadyExistingScheduleNode)) {
                 manager.updateAssignScheduleList(alreadyExistingScheduleNode, scheduleNode);
                 scheduleNode.setManager(manager);
                 return true;
             }
-//isPriorityScoreHigherThanExistingeManager
         }
         return false;
     }
 
-    public boolean secondDFS(Schedule scheduleNode) {   //스와핑 때문에 스케줄 배정이 취소된 노드를 대상으로 다시 dfs 수행
+    */
+/*public boolean secondDFS(Schedule scheduleNode) {   //스와핑 때문에 스케줄 배정이 취소된 노드를 대상으로 다시 dfs 수행
 //        int pointer = settingScheduleNodeTotalSize(scheduleNode);
 //        for (int i = 0; i < scheduleSectionSize[pointer]; i++) {
         for (Manager manager : managerList) {
             Schedule alreadyExistingScheduleNode = manager.findScheduleByTime(scheduleNode.getTime());
-            if (!manager.isContrainHopeTimes(scheduleNode.getTime())) { //조건1. 희망시간 포함 여부
-                continue;
-            }
             if (alreadyExistingScheduleNode != null) {            // 조건2. 이미 해당 매니저가 동시간대에 배정되어 있음
                 // 이미 배정된 매니저가 managerWeightFlag=false이고, 현재 스케줄이 managerWeightFlag=true인 경우
                 if (checkSwapping(alreadyExistingScheduleNode, scheduleNode)) {
@@ -377,7 +385,8 @@ public class AutoSchedulingTest {
 //isPriorityScoreHigherThanExistingeManager
         }
         return false;
-    }
+    }*//*
+
 
     private boolean checkSwapping(Schedule alreadyExistingScheduleNode, Schedule scheduleNode) {
         if (alreadyExistingScheduleNode.isManagerWeightFlag() == false && scheduleNode.isManagerWeightFlag() == true)
@@ -398,4 +407,4 @@ public class AutoSchedulingTest {
         return pointer;
     }
 
-}
+}*/

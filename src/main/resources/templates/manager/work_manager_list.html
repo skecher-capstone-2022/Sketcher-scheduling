@@ -8,6 +8,7 @@
 
     <style media="screen">
         .btn {
+            margin-top: 0;
             padding: 10px 20px;
             width: max-content;
         }
@@ -99,25 +100,25 @@
                             <!--last: 전체 페이지 수와 현재 페이지 그룹의 시작 페이지를 통해 현재 페이지 그룹의 마지막 페이지를 구하는 로직-->
                             <li class="page_li">
                                 <a class="arrow pprev"
-                                   th:href="@{/all_manager_list(page=1,align=${condition.align},type=${condition.type},keyword=${condition.keyword})}"></a>
+                                   th:href="@{/work_manager_list(page=1,align=${condition.align},type=${condition.type},keyword=${condition.keyword})}"></a>
                                 <!--페이지 번호, 정렬, 검색 타입, 검색어 get 방식으로 넘겨줌-->
                             </li>
                             <li class="page_li">
                                 <a class="arrow prev"
-                                   th:href="${users.first} ? '#' : @{/all_manager_list(page=${users.number},align=${condition.align},type=${condition.type},keyword=${condition.keyword})}"></a>
+                                   th:href="${users.first} ? '#' : @{/work_manager_list(page=${users.number},align=${condition.align},type=${condition.type},keyword=${condition.keyword})}"></a>
                             </li>
                             <li class="page_li" th:each="page: ${#numbers.sequence(start, last)}"> <!--반복문으로 페이지 번호 출력-->
                                 <a th:text="${page}" th:class="${page == users.number + 1} ? 'active'"
-                                   th:href="@{/all_manager_list(page=${page},align=${condition.align},type=${condition.type},keyword=${condition.keyword})}"></a>
+                                   th:href="@{/work_manager_list(page=${page},align=${condition.align},type=${condition.type},keyword=${condition.keyword})}"></a>
                                 <!--조건문으로 active class 적용 (현재 페이지 표시)-->
                             </li>
                             <li class="page_li">
                                 <a class="arrow next"
-                                   th:href="${users.last} ? '#' : @{/all_manager_list(page=${users.number + 2},align=${condition.align},type=${condition.type},keyword=${condition.keyword})}"></a>
+                                   th:href="${users.last} ? '#' : @{/work_manager_list(page=${users.number + 2},align=${condition.align},type=${condition.type},keyword=${condition.keyword})}"></a>
                             </li>
                             <li class="page_li">
                                 <a class="arrow nnext"
-                                   th:href="@{/all_manager_list(page=${users.totalPages},align=${condition.align},type=${condition.type},keyword=${condition.keyword})}"></a>
+                                   th:href="@{/work_manager_list(page=${users.totalPages},align=${condition.align},type=${condition.type},keyword=${condition.keyword})}"></a>
                             </li>
                         </ul>
                     </div>

@@ -253,9 +253,7 @@ public class AutoScheduling {
     }
 
     public boolean firstDFS(Schedule scheduleNode) {
-        /* 매니저리스트 currentTime 오름차순 정렬 */
-//        Collections.sort(managerList);
-
+        /* 매니저리스트 정렬 */
         managerList = sortToPriority(managerList, scheduleNode.getWeight());
 
         for (Manager manager : managerList) {

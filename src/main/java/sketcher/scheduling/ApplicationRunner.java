@@ -197,8 +197,6 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
 //
 //
     }
-
-
 //    private void setHopeTime(User userT, int i2, int i3) {
 //        ManagerHopeTimeDto hopeC = ManagerHopeTimeDto.builder()
 //                .start_time(i2)
@@ -209,5 +207,13 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
 //    }
 
 
+//    private void setHopeTime(User userT, int i2, int i3) {
+//        ManagerHopeTimeDto hopeC = ManagerHopeTimeDto.builder()
+//                .start_time(i2)
+//                .finish_time(i3)
+//                .user(userT)
+//                .build();
+//        managerHopeTimeService.saveManagerHopeTime(hopeC);
+//    }
 
 }
