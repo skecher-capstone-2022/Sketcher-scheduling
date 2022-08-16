@@ -11,7 +11,6 @@ import sketcher.scheduling.domain.User;
 import sketcher.scheduling.dto.EstimatedNumOfCardsPerHourDto;
 import sketcher.scheduling.dto.ManagerAssignScheduleDto;
 import sketcher.scheduling.repository.EstimatedNumOfCardsPerHourRepository;
-import sketcher.scheduling.repository.ManagerHopeTimeRepository;
 import sketcher.scheduling.repository.PercentageOfManagerWeightsRepository;
 import sketcher.scheduling.repository.UserRepository;
 import sketcher.scheduling.service.KakaoService;
@@ -33,29 +32,17 @@ public class RestController {
     private final ManagerAssignScheduleService assignScheduleService;
     private final KakaoService kakaoService;
     private final ManagerHopeTimeService hopeTimeService;
-    private final ManagerHopeTimeRepository managerHopeTimeRepository;
-
     private final EstimatedNumOfCardsPerHourRepository estimatedNumOfCardsPerHourRepository;
     private final PercentageOfManagerWeightsRepository percentageOfManagerWeightsRepository;
 
-//    @GetMapping(value = "/find_All_Manager")
-//    public List<User> findAllManager() {
-//        return userRepository.findAllManager();
-//    }
-
-    @GetMapping(value = "/find_authRole_Manager")
-    public List<User> findAuthRoleManager(){
-        return userRepository.findAuthRoleManager();
+    @GetMapping(value = "/find_All_Manager")
+    public List<User> findAllManager() {
+        return userRepository.findAllManager();
     }
 
-//    @GetMapping(value = "/find_All_Manager_Hope_Time")
-//    public List<ManagerHopeTime> findAllManagerHopeTime() {
-//        return hopeTimeService.findAll();
-//    }
-
-    @GetMapping(value = "/find_authRole_Manager_Hope_Time")
-    public List<ManagerHopeTime> findAuthRoleManagerHopeTime(){
-        return managerHopeTimeRepository.findAuthRoleManagerHopeTime();
+    @GetMapping(value = "/find_All_Manager_Hope_Time")
+    public List<ManagerHopeTime> findAllManagerHopeTime() {
+        return hopeTimeService.findAll();
     }
 
     @RequestMapping(value = "/create_assign_schedule", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
