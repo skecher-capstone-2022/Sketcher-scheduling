@@ -23,7 +23,7 @@ public class AutoScheduling {
     private final EstimatedNumOfCardsPerHourRepository estimatedNumOfCardsPerHourRepository;
     private final PercentageOfManagerWeightsRepository percentageOfManagerWeightsRepository;
 
-//    public static final double FIXED_M3_RATIO = 0.3;
+    //    public static final double FIXED_M3_RATIO = 0.3;
     public static final int MANAGER_DONE_REQUEST_AVG_PER_HOUR = 50;
 
     List<Manager> managerList = new ArrayList<>();

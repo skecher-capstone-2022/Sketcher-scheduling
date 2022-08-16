@@ -4174,26 +4174,8 @@
     function select_All_Manager() {
         var data1;
         var data2;
-        // $.ajax({
-        //     url: "/find_All_Manager",
-        //     type: "get",
-        //     datatype: "json",
-        //     success: function (data) {
-        //         $.each(data, function (index, item) { // 데이터 =item
-        //             username_list.push(item.username);
-        //             usercode_list.push(item.code);
-        //             userid_list.push(item.id);
-        //             usertemptime_list.push(0);
-        //         });
-        //         setting_manager_selector();
-        //     }
-        //     ,
-        //     error: function () {
-        //         alert('error');
-        //     }
-        // });
         $.ajax({
-            url: "/find_authRole_Manager",
+            url: "/find_All_Manager",
             type: "get",
             datatype: "json",
             success: function (data) {
@@ -4210,8 +4192,9 @@
                 alert('error');
             }
         });
+
         $.ajax({
-            url: "/find_authRole_Manager_Hope_Time",
+            url: "/find_All_Manager_Hope_Time",
             type: "get",
             datatype: "json",
             success: function (data) {
@@ -4231,27 +4214,6 @@
                 alert('error');
             }
         });
-        // $.ajax({
-        //     url: "/find_All_Manager_Hope_Time",
-        //     type: "get",
-        //     datatype: "json",
-        //     success: function (data) {
-        //         $.each(data, function (index, item) { // 데이터 =item
-        //             if (item.user.code in userhopetime_list) {   //이미 존재하는 key면
-        //                 var hope_times = userhopetime_list[item.user.code];
-        //                 hope_times.push(item.start_time);
-        //                 userhopetime_list[item.user.code] = hope_times;
-        //             } else {
-        //                 userhopetime_list[item.user.code] = [item.start_time];
-        //             }
-        //         });
-        //         showhopetiems();
-        //     }
-        //     ,
-        //     error: function () {
-        //         alert('error');
-        //     }
-        // });
     }
 
     function showhopetiems() {
@@ -4504,11 +4466,9 @@
 
             for (let i = 0; i < usercode_list.length; i++) {
                 var user = new Object();
-                if(user[i].authRole.equals("MANAGER")){
                 user.userCode = usercode_list[i];
                 user.userCurrentTime = usertemptime_list[i];
                 user.hopetime = userhopetime_list[usercode_list[i]];
-                }
                 jsonList.push(user);
             }
 

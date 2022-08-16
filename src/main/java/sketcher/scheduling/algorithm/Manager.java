@@ -19,11 +19,6 @@ public class Manager {
     private Integer weight;
     private boolean previousAssignFlag;
     private List<Schedule> assignScheduleList;
-    private Integer priorityScore;
-
-    public void makePriority() {
-
-    }
 
     public Manager() {
         dayAssignTime = 0;

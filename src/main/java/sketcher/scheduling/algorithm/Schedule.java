@@ -19,9 +19,6 @@ public class Schedule {
     public boolean isManagerWeightFlag() {
         return managerWeightFlag;
     }
-    public void makeWeight() {
-
-    }
 
     public Schedule(Integer id, Integer time, Integer weight, boolean managerWeightFlag) {
         this.id = id;
