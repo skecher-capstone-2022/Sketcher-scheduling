@@ -23,7 +23,7 @@ public class AutoScheduling {
     private final EstimatedNumOfCardsPerHourRepository estimatedNumOfCardsPerHourRepository;
     private final PercentageOfManagerWeightsRepository percentageOfManagerWeightsRepository;
 
-    public static final double FIXED_M3_RATIO = 0.3;
+//    public static final double FIXED_M3_RATIO = 0.3;
     public static final int MANAGER_DONE_REQUEST_AVG_PER_HOUR = 50;
 
     List<Manager> managerList = new ArrayList<>();
@@ -32,6 +32,8 @@ public class AutoScheduling {
     List<Schedule> scheduleListByAFTERNOON = new ArrayList<>();
     List<Schedule> scheduleListByEVENING = new ArrayList<>();
     double totalCardValueAvg;
+
+    double fixedM3Ratio = 0;
     int numOfCreatedScheduleNode = 0;
 
     public ArrayList<ResultScheduling> runAlgorithm(int[] userCode, int[] userCurrentTime, List<List<Integer>> hopeTimeList) {
@@ -158,6 +160,8 @@ public class AutoScheduling {
         Integer high = percentage.get(0).getHigh();
         Integer middle = percentage.get(0).getMiddle();
 
+        fixedM3Ratio = high / 2 * 0.01;
+
         long highManager = Math.round(count * high * 0.01);
         long middleManager = Math.round(count * middle * 0.01) + highManager;
         long lowManager = count;
@@ -210,7 +214,7 @@ public class AutoScheduling {
                 weight = 2;
             } else {
                 weight = 3;
-                numOfFixedManager = (int) Math.round(numberOfManagers * FIXED_M3_RATIO);
+                numOfFixedManager = (int) Math.round(numberOfManagers * fixedM3Ratio);
             }
 
             int countOfFixedManager = 0;
