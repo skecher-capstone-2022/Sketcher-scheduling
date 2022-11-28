@@ -44,16 +44,16 @@ Sketcher team scheduling task
 <br>
 
 ### 🏛️ ****Architecture****
+ <img width="700" alt="" src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/1c15c169-2d47-4610-9b18-9b11df610059/structure.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221128%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221128T010735Z&X-Amz-Expires=86400&X-Amz-Signature=07eb873dc91cedc610ea7d29209ca06cb1a206b65a81b7d1cf464c66e89446e8&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22structure.jpg%22&x-id=GetObject">
 
-![structure.jpg](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/1c15c169-2d47-4610-9b18-9b11df610059/structure.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221128%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221128T010735Z&X-Amz-Expires=86400&X-Amz-Signature=07eb873dc91cedc610ea7d29209ca06cb1a206b65a81b7d1cf464c66e89446e8&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22structure.jpg%22&x-id=GetObject)
 <br>
 
 ### 🌟 ****Contributor****
 
 | 이름 | 박태영 | 이혜원 | 정민환 |
-| --- | --- | --- | --- |
+| :---: | :---: | :---: | :---: |
 | 깃헙 아이디 | [ty990520](https://github.com/ty990520) | [dclxxi](https://github.com/dclxxi) | [dokongMin](https://github.com/dokongMin) |
-| 역할 | 팀 리드, 회원가입 및 로그인, 요청알림 관리, CI/CD 설정 | 페이징 및 검색 처리, 매니저 관리, 마이페이지, 카카오톡 API기반 알림 전송 | 오픈소스 Full-calendar 기반 스케줄 CRUD, 휴가 매니저 관리 |
+| 역할 | 팀 리드, 회원가입 및 로그인, <br>요청알림 관리, CI/CD 설정 | 페이징 및 검색 처리, 매니저 관리, <br>마이페이지, 카카오톡 API기반 알림 전송 | 오픈소스 Full-calendar기반 <br> 스케줄 CRUD, 휴가 매니저 관리 
 | 포지션 | 프론트엔드 및 백엔드 | 프론트엔드 및 백엔드 | 백엔드 |
 
 `스케줄 배정` 기능의 경우 페어 프로그래밍으로 진행하였습니다.
@@ -104,14 +104,14 @@ Sketcher team scheduling task
 
 ▶ **스케줄 배정 기능 서비스 흐름도**
 
- <img width="500" alt="" src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/dfcf89bc-d29b-4719-bf89-f6d4dd5cf3bd/%EA%B7%B8%EB%A6%BC3.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221128%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221128T011032Z&X-Amz-Expires=86400&X-Amz-Signature=860cd6c03e4e34e8b110ad9040973c862e70ca8112afbe797496bcd961a0011c&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22%25EA%25B7%25B8%25EB%25A6%25BC3.jpg%22&x-id=GetObject">
+ <img width="700" alt="" src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/dfcf89bc-d29b-4719-bf89-f6d4dd5cf3bd/%EA%B7%B8%EB%A6%BC3.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221128%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221128T011032Z&X-Amz-Expires=86400&X-Amz-Signature=860cd6c03e4e34e8b110ad9040973c862e70ca8112afbe797496bcd961a0011c&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22%25EA%25B7%25B8%25EB%25A6%25BC3.jpg%22&x-id=GetObject">
  </p>
  <br>
 
 1) 이분매칭 알고리즘을 적용하여 스케줄 자동 배정 가능
 
       <p>
- <img width="500" alt="" src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/5269d365-5252-4a77-b7ae-01aff68dd8e2/%EA%B7%BC%EB%AC%B4%EC%8A%A4%EC%BC%80%EC%A4%84%EB%B0%B0%EC%A0%95_UI.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221128%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221128T011115Z&X-Amz-Expires=86400&X-Amz-Signature=9a0e10554f76a3ee006a37a223fe14ce5abc0196899179efb24f1e32cccb24ae&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22%25EA%25B7%25BC%25EB%25AC%25B4%25EC%258A%25A4%25EC%25BC%2580%25EC%25A4%2584%25EB%25B0%25B0%25EC%25A0%2595_UI.png%22&x-id=GetObject">
+ <img width="700" alt="" src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/5269d365-5252-4a77-b7ae-01aff68dd8e2/%EA%B7%BC%EB%AC%B4%EC%8A%A4%EC%BC%80%EC%A4%84%EB%B0%B0%EC%A0%95_UI.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221128%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221128T011115Z&X-Amz-Expires=86400&X-Amz-Signature=9a0e10554f76a3ee006a37a223fe14ce5abc0196899179efb24f1e32cccb24ae&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22%25EA%25B7%25BC%25EB%25AC%25B4%25EC%258A%25A4%25EC%25BC%2580%25EC%25A4%2584%25EB%25B0%25B0%25EC%25A0%2595_UI.png%22&x-id=GetObject">
  </p>
  
  <br>
@@ -139,5 +139,5 @@ Sketcher team scheduling task
 
 ### (3) 근무 기록 및 진행도를 제공하는 마이페이지
 
- <img width="500" alt="" src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/55afe010-5534-474b-bd9a-4ff0d415cbf2/image01.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221128%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221128T011221Z&X-Amz-Expires=86400&X-Amz-Signature=d1e831a3f7fbdd8bc6ef4745d80ed88c813da9a3a8ad8cd3f85d3d5588f66d21&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22image01.jpg%22&x-id=GetObject">
+ <img width="700" alt="" src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/55afe010-5534-474b-bd9a-4ff0d415cbf2/image01.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221128%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221128T011221Z&X-Amz-Expires=86400&X-Amz-Signature=d1e831a3f7fbdd8bc6ef4745d80ed88c813da9a3a8ad8cd3f85d3d5588f66d21&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22image01.jpg%22&x-id=GetObject">
 
